@@ -52,6 +52,17 @@
 		</div>
 	</div>
 		<script type="text/javascript">
+			
+			var options = {	xaxis:{
+							minTickSize: 1,
+							autoscaleMargin:0.02,
+							tickDecimals: 0
+							},
+							lines:{show:false}
+			}
+	
+			$.plot($("#placeholder"), [[[0,40],[1,60]]] , options);	
+		
 			$(document).ready(function(){
 				$.ajax({
 					type: "Get",
