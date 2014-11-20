@@ -9,12 +9,24 @@
 
     <title th:text="#{titles.play}"></title>
     <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/drawChart.js}"></script>
 	<script src="/js/jquery-2.1.1.min.js" ></script>
 	<script src="/js/flot/jquery.flot.js" ></script>
     
 </head>
  <body>
  	<div id="toolBar">
+ 		<div id="path">
+ 			<div class="step" th:text="#{path.load.step1}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step2}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" id="step_active" th:text="#{path.load.step3}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step4}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step5}"></div>
+ 		</div>
  		<ul>
  			<li>
  				<a href="index.html" th:text="#{messages.welcome}" ></a>
@@ -23,7 +35,7 @@
  				<a th:if="!${param.s} OR ${param.s[0]} != 'stop'" href="load.html?s=2" th:text="#{messages.back}" ></a>
  			</li>
  			<li>
-				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}"></a>
+				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}" onclick="stopGame();"></a>
 			</li>
 			<li>
 				<a th:if="${param.s} AND ${param.s[0]} == 'stop'" th:href="evaluate.html" th:text="#{play.evaluate}"></a>
@@ -31,32 +43,23 @@
 		</ul>
  	</div>
 	<div id="chartWrapper">
+		<div id="prototypInput" th:style="${param.s}? 'display:none' : 'display:box'">
+			<label for="lastValue">Wert hinzufügen</label>
+			<input name="lastValue" id="lastValue" type="text" style="float:left"/>
+			<input type="button" id="button" value="Wert einzeichnen" onclick="insertValue();" style="float:left"/>
+		</div>		
 		<div id="placeholder">
 		</div>
 	</div>
 		<script type="text/javascript">
-			var data = [[[0,45],[1,42],[2,40],[3,50],[4,52.5],[5,57],[6,46]]];
-			
-			var options = {	xaxis:{
-									minTickSize: 1,
-									autoscaleMargin:0.02,
-									tickDecimals: 0
-								},
-							series:{
-									lines: {steps:true}
-								},
-							grid:{
-									hoverable:true
-								}
-						}
-			$.plot($("#placeholder"), data , options);
-				   
-			$('#placeholder').bind("plothover", function (event, pos,item)
-	            {
-				
-				}
-			);
-		
+			$(document).ready(function(){
+				$.ajax({
+					type: "Get",
+					url: "getData.html",
+					success: function(response) {drawPlayChart(response);},
+					error: function(e){alert('Error' + e);}
+				});
+			});
 		</script>
  </body>
 </html>
