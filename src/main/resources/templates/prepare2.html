@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+	<script src="/js/jquery-2.1.1.min.js" ></script>
+
+    <title th:text="#{titles.prepare}">Vorbereitung</title>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    	var totalOV = /*[[#{prepare.totalOV}]]*/ 'Mehr als 100% sind nicht erlaubt.';  
+    	var group = /*[[#{prepare.group}]]*/ 'Gruppe';
+    	var percent = /*[[#{prepare.percent}]]*/ 'Anteil';
+    	var currency = /*[[#{prepare.currency}]]*/ 'Preis';
+    	var numberOfPlayers = /*[[${numberOfPlayers}]]*/;
+    /*]]>*/
+    </script>
+    <script th:src="@{/js/script.js}"></script>
+    
+</head>
+ <body onload="updateArrangement();">
+ 	<div id="toolBar">
+ 		<div id="path">
+ 			<div class="step" th:text="#{path.step1}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" id="step_active" th:text="#{path.step2}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.step3}"></div>
+ 		</div>
+ 		<ul>
+ 			<li>
+ 				<a href="index.html" th:text="#{messages.welcome}" ></a>
+ 			</li>
+ 			<li>
+ 				<a href="prepare1.html" th:text="#{messages.back}" ></a>
+ 			</li>
+ 		</ul>
+ 	</div>
+	<div id="inhalt">
+	 	<div th:replace="resources :: heading (prepare2)">
+	 	</div>	
+	 	<div th:text="#{prepare.numberOfPlayers} + ': ' + ${numberOfPlayers}"></div>
+		<form name="arrangement" id="arrangement" method="POST" th:action="generate.html" onChange="updateArrangement();" >
+			<table id="customerTable" class="arrangementTable" style="float:left;">
+				<tr>
+					<th colspan="3">
+						<h2 th:text="#{prepare.customerGroups}">Käufergruppen</h2>
+					</th>
+				</tr>
+				<tr>
+					<th>
+						<div th:text="#{prepare.relativeQuantity}"></div>
+					</th>
+					<th>
+						<div th:text="#{prepare.price}"></div>
+					</th>
+					<th>
+						<div th:text="#{prepare.absoluteQuantity}"></div>
+					</th>
+				</tr>
+				<tr th:each="customer,iter : ${standardCustomerConfiguration}">
+					<td>
+						<input type="number" th:name="'c' + ${iter.count} + 'relativeQuantity'" th:id="'c' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${customer[0]}" th:readonly="${param.c[0]} == 'standard'"/>
+					</td>
+					<td>
+						<input type="number" th:name="'c' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${customer[1]}" th:readonly="${param.c[0]} == 'standard'" />
+					</td>
+					<td th:id="'c' + ${iter.count} + 'absoluteQuantity'">
+					</td>
+				</tr>
+				<tr>
+					<td id ="customerTotalRelative">
+					</td>
+					<td>
+						<div th:text="#{prepare.total}"></div>
+					</td>
+					<td id="customerTotalAbsolute">
+					</td>
+				</tr>
+			</table>
+			<table id="salesmanTable" class="arrangementTable" style="float:right;">
+				<tr>
+					<th colspan="3">
+						<h2 th:text="#{prepare.salesmanGroups}">Verkäufergruppen</h2>
+					</th>
+				</tr>
+				<tr>
+					<th>
+						<div th:text="#{prepare.relativeQuantity}"></div>
+					</th>
+					<th>
+						<div th:text="#{prepare.price}"></div>
+					</th>
+					<th>
+						<div th:text="#{prepare.absoluteQuantity}"></div>
+					</th>
+				</tr>
+				<tr th:each="salesman,iter : ${standardSalesmanConfiguration}">
+					<td>
+						<input type="number" th:name="'s' + ${iter.count} + 'relativeQuantity'" th:id="'s' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${salesman[0]}" th:readonly="${param.c[0]} == 'standard'" />
+					</td>
+					<td>
+						<input type="number" th:name="'s' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${salesman[1]}" th:readonly="${param.c[0]} == 'standard'" />
+					</td>
+					<td th:id="'s' + ${iter.count} + 'absoluteQuantity'">
+					</td>
+				</tr>
+				<tr>
+					<td id="salesmanTotalRelative">
+					</td>
+					<td>
+						<div th:text="#{prepare.total}"></div>
+					</td>
+					<td id="salesmanTotalAbsolute">
+					</td>
+				</tr>
+			</table>
+			<div th:if="${param.c[0]} != 'standard'" stlye="clear: both;"><a class="round" href="javascript:addRow();">+</a></div>
+			<br /><br /><br />
+			<input type="hidden" name="groupQuantity" th:value="${groupQuantity}" />
+			
+			<input type="file" id="input-file" onchange="document.arrangement.action = 'prepare2.html?c=load'; document.arrangement.submit();"/>
+			<input type="button" value="Konfiguration laden" th:value="#{prepare.loadConfig}" onclick="$('#input-file').click();"/>
+			
+			<input type="submit" th:value="#{prepare.generatePDF}" />
+		</form>
+	</div>
+ </body>
+</html>

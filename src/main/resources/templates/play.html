@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <title th:text="#{titles.play}"></title>
+    <script th:src="@{/js/script.js}"></script>
+	<script src="/js/jquery-2.1.1.min.js" ></script>
+	<script src="/js/flot/jquery.flot.js" ></script>
+    
+</head>
+ <body>
+ 	<div id="toolBar">
+ 		<ul>
+ 			<li>
+ 				<a href="index.html" th:text="#{messages.welcome}" ></a>
+ 			</li>
+ 			<li>
+ 				<a th:if="!${param.s} OR ${param.s[0]} != 'stop'" href="load.html?s=2" th:text="#{messages.back}" ></a>
+ 			</li>
+ 			<li>
+				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}"></a>
+			</li>
+			<li>
+				<a th:if="${param.s} AND ${param.s[0]} == 'stop'" th:href="evaluate.html" th:text="#{play.evaluate}"></a>
+			</li>
+		</ul>
+ 	</div>
+	<div id="chartWrapper">
+		<div id="placeholder">
+		</div>
+	</div>
+		<script type="text/javascript">
+			var data = [[[0,45],[1,42],[2,40],[3,50],[4,52.5],[5,57],[6,46]]];
+			
+			var options = {	xaxis:{
+									minTickSize: 1,
+									autoscaleMargin:0.02,
+									tickDecimals: 0
+								},
+							series:{
+									lines: {steps:true}
+								},
+							grid:{
+									hoverable:true
+								}
+						}
+			$.plot($("#placeholder"), data , options);
+				   
+			$('#placeholder').bind("plothover", function (event, pos,item)
+	            {
+				
+				}
+			);
+		
+		</script>
+ </body>
+</html>

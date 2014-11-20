@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <title th:text="#{titles.settings}">Einstellungen</title>
+    
+</head>
+ <body>
+ 	<div id="toolBar">
+ 		<ul>
+ 			<li>
+ 				<a href="index.html" th:text="#{messages.welcome}" ></a>
+ 			</li>
+ 			<li>
+ 				<a href="index.html" th:text="#{messages.back}" ></a>
+ 			</li>
+ 			<li>
+ 				<a href="#" th:text="#{settings.language}"></a>
+ 				<ul>
+ 					<li>
+ 						<a href="settings.html?lang=de" th:text="#{settings.german}"></a>
+ 					</li>
+ 					<li>
+ 						<a href="settings.html?lang=en" th:text="#{settings.english}"></a>
+ 					</li>
+ 				</ul>
+ 			</li>
+ 		</ul>
+ 	</div>
+	<div id="inhalt">
+	 	<div th:replace="resources :: heading (settings)">
+	 	</div>
+	 	<h2 th:text="#{settings.language}"></h2>
+	 	<a href="settings.html?lang=de" th:text="#{settings.german}"></a>
+	 	<a href="settings.html?lang=en" th:text="#{settings.english}"></a>
+	</div>
+ </body>
+</html>

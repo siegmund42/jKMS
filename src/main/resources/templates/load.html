@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <title th:text="#{titles.load}">Spiel laden</title>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    	var pack = /*[[#{load.package}]]*/;
+    /*]]>*/
+    </script>
+    <script th:src="@{/js/script.js}"></script>
+    
+</head>
+ <body>
+ 	<div id="toolBar">
+ 		<div id="path">
+ 			<div th:class="step" th:id="(${param.s[0]} == 1)? 'step_active'" th:text="#{path.load.step1}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div th:class="step" th:id="(${param.s[0]} == 2)? 'step_active'" th:text="#{path.load.step2}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step3}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step4}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step5}"></div>
+ 		</div>
+ 		<ul>
+	 		<li>
+	 			<a href="index.html" th:text="#{messages.welcome}" ></a>
+	 		</li>
+	 		<li>
+ 				<a th:href="(${param.s[0]} == 1)? 'index.html' : 'load.html?s=1'" th:text="#{messages.back}" ></a>
+	 		</li>
+		</ul>
+ 	</div>
+	<div id="inhalt">
+	 	<div th:replace="resources :: heading (load + (${param.s[0]}?: '1'))">
+	 	</div>
+	 	
+	 	<!-- For Showing the IP Address -->
+	 	<div th:if="!${param.s} OR ${param.s[0]} == 1">
+		 	<h2 th:text="#{load.address}">Adresse dieses Rechners</h2>
+		 	<div th:text="${ip} + ':' + ${port}"></div>
+		 	<br />
+		 	<div style="width: 500px;margin: auto;" th:text="#{load.hintAddress}"></div>
+		 	<br />
+		 	<a href="/load.html?s=2" th:text="#{load.goOn}" th:onclick="'if(!confirm(\'' + #{load.confirm} + '\')) return false;'">Weiter</a>
+	 	</div>
+	 	
+	 	<!-- Excluding Cards -->
+	 	<div th:if="${param.s} AND ${param.s[0]} == 2">
+		 	<form th:action="load.html" method="POST">
+		 		<div th:text="#{load.hintExclude}"></div>
+		 		<br />
+			 	<div id="exclude">
+			 		<div id="package" th:style="(${iter.index}%4 == 0)? 'clear: both;'" th:each="assistant,iter : ${assistants}">
+			 			<label th:for="${iter.index}" th:text="${assistant}"></label>
+			 			<input type="text" th:id="${iter.index}" th:name="${iter.index}" th:placeholder="${assistant}"/>
+			 		</div>
+			 	</div>
+			 	<p style="clear:both;"></p>
+			 	<br />
+				<input type="submit" th:value="#{load.start}" />
+			</form>
+		</div>
+	</div>
+ </body>
+</html>

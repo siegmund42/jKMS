@@ -1,0 +1,286 @@
+*   {
+    margin:                 0;
+    padding:                0;
+    text-decoration:        none;
+    font-family:            Verdana;  
+}
+
+html    {
+    height:         	100%;
+    width:          	100%; 
+    /*'background-image: -ms-linear-gradient(right bottom, white 0%, #9FBFD2 100%); IE Präfix*/
+    background-image: 	linear-gradient(180deg, rgba(110,205,0,0.5) 0%, white 100%);
+    background-attachment:	fixed; 
+    /*background:			rgba(110,205,0,0.5);*/
+    font-size:			16pt;
+}
+
+body    {
+    height:         100%;
+    width:          100%;
+    text-align:		center;
+    display:		block;
+}
+
+h1  {
+	font-size:		150%;
+}
+
+h2  {
+    padding:                1px 0px 4px 10px;
+    font-size:              130%;
+}
+
+h3	{
+	font-size:			100%;
+	font-weight:		bold;
+}
+
+p	{
+	margin:			10px auto;
+}
+
+label	{
+	float:			left;
+	margin:			10px 5px;
+	padding:		5px 15px;
+}
+
+#toolBar	{
+	width:			100%;
+	background:		rgba(80,80,80,0.9);
+	color:			white;
+	font-size:		75%;
+	position:		absolute;
+	z-index:		2;
+}
+
+.step	{
+	float:			left;
+	padding:		2px 7px;
+}
+
+#step_active	{
+	height:			100%;
+	float:			left;
+	background:		rgba(110,205,0,0.5);
+}
+
+/*#toolBar a:link, #toolBar a:visited	{
+	margin:				0 0 0 10px;
+	padding:			2px 7px 0 7px;
+	height:				28px;
+	float:				right;
+	color:				rgba(50,50,50,1);
+	border:				0px;
+	/*border:				1px solid #AAA;
+	box-shadow:			1px 1px 2px #888;
+	border-radius:		2px;
+	background:			rgba(110,210,0,1);
+}
+
+#toolBar a:hover, #toolBar a:active, #toolBar a:focus	{
+	/*box-shadow:			0px 0px 5px #999 inset;
+	/*box-shadow:			none;
+	color:					rgba(110,210,0,1);
+	background:				rgba(50,50,50,1);	
+}
+ */
+
+#toolBar ul:after {
+    clear:				both;
+    content:			" ";
+    display:			block;
+    font-size:			0;
+    height:				0;
+    visibility:			hidden;
+}
+
+#toolBar ul li {
+    list-style:			none;
+    float:				right;
+    text-align:			left;
+}
+
+#toolBar ul li a {
+    text-decoration: none;
+    display: block;
+    color: rgba(110,210,0,1);
+    height:				100%;
+    padding:				2px 7px;
+    border-left:		1px solid white;
+}
+
+#toolBar ul li a:hover {
+    background: 				rgba(110,210,0,1);
+    color:				rgba(50,50,50,1);
+}
+
+#toolBar ul li:hover > ul {
+    visibility: visible;
+}
+#toolBar ul li ul	{
+    display: inline;
+    visibility: hidden;
+    position: absolute;
+    padding:0px;
+}
+#toolBar ul li ul li	{
+    float: none;
+    border: 0;
+    text-align:			center;
+    color: 				rgba(110,210,0,1);
+	background:		rgba(80,80,80,0.9);
+}
+#toolBar ul li ul li a:hover	{
+    color: #333;
+    border: 0;
+}
+
+#inhalt {
+	height: 		auto;
+	width:			auto;
+	display:		inline-block;
+	border-radius:	10px;
+	vertical-align:	middle;
+	margin:			90px auto;
+	padding:		0px 50px 30px 50px;
+    box-shadow: 	2px 5px 5px rgba(80,80,80,0.3);
+	/*background-image: 	linear-gradient(-45deg, rgba(150,150,150,1) 0%, rgba(230,230,230,1) 100%);*/
+	background:		rgb(200,200,200);
+}
+
+#header	{
+	font-size:			130%;
+	margin:				-55px 0 30px -25px;
+	position:			relative;
+	text-align:			left;
+}
+
+input[type="text"], input[type="password"],
+ input[type="email"], textarea	{
+ 	width:				120px;
+ 	margin:				5px 10px;
+	float:				right;
+	border-radius:		5px;
+	height:				25px;
+	padding:			5px 15px;
+	border:				1px solid #AAA;
+	box-shadow:			0px 1px 2px rgba(0, 0, 0, 0.2) inset;
+}
+
+input[type="number"]	{
+	width:				70px;
+	float:				right;
+	border-radius:		5px;
+	height:				25px;
+	margin:				5px;
+	padding:			5px 15px;
+	border:				1px solid #AAA;
+	box-shadow:			0px 1px 2px rgba(0, 0, 0, 0.2) inset;
+}
+
+input[type="text"]:focus, input[type="password"]:focus,
+ input[type="email"]:focus, input[type="number"]:focus, textarea:focus	{
+	box-shadow:			0px 0px 5px #999;
+}
+
+input[type=submit], input[type=button], #inhalt a:link, #inhalt a:visited	{
+	font-size:			100%;
+	color:				rgba(50,50,50,1);
+	padding:			4px 7px;
+	border:				0px;
+	/*border:				1px solid #AAA;
+	box-shadow:			1px 1px 2px #888;*/
+	border-radius:		2px;
+	background:			rgba(110,210,0,1);
+	margin:				5px;
+}
+
+#exclude	{
+	text-align:			center;
+	width:				80%;
+	margin:				0 auto;
+}
+
+#exclude input[type="text"]	{
+ 	width:				50px;
+}
+
+.round	{
+	
+	
+}
+
+#package	{
+	float:				left;
+	margin:				5px;
+}
+
+#input-file	{
+	display:			none;
+}
+
+#inhalt a:hover, #inhalt a:active, #inhalt a:focus, input[type=submit]:hover, input[type=button]:hover	{
+	/*box-shadow:			0px 0px 5px #999 inset;*/
+	/*box-shadow:			none;*/
+	color:					rgba(110,210,0,1);
+	background:				rgba(50,50,50,1);	
+}
+
+form#login	{
+	display:			inline-block;
+	margin:				0 auto;
+}
+
+
+.readonly	{
+	border:			0px;
+}
+
+.arrangementTable input[type="number"]	{
+	float:				none;
+	width:				60px;
+}
+
+.arrangementTable	{
+	margin:				5px;
+}
+
+.arrangementTable th	{
+	text-align:			center;
+	padding:			5px;
+}
+
+.arrangementTable td	{
+	font-size:			80%;
+	padding:			3px 5px;
+}
+
+#boxdesc	{
+	margin:			10px;
+	float:			left;
+}
+
+#logout	{
+	position:		relative;
+	float:			right;
+	margin:			1%;
+}
+
+#chartWrapper	{
+	width:			100%;
+	height:			100%;
+	background:		white;
+	position:		absolute;
+}
+
+#placeholder	{
+	width:			95%;
+	height:			90%;
+	margin:			45px auto;
+}
+
+.error	{
+	color:			red;
+}

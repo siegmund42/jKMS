@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <title th:text="#{titles.lottery}">Auslosung</title>
+    <script th:src="@{/js/script.js}"></script>
+    
+</head>
+ <body>
+ 	<div id="toolBar">
+ 		<div id="path">
+ 			<div class="step" th:text="#{path.load.step1}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step2}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step3}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step4}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" id="step_active" th:text="#{path.load.step5}"></div>
+ 		</div>
+ 		<ul>
+	 		<li>
+	 			<a href="index.html" th:text="#{messages.welcome}" ></a>
+	 		</li>
+	 		<li>
+	 			<a href="evaluate.html" th:text="#{messages.back}" ></a>
+	 		</li>
+	 		<li>
+	            <a href="#" th:text="#{messages.export}"></a>
+	            <ul>
+			 		<li><a href="/pdf/export" th:text="#{messages.export.pdf}" ></a></li>
+			 		<li><a href="/csv" th:text="#{messages.export.csv}" ></a></li>
+				</ul>
+			</li>
+		</ul>
+ 	</div>
+	<div id="inhalt">
+	 	<div th:replace="resources :: heading (lottery)">
+	 	</div>
+	 	<div th:text="#{lottery.winner} + ' 1: 1234 +0,35€'"></div>
+	 	<div th:text="#{lottery.winner} + ' 2: 2345 -1,01€'"></div>
+	</div>
+ </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <title th:text="#{titles.welcome}">jKMS - Kaufverträge eingeben</title>
+    
+</head>
+ <body>
+	<div id="inhalt">
+	 	<div th:replace="resources :: heading (contract)">
+	 	</div>	
+	 	<div class="error" th:if="${param.error}" th:text="#{contract.error}">
+            ID nicht vorhanden oder hat bereits gehandelt.
+        </div>
+        <div th:if="${param.success}" th:text="#{contract.success}">
+           	Kaufvertrag erfolgreich übermittelt.
+        </div>
+		<form method="POST" th:action="contract.html">
+			<label for="id1" th:text="#{contract.id1}"></label>
+			<input type="text" id="id1" name="id1" th:placeholder="#{contract.id1}" style="float:left;"/>
+			<br /><br />
+			<label for="id2" th:text="#{contract.id2}"></label>
+			<input type="text" id="id2" name="id2" th:placeholder="#{contract.id2}" style="float:left;"/>
+			<br /><br />
+			<label for="price" th:text="#{contract.price}"></label>
+			<input type="text" id="price" name="price" th:placeholder="#{contract.price}" style="float:left;"/>
+			<br /><br />
+			<input type="submit" th:value="#{buttons.submit}" value="Abschicken" />
+		</form>
+	</div>
+ </body>
+</html>

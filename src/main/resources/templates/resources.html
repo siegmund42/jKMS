@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    
+</head>
+ <body>
+ 	<div id="header" th:fragment="heading (site)">
+		<h1 th:text="#{messages.__${site}__}"></h1>
+		<!-- <div id="logout">
+			<form th:action="@{/logout}" method="post">
+			    <input type="submit" th:value="#{buttons.logout}" value="Ausloggen"/>
+			</form>
+		</div>
+		 -->
+	</div>
+ </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	    <meta name="description" content=""/>
+	    <meta name="author" content=""/>
+	    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+        <title th:text="#{titles.login}">jKMS - Login</title>
+    </head>
+    <body>
+		<div id="inhalt">
+			<div th:replace="resources :: heading (login)">
+ 			</div>
+			<p class="error" th:if="${param.error}" th:text="#{login.error}">
+            	Benutzername oder Passwort ungültig.
+        	</p>
+        	<p th:if="${param.logout}" th:text="#{login.logout}">
+            	You have been logged out.
+        	</p>
+        	<form id="login" th:action="@{/login}" method="post">
+            	<input class="textBox" type="text" name="username" th:placeholder="#{login.name}" />
+            	<br /><br />
+            	<input class="textBox" type="password" name="password" th:placeholder="#{login.password}"/>
+            	<br /><br />
+            	<input type="submit" value="Anmelden" th:value="#{buttons.login}" />
+        	</form>
+		</div>
+    </body>
+</html>

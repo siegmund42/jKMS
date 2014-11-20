@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+	<script src="/js/jquery-2.1.1.min.js" ></script>
+
+    <title th:text="#{titles.generate}"></title>
+    
+</head>
+ <body>
+ 	<div id="toolBar">
+ 		<div id="path">
+ 			<div class="step" th:text="#{path.step1}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.step2}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" id="step_active" th:text="#{path.step3}"></div>
+ 		</div>
+ 		<ul>
+ 			<li>
+ 				<a href="index.html" th:text="#{messages.welcome}" ></a>
+ 			</li>
+ 			<li>
+ 		<a href="prepare2.html" th:text="#{messages.back}" ></a>
+ 			</li>
+ 		</ul>
+ 	</div>
+	<div id="inhalt">
+	 	<div th:replace="resources :: heading (generate)">
+	 	</div>
+	 	<div th:text="#{generate.configSavedIn} + ' ORDNER'"></div>
+	 	<br />
+	 	<div th:text="#{generate.configSaveExtra}"></div>
+	 	<br />
+		<a href="/config" th:text="#{prepare.saveConfig}"></a>
+		<br /><br />
+	 	<a href="/pdf/cards/customer" th:text="#{prepare.savePDF.customer}"></a>
+	 	<a href="/pdf/cards/salesman" th:text="#{prepare.savePDF.salesman}"></a>
+	</div>
+ </body>
+</html>
