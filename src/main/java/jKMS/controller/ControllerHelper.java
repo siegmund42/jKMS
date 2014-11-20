@@ -5,6 +5,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+import javax.servlet.ServletRequest;
+
 public class ControllerHelper {
 
 	private int[][] standardCustomerConfiguration;
@@ -71,6 +73,10 @@ public class ControllerHelper {
 		    }
 		}
 		return null;
+	}
+	
+	public int getPort(ServletRequest request)	{
+		return request.getServerPort();
 	}
 	
 }

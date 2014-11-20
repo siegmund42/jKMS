@@ -14,6 +14,13 @@ public class PrepareController extends AbstractServerController {
 		return "prepare1";
 	}
 	
+
+	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
+	public String prepare2(Model model)	{
+		//model.addAttribute();
+		return "prepare2";
+	}
+	
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
 	public String processPrepare1(
 					Model model, 

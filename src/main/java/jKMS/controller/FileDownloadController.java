@@ -16,7 +16,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
  
 @Controller
-public class FileDownloadController extends AbstractController {
+public class FileDownloadController extends AbstractServerController {
      
     @RequestMapping(value = "/pdf/cards/{type}")
     public ResponseEntity<byte[]> downloadPDF(@PathVariable String type)	{

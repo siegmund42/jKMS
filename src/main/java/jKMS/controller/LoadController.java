@@ -14,7 +14,7 @@ public class LoadController extends AbstractServerController {
 	public String load(Model model, ServletRequest request)	{
 		char[] assistants = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
 		model.addAttribute("ip", helper.getIP());
-		model.addAttribute("port", request.getServerPort());
+		model.addAttribute("port", helper.getPort(request));
 		model.addAttribute("assistants", assistants);
 		return "load";
 	}
