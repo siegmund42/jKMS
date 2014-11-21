@@ -22,7 +22,7 @@ public class DrawController {
 	@RequestMapping("/getData")
 	@ResponseBody
 	//Catches AjaxRequest, writes new value into data list
-	public String writeData(@RequestParam(value="lastValue", defaultValue="-1") String lastValue){
+	public String insertData(@RequestParam(value="lastValue", defaultValue="-1") String lastValue){
 		if(!lastValue.equals("-1")){
 			data.add(lastValue);
 		}
@@ -35,7 +35,7 @@ public class DrawController {
 	@RequestMapping("/getEvaluation")
 	@ResponseBody
 	//catches AjaxRequest, concatenates data list with standardverteilung
-	public String getEvaluation(){
+	public String evaluationChart(){
 		String str = listToJSON(data);	
 		str = str.concat(";" + evaluation);
 

@@ -8,7 +8,7 @@ public abstract class State {
 	public void newGroup(boolean isBuyer, int price, int relativeNumber){}
 	public void setBasicConfig(int playerCount, int assistantCount){}
 	public String createPDF(){ return ""; }
-	public boolean removeCard(){ return false; }
+	public boolean removeCard(){ return false; } //Memo: Update Verteilungsset
 	public boolean addContract(){ return false; }
 	public float equilibriumPrice(){ return 0; }
 	public float equilibriumSet(){ return 0; }
