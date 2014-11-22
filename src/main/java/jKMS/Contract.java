@@ -1,5 +1,8 @@
 package jKMS;
 
+import jKMS.cards.BuyerCard;
+import jKMS.cards.SellerCard;
+
 import java.util.Date;
 
 public class Contract {

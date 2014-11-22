@@ -1,7 +1,9 @@
-package jKMS;
+package jKMS.states;
+
+import jKMS.Kartoffelmarktspiel;
 
 public class Playthrough extends State{
-	Playthrough(Kartoffelmarktspiel kms){
+	public Playthrough(Kartoffelmarktspiel kms){
 		this.kms = kms;
 	}
 	

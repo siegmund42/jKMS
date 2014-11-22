@@ -1,9 +1,9 @@
-package jKMS;
+package jKMS.cards;
 
 public class SellerCard extends Card {
 	int cost;
 
-	SellerCard(int idNumber, int cost) {
+	public SellerCard(int idNumber, int cost) {
 		super(idNumber);
 		this.cost = cost;
 	}

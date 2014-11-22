@@ -1,4 +1,7 @@
-package jKMS;
+package jKMS.states;
+
+import jKMS.Contract;
+import jKMS.Kartoffelmarktspiel;
 
 public abstract class State {
 	protected Kartoffelmarktspiel kms;

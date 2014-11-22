@@ -1,5 +1,11 @@
 package jKMS;
 
+import jKMS.cards.Card;
+import jKMS.states.Evaluation;
+import jKMS.states.Playthrough;
+import jKMS.states.Preparation;
+import jKMS.states.State;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;

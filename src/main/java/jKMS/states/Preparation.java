@@ -1,4 +1,8 @@
-package jKMS;
+package jKMS.states;
+
+import jKMS.Kartoffelmarktspiel;
+import jKMS.cards.BuyerCard;
+import jKMS.cards.SellerCard;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -7,7 +11,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Preparation extends State{
-	Preparation(Kartoffelmarktspiel kms){
+	public Preparation(Kartoffelmarktspiel kms){
 		this.kms = kms;
 	}
 	

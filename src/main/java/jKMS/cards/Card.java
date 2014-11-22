@@ -1,4 +1,4 @@
-package jKMS;
+package jKMS.cards;
 
 public abstract class Card {
 	protected int idNumber;
