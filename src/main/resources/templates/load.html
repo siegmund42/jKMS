@@ -57,10 +57,10 @@
 		 	<form th:action="load.html" method="POST">
 		 		<div th:text="#{load.hintExclude}"></div>
 		 		<br />
-			 	<div id="exclude">
-			 		<div id="package" th:style="(${iter.index}%4 == 0)? 'clear: both;'" th:each="assistant,iter : ${assistants}">
+			 	<div id="form">
+			 		<div id="package" th:each="assistant,iter : ${assistants}">
 			 			<label th:for="${iter.index}" th:text="${assistant}"></label>
-			 			<input type="text" th:id="${iter.index}" th:name="${iter.index}" th:placeholder="${assistant}"/>
+			 			<input type="text" th:id="${iter.index}" th:name="${iter.index}" th:placeholder="${assistant}" style="width: 50px;"/>
 			 		</div>
 			 	</div>
 			 	<p style="clear:both;"></p>

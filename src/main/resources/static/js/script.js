@@ -91,3 +91,32 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		updateArrangement();
 		
 	}
+	
+	function createExcludeFields(number)	{
+		
+		for(var i = 0; i <= number; i++)	{
+			
+			if(i % 4 == 0)	{
+				document.getElementById("exclude").appendChild(document.createElement("br"));
+			}
+			
+			var label = document.createElement("label");
+			label.setAttribute("for", i);
+			label.innerHTML = alphabet[i].toUpperCase();
+			
+			var input = document.createElement("input");
+			input.setAttribute("type", "text");
+			input.setAttribute("name", i);
+			input.setAttribute("id", i);
+			input.setAttribute("placeholder", alphabet[i].toUpperCase());
+			
+			var div = document.createElement("div");
+			div.setAttribute("id", "package");
+			
+			div.appendChild(label);
+			div.appendChild(input);
+			document.getElementById("exclude").appendChild(div);
+			
+		}
+		
+	}

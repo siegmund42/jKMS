@@ -20,9 +20,9 @@
             	You have been logged out.
         	</p>
         	<form id="login" th:action="@{/login}" method="post">
-            	<input class="textBox" type="text" name="username" th:placeholder="#{login.name}" />
+            	<input type="text" name="username" th:placeholder="#{login.name}" style="width: 120px;" />
             	<br /><br />
-            	<input class="textBox" type="password" name="password" th:placeholder="#{login.password}"/>
+            	<input type="password" name="password" th:placeholder="#{login.password}" style="width: 120px;" />
             	<br /><br />
             	<input type="submit" value="Anmelden" th:value="#{buttons.login}" />
         	</form>
