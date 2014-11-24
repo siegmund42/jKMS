@@ -28,19 +28,19 @@ public class Preparation extends State{
 		// DECLARATION
 		Random random = new Random();
 
-		List<Integer> bKeys = new ArrayList<Integer>(kms.getbDistribution().keySet());
-		List<Integer> sKeys = new ArrayList<Integer>(kms.getsDistribution().keySet());
+		List<Integer> bKeys = new ArrayList<Integer>(kms.getConfiguration().getbDistribution().keySet());
+		List<Integer> sKeys = new ArrayList<Integer>(kms.getConfiguration().getsDistribution().keySet());
 		Map<Integer, Integer> bTemp = new HashMap<Integer, Integer>();
 		Map<Integer, Integer> sTemp = new HashMap<Integer, Integer>();
 
 		int id = 1001;
 		int randomKey, randomListEntry;
 
-		bTemp = kms.getbDistribution();
-		sTemp = kms.getsDistribution();
+		bTemp = kms.getConfiguration().getbDistribution();
+		sTemp = kms.getConfiguration().getsDistribution();
 		
 		//clear Card Set
-		kms.getCards().clear();
+		kms.getConfiguration().getCards().clear();
 
 		// IMPLEMENTATION
 		while (!bTemp.isEmpty() && !sTemp.isEmpty()) {
@@ -48,7 +48,7 @@ public class Preparation extends State{
 			randomListEntry = random.nextInt(bKeys.size());
 			randomKey = bKeys.get(randomListEntry);
 
-			kms.getCards().add(new BuyerCard(id, randomKey));
+			kms.getConfiguration().getCards().add(new BuyerCard(id, randomKey, 'A'));
 
 			bTemp.put(randomKey, bTemp.get(randomKey) - 1);
 			if (bTemp.get(randomKey) == 0) {
@@ -62,7 +62,7 @@ public class Preparation extends State{
 			randomListEntry = random.nextInt(sKeys.size());
 			randomKey = sKeys.get(randomListEntry);
 
-			kms.getCards().add(new SellerCard(id, randomKey));
+			kms.getConfiguration().getCards().add(new SellerCard(id, randomKey,'A'));
 
 			sTemp.put(randomKey, sTemp.get(randomKey) - 1);
 			if (sTemp.get(randomKey) == 0) {
@@ -79,8 +79,8 @@ public class Preparation extends State{
 	// depending if isBuyer is true or false.
 	public void newGroup(boolean isBuyer, int price, int relativeNumber) {
 		if (isBuyer)
-			kms.getbDistribution().put(price, relativeNumber);
+			kms.getConfiguration().getbDistribution().put(price, relativeNumber);
 		else
-			kms.getsDistribution().put(price, relativeNumber);
+			kms.getConfiguration().getsDistribution().put(price, relativeNumber);
 	}
 }
