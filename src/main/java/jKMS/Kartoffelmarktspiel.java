@@ -8,11 +8,8 @@ import jKMS.states.Playthrough;
 import jKMS.states.Preparation;
 import jKMS.states.State;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.LinkedHashSet;
-
-
 
 public class Kartoffelmarktspiel {
 
@@ -20,33 +17,29 @@ public class Kartoffelmarktspiel {
 	private State state;
 	private Configuration configuration;
 	private Set<Card> cards;
-
-
 	private Kartoffelmarktspiel instance;
 
 	// DEFAULT CONSTRUCTOR
 	private Kartoffelmarktspiel() {
 		// load default settings from file
-		
+
 		instance = this;
-		setConfiguration(new Configuration());
-		
+		configuration = new Configuration();
 		contracts = new LinkedHashSet<Contract>();
 		state = new Preparation(instance);
-		setCards(new HashSet<Card>());
-
+		cards = new LinkedHashSet<Card>();
 	}
-	
-	//STATE SETTERS
-	void prepare(){
+
+	// STATE SETTERS
+	void prepare() {
 		state = new Preparation(instance);
 	}
-	
-	void play(){
+
+	void play() {
 		state = new Playthrough(instance);
 	}
-	
-	void evaluate(){
+
+	void evaluate() {
 		state = new Evaluation(instance);
 	}
 
@@ -71,6 +64,4 @@ public class Kartoffelmarktspiel {
 	public void setCards(Set<Card> cards) {
 		this.cards = cards;
 	}
-	
-
 }

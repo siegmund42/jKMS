@@ -16,7 +16,15 @@ public class Preparation extends State{
 	}
 	
 	public void loadStandardDistribution(){}
-	public void setBasicConfig(int playerCount, int assistantCount){}
+	
+	
+	//setBasicConfig
+	//setter method for the number of players and assistants
+	public void setBasicConfig(int playerCount, int assistantCount){
+		kms.getConfiguration().setPlayerCount(playerCount);
+		kms.getConfiguration().setAssistantCount(assistantCount);
+	}
+	
 	public String createPDF(){ return ""; }
 	public boolean save(String path){ return false; }
 	public void load(){}
@@ -24,7 +32,6 @@ public class Preparation extends State{
 	// generateCardSet
 	// Generate an ordered, random Set of Cards using
 	// bDistribution and sDistribution
-	
 	public void generateCards() {
 		// DECLARATION
 		Random random = new Random();
