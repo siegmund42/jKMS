@@ -94,29 +94,121 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 	
 	function createExcludeFields(number)	{
 		
-		for(var i = 0; i <= number; i++)	{
+		for(var i = 0; i < number; i++)	{
 			
-			if(i % 4 == 0)	{
-				document.getElementById("exclude").appendChild(document.createElement("br"));
+			var row = document.createElement("div");
+			row.setAttribute("id", "row");
+			
+			for(var r = 0; r <= 3 && i < number; r++)	{
+				
+				var label = document.createElement("label");
+				label.setAttribute("for", i);
+				label.innerHTML = alphabet[i].toUpperCase();
+				
+				var input = document.createElement("input");
+				input.setAttribute("type", "text");
+				input.setAttribute("name", i);
+				input.setAttribute("id", i);
+				input.setAttribute("placeholder", alphabet[i].toUpperCase());
+				row.appendChild(label);
+				row.appendChild(input);
+				
+				i++;
+				
 			}
 			
-			var label = document.createElement("label");
-			label.setAttribute("for", i);
-			label.innerHTML = alphabet[i].toUpperCase();
+			i--;
 			
-			var input = document.createElement("input");
-			input.setAttribute("type", "text");
-			input.setAttribute("name", i);
-			input.setAttribute("id", i);
-			input.setAttribute("placeholder", alphabet[i].toUpperCase());
-			
-			var div = document.createElement("div");
-			div.setAttribute("id", "package");
-			
-			div.appendChild(label);
-			div.appendChild(input);
-			document.getElementById("exclude").appendChild(div);
+			document.getElementById("exclude").appendChild(row);
 			
 		}
+			
+	}
+	
+	
+	function validateForm(form)	{
+		
+		return generalValidateForm(form);
+		
+		
+		
+	}
+	
+	function generalValidateForm(form)	{
+		
+		var errorCodes = new Array();
+		
+		errorCodes[0] = "Feld leer";
+		errorCodes[1] = "NaN";
+		errorCodes[2] = "Zahl <= 0";
+		
+		var errorString = "";
+		var errors = new Array();
+		errors['text'] = new Array();
+		errors['number'] = new Array();
+		
+		var text = Array.filter(document.getElementById(form).elements,	(	function (elm) {
+		     													return (elm.type == "text");
+		   													}
+		   												));
+		
+		var number = Array.filter(document.getElementById(form).elements,	(	function (elm) {
+																	return (elm.type == "number");
+																}
+															));
+		
+		for(var i = 0; i < text.length && text[i] != null; i++)	{
+			
+			if(text[i].value == "")	{
+				errors['text'][i] = 0;
+			}
+			
+			if(errors['text'][i] != null)	{
+				text[i].style.border = "1px solid red";
+				errorString += errorCodes[errors['text'][i]];
+			}	else	{
+				text[i].style.border = "1px solid #AAA";
+			}
+			
+		}
+		
+		for(var i = 0; i < number.length && number[i] != null; i++)	{
+			
+			if(document.getElementById('error' + i) == null)	{
+				var errorDiv = document.createElement("div");
+				errorDiv.setAttribute("id", "error" + i);
+				errorDiv.setAttribute("class", "error");
+				number[i].parentNode.appendChild(errorDiv);
+			}	else	{
+				var errorDiv = document.getElementById('error' + i);
+			}
+			
+			if(isNaN(number[i].value))	{
+				errors['number'][i] = 1;
+			}
+			
+			if(number[i].value <= 0)	{
+				errors['number'][i] = 2;
+			}
+
+			if(number[i].value == "")	{
+				errors['number'][i] = 0;
+			}
+		
+			if(errors['number'][i] != null)	{
+				number[i].style.border = "1px solid red";
+				errorDiv.innerHTML = errorCodes[errors['number'][i]];
+				errorString += "d";
+			}	else	{
+				number[i].style.border = "1px solid #AAA";
+				errorDiv.innerHTML = "";
+			}
+			
+		}
+		
+		if(errorString != "")	{
+			return false;
+		}	else
+			return true;
 		
 	}

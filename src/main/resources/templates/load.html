@@ -16,7 +16,7 @@
     <script th:src="@{/js/script.js}"></script>
     
 </head>
- <body>
+ <body onload="createExcludeFields(14);">
  	<div id="toolBar">
  		<div id="path">
  			<div th:class="step" th:id="(${param.s[0]} == 1)? 'step_active'" th:text="#{path.load.step1}"></div>
@@ -58,9 +58,11 @@
 		 		<div th:text="#{load.hintExclude}"></div>
 		 		<br />
 			 	<div id="form">
-			 		<div id="package" th:each="assistant,iter : ${assistants}">
+			 		<div id="exclude">
+			 		<!-- <div id="package" th:each="assistant,iter : ${assistants}">
 			 			<label th:for="${iter.index}" th:text="${assistant}"></label>
 			 			<input type="text" th:id="${iter.index}" th:name="${iter.index}" th:placeholder="${assistant}" style="width: 50px;"/>
+			 		</div> -->
 			 		</div>
 			 	</div>
 			 	<p style="clear:both;"></p>

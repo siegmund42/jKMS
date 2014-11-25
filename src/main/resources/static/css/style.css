@@ -66,7 +66,7 @@ label	{
 	width:			100%;
 	background:		rgba(80,80,80,0.9);
 	color:			white;
-	font-size:		100%;
+	font-size:		95%;
 	position:		absolute;
 	z-index:		2;
 }
@@ -213,7 +213,6 @@ input[type=submit], input[type=button], #inhalt a:link, #inhalt a:visited	{
 }
 
 #package	{
-	display:			table-row;
 	margin:				10px auto;
 }
 
@@ -278,5 +277,8 @@ form#login	{
 }
 
 .error	{
+	display:		table-cell;
 	color:			red;
+	vertical-align:	middle;
+	margin:			auto;
 }

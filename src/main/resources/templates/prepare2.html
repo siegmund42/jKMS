@@ -43,7 +43,7 @@
 	 	<div th:replace="resources :: heading (prepare2)">
 	 	</div>	
 	 	<div th:text="#{prepare.numberOfPlayers} + ': ' + ${numberOfPlayers}"></div>
-		<form name="arrangement" id="arrangement" method="POST" th:action="generate.html" onChange="updateArrangement();" >
+		<form name="arrangement" id="arrangement" method="POST" th:action="generate.html" onChange="updateArrangement();" onsubmit="return validateForm(this.id);">
 			<table id="customerTable" class="arrangementTable" style="float:left;">
 				<tr>
 					<th colspan="3">
