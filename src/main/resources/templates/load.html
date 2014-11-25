@@ -54,19 +54,15 @@
 	 	
 	 	<!-- Excluding Cards -->
 	 	<div th:if="${param.s} AND ${param.s[0]} == 2">
-		 	<form th:action="load.html" method="POST">
+		 	<form th:action="load.html" name="exclude" id="exclude" method="POST" onsubmit="return validateForm(this.id);">
 		 		<div th:text="#{load.hintExclude}"></div>
-		 		<br />
-			 	<div id="form">
-			 		<div id="exclude">
+			 	<div class="form" id="excludeDiv">
 			 		<!-- <div id="package" th:each="assistant,iter : ${assistants}">
 			 			<label th:for="${iter.index}" th:text="${assistant}"></label>
 			 			<input type="text" th:id="${iter.index}" th:name="${iter.index}" th:placeholder="${assistant}" style="width: 50px;"/>
 			 		</div> -->
-			 		</div>
 			 	</div>
 			 	<p style="clear:both;"></p>
-			 	<br />
 				<input type="submit" th:value="#{load.start}" />
 			</form>
 		</div>
