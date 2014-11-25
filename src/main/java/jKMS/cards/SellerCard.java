@@ -3,8 +3,8 @@ package jKMS.cards;
 public class SellerCard extends Card {
 	int cost;
 
-	public SellerCard(int idNumber, int cost) {
-		super(idNumber);
+	public SellerCard(int idNumber, int cost, char pack) {
+		super(idNumber,pack);
 		this.cost = cost;
 	}
 
