@@ -18,7 +18,21 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     	}
     	
     	if(customerTotalRelative > 100 || salesmanTotalRelative > 100)	{
+    		if(customerTotalRelative > 100)
+    			document.getElementById('customerTotalRelative').style.color = "red";
+    		else
+    			document.getElementById('salesmanTotalRelative').style.color = "red";
     		alert(totalOV);
+    	}	else	{
+    		if(customerTotalRelative == 100 || salesmanTotalRelative == 100)	{
+        		if(customerTotalRelative == 100)
+        			document.getElementById('customerTotalRelative').style.color = "green";
+        		else
+        			document.getElementById('salesmanTotalRelative').style.color = "red";
+    		}	else	{
+        		document.getElementById('customerTotalRelative').style.color = "black";
+        		document.getElementById('salesmanTotalRelative').style.color = "black";
+    		}
     	}
     	
     	document.getElementById('customerTotalRelative').innerHTML = customerTotalRelative + percent;
@@ -238,9 +252,113 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		return Math.floor(a/b);
 	}
 	
+	function generalValidateForm(form)	{
+		
+		var error = false;
+		var errors = new Array();
+		errors['text'] = new Array();
+		errors['number'] = new Array();
+		
+		var text = Array.filter(document.getElementById(form).elements,	(	function (elm) {
+		     													return (elm.type == "text" || elm.type == "password");
+		   													}
+		   												));
+		
+		var number = Array.filter(document.getElementById(form).elements,	(	function (elm) {
+																	return (elm.type == "number");
+																}
+															));
+		
+		for(var i = 0; i < text.length && text[i] != null; i++)	{
+			
+			if(text[i].value == "")	{
+				errors['text'][i] = 0;
+			}
+			
+			if(errors['text'][i] != null)	{
+				writeError(errors['text'][i], text[i]);
+				error = true;
+			}	else	{
+				removeError(text[i]);
+			}
+			
+		}
+		
+		for(var i = 0; i < number.length && number[i] != null; i++)	{
+			
+			if(isNaN(number[i].value))	{
+				errors['number'][i] = 1;
+			}
+			
+			if(number[i].value <= 0)	{
+				errors['number'][i] = 2;
+			}
+
+			if(number[i].value == "")	{
+				errors['number'][i] = 0;
+			}
+			
+			if((number[i].value % 1) != 0)	{
+				errors['number'][i] = 3;
+			}
+		
+			if(errors['number'][i] != null)	{
+				writeError(errors['number'][i], number[i]);
+				error = true;
+			}	else	{
+				removeError(number[i]);
+			}
+			
+		}
+		
+		if(error)	{
+			return false;
+		}	else
+			return true;
+		
+	}
+	
 	function validateForm(form)	{
 		
+		var error = false;
+		
 		if(generalValidateForm(form))	{
+			
+			switch(form)	{
+			case 'config':
+				var players = document.getElementById('players');
+				var assistants = document.getElementById('assistants');
+				if(players.value % 2 != 0)	{
+					writeError(4, players);
+					error = true;
+				}
+				if(players.value > 8999)	{
+					writeError(5, players);
+					error = true;
+				}
+				if(assistants.value > 26)	{
+					writeError(5, assistants);
+					error = true;
+				}
+				if(error)	{
+					return false;
+				}
+			case 'exclude':
+				var error;
+				for(var i = 0; document.getElementById(i) != null; i++)	{
+					var field = document.getElementById(i);
+					if(isNaN(field.value))	{
+						writeError(1, field);
+						error = true;
+					}
+//					if(field.value < kms.getFirstID OR field.value > (kms.getFirstID + kms.getPlayerCount))	{
+//						writeError(5, field);
+//						error = true;
+//					}
+				}
+				if(error)
+					return false;
+			}
 			
 			return true;
 		}
@@ -298,6 +416,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		errorCodes[1] = "NaN";
 		errorCodes[2] = "Zahl <= 0";
 		errorCodes[3] = "Zahl gebrochen";
+		errorCodes[4] = "Zahl ungerade";
+		errorCodes[5] = "Zahl zu groß";
 		
 		document.getElementById('error' + element.name).innerHTML = errorCodes[error];
 		element.style.border = "1px solid red";
@@ -306,71 +426,4 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 	function removeError(element)	{
 		document.getElementById('error' + element.name).innerHTML = "";
 		element.style.border = "1px solid #AAA";
-	}
-	
-	
-	function generalValidateForm(form)	{
-		
-		var errorString = "";
-		var errors = new Array();
-		errors['text'] = new Array();
-		errors['number'] = new Array();
-		
-		var text = Array.filter(document.getElementById(form).elements,	(	function (elm) {
-		     													return (elm.type == "text");
-		   													}
-		   												));
-		
-		var number = Array.filter(document.getElementById(form).elements,	(	function (elm) {
-																	return (elm.type == "number");
-																}
-															));
-		
-		for(var i = 0; i < text.length && text[i] != null; i++)	{
-			
-			if(text[i].value == "")	{
-				errors['text'][i] = 0;
-			}
-			
-			if(errors['text'][i] != null)	{
-				writeError(errors['text'][i], text[i]);
-				errorString += "t";
-			}	else	{
-				removeError(text[i]);
-			}
-			
-		}
-		
-		for(var i = 0; i < number.length && number[i] != null; i++)	{
-			
-			if(isNaN(number[i].value))	{
-				errors['number'][i] = 1;
-			}
-			
-			if(number[i].value <= 0)	{
-				errors['number'][i] = 2;
-			}
-
-			if(number[i].value == "")	{
-				errors['number'][i] = 0;
-			}
-			
-			if((number[i].value % 1) != 0)	{
-				errors['number'][i] = 3;
-			}
-		
-			if(errors['number'][i] != null)	{
-				writeError(errors['number'][i], number[i]);
-				errorString += "d";
-			}	else	{
-				removeError(number[i]);
-			}
-			
-		}
-		
-		if(errorString != "")	{
-			return false;
-		}	else
-			return true;
-		
 	}

@@ -273,3 +273,11 @@ form#login	{
 #salesmanTable	{
 	float:			right;
 }
+
+.errorDiv	{
+	color:			red;
+}
+
+.seuccessDiv	{
+	color:			green;
+}
