@@ -14,7 +14,7 @@ function drawPlayChart(data){
 }
 
 function drawEvaluationChart(data){
-
+		//Daten verarbeiten und darstellen
 		dataArray = data.split(";");
 		playData = JSON.parse(dataArray[0]);
 		if(dataArray.length > 1){
@@ -31,12 +31,28 @@ function drawEvaluationChart(data){
 							tickDecimals: 0
 						},
 						grid:{
+							backgroundColor: "white",
 							hoverable:true
 						}
 					}
 		
-		$.plot($("#placeholder"), chartData , options);
-	
+		var plot = $.plot($("#placeholder"), chartData , options);
+		
+		//Bildexport bereitstellen
+		var link = document.getElementById("pdf_export");
+		var myCanvas = plot.getCanvas();
+		var image = myCanvas.toDataURL("image/jpeg");
+		
+		var timestamp = new Date();
+		timestamp = timestamp.toLocaleDateString();
+		
+		var pdf = new jsPDF('l');
+		//image = image.replace("image/png","image/jpeg");
+		pdf.addImage(image,"JPEG",10,50,280,110); //margin-left, margin-top, width, height
+		
+		//link.setAttribute("href",image);
+		link.setAttribute("href",pdf.output('datauristring'));
+		link.setAttribute("download","chart_export_"+timestamp+".pdf");
 }
 
 function insertValue(){
@@ -63,8 +79,4 @@ function drawEvaluation(){
 	
 }
 
-function stopGame(){
-	$("#prototypInput").hide();
-	
-}
 
