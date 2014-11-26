@@ -18,6 +18,10 @@ public abstract class Card {
 		return this.pack;
 	}
 	
+	public void setPackage(char pack){
+		this.pack =pack;
+	}
+	
 	public int getId(){
 		return this.idNumber;
 	}

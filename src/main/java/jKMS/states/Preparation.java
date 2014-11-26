@@ -2,7 +2,9 @@ package jKMS.states;
 
 import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.BuyerCard;
+import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
+import jKMS.LogicHelper;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -51,22 +53,32 @@ public class Preparation extends State{
 	
 	public String createPDF(){ return ""; }
 	public boolean save(String path){ return false; }
+	
 	public void load(){}
 	
 	// generateCardSet
 	// Generate an ordered, random Set of Cards using
 	// bDistribution and sDistribution
+	
 	public void generateCards() {
 		// DECLARATION
+		
+		//for put seller and buyer distribution
 		Random random = new Random();
 		
 		List<Integer> bKeys = new ArrayList<Integer>(kms.getConfiguration().getbDistribution().keySet());
 		List<Integer> sKeys = new ArrayList<Integer>(kms.getConfiguration().getsDistribution().keySet());
 		Map<Integer, Integer> bTemp = new HashMap<Integer, Integer>();
 		Map<Integer, Integer> sTemp = new HashMap<Integer, Integer>();
-
-		int id = 1001;
+		
+		int id = kms.getConfiguration().getFirstID();
 		int randomKey, randomListEntry;
+		
+		//for put packages
+		int i,ide;
+		int[] packdistribution =LogicHelper.getPackageDistribution(kms.getPlayerCount(),kms.getAssistantCount());
+
+		
 
 		bTemp = kms.getConfiguration().getbDistribution();
 		sTemp = kms.getConfiguration().getsDistribution();
@@ -75,14 +87,17 @@ public class Preparation extends State{
 		kms.getCards().clear();
 
 		// IMPLEMENTATION
+		
+		//put seller and buyer distribution
+		
 		while (!bTemp.isEmpty() && !sTemp.isEmpty()) {
 			// Create Buyer Card
 			randomListEntry = random.nextInt(bKeys.size());
 			randomKey = bKeys.get(randomListEntry);
 
-			kms.getCards().add(new BuyerCard(id, randomKey, 'A'));
-
-			bTemp.put(randomKey, bTemp.get(randomKey) - 1);
+			kms.getCards().add(new BuyerCard(id, randomKey, '?'));
+		
+			bTemp.put(randomKey, bTemp.get(randomKey) - 1); 
 			if (bTemp.get(randomKey) == 0) {
 				bTemp.remove(randomKey);
 				bKeys.remove(randomListEntry);
@@ -94,7 +109,7 @@ public class Preparation extends State{
 			randomListEntry = random.nextInt(sKeys.size());
 			randomKey = sKeys.get(randomListEntry);
 
-			kms.getCards().add(new SellerCard(id, randomKey,'A'));
+			kms.getCards().add(new SellerCard(id, randomKey,'?'));
 
 			sTemp.put(randomKey, sTemp.get(randomKey) - 1);
 			if (sTemp.get(randomKey) == 0) {
@@ -104,15 +119,30 @@ public class Preparation extends State{
 
 			id++;
 		}
-	}
+		
+		//put packages
+		i =0;
+		ide = kms.getConfiguration().getFirstID() + packdistribution[0];
+		
+		for(Card iter : kms.getCards()){
+			if(iter.getId() < ide){
+				iter.setPackage(LogicHelper.IntToPackage(i));
+			}else {
+				i++;
+				ide = ide + packdistribution[i];
+				iter.setPackage(LogicHelper.IntToPackage(i));
+			}
+		}
+		
+	}			
 
 	// newGroup
 	// Creates a new entry for the bDistribution or sDistribution Map,
 	// depending if isBuyer is true or false.
-	public void newGroup(boolean isBuyer, int price, int relativeNumber) {
+	public void newGroup(boolean isBuyer, int price, int absolutNumber) {
 		if (isBuyer)
-			kms.getConfiguration().getbDistribution().put(price, relativeNumber);
+			kms.getConfiguration().getbDistribution().put(price, absolutNumber);
 		else
-			kms.getConfiguration().getsDistribution().put(price, relativeNumber);
+			kms.getConfiguration().getsDistribution().put(price, absolutNumber);
 	}
 }

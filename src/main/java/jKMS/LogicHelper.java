@@ -1,12 +1,11 @@
 package jKMS;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+
 
 
 public class LogicHelper {// have static function to help implementation logic
 	
-	static int PackageToInt(char pack){ // package to int A = 0  Z = 25 
+	public static int PackageToInt(char pack){ // package to int A = 0  Z = 25 
 		 int iPack;
 		 iPack = (int)pack-65;
 		  
@@ -14,16 +13,16 @@ public class LogicHelper {// have static function to help implementation logic
 		 else return 42;
 	}
 	
-	static int IntToPackage(int pack){ // package to int A = 0  Z = 25 
+	public static char IntToPackage(int pack){ // package to int A = 0  Z = 25 
 		 char iPack;
 		 pack = pack +65;
 		 iPack = (char)pack;
 		 
 		 if(pack >= 65 && pack <= 90) return iPack;
-		 else return 42;
+		 else return '#';
 	}
 	
-	static int[] getPackageDistribution(int playerCount,int assistantCount){ //from 0 to assitentCount-1
+	public static int[] getPackageDistribution(int playerCount,int assistantCount){ //from 0 to assitentCount-1
 		int[] packd = new int[assistantCount];
 		int rest,normalSize;
 		rest = playerCount % assistantCount;

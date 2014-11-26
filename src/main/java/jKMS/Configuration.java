@@ -13,6 +13,7 @@ public class Configuration {
 	private int playerCount;
 	private int assistantCount;
 	private int groupCount;
+	private int firstID;
 	private Map<Integer, Integer> bDistribution;
 	private Map<Integer, Integer> sDistribution;
 	
@@ -20,6 +21,7 @@ public class Configuration {
 		
 		setbDistribution(new TreeMap<Integer, Integer>());
 		setsDistribution(new TreeMap<Integer, Integer>());
+		setFirstID(1001);
 	}
 
 	public Boolean save(){ //TODO
@@ -66,6 +68,14 @@ public class Configuration {
 
 	public void setsDistribution(Map<Integer, Integer> sDistribution) {
 		this.sDistribution = sDistribution;
+	}
+
+	public int getFirstID() {
+		return firstID;
+	}
+
+	public void setFirstID(int firstID) {
+		this.firstID = firstID;
 	}
 
 }
