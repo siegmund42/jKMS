@@ -7,23 +7,34 @@
 	    <meta name="description" content=""/>
 	    <meta name="author" content=""/>
 	    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    	<script th:src="@{/js/script.js}"></script>
         <title th:text="#{titles.login}">jKMS - Login</title>
     </head>
     <body>
 		<div id="inhalt">
 			<div th:replace="resources :: heading (login)">
  			</div>
-			<p class="error" th:if="${param.error}" th:text="#{login.error}">
+			<div class="errorDiv" th:if="${param.error}" th:text="#{login.error}">
             	Benutzername oder Passwort ungültig.
-        	</p>
-        	<p th:if="${param.logout}" th:text="#{login.logout}">
+        	</div>
+        	<div class="successDiv" th:if="${param.logout}" th:text="#{login.logout}">
             	You have been logged out.
-        	</p>
-        	<form id="login" th:action="@{/login}" method="post">
-            	<input type="text" name="username" th:placeholder="#{login.name}" style="width: 120px;" />
-            	<br /><br />
-            	<input type="password" name="password" th:placeholder="#{login.password}" style="width: 120px;" />
-            	<br /><br />
+        	</div>
+        	<form id="login" th:action="@{/login}" method="post" onsubmit="return validateForm(this.id);">
+        		<div class="form">
+	        		<div class="row">
+	            		<input type="text" id="username" name="username" th:placeholder="#{login.name}" style="width: 120px;" />
+	            	</div>
+	            	<div class="row">
+	            		<div id="errorusername" class="error"></div>
+	            	</div>
+	            	<div class="row">
+            			<input type="password" name="password" th:placeholder="#{login.password}" style="width: 120px;" />
+            		</div>
+	            	<div class="row">
+	            		<div id="errorpassword" class="error"></div>
+					</div>
+            	</div>
             	<input type="submit" value="Anmelden" th:value="#{buttons.login}" />
         	</form>
 		</div>

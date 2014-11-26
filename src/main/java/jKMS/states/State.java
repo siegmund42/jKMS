@@ -9,11 +9,11 @@ public abstract class State {
 	protected Kartoffelmarktspiel kms;
 	
 	public void loadStandardDistribution(){} // LUKAS - DONE
-	public void generateCards(){} // JUSTUS
-	public void newGroup(boolean isBuyer, int price, int relativeNumber){} // 
-	public void setBasicConfig(int playerCount, int assistantCount){} // DOMINIK
-	public String createPDF(Document document, boolean isBuyer){ return ""; } // 
-	public boolean removeCard(){ return false; } //Memo: Update Verteilungsset
+	public void generateCards(){} // JUSTUS - DONE
+	public void newGroup(boolean isBuyer, int price, int relativeNumber){} // DONE
+	public void setBasicConfig(int playerCount, int assistantCount){} // DOMINIK DONE
+	public String createPDF(Document document, boolean isBuyer){ return ""; } // JUSTUS
+	public boolean removeCard(char pack, int lastId){ return false; } //Memo: Update Verteilungsset
 	public boolean addContract(int id1, int id2, int price){ return false; } // XINYU
 																			// TIMON implementiert Contract Klasse
 	public float equilibriumPrice(){ return 0; } // TIMON
