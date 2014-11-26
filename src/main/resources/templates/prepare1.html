@@ -37,7 +37,7 @@
 			<div id="form">
 				<div class="row">
 					<label for="players" th:text="#{prepare.numberOfPlayers}"></label>
-					<input type="number" id="players" name="players" />
+					<input type="number" id="players" name="players" th:value="${numberOfPlayers != 0}? ${numberOfPlayers}"/>
 				</div>
 				<div class="row">
 					<div class="cell"></div>
@@ -45,15 +45,15 @@
 				</div>
 				<div class="row">
 					<label for="assistants" th:text="#{prepare.numberOfAssistants}"></label>
-					<input type="number" id="assistants" name="assistants" />
+					<input type="number" id="assistants" name="assistants" th:value="${numberOfAssistants != 0}? ${numberOfAssistants}"/>
 				</div>
 				<div class="row">
 					<div class="cell"></div>
 					<div class="error" id="errorassistants"></div>
 				</div>
 			</div>
-			<input type="submit" value="Standardkonfiguration" th:value="#{prepare.standardConfig}" th:formaction="'prepare2.html?c=standard'"/>
-			<input type="submit" value="Eigene Konfiguration" th:value="#{prepare.ownConfig}" th:formaction="'prepare2.html?c=own'"/>
+			<input type="submit" value="Standardkonfiguration" th:value="#{prepare.standardConfig}" th:formaction="'prepare1.html?c=standard'"/>
+			<input type="submit" value="Eigene Konfiguration" th:value="#{prepare.ownConfig}" th:formaction="'prepare1.html?c=own'"/>
 		</form>
 	</div>
  </body>

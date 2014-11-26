@@ -10,10 +10,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PrepareController extends AbstractServerController {
 	
 	@RequestMapping(value = "/prepare1", method = RequestMethod.GET)
-	public String prepare1()	{
+	public String prepare1(Model model)	{
+
+		model.addAttribute("numberOfPlayers", kms.getPlayerCount());
+		model.addAttribute("numberOfAssistants", kms.getAssistantCount());
+		
+		System.out.println(kms.getPlayerCount());
+		System.out.println(kms.getAssistantCount());
+		
 		return "prepare1";
 	}
 	
+	@RequestMapping(value = "/prepare1", method = RequestMethod.POST)
+	public String processPrepare1(Model model,
+		 	@RequestParam(value="players", required=false) int numberOfPlayers, 
+	        @RequestParam(value="assistants", required=false) int numberOfAssistants)	{
+		
+		kms.getState().setBasicConfig(numberOfPlayers, numberOfAssistants);
+		
+		return "redirect:/prepare2";
+	}
 
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
 	public String prepare2(Model model)	{
@@ -24,14 +40,14 @@ public class PrepareController extends AbstractServerController {
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
 	public String processPrepare1(
 					Model model, 
-				 	@RequestParam(value="players", required=false) String numberOfPlayers, 
-			        @RequestParam(value="assistants", required=false) String numberOfAssistants,
 			        @RequestParam(value="c", required=false) String configuration
 			        			)	{
+		
 		if(configuration.equals("standard") || configuration.equals("load"))	{
-			model.addAttribute("standardCustomerConfiguration", helper.getStandardCustomerConfiguration());
-			model.addAttribute("standardSalesmanConfiguration", helper.getStandardSalesmanConfiguration());
-			model.addAttribute("groupQuantity", helper.getStandardSalesmanConfiguration().length);
+			kms.getState().loadStandardDistribution();
+			model.addAttribute("standardCustomerConfiguration", kms.getbDistribution());
+			model.addAttribute("standardSalesmanConfiguration", kms.getsDistribution());
+			model.addAttribute("groupQuantity", kms.getGroupCount());
 		}	else	{
 			// create own configuration - Fields empty
 			// TODO: Ordentlich machen - keine Leerzeichen sondern im html hart min eine gruppe
@@ -47,7 +63,7 @@ public class PrepareController extends AbstractServerController {
 			model.addAttribute("standardSalesmanConfiguration", standardSalesmanConfiguration);
 			model.addAttribute("groupQuantity", standardSalesmanConfiguration.length);
 		}
-		model.addAttribute("numberOfPlayers", numberOfPlayers);
+		model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 		return "prepare2";
 	}
 

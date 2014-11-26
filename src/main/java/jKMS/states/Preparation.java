@@ -15,7 +15,30 @@ public class Preparation extends State{
 		this.kms = kms;
 	}
 	
-	public void loadStandardDistribution(){}
+	// load StandardConfiguration into kms
+	public void loadStandardDistribution(){
+
+		Map<Integer, Integer> bDistribution = new HashMap<>();
+		bDistribution.put(70, 20);
+		bDistribution.put(65, 16);
+		bDistribution.put(60, 16);
+		bDistribution.put(55, 16);
+		bDistribution.put(50, 16);
+		bDistribution.put(45, 16);
+		kms.getConfiguration().setbDistribution(bDistribution);
+		
+		Map<Integer, Integer> sDistribution = new HashMap<>();
+		sDistribution.put(63, 10);
+		sDistribution.put(58, 18);
+		sDistribution.put(53, 18);
+		sDistribution.put(48, 18);
+		sDistribution.put(43, 18);
+		sDistribution.put(38, 18);
+		kms.getConfiguration().setsDistribution(sDistribution);
+		
+		kms.getConfiguration().setGroupCount(6);
+		
+	}
 	
 	
 	//setBasicConfig
