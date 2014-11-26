@@ -16,7 +16,7 @@
     <script th:src="@{/js/script.js}"></script>
     
 </head>
- <body onload="createExcludeFields(14);">
+ <body th:onload="(${param.s} AND ${param.s[0]} == 2)? 'createExcludeFields(' + ${numberOfAssistants} + ');'">
  	<div id="toolBar">
  		<div id="path">
  			<div th:class="step" th:id="(${param.s[0]} == 1)? 'step_active'" th:text="#{path.load.step1}"></div>

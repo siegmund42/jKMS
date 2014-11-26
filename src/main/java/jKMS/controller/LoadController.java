@@ -13,9 +13,11 @@ public class LoadController extends AbstractServerController {
 	@RequestMapping(value = "/load", method = RequestMethod.GET)
 	public String load(Model model, ServletRequest request)	{
 		char[] assistants = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'};
+		kms.play();
 		model.addAttribute("assistants", assistants);
-		model.addAttribute("ip", helper.getIP());
-		model.addAttribute("port", helper.getPort(request));
+		model.addAttribute("numberOfAssistants", kms.getAssistantCount());
+		model.addAttribute("ip", ControllerHelper.getIP());
+		model.addAttribute("port", ControllerHelper.getPort(request));
 		return "load";
 	}
 	
