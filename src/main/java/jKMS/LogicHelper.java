@@ -23,7 +23,7 @@ public class LogicHelper {// have static function to help implementation logic
 		 else return 42;
 	}
 	
-	static int[] getPackageDistribution(int playerCount,int assistantCount){ //form 0 to assitentCount-1
+	static int[] getPackageDistribution(int playerCount,int assistantCount){ //from 0 to assitentCount-1
 		int[] packd = new int[assistantCount];
 		int rest,normalSize;
 		rest = playerCount % assistantCount;

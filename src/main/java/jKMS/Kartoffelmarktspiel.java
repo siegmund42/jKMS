@@ -35,17 +35,17 @@ public class Kartoffelmarktspiel {
 	}
 
 	// STATE SETTERS
-	void prepare() {
+	public void prepare() {
 		state = new Preparation(instance);
 		System.out.println("Preparing..");
 	}
 
-	void play() {
+	public void play() {
 		state = new Playthrough(instance);
 		System.out.println("Playing..");
 	}
 
-	void evaluate() {
+	public void evaluate() {
 		state = new Evaluation(instance);
 		System.out.println("Evaluating..");
 	}
