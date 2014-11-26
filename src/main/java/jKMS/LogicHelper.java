@@ -1,70 +1,48 @@
 package jKMS;
 
-import java.util.Set;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 
 public class LogicHelper {// have static function to help implementation logic
 	
 	static int PackageToInt(char pack){ // package to int A = 0  Z = 25 
-		
-		switch(pack){
-		case 'A':
-			return 0;
-		case 'B':
-			return 1;
-		case 'C':
-			return 2;
-		case 'D':
-			return 3;
-		case 'E':
-			return 4;
-		case 'F':
-			return 5;
-		case 'G':
-			return 6;
-		case 'H':
-			return 7;
-		case 'I':
-			return 8;
-		case 'J':
-			return 9;
-		case 'K':
-			return 10;
-		case 'L':
-			return 11;
-		case 'M':
-			return 12;
-		case 'N':
-			return 13;
-		case 'O':
-			return 14;
-		case 'P':
-			return 15;
-		case 'Q':
-			return 16;
-		case 'R':
-			return 17;
-		case 'S':
-			return 18;
-		case 'T':
-			return 19;
-		case 'U':
-			return 20;
-		case 'V':
-			return 21;
-		case 'W':
-			return 22;
-		case 'x':
-			return 23;
-		case 'Y':
-			return 24;
-		case 'Z':
-			return 25;
-		}
-		
-	return(42);
+		 int iPack;
+		 iPack = (int)pack-65;
+		  
+		 if(iPack >= 0 && iPack <= 25) return iPack;
+		 else return 42;
 	}
 	
-	static Set getPackageDistribution(int playercount,int assistentCount){ //TODO
-		return null;
+	static int IntToPackage(int pack){ // package to int A = 0  Z = 25 
+		 char iPack;
+		 pack = pack +65;
+		 iPack = (char)pack;
+		 
+		 if(pack >= 65 && pack <= 90) return iPack;
+		 else return 42;
+	}
+	
+	static int[] getPackageDistribution(int playerCount,int assistantCount){ //form 0 to assitentCount-1
+		int[] packd = new int[assistantCount];
+		int rest,normalSize;
+		rest = playerCount % assistantCount;
+		normalSize = playerCount / assistantCount;
+		
+		for(int i=0; i < assistantCount;i++){
+			packd[i]=normalSize;
+		}
+			
+		while(rest > 0){
+			for(int i = 0; i < assistantCount;i++){
+				if(rest > 0){
+					rest--;
+					packd[i]++;
+				}else break;
+			}
+	
+		}
+		
+		return packd;
 	}
 }
