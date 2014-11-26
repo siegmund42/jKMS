@@ -8,6 +8,4 @@ public abstract class AbstractController {
 	@Autowired
 	protected Kartoffelmarktspiel kms;
 	
-	protected ControllerHelper helper;
-	
 }

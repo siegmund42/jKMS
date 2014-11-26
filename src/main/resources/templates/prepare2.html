@@ -21,7 +21,7 @@
     <script th:src="@{/js/script.js}"></script>
     
 </head>
- <body onload="updateArrangement(); createErrorFields('arrangement', 2);">
+ <body th:onload="${addEmptyRows}? 'addRow(); addRow();' : 'createErrorFields(\'arrangement\', 2); updateArrangement();'">
  	<div id="toolBar">
  		<div id="path">
  			<div class="step" th:text="#{path.step1}"></div>
@@ -52,12 +52,12 @@
 					<div class="cell" th:text="#{prepare.price}"></div>
 					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
 				</div>
-				<div class="row" th:each="customer,iter : ${standardCustomerConfiguration}">
+				<div class="row" th:each="customer,iter : ${customerConfiguration}">
 					<div class="cell">
-						<input type="number" th:name="'c' + ${iter.count} + 'relativeQuantity'" th:id="'c' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${customer.value}" th:readonly="${param.c[0]} == 'standard'"/>
+						<input type="number" th:name="'c' + ${iter.count} + 'relativeQuantity'" th:id="'c' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${customer.value}" th:readonly="*{isStandard}"/>
 					</div>
 					<div class="cell">
-						<input type="number" class="cell" th:name="'c' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${customer.key}" th:readonly="${param.c[0]} == 'standard'"/>
+						<input type="number" class="cell" th:name="'c' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${customer.key}" th:readonly="*{isStandard}"/>
 					</div>
 					<div class="cell" th:id="'c' + ${iter.count} + 'absoluteQuantity'"></div>
 				</div>
@@ -73,12 +73,12 @@
 					<div class="cell" th:text="#{prepare.price}"></div>
 					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
 				</div>
-				<div class="row" th:each="salesman,iter : ${standardSalesmanConfiguration}">
+				<div class="row" th:each="salesman,iter : ${salesmanConfiguration}">
 					<div class="cell">
-						<input type="number" th:name="'s' + ${iter.count} + 'relativeQuantity'" th:id="'s' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${salesman.value}" th:readonly="${param.c[0]} == 'standard'" />
+						<input type="number" th:name="'s' + ${iter.count} + 'relativeQuantity'" th:id="'s' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${salesman.value}" th:readonly="*{isStandard}" />
 					</div>
 					<div class="cell">
-						<input type="number" th:name="'s' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" th:readonly="${param.c[0]} == 'standard'" />
+						<input type="number" th:name="'s' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" th:readonly="*{isStandard}" />
 					</div>
 					<div class="cell" th:id="'s' + ${iter.count} + 'absoluteQuantity'"></div>
 				</div>
@@ -88,7 +88,7 @@
 					<div class="cell" id="salesmanTotalAbsolute"></div>
 				</div>
 			</div>
-			<div th:if="${param.c[0]} != 'standard'" stlye="clear: both;"><a class="round" href="javascript:addRow();">+</a></div>
+			<div th:if="!*{isStandard}" stlye="clear: both;"><a class="round" href="javascript:addRow();">+</a></div>
 			<br /><br /><br />
 			<input type="hidden" name="groupQuantity" th:value="${groupQuantity}" />
 			
