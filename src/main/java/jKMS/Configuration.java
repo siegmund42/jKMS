@@ -2,8 +2,7 @@ package jKMS;
 
 
 import java.util.Map;
-import java.util.HashMap;
-
+import java.util.TreeMap;
 
 import org.springframework.stereotype.Component;
 
@@ -19,9 +18,8 @@ public class Configuration {
 	
 	public Configuration(){
 		
-
-		setbDistribution(new HashMap<Integer, Integer>());
-		setsDistribution(new HashMap<Integer, Integer>());
+		setbDistribution(new TreeMap<Integer, Integer>());
+		setsDistribution(new TreeMap<Integer, Integer>());
 	}
 
 	public Boolean save(){ //TODO

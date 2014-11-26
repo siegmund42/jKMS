@@ -9,10 +9,12 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0, i = 1;
 		
     	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
-    		customerTotalRelative += document.getElementById('c' + i + 'relativeQuantity').value*1;
-    		salesmanTotalRelative += document.getElementById('s' + i + 'relativeQuantity').value*1;
-    		customerTotalAbsolute += document.getElementById('c' + i + 'absoluteQuantity').innerHTML*1;
-    		salesmanTotalAbsolute += document.getElementById('s' + i + 'absoluteQuantity').innerHTML*1;
+    		if(document.getElementById('c' + i + 'relativeQuantity') != null)	{
+	    		customerTotalRelative += document.getElementById('c' + i + 'relativeQuantity').value*1;
+	    		salesmanTotalRelative += document.getElementById('s' + i + 'relativeQuantity').value*1;
+	    		customerTotalAbsolute += document.getElementById('c' + i + 'absoluteQuantity').innerHTML*1;
+	    		salesmanTotalAbsolute += document.getElementById('s' + i + 'absoluteQuantity').innerHTML*1;
+    		}
     	}
     	
     	if(customerTotalRelative > 100 || salesmanTotalRelative > 100)	{
@@ -26,9 +28,11 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 	}
 	
 	function updateAbsolutes()	{
-    	for(var i=1;i<=arrangement.groupQuantity.value;i++)	{
-    		document.getElementById('c' + i + 'absoluteQuantity').innerHTML = (document.getElementById('c' + i + 'relativeQuantity').value/200)*numberOfPlayers;
-    		document.getElementById('s' + i + 'absoluteQuantity').innerHTML = (document.getElementById('s' + i + 'relativeQuantity').value/200)*numberOfPlayers;
+    	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
+    		if(document.getElementById('c' + i + 'relativeQuantity') != null)	{
+	    		document.getElementById('c' + i + 'absoluteQuantity').innerHTML = (document.getElementById('c' + i + 'relativeQuantity').value/200)*numberOfPlayers;
+	    		document.getElementById('s' + i + 'absoluteQuantity').innerHTML = (document.getElementById('s' + i + 'relativeQuantity').value/200)*numberOfPlayers;
+    		}
     	}
 	}
 
@@ -39,6 +43,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		// add Customer Group ----------------------------------
 		var row = document.createElement("div");
 		row.setAttribute("class", "row");
+		row.setAttribute("id", "row" + ((rows*1) + 1));
 		
 		// Add field for relative Quantity
 		var cell = document.createElement('div');
@@ -94,6 +99,18 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		// Verkäufer Gruppe hinzufügen ---------------------------------------
 		var row = document.createElement("div");
 		row.setAttribute("class", "row");
+		row.setAttribute("id", "row" + (rows*1 + 1));
+		
+		// Add remove Link
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
+		var div = document.createElement('div');
+		div.setAttribute('class', 'round');
+		div.setAttribute('onclick', 'javascript:removeRow(' + (rows*1 + 1) + ');');
+		div.innerHTML = "-";
+		cell.appendChild(div);
+		
+		row.appendChild(cell);
 		
 		// Add field for relative Quantity
 		var cell = document.createElement('div');
@@ -132,6 +149,11 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		errorRow.setAttribute("class", "row");
 		
 		var error = document.createElement("div");
+		error.setAttribute("class", "cell");
+		
+		errorRow.appendChild(error);
+		
+		var error = document.createElement("div");
 		error.setAttribute("class", "error");
 		error.setAttribute("id", 'errors' + (rows*1 + 1) + 'relativeQuantity');
 		
@@ -143,8 +165,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		errorRow.appendChild(error);
 		
-		document.getElementById('salesmanTable').insertBefore(row, document.getElementById('salesmanTable').lastChild.previousSibling);
-		document.getElementById('salesmanTable').insertBefore(errorRow, document.getElementById('salesmanTable').lastChild.previousSibling);
+		document.getElementById('salesmanTable').insertBefore(row, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
+		document.getElementById('salesmanTable').insertBefore(errorRow, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
 		
 		// Increase number of groups
 		arrangement.groupQuantity.value++;
@@ -152,6 +174,18 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		// Update values -> write zeros
 		updateArrangement();
 		
+	}
+	
+	function removeRow(number)	{
+		var row = document.getElementById("row" + number);
+		row.parentNode.removeChild(row.nextSibling);
+		row.parentNode.removeChild(row);
+
+		var row = document.getElementById("row" + number);
+		row.parentNode.removeChild(row.nextSibling);
+		row.parentNode.removeChild(row);
+		
+		updateArrangement();
 	}
 	
 	function createExcludeFields(number)	{
@@ -254,41 +288,6 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 			
 			
 		}
-		
-		
-		
-		
-		
-//		
-//		if(document.getElementById('errorRow' + div(i, numberOfColumns)) == null)	{
-//			
-//			var row = document.createElement("div");
-//			row.setAttribute("id", "errorRow" + div(i, numberOfColumns));
-//			row.setAttribute("class", "row");
-//			
-//			if(boxdesc)	{
-//				var cell = document.createElement("div");
-//				cell.setAttribute("class", "cell");
-//				row.appendChild(cell);
-//			}
-//			
-//			element.parentNode.parentNode.parentNode.insertBefore(row, element.parentNode.parentNode.nextSibling);
-//		}	else	{
-//			var row = document.getElementById('errorRow' + div(i, numberOfColumns));
-//		}
-//		
-//		if(document.getElementById('error' + i) == null){
-//			var errorDiv = document.createElement("div");
-//			errorDiv.setAttribute("id", "error" + i);
-//			errorDiv.setAttribute("class", "error");
-//			row.appendChild(errorDiv);
-//		}	else	{
-//			var errorDiv = document.getElementById('error' + i);
-//		}
-//		
-//		element.style.border = "1px solid red";
-//		errorDiv.innerHTML = errorCodes[code];
-		
 	}
 	
 	function writeError(error, element)	{
@@ -298,6 +297,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		errorCodes[0] = "Feld leer";
 		errorCodes[1] = "NaN";
 		errorCodes[2] = "Zahl <= 0";
+		errorCodes[3] = "Zahl gebrochen";
 		
 		document.getElementById('error' + element.name).innerHTML = errorCodes[error];
 		element.style.border = "1px solid red";
@@ -353,6 +353,10 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 
 			if(number[i].value == "")	{
 				errors['number'][i] = 0;
+			}
+			
+			if((number[i].value % 1) != 0)	{
+				errors['number'][i] = 3;
 			}
 		
 			if(errors['number'][i] != null)	{

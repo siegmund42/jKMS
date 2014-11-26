@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Preparation extends State{
 	public Preparation(Kartoffelmarktspiel kms){
@@ -18,7 +19,7 @@ public class Preparation extends State{
 	// load StandardConfiguration into kms
 	public void loadStandardDistribution(){
 
-		Map<Integer, Integer> bDistribution = new HashMap<>();
+		Map<Integer, Integer> bDistribution = new TreeMap<>();
 		bDistribution.put(70, 20);
 		bDistribution.put(65, 16);
 		bDistribution.put(60, 16);
@@ -27,7 +28,7 @@ public class Preparation extends State{
 		bDistribution.put(45, 16);
 		kms.getConfiguration().setbDistribution(bDistribution);
 		
-		Map<Integer, Integer> sDistribution = new HashMap<>();
+		Map<Integer, Integer> sDistribution = new TreeMap<>();
 		sDistribution.put(63, 10);
 		sDistribution.put(58, 18);
 		sDistribution.put(53, 18);
