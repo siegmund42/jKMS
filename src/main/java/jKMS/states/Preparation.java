@@ -139,10 +139,10 @@ public class Preparation extends State{
 	// newGroup
 	// Creates a new entry for the bDistribution or sDistribution Map,
 	// depending if isBuyer is true or false.
-	public void newGroup(boolean isBuyer, int price, int absolutNumber) {
+	public void newGroup(boolean isBuyer, int price, int relativeNumber) {
 		if (isBuyer)
-			kms.getConfiguration().getbDistribution().put(price, absolutNumber);
+			kms.getConfiguration().getbDistribution().put(price, relativeNumber);
 		else
-			kms.getConfiguration().getsDistribution().put(price, absolutNumber);
+			kms.getConfiguration().getsDistribution().put(price, relativeNumber);
 	}
 }
