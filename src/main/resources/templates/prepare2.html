@@ -21,7 +21,7 @@
     <script th:src="@{/js/script.js}"></script>
     
 </head>
- <body onload="updateArrangement();">
+ <body onload="updateArrangement(); createErrorFields('arrangement', 2);">
  	<div id="toolBar">
  		<div id="path">
  			<div class="step" th:text="#{path.step1}"></div>
@@ -43,81 +43,51 @@
 	 	<div th:replace="resources :: heading (prepare2)">
 	 	</div>	
 	 	<div th:text="#{prepare.numberOfPlayers} + ': ' + ${numberOfPlayers}"></div>
-		<form name="arrangement" id="arrangement" method="POST" th:action="generate.html" onChange="updateArrangement();" >
-			<table id="customerTable" class="arrangementTable" style="float:left;">
-				<tr>
-					<th colspan="3">
-						<h2 th:text="#{prepare.customerGroups}">Käufergruppen</h2>
-					</th>
-				</tr>
-				<tr>
-					<th>
-						<div th:text="#{prepare.relativeQuantity}"></div>
-					</th>
-					<th>
-						<div th:text="#{prepare.price}"></div>
-					</th>
-					<th>
-						<div th:text="#{prepare.absoluteQuantity}"></div>
-					</th>
-				</tr>
-				<tr th:each="customer,iter : ${standardCustomerConfiguration}">
-					<td>
-						<input type="number" th:name="'c' + ${iter.count} + 'relativeQuantity'" th:id="'c' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${customer[0]}" th:readonly="${param.c[0]} == 'standard'"/>
-					</td>
-					<td>
-						<input type="number" th:name="'c' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${customer[1]}" th:readonly="${param.c[0]} == 'standard'" />
-					</td>
-					<td th:id="'c' + ${iter.count} + 'absoluteQuantity'">
-					</td>
-				</tr>
-				<tr>
-					<td id ="customerTotalRelative">
-					</td>
-					<td>
-						<div th:text="#{prepare.total}"></div>
-					</td>
-					<td id="customerTotalAbsolute">
-					</td>
-				</tr>
-			</table>
-			<table id="salesmanTable" class="arrangementTable" style="float:right;">
-				<tr>
-					<th colspan="3">
-						<h2 th:text="#{prepare.salesmanGroups}">Verkäufergruppen</h2>
-					</th>
-				</tr>
-				<tr>
-					<th>
-						<div th:text="#{prepare.relativeQuantity}"></div>
-					</th>
-					<th>
-						<div th:text="#{prepare.price}"></div>
-					</th>
-					<th>
-						<div th:text="#{prepare.absoluteQuantity}"></div>
-					</th>
-				</tr>
-				<tr th:each="salesman,iter : ${standardSalesmanConfiguration}">
-					<td>
-						<input type="number" th:name="'s' + ${iter.count} + 'relativeQuantity'" th:id="'s' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${salesman[0]}" th:readonly="${param.c[0]} == 'standard'" />
-					</td>
-					<td>
-						<input type="number" th:name="'s' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${salesman[1]}" th:readonly="${param.c[0]} == 'standard'" />
-					</td>
-					<td th:id="'s' + ${iter.count} + 'absoluteQuantity'">
-					</td>
-				</tr>
-				<tr>
-					<td id="salesmanTotalRelative">
-					</td>
-					<td>
-						<div th:text="#{prepare.total}"></div>
-					</td>
-					<td id="salesmanTotalAbsolute">
-					</td>
-				</tr>
-			</table>
+		<form name="arrangement" id="arrangement" method="POST" th:action="generate.html" onChange="updateArrangement();" onsubmit="return validateForm(this.id);">
+			<h2 th:text="#{prepare.customerGroups}">Käufergruppen</h2>
+			<h2 th:text="#{prepare.salesmanGroups}">Verkäufergruppen</h2>
+			<div id="customerTable" class="arrangementTable">
+				<div class="row">
+					<div class="cell" th:text="#{prepare.relativeQuantity}"></div>
+					<div class="cell" th:text="#{prepare.price}"></div>
+					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
+				</div>
+				<div class="row" th:each="customer,iter : ${standardCustomerConfiguration}">
+					<div class="cell">
+						<input type="number" th:name="'c' + ${iter.count} + 'relativeQuantity'" th:id="'c' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${customer.value}" th:readonly="${param.c[0]} == 'standard'"/>
+					</div>
+					<div class="cell">
+						<input type="number" class="cell" th:name="'c' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${customer.key}" th:readonly="${param.c[0]} == 'standard'"/>
+					</div>
+					<div class="cell" th:id="'c' + ${iter.count} + 'absoluteQuantity'"></div>
+				</div>
+				<div class="row">
+					<div class="cell" id="customerTotalRelative"></div>
+					<div class="cell" th:text="#{prepare.total}"></div>
+					<div class="cell" id="customerTotalAbsolute"></div>
+				</div>
+			</div>
+			<div id="salesmanTable" class="arrangementTable">
+				<div class="row">
+					<div class="cell" th:text="#{prepare.relativeQuantity}"></div>
+					<div class="cell" th:text="#{prepare.price}"></div>
+					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
+				</div>
+				<div class="row" th:each="salesman,iter : ${standardSalesmanConfiguration}">
+					<div class="cell">
+						<input type="number" th:name="'s' + ${iter.count} + 'relativeQuantity'" th:id="'s' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${salesman.value}" th:readonly="${param.c[0]} == 'standard'" />
+					</div>
+					<div class="cell">
+						<input type="number" th:name="'s' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" th:readonly="${param.c[0]} == 'standard'" />
+					</div>
+					<div class="cell" th:id="'s' + ${iter.count} + 'absoluteQuantity'"></div>
+				</div>
+				<div class="row">
+					<div class="cell" id="salesmanTotalRelative"></div>
+					<div class="cell" th:text="#{prepare.total}"></div>
+					<div class="cell" id="salesmanTotalAbsolute"></div>
+				</div>
+			</div>
 			<div th:if="${param.c[0]} != 'standard'" stlye="clear: both;"><a class="round" href="javascript:addRow();">+</a></div>
 			<br /><br /><br />
 			<input type="hidden" name="groupQuantity" th:value="${groupQuantity}" />

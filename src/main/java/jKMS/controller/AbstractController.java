@@ -1,7 +1,13 @@
 package jKMS.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import jKMS.Kartoffelmarktspiel;
+
 public abstract class AbstractController {
 
-	protected ControllerHelper helper = new ControllerHelper();
+	@Autowired
+	protected Kartoffelmarktspiel kms;
+	
+	protected ControllerHelper helper;
 	
 }
