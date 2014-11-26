@@ -8,7 +8,7 @@ import jKMS.Kartoffelmarktspiel;
 public abstract class State {
 	protected Kartoffelmarktspiel kms;
 	
-	public void loadStandardDistribution(){} // LUKAS
+	public void loadStandardDistribution(){} // LUKAS - DONE
 	public void generateCards(){} // JUSTUS
 	public void newGroup(boolean isBuyer, int price, int relativeNumber){} // 
 	public void setBasicConfig(int playerCount, int assistantCount){} // DOMINIK
