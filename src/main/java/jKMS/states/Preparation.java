@@ -89,14 +89,24 @@ public class Preparation extends State{
 
 		// IMPLEMENTATION
 		
-		//put seller and buyer distribution
+		//put seller and buyer distribution and put packages
+		i =0;
+		ide = kms.getConfiguration().getFirstID() + packdistribution[0];
 		
 		while (!bTemp.isEmpty() && !sTemp.isEmpty()) {
 			// Create Buyer Card
 			randomListEntry = random.nextInt(bKeys.size());
 			randomKey = bKeys.get(randomListEntry);
+			
+			if(id < ide){
+				kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+			}else {
+				i++;
+				ide = ide + packdistribution[i];
+				kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+			}
 
-			kms.getCards().add(new BuyerCard(id, randomKey, '?'));
+
 		
 			bTemp.put(randomKey, new Amount(bTemp.get(randomKey).getRelative(), bTemp.get(randomKey).getAbsolute() - 1)); 
 			if (bTemp.get(randomKey).getAbsolute() == 0) {
@@ -110,7 +120,13 @@ public class Preparation extends State{
 			randomListEntry = random.nextInt(sKeys.size());
 			randomKey = sKeys.get(randomListEntry);
 
-			kms.getCards().add(new SellerCard(id, randomKey,'?'));
+			if(id < ide){
+				kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+			}else {
+				i++;
+				ide = ide + packdistribution[i];
+				kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+			}
 
 			sTemp.put(randomKey, new Amount(sTemp.get(randomKey).getRelative(), sTemp.get(randomKey).getAbsolute() - 1));
 			if (sTemp.get(randomKey).getAbsolute() == 0) {
@@ -121,19 +137,6 @@ public class Preparation extends State{
 			id++;
 		}
 		
-		//put packages
-		i =0;
-		ide = kms.getConfiguration().getFirstID() + packdistribution[0];
-		
-		for(Card iter : kms.getCards()){
-			if(iter.getId() < ide){
-				iter.setPackage(LogicHelper.IntToPackage(i));
-			}else {
-				i++;
-				ide = ide + packdistribution[i];
-				iter.setPackage(LogicHelper.IntToPackage(i));
-			}
-		}
 		
 	}			
 
