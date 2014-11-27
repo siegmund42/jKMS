@@ -1,5 +1,6 @@
 package jKMS.states;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.itextpdf.text.Document;
@@ -25,5 +26,5 @@ public abstract class State {
 	public int buyerProfit(){ return 0; } // DONE
 	public int sellerProfit(){ return 0; } // DONE
 	public boolean save(String path){ return false; }
-	public void load(String fileurl){}
+	public void load(String fileurl) throws NumberFormatException, IOException{}
 }

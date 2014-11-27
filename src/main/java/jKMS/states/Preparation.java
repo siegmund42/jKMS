@@ -7,11 +7,18 @@ import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 import jKMS.LogicHelper;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Preparation extends State{
@@ -53,9 +60,69 @@ public class Preparation extends State{
 	}
 	
 	public String createPDF(){ return ""; }
-	public boolean save(String path){ return false; }
 	
-	public void load(){}
+	
+	//load Implementieren
+	
+		public void load(String fileurl) throws NumberFormatException, IOException{
+			 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileurl)));
+			 String buf = "";
+			 Map<Integer, Amount> bDistributionLoad = new HashMap<>();
+			 Map<Integer, Amount> sDistributionLoad = new HashMap<>();
+			 int count = 0;
+			 while ((buf=br.readLine()) != null) {
+				 	buf=buf.trim();
+		            String[] sa = buf.split(":|\\s");
+		            int bpreis = Integer.valueOf(sa[0]);
+		            Amount bAmount =  new Amount(Integer.valueOf(sa[1]),Integer.valueOf(sa[2]));
+		           // int banteil = Integer.valueOf(sa[1]);
+		            int spreis = Integer.valueOf(sa[3]);
+		            Amount sAmount = new Amount(Integer.valueOf(sa[4]),Integer.valueOf(sa[5]));
+		            //int santeil = Integer.valueOf(sa[3]);
+		            
+		            bDistributionLoad.put(bpreis, bAmount);
+		            sDistributionLoad.put(spreis, sAmount);
+		            count = count + 1;
+		     }
+			 kms.getConfiguration().setbDistribution(bDistributionLoad);
+			 kms.getConfiguration().setsDistribution(sDistributionLoad);
+			 kms.getConfiguration().setGroupCount(count);
+		}
+		
+		//defalt path:Users/yangxinyu/git/jKMS
+		public boolean save(String path){
+			 Map<Integer, Amount> bDistributionSave = new HashMap<>();
+			 Map<Integer, Amount> sDistributionSave = new HashMap<>();
+			 bDistributionSave = kms.getConfiguration().getbDistribution();
+			 sDistributionSave = kms.getConfiguration().getsDistribution();
+			 if(bDistributionSave.isEmpty() || sDistributionSave.isEmpty())
+				 return false;
+			 else{
+				 try {
+					   String line = System.getProperty("line.separator");
+					   StringBuffer str = new StringBuffer();
+					   FileWriter fw = new FileWriter(path, true);
+					   Set bSet = bDistributionSave.entrySet();
+					   Set sSet = sDistributionSave.entrySet();
+					   Iterator bIter = bSet.iterator();
+					   Iterator sIter = sSet.iterator();
+					   while(bIter.hasNext() && sIter.hasNext()){
+						   Map.Entry bEntry = (Map.Entry)bIter.next(); 
+						   Map.Entry sEntry = (Map.Entry)sIter.next(); 
+					    
+						   str.append(bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
+								   " "+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
+					   }
+					   fw.write(str.toString());
+					   fw.close();
+					  } catch (IOException e) {
+					   // TODO Auto-generated catch block
+					   e.printStackTrace();
+					  }
+				 return true;
+			 }
+		}
+
 	
 	// generateCardSet
 	// Generate an ordered, random Set of Cards using

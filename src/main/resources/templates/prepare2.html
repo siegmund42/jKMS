@@ -100,7 +100,7 @@
 			<p style="clear: both;"></p>
 			<input type="hidden" name="groupQuantity" th:value="${groupQuantity}" />
 			
-			<input type="file" id="input-file" onchange="document.arrangement.action = 'prepare2.html?c=load'; document.arrangement.submit();"/>
+			<input type="file" id="input-file" name="input-file" onchange="document.arrangement.action = 'prepare2.html?c=load'; document.arrangement.submit();"/>
 			<input type="button" value="Konfiguration laden" th:value="#{prepare.loadConfig}" onclick="$('#input-file').click();"/>
 			
 			<input type="submit" th:value="#{prepare.generatePDF}" />

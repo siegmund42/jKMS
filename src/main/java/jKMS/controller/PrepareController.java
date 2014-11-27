@@ -1,5 +1,7 @@
 package jKMS.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,13 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PrepareController extends AbstractServerController {
-	
 	@RequestMapping(value = "/prepare1", method = RequestMethod.GET)
 	public String prepare1(Model model)	{
 
 		model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 		model.addAttribute("numberOfAssistants", kms.getAssistantCount());
-		
+
 		return "prepare1";
 	}
 	
@@ -28,18 +29,24 @@ public class PrepareController extends AbstractServerController {
 	        @RequestParam(value="c", required=false) String configuration)	{
 		
 		kms.getState().setBasicConfig(numberOfPlayers, numberOfAssistants);
-		
 		return "redirect:/prepare2?c=" + configuration;
 	}
 
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
-	public String prepare2(Model model, @RequestParam(value="c", required=false) String configuration)	{
-		
+	public String prepare2(Model model, @RequestParam(value="c", required=false) String configuration) throws NumberFormatException, IOException	{
+		//load Implementieren
 		if(configuration != null && configuration.equals("load"))	{
 			//TODO: load from file
+			
+			model.addAttribute("isStandard", true);
+			model.addAttribute("customerConfiguration", kms.getbDistribution());
+			model.addAttribute("salesmanConfiguration", kms.getsDistribution());
+			model.addAttribute("groupQuantity", kms.getGroupCount());
 		}
 		
+		
 		if(configuration == null)	{
+			 System.out.println("configuration == null");
 			configuration = "load";
 		}
 		
@@ -52,6 +59,7 @@ public class PrepareController extends AbstractServerController {
 			model.addAttribute("salesmanConfiguration", kms.getsDistribution());
 			model.addAttribute("groupQuantity", kms.getGroupCount());
 		}	else	{
+			
 			// create own configuration - Fields empty
 			kms.getbDistribution().clear();
 			kms.getsDistribution().clear();
@@ -65,15 +73,18 @@ public class PrepareController extends AbstractServerController {
 		return "prepare2";
 	}
 	
+	//defalt load path:Users/yangxinyu/git/jKMS
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
-	public String processPrepare1(Model model)	{
-
-		return "prepare2";
+	public String processPrepare1(Model model, @RequestParam(value="input-file") String filename,@RequestParam(value="c") String configuration) throws NumberFormatException, FileNotFoundException, IOException	{
+		//String fileurl = "/Users/yangxinyu/Desktop/"+filename;
+		kms.getState().load(filename);
+		return "redirect:/prepare2?c=" + configuration;
 	}
 
 	@RequestMapping(value = "generate", method = RequestMethod.POST)
 	public String generate()	{
 		return "generate";
 	}
+
 	
 }
