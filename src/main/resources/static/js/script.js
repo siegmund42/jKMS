@@ -17,28 +17,29 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     		}
     	}
     	
-    	if(customerTotalRelative > 100 || salesmanTotalRelative > 100)	{
-    		if(customerTotalRelative > 100)
-    			document.getElementById('customerTotalRelative').style.color = "red";
-    		else
-    			document.getElementById('salesmanTotalRelative').style.color = "red";
-    		alert(totalOV);
-    	}	else	{
-    		if(customerTotalRelative == 100 || salesmanTotalRelative == 100)	{
-        		if(customerTotalRelative == 100)
-        			document.getElementById('customerTotalRelative').style.color = "green";
-        		else
-        			document.getElementById('salesmanTotalRelative').style.color = "red";
-    		}	else	{
-        		document.getElementById('customerTotalRelative').style.color = "black";
-        		document.getElementById('salesmanTotalRelative').style.color = "black";
-    		}
-    	}
-    	
     	document.getElementById('customerTotalRelative').innerHTML = customerTotalRelative + percent;
     	document.getElementById('salesmanTotalRelative').innerHTML = salesmanTotalRelative + percent;
     	document.getElementById('customerTotalAbsolute').innerHTML = customerTotalAbsolute;
     	document.getElementById('salesmanTotalAbsolute').innerHTML = salesmanTotalAbsolute;
+    	
+		if(customerTotalRelative > 100)	{
+			document.getElementById('customerTotalRelative').style.color = "red";
+    		alert(totalOV);
+		}	else
+			if(customerTotalRelative == 100)
+    			document.getElementById('customerTotalRelative').style.color = "green";
+			else
+        		document.getElementById('customerTotalRelative').style.color = "black";
+		
+		if(salesmanTotalRelative > 100)	{
+			document.getElementById('salesmanTotalRelative').style.color = "red";
+    		alert(totalOV);
+		}	else
+			if(salesmanTotalRelative == 100)
+    			document.getElementById('salesmanTotalRelative').style.color = "green";
+			else
+        		document.getElementById('salesmanTotalRelative').style.color = "black";
+    	
 	}
 	
 	function updateAbsolutes()	{
@@ -252,69 +253,42 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		return Math.floor(a/b);
 	}
 	
-	function generalValidateForm(form)	{
+	function generalValidateField(field)	{
 		
-		var error = false;
-		var errors = new Array();
-		errors['text'] = new Array();
-		errors['number'] = new Array();
+		var error = null;
 		
-		var text = Array.filter(document.getElementById(form).elements,	(	function (elm) {
-		     													return (elm.type == "text" || elm.type == "password");
-		   													}
-		   												));
-		
-		var number = Array.filter(document.getElementById(form).elements,	(	function (elm) {
-																	return (elm.type == "number");
-																}
-															));
-		
-		for(var i = 0; i < text.length && text[i] != null; i++)	{
+		if(field.type == "number")	{
 			
-			if(text[i].value == "")	{
-				errors['text'][i] = 0;
+			if(isNaN(field.value))	{
+				error = 1;
 			}
 			
-			if(errors['text'][i] != null)	{
-				writeError(errors['text'][i], text[i]);
-				error = true;
-			}	else	{
-				removeError(text[i]);
-			}
-			
-		}
-		
-		for(var i = 0; i < number.length && number[i] != null; i++)	{
-			
-			if(isNaN(number[i].value))	{
-				errors['number'][i] = 1;
-			}
-			
-			if(number[i].value <= 0)	{
-				errors['number'][i] = 2;
+			if(field.value <= 0)	{
+				error = 2;
 			}
 
-			if(number[i].value == "")	{
-				errors['number'][i] = 0;
+			if(field.value == "")	{
+				error = 0;
 			}
 			
-			if((number[i].value % 1) != 0)	{
-				errors['number'][i] = 3;
+			if((field.value % 1) != 0)	{
+				error = 3;
 			}
-		
-			if(errors['number'][i] != null)	{
-				writeError(errors['number'][i], number[i]);
-				error = true;
-			}	else	{
-				removeError(number[i]);
+			
+		}	else	{
+			
+			if(field.value == "")	{
+				error = 0;
 			}
 			
 		}
-		
-		if(error)	{
+
+		if(error != null)	{
+			writeError(error, field);
 			return false;
-		}	else
-			return true;
+		}
+		
+		return true;
 		
 	}
 	
@@ -322,30 +296,34 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var error = false;
 		
-		if(generalValidateForm(form))	{
+		var inputs = Array.filter(document.getElementById(form).elements,	(	function (elm) {
+		     													return (elm.type == "text" || elm.type == "password" || elm.type == "number");
+		   													}
+		   												));
+		
+		for(var i = 0; i < inputs.length && inputs[i] != null; i++)	{
 			
-			switch(form)	{
-			case 'config':
-				var players = document.getElementById('players');
-				var assistants = document.getElementById('assistants');
-				if(players.value % 2 != 0)	{
-					writeError(4, players);
-					error = true;
-				}
-				if(players.value > 8999)	{
-					writeError(5, players);
-					error = true;
-				}
-				if(assistants.value > 26)	{
-					writeError(5, assistants);
-					error = true;
-				}
-				if(error)	{
-					return false;
-				}
-			case 'exclude':
-				var error;
-				for(var i = 0; document.getElementById(i) != null; i++)	{
+			if(generalValidateField(inputs[i]))	{
+				
+				switch(form)	{
+				case 'config':
+					var players = document.getElementById('players');
+					var assistants = document.getElementById('assistants');
+					if(players.value % 2 != 0)	{
+						writeError(4, players);
+						error = true;
+					}
+					if(players.value > 8999)	{
+						writeError(5, players);
+						error = true;
+					}
+					if(assistants.value > 26)	{
+						writeError(5, assistants);
+						error = true;
+					}
+					break;
+				case 'exclude':
+					var error;
 					var field = document.getElementById(i);
 					if(isNaN(field.value))	{
 						writeError(1, field);
@@ -355,15 +333,22 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 //						writeError(5, field);
 //						error = true;
 //					}
+					break;
 				}
-				if(error)
-					return false;
+				
+			}	else	{
+				error = true;
 			}
 			
-			return true;
+			if(!error)
+				removeError(inputs[i]);
+			
 		}
 		
-		return false;
+		if(error)	{
+			return false;
+		}	else
+			return true;
 		
 	}
 	

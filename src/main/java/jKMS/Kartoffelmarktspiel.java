@@ -96,11 +96,11 @@ public class Kartoffelmarktspiel {
 		return configuration.getGroupCount();
 	}
 	
-	public Map<Integer, Integer> getbDistribution() {
+	public Map<Integer, Amount> getbDistribution() {
 		return configuration.getbDistribution();
 	}
 
-	public Map<Integer, Integer> getsDistribution() {
+	public Map<Integer, Amount> getsDistribution() {
 		return configuration.getsDistribution();
 	}
 	
