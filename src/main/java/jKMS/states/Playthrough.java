@@ -1,10 +1,12 @@
 package jKMS.states;
 
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
 import jKMS.Amount;
+import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.Card;
 import jKMS.cards.BuyerCard;
@@ -47,6 +49,29 @@ public class Playthrough extends State{
 		else return true;
 	}
 	
-	public boolean addContract(){ return false; }
+
+	public boolean addContract(int id1,int id2,int price){  
+		Iterator<Card> iter = kms.getCards().iterator();
+	    BuyerCard card1 = null;
+    	SellerCard card2 = null;
+	    while(iter.hasNext()){	
+	    	Card card = iter.next();
+	    	if (card.getId() == id1){
+	    		card1 = (BuyerCard)card;
+	    	}
+	    	else if(card.getId() == id2){
+	    		card2 = (SellerCard)card;
+	    	}else
+	    		continue;
+	    }
+	    if(card1 != null && card2 != null){
+	    	Contract contract =new Contract(card1,card2,price);
+	    	kms.getContracts().add(contract);
+	    	return true;
+	    }else{
+	    	return false;
+	    }
+	}
+
 	public void load(){}
 }

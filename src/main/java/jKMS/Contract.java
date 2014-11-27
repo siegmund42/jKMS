@@ -12,7 +12,7 @@ public class Contract {
 	private int price;
 	private Date time;
 
-	Contract(BuyerCard buyer, SellerCard seller, int price) {
+	public Contract(BuyerCard buyer, SellerCard seller, int price) {
 		this.buyer = buyer;
 		this.seller = seller;
 		this.price = price;

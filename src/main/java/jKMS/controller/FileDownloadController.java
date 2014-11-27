@@ -78,29 +78,33 @@ public class FileDownloadController extends AbstractServerController {
     }
     
     @RequestMapping(value = "/config")
-    public ResponseEntity<byte[]> downloadConfig()	{
-		Pdf pdf = new Pdf();
+    // public ResponseEntity<byte[]> downloadConfig()	{
+     public void saveConfig(){
+     	kms.getState().save("config.txt");
+     	
+// 			Pdf pdf = new Pdf();
+ //	
+// 			Document document = new Document();
+// 			ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+// 			try {
+// 				PdfWriter.getInstance(document,outstream); 
+// 				document.open();
+// 				pdf.createPdfCardsSeller(document);
+// 				document.close();
+// 			} catch (Exception e) {
+// 				e.printStackTrace();
+// 			}
+// 		
+// 		    byte[] contents = outstream.toByteArray();
+// 		    
+// 		    HttpHeaders headers = new HttpHeaders();
+// 		    headers.setContentType(MediaType.parseMediaType("application/pdf"));
+// 		    String filename = "Config.pdf";
+// 		    headers.setContentDispositionFormData(filename, filename);
+// 		    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+// 		    ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
+// 		    return response;
+     }
 
-		Document document = new Document();
-		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-		try {
-			PdfWriter.getInstance(document,outstream); 
-			document.open();
-			pdf.createPdfCardsSeller(document);
-			document.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	
-	    byte[] contents = outstream.toByteArray();
-	    
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.parseMediaType("application/pdf"));
-	    String filename = "Config.pdf";
-	    headers.setContentDispositionFormData(filename, filename);
-	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-	    ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
-	    return response;
-    }
     
 }
