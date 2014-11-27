@@ -101,14 +101,15 @@ public class Evaluation extends State{
 		return winnerData; 
 	}
 	
-	
+	//TODO:
+	//buyerProfit and sellerProfit are the same now.. remove one and rename to profit?
 	public int buyerProfit(Contract con){ 
-		int wtp = con.getBuyer().getWtp();
+		int wtp = con.getBuyer().getValue();
 		return (wtp - con.getPrice()); 
 	}
 	
 	public int sellerProfit(Contract con){ 
-		int cost = con.getSeller().getCost();
+		int cost = con.getSeller().getValue();
 		return (con.getPrice() - cost); 
 	}
 	
