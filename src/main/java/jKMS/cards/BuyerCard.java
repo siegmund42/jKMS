@@ -13,4 +13,8 @@ public class BuyerCard extends Card {
 		return "BuyerCard [idNumber=" + idNumber + ", " + "wtp=" + wtp + "]";
 	}
 	
+	public int getWtp() {
+		return wtp;
+	}
+	
 }

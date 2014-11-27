@@ -69,6 +69,10 @@ public class Kartoffelmarktspiel {
 		return cards;
 	}
 	
+	public Set<Contract> getContracts(){
+		return contracts;
+	}
+	
 	public State getState()	{
 		return state;
 	}
@@ -76,6 +80,7 @@ public class Kartoffelmarktspiel {
 	public void setCards(Set<Card> cards) {
 		this.cards = cards;
 	}
+	
 	
 	// GETTERS FOR CONFIGURATION
 	

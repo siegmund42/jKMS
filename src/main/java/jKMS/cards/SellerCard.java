@@ -12,4 +12,8 @@ public class SellerCard extends Card {
 	public String toString() {
 		return "SellerCard [idNumber=" + idNumber + ", " + "cost=" + cost + "]";
 	}
+	
+	public int getCost() {
+		return cost;
+	}
 }
