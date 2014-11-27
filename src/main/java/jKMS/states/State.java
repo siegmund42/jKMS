@@ -25,5 +25,5 @@ public abstract class State {
 	public int buyerProfit(){ return 0; } // DONE
 	public int sellerProfit(){ return 0; } // DONE
 	public boolean save(String path){ return false; }
-	public void load(){}
+	public void load(String fileurl){}
 }
