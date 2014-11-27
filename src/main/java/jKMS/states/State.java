@@ -15,7 +15,7 @@ public abstract class State {
 	public void newGroup(boolean isBuyer, int price, int relativeNumber){} // DONE
 	public void setBasicConfig(int playerCount, int assistantCount){} // DOMINIK DONE
 	public String createPDF(Document document, boolean isBuyer){ return ""; } // JUSTUS
-	public boolean removeCard(char pack, int lastId){ return false; } //Memo: Update Verteilungsset
+	public boolean removeCard(char pack, int lastId){ return false; } //DOMNINIK DONE
 	public boolean addContract(int id1, int id2, int price){ return false; } // XINYU
 																			
 	public float equilibriumPrice(){ return 0; } // TIMON
