@@ -16,7 +16,7 @@ public class DrawController {
 	//data-List für Prototypzwecke, später mal an dieser Stelle das Vertrags-Objekt
 	private List<String> data = new ArrayList<String>();
 	//hard gecodet: JSONArray der Standardverteilung
-	private String evaluation = "[[72,38],[144,43],[216,48],[288,53],[360,58],[400,63]];[[80,70],[144,65],[208,60],[272,55],[336,50],[400,45]]";
+	private String evaluation = "[[0,38],[72,43],[144,48],[216,53],[288,58],[360,63],[400,63]];[[0,70],[80,65],[144,60],[208,55],[272,50],[336,45],[400,45]]";
 	
 	
 	@RequestMapping("/getData")

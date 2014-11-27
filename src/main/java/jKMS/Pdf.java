@@ -74,15 +74,15 @@ public class Pdf {
         	//set Content togeser ;-)
         
         PdfPCell topcell = new PdfPCell();
-        topcell.addElement(new Paragraph(" "));//Lehrzeile, damit top paragraph funzt
+        topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
         topcell.addElement(top);
-        topcell.addElement(new Paragraph(" "));//Lehrzeile, damit top paragraph funzt
+        topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
         topcell.setBorder(Rectangle.BOTTOM);
         
         PdfPCell bottomcell = new PdfPCell();
-        bottomcell.addElement(new Paragraph(" "));//Lehrzeile, damit bottom paragraph funzt
+        bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
         bottomcell.addElement(bottom);
-        bottomcell.addElement(new Paragraph(" "));//Lehrzeile, damit bottom paragraph funzt
+        bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
         bottomcell.setBorder(Rectangle.NO_BORDER);
         
         PdfPTable myTable = new PdfPTable(1);

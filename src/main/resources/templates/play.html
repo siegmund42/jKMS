@@ -35,7 +35,7 @@
  				<a th:if="!${param.s} OR ${param.s[0]} != 'stop'" href="load.html?s=2" th:text="#{messages.back}" ></a>
  			</li>
  			<li>
-				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}" onclick="stopGame();"></a>
+				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}"></a>
 			</li>
 			<li>
 				<a th:if="${param.s} AND ${param.s[0]} == 'stop'" th:href="evaluate.html" th:text="#{play.evaluate}"></a>
@@ -61,7 +61,7 @@
 							lines:{show:false}
 			}
 	
-			$.plot($("#placeholder"), [[[0,40],[1,60]]] , options);	
+			$.plot($("#placeholder"), [[[0,0],[1,100]]] , options);	
 		
 			$(document).ready(function(){
 				$.ajax({

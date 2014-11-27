@@ -1,5 +1,7 @@
 package jKMS.states;
 
+import java.util.Map;
+
 import com.itextpdf.text.Document;
 
 import jKMS.Contract;
@@ -15,13 +17,13 @@ public abstract class State {
 	public String createPDF(Document document, boolean isBuyer){ return ""; } // JUSTUS
 	public boolean removeCard(char pack, int lastId){ return false; } //Memo: Update Verteilungsset
 	public boolean addContract(int id1, int id2, int price){ return false; } // XINYU
-																			// TIMON implementiert Contract Klasse
+																			
 	public float equilibriumPrice(){ return 0; } // TIMON
 	public float equilibriumSet(){ return 0; } // TIMON
-	public float averagePrice(){ return 0; } // TIMON
-	public Contract pickWinner(){ return null; } // TIMON
-	public int buyerProfit(){ return 0; } // TIMON
-	public int sellerProfit(){ return 0; } // TIMON
+	public Map<String,Float> getStatistics(){ return null; } // DONE
+	public Map<String,Integer> pickWinner(){ return null; } // DONE
+	public int buyerProfit(){ return 0; } // DONE
+	public int sellerProfit(){ return 0; } // DONE
 	public boolean save(String path){ return false; }
-	public void load(){}
+	public void load(String fileurl){}
 }
