@@ -1,15 +1,12 @@
 package jKMS.cards;
 
 public class SellerCard extends Card {
-	int cost;
-
-	public SellerCard(int idNumber, int cost, char pack) {
-		super(idNumber,pack);
-		this.cost = cost;
+	public SellerCard(int idNumber, int value, char pack) {
+		super(idNumber, value, pack);
 	}
 
 	@Override
 	public String toString() {
-		return "SellerCard [idNumber=" + idNumber + ", " + "cost=" + cost + "]";
+		return "SellerCard [idNumber=" + idNumber + ", " + "cost=" + value + "]";
 	}
 }

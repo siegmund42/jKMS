@@ -1,12 +1,13 @@
 package jKMS.cards;
 
 public abstract class Card {
-	protected int idNumber;
+	protected int idNumber, value;
 	protected char pack;
 
-	Card(int idNumber, char pack) {
+	Card(int idNumber, int value, char pack) {
 		this.idNumber = idNumber;
 		this.pack = pack;
+		this.value = value;
 	}
 
 	@Override
@@ -20,6 +21,10 @@ public abstract class Card {
 	
 	public void setPackage(char pack){
 		this.pack =pack;
+	}
+	
+	public int getValue(){
+		return value;
 	}
 	
 	public int getId(){
