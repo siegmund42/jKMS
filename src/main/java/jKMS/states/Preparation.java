@@ -1,5 +1,6 @@
 package jKMS.states;
 
+import jKMS.Amount;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
@@ -21,22 +22,22 @@ public class Preparation extends State{
 	// load StandardConfiguration into kms
 	public void loadStandardDistribution(){
 
-		Map<Integer, Integer> bDistribution = new TreeMap<>();
-		bDistribution.put(70, 20);
-		bDistribution.put(65, 16);
-		bDistribution.put(60, 16);
-		bDistribution.put(55, 16);
-		bDistribution.put(50, 16);
-		bDistribution.put(45, 16);
+		Map<Integer, Amount> bDistribution = new TreeMap<>();
+		bDistribution.put(70, new Amount(20, 0));
+		bDistribution.put(65, new Amount(16, 0));
+		bDistribution.put(60, new Amount(16, 0));
+		bDistribution.put(55, new Amount(16, 0));
+		bDistribution.put(50, new Amount(16, 0));
+		bDistribution.put(45, new Amount(16, 0));
 		kms.getConfiguration().setbDistribution(bDistribution);
 		
-		Map<Integer, Integer> sDistribution = new TreeMap<>();
-		sDistribution.put(63, 10);
-		sDistribution.put(58, 18);
-		sDistribution.put(53, 18);
-		sDistribution.put(48, 18);
-		sDistribution.put(43, 18);
-		sDistribution.put(38, 18);
+		Map<Integer, Amount> sDistribution = new TreeMap<>();
+		sDistribution.put(63, new Amount(10, 0));
+		sDistribution.put(58, new Amount(18, 0));
+		sDistribution.put(53, new Amount(18, 0));
+		sDistribution.put(48, new Amount(18, 0));
+		sDistribution.put(43, new Amount(18, 0));
+		sDistribution.put(38, new Amount(18, 0));
 		kms.getConfiguration().setsDistribution(sDistribution);
 		
 		kms.getConfiguration().setGroupCount(6);
@@ -68,8 +69,8 @@ public class Preparation extends State{
 		
 		List<Integer> bKeys = new ArrayList<Integer>(kms.getConfiguration().getbDistribution().keySet());
 		List<Integer> sKeys = new ArrayList<Integer>(kms.getConfiguration().getsDistribution().keySet());
-		Map<Integer, Integer> bTemp = new HashMap<Integer, Integer>();
-		Map<Integer, Integer> sTemp = new HashMap<Integer, Integer>();
+		Map<Integer, Amount> bTemp = new HashMap<Integer, Amount>();
+		Map<Integer, Amount> sTemp = new HashMap<Integer, Amount>();
 		
 		int id = kms.getConfiguration().getFirstID();
 		int randomKey, randomListEntry;
@@ -97,8 +98,8 @@ public class Preparation extends State{
 
 			kms.getCards().add(new BuyerCard(id, randomKey, '?'));
 		
-			bTemp.put(randomKey, bTemp.get(randomKey) - 1); 
-			if (bTemp.get(randomKey) == 0) {
+			bTemp.put(randomKey, new Amount(bTemp.get(randomKey).getRelative(), bTemp.get(randomKey).getAbsolute() - 1)); 
+			if (bTemp.get(randomKey).getAbsolute() == 0) {
 				bTemp.remove(randomKey);
 				bKeys.remove(randomListEntry);
 			}
@@ -111,8 +112,8 @@ public class Preparation extends State{
 
 			kms.getCards().add(new SellerCard(id, randomKey,'?'));
 
-			sTemp.put(randomKey, sTemp.get(randomKey) - 1);
-			if (sTemp.get(randomKey) == 0) {
+			sTemp.put(randomKey, new Amount(sTemp.get(randomKey).getRelative(), sTemp.get(randomKey).getAbsolute() - 1));
+			if (sTemp.get(randomKey).getAbsolute() == 0) {
 				sTemp.remove(randomKey);
 				sKeys.remove(randomListEntry);
 			}
@@ -139,10 +140,10 @@ public class Preparation extends State{
 	// newGroup
 	// Creates a new entry for the bDistribution or sDistribution Map,
 	// depending if isBuyer is true or false.
-	public void newGroup(boolean isBuyer, int price, int relativeNumber) {
+	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber) {
 		if (isBuyer)
-			kms.getConfiguration().getbDistribution().put(price, relativeNumber);
+			kms.getConfiguration().getbDistribution().put(price, new Amount(absoluteNumber, relativeNumber));
 		else
-			kms.getConfiguration().getsDistribution().put(price, relativeNumber);
+			kms.getConfiguration().getsDistribution().put(price, new Amount(absoluteNumber, relativeNumber));
 	}
 }

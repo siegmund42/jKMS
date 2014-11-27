@@ -17,28 +17,29 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     		}
     	}
     	
-    	if(customerTotalRelative > 100 || salesmanTotalRelative > 100)	{
-    		if(customerTotalRelative > 100)
-    			document.getElementById('customerTotalRelative').style.color = "red";
-    		else
-    			document.getElementById('salesmanTotalRelative').style.color = "red";
-    		alert(totalOV);
-    	}	else	{
-    		if(customerTotalRelative == 100 || salesmanTotalRelative == 100)	{
-        		if(customerTotalRelative == 100)
-        			document.getElementById('customerTotalRelative').style.color = "green";
-        		else
-        			document.getElementById('salesmanTotalRelative').style.color = "red";
-    		}	else	{
-        		document.getElementById('customerTotalRelative').style.color = "black";
-        		document.getElementById('salesmanTotalRelative').style.color = "black";
-    		}
-    	}
-    	
     	document.getElementById('customerTotalRelative').innerHTML = customerTotalRelative + percent;
     	document.getElementById('salesmanTotalRelative').innerHTML = salesmanTotalRelative + percent;
     	document.getElementById('customerTotalAbsolute').innerHTML = customerTotalAbsolute;
     	document.getElementById('salesmanTotalAbsolute').innerHTML = salesmanTotalAbsolute;
+    	
+		if(customerTotalRelative > 100)	{
+			document.getElementById('customerTotalRelative').style.color = "red";
+    		alert(totalOV);
+		}	else
+			if(customerTotalRelative == 100)
+    			document.getElementById('customerTotalRelative').style.color = "green";
+			else
+        		document.getElementById('customerTotalRelative').style.color = "black";
+		
+		if(salesmanTotalRelative > 100)	{
+			document.getElementById('salesmanTotalRelative').style.color = "red";
+    		alert(totalOV);
+		}	else
+			if(salesmanTotalRelative == 100)
+    			document.getElementById('salesmanTotalRelative').style.color = "green";
+			else
+        		document.getElementById('salesmanTotalRelative').style.color = "black";
+    	
 	}
 	
 	function updateAbsolutes()	{

@@ -14,13 +14,13 @@ public class Configuration {
 	private int assistantCount;
 	private int groupCount;
 	private int firstID;
-	private Map<Integer, Integer> bDistribution;
-	private Map<Integer, Integer> sDistribution;
+	private Map<Integer, Amount> bDistribution;
+	private Map<Integer, Amount> sDistribution;
 	
 	public Configuration(){
 		
-		setbDistribution(new TreeMap<Integer, Integer>());
-		setsDistribution(new TreeMap<Integer, Integer>());
+		setbDistribution(new TreeMap<Integer, Amount>());
+		setsDistribution(new TreeMap<Integer, Amount>());
 		setFirstID(1001);
 	}
 
@@ -54,19 +54,19 @@ public class Configuration {
 		this.groupCount = groupCount;
 	}
 
-	public Map<Integer, Integer> getbDistribution() {
+	public Map<Integer, Amount> getbDistribution() {
 		return bDistribution;
 	}
 
-	public void setbDistribution(Map<Integer, Integer> bDistribution) {
+	public void setbDistribution(Map<Integer, Amount> bDistribution) {
 		this.bDistribution = bDistribution;
 	}
 
-	public Map<Integer, Integer> getsDistribution() {
+	public Map<Integer, Amount> getsDistribution() {
 		return sDistribution;
 	}
 
-	public void setsDistribution(Map<Integer, Integer> sDistribution) {
+	public void setsDistribution(Map<Integer, Amount> sDistribution) {
 		this.sDistribution = sDistribution;
 	}
 
