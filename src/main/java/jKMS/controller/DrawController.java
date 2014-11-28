@@ -34,7 +34,7 @@ public class DrawController {
 	
 	@RequestMapping("/getEvaluation")
 	@ResponseBody
-	//catches AjaxRequest, concatenates data list with standardverteilung
+	//catches AjaxRequest, concatenates data list with standardDistribution
 	public String evaluationChart(){
 		String str = listToJSON(data);	
 		str = str.concat(";" + evaluation);

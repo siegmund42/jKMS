@@ -72,8 +72,8 @@ public class Evaluation extends State{
 		return statistics; 
 	}
 	
-	//choose random contract and returns "winner data" of this contract
-	public Map<String,Integer> pickWinner(){ 
+	//choose random "winner"-contract
+	public Contract pickWinner(){ 
 		Set<Contract> contracts = kms.getContracts();
 		
 		if(contracts == null) throw new NullPointerException();
@@ -87,22 +87,12 @@ public class Evaluation extends State{
 			k.next();
 			i++;
 		}
+		
 		Contract winner = k.next();
-		int bProfit = buyerProfit(winner);
-		int sProfit = sellerProfit(winner);
 		
-		Map<String,Integer> winnerData = new HashMap();
-		winnerData.put("buyerID", winner.getBuyer().getId());
-		winnerData.put("sellerID", winner.getSeller().getId());
-		winnerData.put("price", winner.getPrice());
-		winnerData.put("buyerProfit", bProfit);
-		winnerData.put("sellerProfit", sProfit);
-		
-		return winnerData; 
+		return winner; 
 	}
 	
-	//TODO:
-	//buyerProfit and sellerProfit are the same now.. remove one and rename to profit?
 	public int buyerProfit(Contract con){ 
 		int wtp = con.getBuyer().getValue();
 		return (wtp - con.getPrice()); 
