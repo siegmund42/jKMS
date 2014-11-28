@@ -59,7 +59,7 @@ public class Preparation extends State{
 		kms.getConfiguration().setAssistantCount(assistantCount);
 	}
 	
-	public String createPDF(){ return ""; }
+
 	
 	
 	//load Implementieren
