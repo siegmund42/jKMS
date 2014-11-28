@@ -16,6 +16,7 @@ public class Configuration {
 	private int firstID;
 	private Map<Integer, Amount> bDistribution;
 	private Map<Integer, Amount> sDistribution;
+	//TODO discuss: should we save the random-seed, so that the exactly same game can be played twice??
 	
 	public Configuration(){
 		

@@ -13,7 +13,7 @@ public abstract class State {
 	
 	public void loadStandardDistribution(){} // LUKAS - DONE
 	public void generateCards(){} // JUSTUS - DONE
-	public void newGroup(boolean isBuyer, int price, int relativeNumber){} // DONE
+	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber){} // DONE
 	public void setBasicConfig(int playerCount, int assistantCount){} // DOMINIK DONE
 	public String createPDF(Document document, boolean isBuyer){ return ""; } // JUSTUS
 	public boolean removeCard(char pack, int lastId){ return false; } //DOMNINIK DONE

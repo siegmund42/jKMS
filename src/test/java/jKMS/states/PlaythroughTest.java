@@ -4,8 +4,6 @@ import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.Card;
-import jKMS.cards.BuyerCard;
-import jKMS.cards.SellerCard;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -28,9 +26,6 @@ import static org.junit.Assert.*;
 public class PlaythroughTest {
 	@Autowired
 	private Kartoffelmarktspiel kms;
-	Set<Card> expectedSet;
-	Map<Integer, Amount> expectedBDistrib;
-	Map<Integer, Amount> expectedSDistrib;
 	
 	@Before
 	public void setUp(){
@@ -38,43 +33,38 @@ public class PlaythroughTest {
 		kms.getState().setBasicConfig(6, 1);
 		
 		//Setup Distribution
-		kms.getConfiguration().getbDistribution().put(3, new Amount(0, 2));
-		kms.getConfiguration().getsDistribution().put(3, new Amount(0, 2));
-		kms.getConfiguration().getbDistribution().put(4, new Amount(0, 1));
-		kms.getConfiguration().getsDistribution().put(4, new Amount(0, 1));
+		kms.getState().newGroup(true, 2, 16, 1);
+		kms.getState().newGroup(true, 3, 33, 2);
+		kms.getState().newGroup(false, 3, 33, 2);
+		kms.getState().newGroup(false, 4, 16, 1);
 		
-		//Setup Cards
-		Card c1 = new BuyerCard(1001, 3, 'A');
-		Card c2 = new SellerCard(1002, 3, 'A');
-		Card c3 = new BuyerCard(1003, 3, 'A');
-		Card c4 = new SellerCard(1004, 3, 'A');
-		Card c5 = new BuyerCard(1005, 4, 'A');
-		Card c6 = new SellerCard(1006, 4, 'A');
-		
-		//Setup package A
-		kms.getCards().add(c1);
-		kms.getCards().add(c2);
-		kms.getCards().add(c3);
-		kms.getCards().add(c4);
-		kms.getCards().add(c5);
-		kms.getCards().add(c6);
-		
-		//Setup expected values
-		expectedSet = new LinkedHashSet<Card>();
-		expectedSet.add(c1);
-		expectedSet.add(c2);
-		expectedSet.add(c3);
-		
-		expectedBDistrib = new TreeMap<Integer, Amount>();
-		expectedSDistrib = new TreeMap<Integer, Amount>();
-		expectedBDistrib.put(3, new Amount(0, 2));
-		expectedSDistrib.put(3, new Amount(0, 1));
+		//Generate cards
+		kms.getState().generateCards();
 		
 		kms.play();
 	}
 	
 	@Test
 	public void testRemoveCard(){
+		final Set<Card> expectedSet;
+		final Map<Integer, Amount> expectedBDistrib;
+		final Map<Integer, Amount> expectedSDistrib;
+		
+		//Setup expected values
+		expectedSet = new LinkedHashSet<Card>();
+		
+		int i=0;
+		for(Card iter : kms.getCards()){
+			if(i>=2) break;
+			expectedSet.add(iter);
+			i++;
+		}
+		
+		expectedBDistrib = new TreeMap<Integer, Amount>();
+		expectedSDistrib = new TreeMap<Integer, Amount>();
+		expectedBDistrib.put(3, new Amount(0, 2));
+		expectedSDistrib.put(3, new Amount(0, 1));
+		
 		assertTrue("removeCard should return True, if cards are removed", kms.getState().removeCard('A', 1004));
 		assertEquals("Cards are not removed successfully", expectedSet, kms.getCards());
 		assertEquals("removeCard does not updates the number of players", expectedSet.size(), kms.getPlayerCount());
