@@ -1,5 +1,7 @@
 package jKMS.controller;
 
+import jKMS.LogicHelper;
+
 import javax.servlet.ServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -12,7 +14,11 @@ public class LoadController extends AbstractServerController {
 
 	@RequestMapping(value = "/load", method = RequestMethod.GET)
 	public String load(Model model, ServletRequest request)	{
-		char[] assistants = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'};
+		char[] assistants = new char[26];
+		for(int i = 0; i < kms.getConfiguration().getAssistantCount(); i++){
+			assistants[i] = LogicHelper.IntToPackage(i);
+		}
+		
 		kms.play();
 		model.addAttribute("assistants", assistants);
 		model.addAttribute("numberOfAssistants", kms.getAssistantCount());
