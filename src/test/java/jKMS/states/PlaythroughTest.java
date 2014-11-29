@@ -31,6 +31,7 @@ public class PlaythroughTest {
 	public void setUp(){
 		//Setup Player/Assistant No 
 		kms.getState().setBasicConfig(6, 1);
+		kms.getConfiguration().setFirstID(1001);
 		
 		//Setup Distribution
 		kms.getState().newGroup(true, 2, 16, 1);
@@ -38,7 +39,18 @@ public class PlaythroughTest {
 		kms.getState().newGroup(false, 3, 33, 2);
 		kms.getState().newGroup(false, 4, 16, 1);
 		
-		//Generate cards
+		//Setup Distribution
+		/*Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
+		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
+		
+		bDistrib.put(3, new Amount(33, 2));
+		bDistrib.put(4, new Amount(16, 1));
+		sDistrib.put(3, new Amount(33, 2));
+		sDistrib.put(4, new Amount(16, 1));
+		
+		kms.getConfiguration().setbDistribution(bDistrib);
+		kms.getConfiguration().setsDistribution(sDistrib);*/
+		
 		kms.getState().generateCards();
 		
 		kms.play();
@@ -53,11 +65,8 @@ public class PlaythroughTest {
 		//Setup expected values
 		expectedSet = new LinkedHashSet<Card>();
 		
-		int i=0;
 		for(Card iter : kms.getCards()){
-			if(i>=2) break;
-			expectedSet.add(iter);
-			i++;
+			if(iter.getId() < 1004) expectedSet.add(iter);;
 		}
 		
 		expectedBDistrib = new TreeMap<Integer, Amount>();
@@ -65,6 +74,7 @@ public class PlaythroughTest {
 		expectedBDistrib.put(3, new Amount(0, 2));
 		expectedSDistrib.put(3, new Amount(0, 1));
 		
+		//Test
 		assertTrue("removeCard should return True, if cards are removed", kms.getState().removeCard('A', 1004));
 		assertEquals("Cards are not removed successfully", expectedSet, kms.getCards());
 		assertEquals("removeCard does not updates the number of players", expectedSet.size(), kms.getPlayerCount());
