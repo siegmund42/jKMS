@@ -3,7 +3,6 @@ package jKMS.states;
 import jKMS.Amount;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.BuyerCard;
-import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 import jKMS.LogicHelper;
 
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -59,7 +57,7 @@ public class Preparation extends State{
 		kms.getConfiguration().setAssistantCount(assistantCount);
 	}
 	
-	public String createPDF(){ return ""; }
+
 	
 	
 	//load Implementieren
@@ -67,8 +65,8 @@ public class Preparation extends State{
 		public void load(String fileurl) throws NumberFormatException, IOException{
 			 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileurl)));
 			 String buf = "";
-			 Map<Integer, Amount> bDistributionLoad = new HashMap<>();
-			 Map<Integer, Amount> sDistributionLoad = new HashMap<>();
+			 Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
+			 Map<Integer, Amount> sDistributionLoad = new TreeMap<>();
 			 int count = 0;
 			 while ((buf=br.readLine()) != null) {
 				 	buf=buf.trim();
@@ -91,8 +89,8 @@ public class Preparation extends State{
 		
 		//defalt path:Users/yangxinyu/git/jKMS
 		public boolean save(String path){
-			 Map<Integer, Amount> bDistributionSave = new HashMap<>();
-			 Map<Integer, Amount> sDistributionSave = new HashMap<>();
+			 Map<Integer, Amount> bDistributionSave = new TreeMap<>();
+			 Map<Integer, Amount> sDistributionSave = new TreeMap<>();
 			 bDistributionSave = kms.getConfiguration().getbDistribution();
 			 sDistributionSave = kms.getConfiguration().getsDistribution();
 			 if(bDistributionSave.isEmpty() || sDistributionSave.isEmpty())
@@ -136,8 +134,8 @@ public class Preparation extends State{
 		
 		List<Integer> bKeys = new ArrayList<Integer>(kms.getConfiguration().getbDistribution().keySet());
 		List<Integer> sKeys = new ArrayList<Integer>(kms.getConfiguration().getsDistribution().keySet());
-		Map<Integer, Amount> bTemp = new HashMap<Integer, Amount>();
-		Map<Integer, Amount> sTemp = new HashMap<Integer, Amount>();
+		Map<Integer, Amount> bTemp = new TreeMap<Integer, Amount>(kms.getConfiguration().getbDistribution());
+		Map<Integer, Amount> sTemp = new TreeMap<Integer, Amount>(kms.getConfiguration().getsDistribution());
 		
 		int id = kms.getConfiguration().getFirstID();
 		int randomKey, randomListEntry;
@@ -145,11 +143,6 @@ public class Preparation extends State{
 		//for put packages
 		int i,ide;
 		int[] packdistribution =LogicHelper.getPackageDistribution(kms.getPlayerCount(),kms.getAssistantCount());
-
-		
-
-		bTemp = kms.getConfiguration().getbDistribution();
-		sTemp = kms.getConfiguration().getsDistribution();
 		
 		//clear Card Set
 		kms.getCards().clear();

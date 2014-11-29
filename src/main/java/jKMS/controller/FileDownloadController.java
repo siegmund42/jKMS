@@ -21,16 +21,16 @@ public class FileDownloadController extends AbstractServerController {
     @RequestMapping(value = "/pdf/cards/{type}")
     public ResponseEntity<byte[]> downloadPDF(@PathVariable String type)	{
 		Pdf pdf = new Pdf();
-
+		
 		Document document = new Document();
 		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
 		try {
 			PdfWriter.getInstance(document, outstream); 
 			document.open();
 			if(type.equals("customer"))
-				pdf.createPdfCardsSeller(document);
+				pdf.createPdfCardsSeller(document,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
 			else
-				pdf.createPdfCardsSeller(document);
+				pdf.createPdfCardsSeller(document,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
 			document.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,7 +60,7 @@ public class FileDownloadController extends AbstractServerController {
 		try {
 			PdfWriter.getInstance(document, outstream); 
 			document.open();
-			pdf.createPdfCardsSeller(document);
+			pdf.createPdfCardsSeller(document,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
 			document.close();
 		} catch (Exception e) {
 			e.printStackTrace();

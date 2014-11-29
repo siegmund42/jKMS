@@ -29,19 +29,19 @@ public class Playthrough extends State{
 		for(Card iter : oldSet){
 			//Check if card must be removed (Id is higher than lasdId)
 			if(iter.getPackage() == pack && iter.getId() >= lastId){
-				kms.getCards().remove(iter);
-			
 				//Update player count
 				kms.getConfiguration().setPlayerCount(kms.getConfiguration().getPlayerCount()-1);
 				
-				//Update distribution-map if Card is a Buyer
+				//Update distribution-map
 				if(iter instanceof BuyerCard) distrib = kms.getConfiguration().getbDistribution();
 				else distrib = kms.getConfiguration().getsDistribution();
 				
 				key = iter.getValue();
 				
-				if(distrib.get(key).getAbsolute() == 1) distrib.remove(key);
-				else distrib.get(key).setAbsolute(distrib.get(key).getAbsolute()-1);
+				distrib.get(key).setAbsolute(distrib.get(key).getAbsolute()-1);
+				if(distrib.get(key).getAbsolute() == 0) distrib.remove(key);
+				
+				kms.getCards().remove(iter);
 			}
 		}
 		
