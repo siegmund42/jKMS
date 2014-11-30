@@ -161,9 +161,11 @@ public class Preparation extends State{
 			if(id < ide){
 				kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(i)));
 			}else {
-				i++;
-				ide = ide + packdistribution[i];
-				kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+				if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){
+					i++;
+					ide = ide + packdistribution[i];
+					kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+				}
 			}
 
 
@@ -183,9 +185,11 @@ public class Preparation extends State{
 			if(id < ide){
 				kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(i)));
 			}else {
-				i++;
-				ide = ide + packdistribution[i];
-				kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+				if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){
+						i++;
+					ide = ide + packdistribution[i];
+					kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+			    }
 			}
 
 			sTemp.put(randomKey, new Amount(sTemp.get(randomKey).getRelative(), sTemp.get(randomKey).getAbsolute() - 1));
