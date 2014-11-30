@@ -41,10 +41,10 @@ public class LoadController extends AbstractServerController {
 	public String evaluate()	{
 		return "evaluate";
 	}
-
+ /*
 	@RequestMapping(value = "/lottery")
 	public String lottery()	{
 		return "lottery";
 	}
-	
+*/
 }
