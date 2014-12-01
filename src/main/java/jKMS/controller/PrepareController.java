@@ -77,12 +77,25 @@ public class PrepareController extends AbstractServerController {
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
 	public String processPrepare1(Model model, @RequestParam(value="input-file") String filename,@RequestParam(value="c") String configuration) throws NumberFormatException, FileNotFoundException, IOException	{
 		//String fileurl = "/Users/yangxinyu/Desktop/"+filename;
-		kms.getState().load(filename);
+		kms.getState().load(fileurl);
 		return "redirect:/prepare2?c=" + configuration;
 	}
 
 	@RequestMapping(value = "generate", method = RequestMethod.POST)
-	public String generate()	{
+	public String generate(	@RequestParam(value = "cRelativeQuantity[]") int[] cRelativeQuantity,
+							@RequestParam(value = "cPrice[]") int[] cPrice,
+							@RequestParam(value = "cAbsoluteQuantity[]") int[] cAbsoluteQuantity,
+							@RequestParam(value = "sRelativeQuantity[]") int[] sRelativeQuantity,
+							@RequestParam(value = "sPrice[]") int[] sPrice,
+							@RequestParam(value = "sAbsoluteQuantity[]") int[] sAbsoluteQuantity)	{
+		for(int i = 0; i < cRelativeQuantity.length; i++)	{
+			kms.getState().newGroup(true, cPrice[i], cRelativeQuantity[i], cAbsoluteQuantity[i]);
+		}
+
+		for(int i = 0; i < sRelativeQuantity.length; i++)	{
+			kms.getState().newGroup(true, sPrice[i], sRelativeQuantity[i], sAbsoluteQuantity[i]);
+		}
+		
 		return "generate";
 	}
 

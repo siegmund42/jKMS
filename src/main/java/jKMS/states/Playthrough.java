@@ -50,7 +50,11 @@ public class Playthrough extends State{
 	}
 	
 
-	public boolean addContract(int id1,int id2,int price){  
+	public boolean addContract(int id1,int id2,int price){ 
+		// TODO Reihenfolge der Eingabe egal --> id2 kann auch buyer sein
+		// TODO Es dürfen nicht beide Käufer/verkäufer sein
+		// TODO Es muss Käufer/Verkäufer geben (dürfen nicht ausgetragen sein)
+		// TODO Weder Käufer noch Verkäufer darf bisher gehandelt haben
 		Iterator<Card> iter = kms.getCards().iterator();
 	    BuyerCard card1 = null;
     	SellerCard card2 = null;

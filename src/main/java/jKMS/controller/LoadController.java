@@ -14,6 +14,7 @@ public class LoadController extends AbstractServerController {
 
 	@RequestMapping(value = "/load", method = RequestMethod.GET)
 	public String load(Model model, ServletRequest request)	{
+		
 		char[] assistants = new char[26];
 		for(int i = 0; i < kms.getConfiguration().getAssistantCount(); i++){
 			assistants[i] = LogicHelper.IntToPackage(i);

@@ -55,12 +55,12 @@
 				</div>
 				<div class="row" th:each="customer,iter : ${customerConfiguration}">
 					<div class="cell">
-						<input type="number" th:name="'c' + ${iter.count} + 'relativeQuantity'" th:id="'c' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${customer.value.relative}" th:readonly="*{isStandard}"/>
+						<input type="number" th:name="'cRelativeQuantity[' + ${iter.count} + ']'" th:id="'cRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${customer.value.relative}" th:readonly="*{isStandard}"/>
 					</div>
 					<div class="cell">
-						<input type="number" class="cell" th:name="'c' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${customer.key}" th:readonly="*{isStandard}"/>
+						<input type="number" class="cell" th:name="'cPrice[' + ${iter.count} + ']'" th:placeholder="#{prepare.currency}" th:value="${customer.key}" th:readonly="*{isStandard}"/>
 					</div>
-					<div class="cell" th:id="'c' + ${iter.count} + 'absoluteQuantity'"></div>
+					<div class="cell" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'"></div>
 				</div>
 				<div class="row">
 					<div class="cell" id="customerTotalRelative"></div>
@@ -80,12 +80,12 @@
 						<a th:href="'javascript:removeRow(' + ${iter.count} + ');'">-</a>
 					</div>
 					<div class="cell">
-						<input type="number" th:name="'s' + ${iter.count} + 'relativeQuantity'" th:id="'s' + ${iter.count} + 'relativeQuantity'" th:placeholder="#{prepare.percent}" th:value="${salesman.value.relative}" th:readonly="*{isStandard}" />
+						<input type="number" th:name="'sRelativeQuantity[' + ${iter.count} + ']'" th:id="'sRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${salesman.value.relative}" th:readonly="*{isStandard}" />
 					</div>
 					<div class="cell">
-						<input type="number" th:name="'s' + ${iter.count} + 'price'" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" th:readonly="*{isStandard}" />
+						<input type="number" th:name="'sPrice[' + ${iter.count} + ']'" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" th:readonly="*{isStandard}" />
 					</div>
-					<div class="cell" th:id="'s' + ${iter.count} + 'absoluteQuantity'"></div>
+					<div class="cell" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'"></div>
 				</div>
 				<div class="row">
 					<div th:if="!*{isStandard}" class="cell"></div>
