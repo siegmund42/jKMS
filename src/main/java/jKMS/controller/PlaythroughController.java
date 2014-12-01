@@ -81,6 +81,8 @@ public class PlaythroughController extends AbstractServerController {
 	//		}
 	//		model.addAttribute("assistants", assistants);
 			
+			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+			model.addAttribute("playerCount", kms.getConfiguration().getPlayerCount());
 			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
 			model.addAttribute("ip", ControllerHelper.getIP());
 			model.addAttribute("port", ControllerHelper.getPort(request));

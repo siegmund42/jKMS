@@ -333,6 +333,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 	function validateForm(form)	{
 		
 		var error = false;
+		var globalError = false;
 		
 		var inputs = Array.filter(document.getElementById(form).elements,	(	function (elm) {
 		     													return (elm.type == "text" || elm.type == "password" || elm.type == "number");
@@ -369,10 +370,10 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 						writeError(1, field);
 						error = true;
 					}
-//					if(field.value < kms.getFirstID OR field.value > (kms.getFirstID + kms.getPlayerCount))	{
-//						writeError(5, field);
-//						error = true;
-//					}
+					if(field.value < firstID || field.value > (firstID + playerCount))	{
+						writeError(5, field);
+						error = true;
+					}
 					break;
 				}
 				
@@ -383,13 +384,15 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 			if(!error)
 				removeError(inputs[i]);
 			
+			globalError = globalError || error;
+			
 		}
 		
-		if(form == "arrangement")	{
-			error = error || !isHundred(true);
+		if(form == "arrangement" && !globalError)	{
+			globalError = globalError || !isHundred(true);
 		}
 		
-		if(error)	{
+		if(globalError)	{
 			return false;
 		}	else
 			return true;

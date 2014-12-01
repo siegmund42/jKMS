@@ -22,6 +22,12 @@ public class ServerController extends AbstractServerController implements ErrorC
 	public String getErrorPath()	{
 		return PATH;
 	}
+	
+	@RequestMapping(value = PATH)
+	public String error(Model model, @RequestParam("e") String error)	{
+		model.addAttribute("error", error);
+		return "error";
+	}
 
 	@RequestMapping(value = "/index")
 	public String index(ServletRequest request) {
@@ -31,12 +37,6 @@ public class ServerController extends AbstractServerController implements ErrorC
 	@RequestMapping("/settings")
 	public String settigs()	{
 		return "settings";
-	}
-	
-	@RequestMapping(value = PATH)
-	public String error(Model model, @RequestParam("e") String error)	{
-		model.addAttribute("error", error);
-		return "error";
 	}
 	
 	@RequestMapping(value = "/reset", method = RequestMethod.GET)

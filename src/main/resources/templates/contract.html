@@ -12,16 +12,18 @@
     
 </head>
  <body>
+ 	<noscript>
+ 		<div th:text="#{noscript}"></div>
+ 	</noscript>
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (contract)">
 	 	</div>	
-	 	<div class="error" th:if="${param.error}" th:text="#{contract.error}">
-            ID nicht vorhanden oder hat bereits gehandelt.
-        </div>
+	 	<!-- <div class="error" th:if="${error}" th:text="#{contract.error.__${error}__}">
+        </div> -->
         <div th:if="${param.success}" th:text="#{contract.success}">
            	Kaufvertrag erfolgreich übermittelt.
         </div>
-		<form method="POST" id="contract" th:action="contract.html" style="margin: auto;" onsubmit="return validateForm(this.id);">
+		<form method="POST" id="contract" th:action="contract" style="margin: auto;" onsubmit="return validateForm(this.id);">
 			<div class="form">
 				<div class="row">
 					<label for="id1" th:text="#{contract.id1}"></label>
