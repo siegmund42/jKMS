@@ -3,9 +3,13 @@ package jKMS;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -16,6 +20,8 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 
 public class Pdf {
 	
@@ -29,19 +35,22 @@ public class Pdf {
 	public Pdf(){
 	}
 
-    public Document createPdfCardsSeller(Document cardsSeller,Set<Card> Cards,int assistancount,int firstID) throws DocumentException{ 
+    public void createPdfCardsSeller(Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
+
+		
+		
         Set<Card> printcards = new LinkedHashSet<Card>(); // add first all cards + package idendifikationsites in one Set
         Set<Card> topcards = new LinkedHashSet<Card>();
         Set<Card> bottomcards = new LinkedHashSet<Card>();
-        int[] packdis = LogicHelper.getPackageDistribution(Cards.size(), assistancount);
+        int[] packdis = LogicHelper.getPackageDistribution(cards.size(), assistancount);
         int packID = -1;
         int ide = firstID;
         int i = 0;
         
-        for(Card iter : Cards){
+        for(Card iter : cards){
         	
         	if((iter.getId()-firstID) % 2 == 0){ //seller or buyer?
         		//seller
@@ -105,44 +114,55 @@ public class Pdf {
         topcard = (Card) itertop.next();
         	
         Paragraph top = new Paragraph(); 
-        top.setSpacingAfter(100);
         top.setSpacingBefore(100);
         top.setAlignment(Element.ALIGN_CENTER);
-        Chunk sellerT = new Chunk("seller",catFont);
-        top.add(sellerT);
-        top.add(Chunk.NEWLINE);
-        Chunk costsT = new Chunk("costs: " + topcard.getValue() +"€");
-        top.add(costsT);
-        top.add(Chunk.NEWLINE);
-        Chunk idT = new Chunk("id :" +topcard.getId());
-        top.add(idT);
-        top.add(Chunk.NEWLINE);
-        top.add(Chunk.NEWLINE);
-        top.add(Chunk.NEWLINE);
-        Paragraph paT = new Paragraph(String.valueOf(topcard.getPackage()),redFont);
-        paT.setAlignment(Element.ALIGN_LEFT);
-        top.add(paT);
-        	
+        if((topcard.getId() != -42) && (topcard.getValue() != 0)){
+            top.setSpacingAfter(100);
+        	Chunk sellerT = new Chunk("seller",catFont);
+        	top.add(sellerT);
+        	top.add(Chunk.NEWLINE);
+        	Chunk costsT = new Chunk("costs: " + topcard.getValue() +"€");
+        	top.add(costsT);
+        	top.add(Chunk.NEWLINE);
+        	Chunk idT = new Chunk("ID :" +topcard.getId());
+        	top.add(idT);
+        	top.add(Chunk.NEWLINE);
+        	top.add(Chunk.NEWLINE);
+        	top.add(Chunk.NEWLINE);
+        	Paragraph paT = new Paragraph(String.valueOf(topcard.getPackage()),redFont);
+        	paT.setAlignment(Element.ALIGN_LEFT);
+        	top.add(paT);
+        }else{
+            top.setSpacingAfter(200);
+        	Chunk paT = new Chunk(String.valueOf(topcard.getPackage()),catFont);
+        	top.add(paT);
+        }
+        
         //bottom
         bottomcard = (Card) iterbot.next();
         
         Paragraph bottom = new Paragraph(); 
         bottom.setAlignment(Element.ALIGN_CENTER);
         bottom.setSpacingBefore(130);
-        Chunk sellerB = new Chunk("seller",catFont);
-        bottom.add(sellerB);
-        bottom.add(Chunk.NEWLINE);
-        Chunk costsB = new Chunk("costs: " + bottomcard.getValue() +"€");
-        bottom.add(costsB);
-        bottom.add(Chunk.NEWLINE);
-        Chunk idB = new Chunk("id: " +bottomcard.getId());
-        bottom.add(idB);
-        bottom.add(Chunk.NEWLINE);
-        bottom.add(Chunk.NEWLINE);
-        bottom.add(Chunk.NEWLINE);
-        Paragraph paB = new Paragraph(String.valueOf(bottomcard.getPackage()),redFont);
-        paB.setAlignment(Element.ALIGN_LEFT);
-        bottom.add(paB);
+        if((bottomcard.getId() != -42) && (bottomcard.getValue() != 0)){
+        	Chunk sellerB = new Chunk("seller",catFont);
+        	bottom.add(sellerB);
+        	bottom.add(Chunk.NEWLINE);
+        	Chunk costsB = new Chunk("costs: " + bottomcard.getValue() +"€");
+        	bottom.add(costsB);
+        	bottom.add(Chunk.NEWLINE);
+        	Chunk idB = new Chunk("ID: " +bottomcard.getId());
+        	bottom.add(idB);
+        	bottom.add(Chunk.NEWLINE);
+        	bottom.add(Chunk.NEWLINE);
+        	bottom.add(Chunk.NEWLINE);
+        	Paragraph paB = new Paragraph(String.valueOf(bottomcard.getPackage()),redFont);
+        	paB.setAlignment(Element.ALIGN_LEFT);
+        	bottom.add(paB);
+        }else{
+        	Chunk pab = new Chunk(String.valueOf(bottomcard.getPackage()),catFont);
+        	bottom.add(pab);
+        }
         
         	//set Content togeser ;-)
         
@@ -167,9 +187,7 @@ public class Pdf {
         cardsSeller.add(myTable);
         cardsSeller.newPage();
         }
-        
-        
-        return (cardsSeller);
+
         
     } 
 }
