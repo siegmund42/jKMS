@@ -32,14 +32,14 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (generate)">
 	 	</div>
-	 	<div th:text="#{generate.configSavedIn} + ' ORDNER'"></div>
+	 	<div th:text="#{generate.configSavedIn} + ${configSavePath}"></div>
 	 	<br />
 	 	<div th:text="#{generate.configSaveExtra}"></div>
 	 	<br />
-		<a href="/config" th:text="#{prepare.saveConfig}"></a>
+		<a href="/config" th:text="#{prepare.saveConfig}" target="_blank"></a>
 		<br /><br />
-	 	<a href="/pdf/cards/customer" th:text="#{prepare.savePDF.customer}"></a>
-	 	<a href="/pdf/cards/salesman" th:text="#{prepare.savePDF.salesman}"></a>
+	 	<a href="/pdf/cards/customer" th:text="#{prepare.savePDF.customer}" target="_blank"></a>
+	 	<a href="/pdf/cards/salesman" th:text="#{prepare.savePDF.salesman}" target="_blank"></a>
 	</div>
  </body>
 </html>
