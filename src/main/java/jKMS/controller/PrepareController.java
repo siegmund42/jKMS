@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PrepareController extends AbstractServerController {
 	@RequestMapping(value = "/prepare1", method = RequestMethod.GET)
 	public String prepare1(Model model)	{
+		
+		ControllerHelper.stateHelper(kms, "prepare");
 
 		model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 		model.addAttribute("numberOfAssistants", kms.getAssistantCount());
@@ -28,13 +30,17 @@ public class PrepareController extends AbstractServerController {
 	        @RequestParam(value="assistants", required=false) int numberOfAssistants,
 	        @RequestParam(value="c", required=false) String configuration)	{
 		
+		ControllerHelper.stateHelper(kms, "prepare");
+		
 		kms.getState().setBasicConfig(numberOfPlayers, numberOfAssistants);
 		return "redirect:/prepare2?c=" + configuration;
 	}
 
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
-	public String prepare2(Model model, @RequestParam(value="c", required=false) String configuration) throws NumberFormatException, IOException	{
-		//load Implementieren
+	public String prepare2(Model model, @RequestParam(value="c", required=false) String configuration)	{
+		
+		ControllerHelper.stateHelper(kms, "prepare");
+		
 		if(configuration != null && configuration.equals("load"))	{
 			//TODO: load from file
 			
@@ -75,25 +81,31 @@ public class PrepareController extends AbstractServerController {
 	
 	//defalt load path:Users/yangxinyu/git/jKMS
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
-	public String processPrepare1(Model model, @RequestParam(value="input-file") String filename,@RequestParam(value="c") String configuration) throws NumberFormatException, FileNotFoundException, IOException	{
+	public String processPrepare1(Model model, @RequestParam(value="input-file") String filename,@RequestParam(value="c") String configuration)	{
 		//String fileurl = "/Users/yangxinyu/Desktop/"+filename;
-		kms.getState().load(fileurl);
+		try {
+			kms.getState().load(filename);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "redirect:/prepare2?c=" + configuration;
 	}
 
 	@RequestMapping(value = "generate", method = RequestMethod.POST)
-	public String generate(	@RequestParam(value = "cRelativeQuantity[]") int[] cRelativeQuantity,
-							@RequestParam(value = "cPrice[]") int[] cPrice,
-							@RequestParam(value = "cAbsoluteQuantity[]") int[] cAbsoluteQuantity,
-							@RequestParam(value = "sRelativeQuantity[]") int[] sRelativeQuantity,
-							@RequestParam(value = "sPrice[]") int[] sPrice,
-							@RequestParam(value = "sAbsoluteQuantity[]") int[] sAbsoluteQuantity)	{
+	public String generate(	@RequestParam(value = "cRelativeQuantity[]") String[] cRelativeQuantity,
+							@RequestParam(value = "cPrice[]") String[] cPrice,
+							@RequestParam(value = "cAbsoluteQuantity[]") String[] cAbsoluteQuantity,
+							@RequestParam(value = "sRelativeQuantity[]") String[] sRelativeQuantity,
+							@RequestParam(value = "sPrice[]") String[] sPrice,
+							@RequestParam(value = "sAbsoluteQuantity[]") String[] sAbsoluteQuantity)	{
+		
 		for(int i = 0; i < cRelativeQuantity.length; i++)	{
-			kms.getState().newGroup(true, cPrice[i], cRelativeQuantity[i], cAbsoluteQuantity[i]);
+			kms.getState().newGroup(true, Integer.parseInt(cPrice[i]), Integer.parseInt(cRelativeQuantity[i]), Integer.parseInt(cAbsoluteQuantity[i]));
 		}
 
 		for(int i = 0; i < sRelativeQuantity.length; i++)	{
-			kms.getState().newGroup(true, sPrice[i], sRelativeQuantity[i], sAbsoluteQuantity[i]);
+			kms.getState().newGroup(true, Integer.parseInt(sPrice[i]), Integer.parseInt(sRelativeQuantity[i]), Integer.parseInt(sAbsoluteQuantity[i]));
 		}
 		
 		return "generate";

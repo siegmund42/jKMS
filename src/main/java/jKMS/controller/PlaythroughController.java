@@ -1,18 +1,22 @@
 package jKMS.controller;
 
+import jKMS.LogicHelper;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import javax.servlet.ServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
-public class DrawController {
+public class PlaythroughController extends AbstractServerController {
+
 	//data-List für Prototypzwecke, später mal an dieser Stelle das Vertrags-Objekt
 	private List<String> data = new ArrayList<String>();
 	//hard gecodet: JSONArray der Standardverteilung
@@ -38,8 +42,7 @@ public class DrawController {
 	public String evaluationChart(){
 		String str = listToJSON(data);	
 		str = str.concat(";" + evaluation);
-
-		return str;
+			return str;
 		
 	}
 	
@@ -59,8 +62,42 @@ public class DrawController {
 		str = str.substring(0, str.length()-1).concat("]");
 		return str;
 	}
+
+	@RequestMapping(value = "/load", method = RequestMethod.GET)
+	public String load(Model model, ServletRequest request)	{
+		
+		char[] assistants = new char[26];
+		for(int i = 0; i < kms.getConfiguration().getAssistantCount(); i++){
+			assistants[i] = LogicHelper.IntToPackage(i);
+		}
+		
+		kms.play();
+		model.addAttribute("assistants", assistants);
+		model.addAttribute("numberOfAssistants", kms.getAssistantCount());
+		model.addAttribute("ip", ControllerHelper.getIP());
+		model.addAttribute("port", ControllerHelper.getPort(request));
+		return "load";
+	}
 	
+	@RequestMapping(value = "/load", method = RequestMethod.POST)
+	public String start()	{
+		return "redirect:/play";
+	}
 	
+	@RequestMapping(value = "/play")
+	public String play()	{
+		return "play";
+	}
 	
+	@RequestMapping(value = "/evaluate")
+	public String evaluate()	{
+		return "evaluate";
+	}
+ /*
+	@RequestMapping(value = "/lottery")
+	public String lottery()	{
+		return "lottery";
+	}
+*/
 
 }

@@ -9,11 +9,11 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0, i = 1;
 		
     	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
-    		if(document.getElementById('c' + i + 'relativeQuantity') != null)	{
-	    		customerTotalRelative += document.getElementById('c' + i + 'relativeQuantity').value*1;
-	    		salesmanTotalRelative += document.getElementById('s' + i + 'relativeQuantity').value*1;
-	    		customerTotalAbsolute += document.getElementById('c' + i + 'absoluteQuantity').innerHTML*1;
-	    		salesmanTotalAbsolute += document.getElementById('s' + i + 'absoluteQuantity').innerHTML*1;
+    		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
+	    		customerTotalRelative += document.getElementById('cRelativeQuantity[' + i + ']').value*1;
+	    		salesmanTotalRelative += document.getElementById('sRelativeQuantity[' + i + ']').value*1;
+	    		customerTotalAbsolute += document.getElementById('cAbsoluteQuantity[' + i + ']').innerHTML*1;
+	    		salesmanTotalAbsolute += document.getElementById('sAbsoluteQuantity[' + i + ']').innerHTML*1;
     		}
     	}
     	
@@ -22,31 +22,65 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     	document.getElementById('customerTotalAbsolute').innerHTML = customerTotalAbsolute;
     	document.getElementById('salesmanTotalAbsolute').innerHTML = salesmanTotalAbsolute;
     	
-		if(customerTotalRelative > 100)	{
-			document.getElementById('customerTotalRelative').style.color = "red";
-    		alert(totalOV);
-		}	else
-			if(customerTotalRelative == 100)
-    			document.getElementById('customerTotalRelative').style.color = "green";
-			else
-        		document.getElementById('customerTotalRelative').style.color = "black";
-		
-		if(salesmanTotalRelative > 100)	{
-			document.getElementById('salesmanTotalRelative').style.color = "red";
-    		alert(totalOV);
-		}	else
-			if(salesmanTotalRelative == 100)
-    			document.getElementById('salesmanTotalRelative').style.color = "green";
-			else
-        		document.getElementById('salesmanTotalRelative').style.color = "black";
+    	isHundred(false);
     	
+	}
+	
+	function isHundred(finalCheck)	{
+		
+		var error = false;
+		
+		if(document.getElementById('customerTotalRelative').value > 100)	{
+			document.getElementById('customerTotalRelative').style.color = "red";
+			error = true;
+		}	else	{
+			if(customerTotalRelative == 100)	{
+    			document.getElementById('customerTotalRelative').style.color = "green";
+			}	else	{
+				if(finalCheck)	{
+					document.getElementById('customerTotalRelative').style.color = "red";
+	        		error = true;
+				}	else	{
+					document.getElementById('customerTotalRelative').style.color = "black";
+				}
+			}
+		}
+		
+		if(document.getElementById('salesmanTotalRelative').value > 100)	{
+			document.getElementById('salesmanTotalRelative').style.color = "red";
+			error = true;
+		}	else	{
+			if(salesmanTotalRelative == 100)	{
+    			document.getElementById('salesmanTotalRelative').style.color = "green";
+			}	else	{
+				if(finalCheck)	{
+					document.getElementById('salesmanTotalRelative').style.color = "red";
+					error = true;
+				}	else	{
+	        		document.getElementById('salesmanTotalRelative').style.color = "black";
+				}
+			}
+		}
+		
+		if(error && !finalCheck)	{
+			alert(totalOV);
+			return false;
+		}
+		
+		if(error && finalCheck)	{
+			alert(totalOOB);
+			return false;
+		}	else	{
+			return true;
+		}
+		
 	}
 	
 	function updateAbsolutes()	{
     	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
-    		if(document.getElementById('c' + i + 'relativeQuantity') != null)	{
-	    		document.getElementById('c' + i + 'absoluteQuantity').innerHTML = (document.getElementById('c' + i + 'relativeQuantity').value/200)*numberOfPlayers;
-	    		document.getElementById('s' + i + 'absoluteQuantity').innerHTML = (document.getElementById('s' + i + 'relativeQuantity').value/200)*numberOfPlayers;
+    		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
+	    		document.getElementById('cAbsoluteQuantity[' + i + ']').innerHTML = (document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
+	    		document.getElementById('sAbsoluteQuantity[' + i + ']').innerHTML = (document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
     		}
     	}
 	}
@@ -66,8 +100,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var box = document.createElement('input');
         box.setAttribute('type', 'number');
-        box.setAttribute('name', 'c' + (rows*1 + 1) + 'relativeQuantity');
-        box.setAttribute('id', 'c' + (rows*1 + 1) + 'relativeQuantity');
+        box.setAttribute('name', 'cRelativeQuantity[]');
+        box.setAttribute('id', 'cRelativeQuantity[' + (rows*1 + 1) + ']');
         box.setAttribute('placeholder', percent);
 		cell.appendChild(box);
 		
@@ -79,7 +113,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var box = document.createElement('input');
         box.setAttribute('type', 'number');
-        box.setAttribute('name', 'c' + (rows*1 + 1) + 'price');
+        box.setAttribute('name', 'cPrice[]');
+        box.setAttribute('id', 'cPrice[' + (rows*1 + 1) + ']');
         box.setAttribute('placeholder', currency);
 		cell.appendChild(box);
 		
@@ -88,7 +123,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		// Add field for absolute Quantity
 		var cell = document.createElement('div');
 		cell.setAttribute('class', 'cell');
-        cell.setAttribute('id', 'c' + (rows*1 + 1) + 'absoluteQuantity');
+        cell.setAttribute('name', 'cAbsoluteQuantity[]');
+        cell.setAttribute('id', 'cAbsoluteQuantity[' + (rows*1 + 1) + ']');
 
 		row.appendChild(cell);
 		
@@ -98,13 +134,13 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var error = document.createElement("div");
 		error.setAttribute("class", "error");
-		error.setAttribute("id", 'errorc' + (rows*1 + 1) + 'relativeQuantity');
+		error.setAttribute("id", 'errorcRelativeQuantity[' + (rows*1 + 1) + ']');
 		
 		errorRow.appendChild(error);
 		
 		var error = document.createElement("div");
 		error.setAttribute("class", "error");
-		error.setAttribute("id", 'errorc' + (rows*1 + 1) + 'price');
+		error.setAttribute("id", 'errorcPrice[' + (rows*1 + 1) + ']');
 		
 		errorRow.appendChild(error);
 		
@@ -133,8 +169,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var box = document.createElement('input');
         box.setAttribute('type', 'number');
-        box.setAttribute('name', 's' + (rows*1 + 1) + 'relativeQuantity');
-        box.setAttribute('id', 's' + (rows*1 + 1) + 'relativeQuantity');
+        box.setAttribute('name', 'sRelativeQuantity[]');
+        box.setAttribute('id', 'sRelativeQuantity[' + (rows*1 + 1) + ']');
         box.setAttribute('placeholder', percent);
 		cell.appendChild(box);
 		
@@ -146,7 +182,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var box = document.createElement('input');
         box.setAttribute('type', 'number');
-        box.setAttribute('name', 's' + (rows*1 + 1) + 'price');
+        box.setAttribute('name', 'sPrice[]');
+        box.setAttribute('id', 'sPrice[' + (rows*1 + 1) + ']');
         box.setAttribute('placeholder', currency);
 		cell.appendChild(box);
 		
@@ -155,7 +192,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		// Add field for absolute Quantity
 		var cell = document.createElement('div');
 		cell.setAttribute('class', 'cell');
-        cell.setAttribute('id', 's' + (rows*1 + 1) + 'absoluteQuantity');
+        cell.setAttribute('name', 'sAbsoluteQuantity[]');
+        cell.setAttribute('id', 'sAbsoluteQuantity[' + (rows*1 + 1) + ']');
 
 		row.appendChild(cell);
 		
@@ -170,13 +208,13 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var error = document.createElement("div");
 		error.setAttribute("class", "error");
-		error.setAttribute("id", 'errors' + (rows*1 + 1) + 'relativeQuantity');
+		error.setAttribute("id", 'errorsRelativeQuantity[' + (rows*1 + 1) + ']');
 		
 		errorRow.appendChild(error);
 		
 		var error = document.createElement("div");
 		error.setAttribute("class", "error");
-		error.setAttribute("id", 'errors' + (rows*1 + 1) + 'price');
+		error.setAttribute("id", 'errorsPrice[' + (rows*1 + 1) + ']');
 		
 		errorRow.appendChild(error);
 		
@@ -303,6 +341,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		for(var i = 0; i < inputs.length && inputs[i] != null; i++)	{
 			
+			error = false;
+			
 			if(generalValidateField(inputs[i]))	{
 				
 				switch(form)	{
@@ -343,6 +383,10 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 			if(!error)
 				removeError(inputs[i]);
 			
+		}
+		
+		if(form == "arrangement")	{
+			error = error || !isHundred(true);
 		}
 		
 		if(error)	{
@@ -404,11 +448,11 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		errorCodes[4] = "Zahl ungerade";
 		errorCodes[5] = "Zahl zu groß";
 		
-		document.getElementById('error' + element.name).innerHTML = errorCodes[error];
+		document.getElementById('error' + element.id).innerHTML = errorCodes[error];
 		element.style.border = "1px solid red";
 	}
 	
 	function removeError(element)	{
-		document.getElementById('error' + element.name).innerHTML = "";
+		document.getElementById('error' + element.id).innerHTML = "";
 		element.style.border = "1px solid #AAA";
 	}
