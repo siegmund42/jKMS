@@ -1,5 +1,8 @@
 package jKMS.states;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -8,6 +11,7 @@ import java.util.TreeMap;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.Pdf;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
@@ -19,6 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import static org.junit.Assert.*;
 
@@ -35,6 +42,13 @@ public class PreparationTest {
 		//Setup Player/Assistant No 
 		kms.getState().setBasicConfig(6, 1);
 		
+		kms.getState().newGroup(true, 2, 16, 1);
+		kms.getState().newGroup(true, 3, 33, 2);
+		kms.getState().newGroup(false, 3, 33, 2);
+		kms.getState().newGroup(false, 4, 16, 1);
+
+		
+		/*
 		//Setup Distribution
 		Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
 		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
@@ -45,7 +59,7 @@ public class PreparationTest {
 		sDistrib.put(4, new Amount(16, 1));
 		
 		kms.getConfiguration().setbDistribution(bDistrib);
-		kms.getConfiguration().setsDistribution(sDistrib);
+		kms.getConfiguration().setsDistribution(sDistrib);*/
 	}
 	
 	@Test
@@ -58,6 +72,22 @@ public class PreparationTest {
 	//TODO testLoad
 	public void testLoad(){
 		
+	}
+	
+	@Test
+	public void testcreatePdfCardsSeller(){
+		kms.getConfiguration().setFirstID(1001);
+		kms.getState().generateCards();
+		Pdf pdf = new Pdf();
+		Document document = new Document();
+		try {
+			PdfWriter.getInstance(document, new FileOutputStream("/home/justus/document.pdf")); 
+			document.open();
+			pdf.createPdfCardsSeller(document,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+			document.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test

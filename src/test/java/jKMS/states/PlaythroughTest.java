@@ -34,22 +34,14 @@ public class PlaythroughTest {
 		kms.getConfiguration().setFirstID(1001);
 		
 		//Setup Distribution
+		
 		kms.getState().newGroup(true, 2, 16, 1);
-		kms.getState().newGroup(true, 3, 33, 2);
-		kms.getState().newGroup(false, 3, 33, 2);
+		kms.getState().newGroup(true, 3, 33, 3);
+		kms.getState().newGroup(false, 3, 33, 3);
 		kms.getState().newGroup(false, 4, 16, 1);
 		
 		//Setup Distribution
-		/*Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
-		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
-		
-		bDistrib.put(3, new Amount(33, 2));
-		bDistrib.put(4, new Amount(16, 1));
-		sDistrib.put(3, new Amount(33, 2));
-		sDistrib.put(4, new Amount(16, 1));
-		
-		kms.getConfiguration().setbDistribution(bDistrib);
-		kms.getConfiguration().setsDistribution(sDistrib);*/
+
 		
 		kms.getState().generateCards();
 		
@@ -69,6 +61,7 @@ public class PlaythroughTest {
 			if(iter.getId() < 1004) expectedSet.add(iter);;
 		}
 		
+		// Test falsch du legst die Verteilung zufällig über das Set --> du musst schauen wo die verteilung liegt
 		expectedBDistrib = new TreeMap<Integer, Amount>();
 		expectedSDistrib = new TreeMap<Integer, Amount>();
 		expectedBDistrib.put(3, new Amount(0, 2));

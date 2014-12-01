@@ -209,8 +209,8 @@ public class Preparation extends State{
 	// depending if isBuyer is true or false.
 	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber) {
 		if (isBuyer)
-			kms.getConfiguration().getbDistribution().put(price, new Amount(absoluteNumber, relativeNumber));
+			kms.getConfiguration().getbDistribution().put(price, new Amount(relativeNumber,absoluteNumber));
 		else
-			kms.getConfiguration().getsDistribution().put(price, new Amount(absoluteNumber, relativeNumber));
+			kms.getConfiguration().getsDistribution().put(price, new Amount(relativeNumber,absoluteNumber));
 	}
 }
