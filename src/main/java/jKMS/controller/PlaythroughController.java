@@ -1,7 +1,5 @@
 package jKMS.controller;
 
-import jKMS.LogicHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,18 +63,33 @@ public class PlaythroughController extends AbstractServerController {
 
 	@RequestMapping(value = "/load", method = RequestMethod.GET)
 	public String load(Model model, ServletRequest request)	{
+
+		boolean stateChangeSuccessful = true;
 		
-		char[] assistants = new char[26];
-		for(int i = 0; i < kms.getConfiguration().getAssistantCount(); i++){
-			assistants[i] = LogicHelper.IntToPackage(i);
+		try	{
+			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "play");
+		}	catch(Exception e)	{
+			e.printStackTrace();
+			return "error?e=" + toString();
 		}
 		
-		kms.play();
-		model.addAttribute("assistants", assistants);
-		model.addAttribute("numberOfAssistants", kms.getAssistantCount());
-		model.addAttribute("ip", ControllerHelper.getIP());
-		model.addAttribute("port", ControllerHelper.getPort(request));
-		return "load";
+		if(stateChangeSuccessful)	{
+			
+	//		char[] assistants = new char[26];
+	//		for(int i = 0; i < kms.getConfiguration().getAssistantCount(); i++){
+	//			assistants[i] = LogicHelper.IntToPackage(i);
+	//		}
+	//		model.addAttribute("assistants", assistants);
+			
+			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
+			model.addAttribute("ip", ControllerHelper.getIP());
+			model.addAttribute("port", ControllerHelper.getPort(request));
+			
+			return "load";
+		}	else	{
+			return "reset";
+		}
+		
 	}
 	
 	@RequestMapping(value = "/load", method = RequestMethod.POST)
@@ -86,18 +99,21 @@ public class PlaythroughController extends AbstractServerController {
 	
 	@RequestMapping(value = "/play")
 	public String play()	{
-		return "play";
+
+		boolean stateChangeSuccessful = true;
+		
+		try	{
+			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "play");
+		}	catch(Exception e)	{
+			e.printStackTrace();
+			return "error?e=" + e.toString();
+		}
+		
+		if(stateChangeSuccessful)	{
+			return "play";
+		}	else	{
+			return "reset";
+		}
 	}
-	
-	@RequestMapping(value = "/evaluate")
-	public String evaluate()	{
-		return "evaluate";
-	}
- /*
-	@RequestMapping(value = "/lottery")
-	public String lottery()	{
-		return "lottery";
-	}
-*/
 
 }
