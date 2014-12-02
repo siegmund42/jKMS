@@ -46,6 +46,35 @@ label	{
 	vertical-align:	middle;
 }
 
+noscript div	{
+	color:			red;
+	font-weight:	bold;
+	width:			100%;
+	background:		rgba(80,80,80,0.9);
+	margin:			0;
+}
+
+input[type=number]:disabled	{
+	width:			auto;
+	border:			0;
+	box-shadow:		none;
+	background:		none;
+    -moz-appearance:textfield;
+    font-size:		100%;
+    color:			black;
+    text-align:		center;
+}
+
+input[type=number]:focus:disabled	{
+	box-shadow:		none;
+}
+
+input[type=number]:disabled::-webkit-outer-spin-button,
+input[type=number]:disabled::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .form	{
 	display:		table;
 	margin:			30px auto;
@@ -62,8 +91,8 @@ label	{
 	background:		rgba(80,80,80,0.9);
 	color:			white;
 	font-size:		95%;
-	position:		absolute;
-	z-index:		2;
+	/*position:		absolute;
+	z-index:		2;*/
 }
 
 .step	{

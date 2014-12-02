@@ -28,21 +28,21 @@ public class Preparation extends State{
 	public void loadStandardDistribution(){
 
 		Map<Integer, Amount> bDistribution = new TreeMap<>();
-		bDistribution.put(70, new Amount(20, 0));
-		bDistribution.put(65, new Amount(16, 0));
-		bDistribution.put(60, new Amount(16, 0));
-		bDistribution.put(55, new Amount(16, 0));
-		bDistribution.put(50, new Amount(16, 0));
-		bDistribution.put(45, new Amount(16, 0));
+		bDistribution.put(70, new Amount(20, Math.round(kms.getPlayerCount()*20/100)));
+		bDistribution.put(65, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
+		bDistribution.put(60, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
+		bDistribution.put(55, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
+		bDistribution.put(50, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
+		bDistribution.put(45, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
 		kms.getConfiguration().setbDistribution(bDistribution);
 		
 		Map<Integer, Amount> sDistribution = new TreeMap<>();
-		sDistribution.put(63, new Amount(10, 0));
-		sDistribution.put(58, new Amount(18, 0));
-		sDistribution.put(53, new Amount(18, 0));
-		sDistribution.put(48, new Amount(18, 0));
-		sDistribution.put(43, new Amount(18, 0));
-		sDistribution.put(38, new Amount(18, 0));
+		sDistribution.put(63, new Amount(10, Math.round(kms.getPlayerCount()*10/100)));
+		sDistribution.put(58, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
+		sDistribution.put(53, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
+		sDistribution.put(48, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
+		sDistribution.put(43, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
+		sDistribution.put(38, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
 		kms.getConfiguration().setsDistribution(sDistribution);
 		
 		kms.getConfiguration().setGroupCount(6);
@@ -208,9 +208,14 @@ public class Preparation extends State{
 	// Creates a new entry for the bDistribution or sDistribution Map,
 	// depending if isBuyer is true or false.
 	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber) {
-		if (isBuyer)
-			kms.getConfiguration().getbDistribution().put(price, new Amount(relativeNumber,absoluteNumber));
-		else
-			kms.getConfiguration().getsDistribution().put(price, new Amount(relativeNumber,absoluteNumber));
+		Map<Integer, Amount> distrib;
+		
+		if (isBuyer) distrib = kms.getConfiguration().getbDistribution();
+		else distrib = kms.getConfiguration().getsDistribution();
+		
+		if(!distrib.containsKey(price))
+			distrib.put(price,  new Amount(relativeNumber, absoluteNumber));
+		else 
+			distrib.get(price).setAbsolute(distrib.get(price).getAbsolute() + 1);
 	}
 }

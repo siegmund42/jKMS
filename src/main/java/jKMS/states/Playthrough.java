@@ -50,7 +50,8 @@ public class Playthrough extends State{
 	}
 	
 
-	public boolean addContract(int id1,int id2,int price){ 
+	public int addContract(int id1,int id2,int price){ 
+		// TODO return errorCode 0 -> everything fine 1 -> double buyer/seller 2 -> Card not available 3 -> already dealt
 		// TODO Reihenfolge der Eingabe egal --> id2 kann auch buyer sein
 		// TODO Es dürfen nicht beide Käufer/verkäufer sein
 		// TODO Es muss Käufer/Verkäufer geben (dürfen nicht ausgetragen sein)
@@ -71,9 +72,9 @@ public class Playthrough extends State{
 	    if(card1 != null && card2 != null){
 	    	Contract contract =new Contract(card1,card2,price);
 	    	kms.getContracts().add(contract);
-	    	return true;
+	    	return 0;
 	    }else{
-	    	return false;
+	    	return 2;
 	    }
 	}
 

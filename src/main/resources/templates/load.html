@@ -11,6 +11,8 @@
     <script th:inline="javascript">
     /*<![CDATA[*/
     	var pack = /*[[#{load.package}]]*/;
+    	var firstID = /*[[${firstID}]]*/;
+    	var playerCount = /*[[${playerCount}]]*/;
     /*]]>*/
     </script>
     <script th:src="@{/js/script.js}"></script>
@@ -38,6 +40,9 @@
 	 		</li>
 		</ul>
  	</div>
+ 	<noscript>
+ 		<div th:text="#{noscript}"></div>
+ 	</noscript>
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (load + (${param.s[0]}?: '1'))">
 	 	</div>

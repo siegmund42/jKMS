@@ -12,8 +12,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
 	    		customerTotalRelative += document.getElementById('cRelativeQuantity[' + i + ']').value*1;
 	    		salesmanTotalRelative += document.getElementById('sRelativeQuantity[' + i + ']').value*1;
-	    		customerTotalAbsolute += document.getElementById('cAbsoluteQuantity[' + i + ']').innerHTML*1;
-	    		salesmanTotalAbsolute += document.getElementById('sAbsoluteQuantity[' + i + ']').innerHTML*1;
+	    		customerTotalAbsolute += document.getElementById('cAbsoluteQuantity[' + i + ']').value*1;
+	    		salesmanTotalAbsolute += document.getElementById('sAbsoluteQuantity[' + i + ']').value*1;
     		}
     	}
     	
@@ -22,53 +22,32 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     	document.getElementById('customerTotalAbsolute').innerHTML = customerTotalAbsolute;
     	document.getElementById('salesmanTotalAbsolute').innerHTML = salesmanTotalAbsolute;
     	
-    	isHundred(false);
+    	isHundred();
+    		
     	
 	}
 	
-	function isHundred(finalCheck)	{
+	function isHundred()	{
 		
 		var error = false;
-		
-		if(document.getElementById('customerTotalRelative').value > 100)	{
-			document.getElementById('customerTotalRelative').style.color = "red";
-			error = true;
+		var ctr = document.getElementById('customerTotalRelative');
+		var str = document.getElementById('salesmanTotalRelative');
+			
+		if(ctr.innerHTML.substring(0, (ctr.innerHTML.length - 1)) == 100)	{
+   			ctr.style.color = "green";
 		}	else	{
-			if(customerTotalRelative == 100)	{
-    			document.getElementById('customerTotalRelative').style.color = "green";
-			}	else	{
-				if(finalCheck)	{
-					document.getElementById('customerTotalRelative').style.color = "red";
-	        		error = true;
-				}	else	{
-					document.getElementById('customerTotalRelative').style.color = "black";
-				}
-			}
-		}
-		
-		if(document.getElementById('salesmanTotalRelative').value > 100)	{
-			document.getElementById('salesmanTotalRelative').style.color = "red";
+			ctr.style.color = "red";
 			error = true;
+		}
+	
+		if(str.innerHTML.substring(0, (str.innerHTML.length - 1)) == 100)	{
+   			str.style.color = "green";
 		}	else	{
-			if(salesmanTotalRelative == 100)	{
-    			document.getElementById('salesmanTotalRelative').style.color = "green";
-			}	else	{
-				if(finalCheck)	{
-					document.getElementById('salesmanTotalRelative').style.color = "red";
-					error = true;
-				}	else	{
-	        		document.getElementById('salesmanTotalRelative').style.color = "black";
-				}
-			}
+			str.style.color = "red";
+			error = true;
 		}
 		
-		if(error && !finalCheck)	{
-			alert(totalOV);
-			return false;
-		}
-		
-		if(error && finalCheck)	{
-			alert(totalOOB);
+		if(error)	{
 			return false;
 		}	else	{
 			return true;
@@ -79,8 +58,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 	function updateAbsolutes()	{
     	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
     		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
-	    		document.getElementById('cAbsoluteQuantity[' + i + ']').innerHTML = (document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
-	    		document.getElementById('sAbsoluteQuantity[' + i + ']').innerHTML = (document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
+	    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = (document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
+	    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = (document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
     		}
     	}
 	}
@@ -123,8 +102,14 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		// Add field for absolute Quantity
 		var cell = document.createElement('div');
 		cell.setAttribute('class', 'cell');
-        cell.setAttribute('name', 'cAbsoluteQuantity[]');
-        cell.setAttribute('id', 'cAbsoluteQuantity[' + (rows*1 + 1) + ']');
+
+		var input = document.createElement('input');
+		input.setAttribute('type', 'number');
+		input.setAttribute('disabled', true);
+		input.setAttribute('name', 'cAbsoluteQuantity[]');
+		input.setAttribute('id', 'cAbsoluteQuantity[' + (rows*1 + 1) + ']');
+		
+		cell.appendChild(input);
 
 		row.appendChild(cell);
 		
@@ -192,8 +177,14 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		// Add field for absolute Quantity
 		var cell = document.createElement('div');
 		cell.setAttribute('class', 'cell');
-        cell.setAttribute('name', 'sAbsoluteQuantity[]');
-        cell.setAttribute('id', 'sAbsoluteQuantity[' + (rows*1 + 1) + ']');
+
+		var input = document.createElement('input');
+		input.setAttribute('type', 'number');
+		input.setAttribute('disabled', true);
+        input.setAttribute('name', 'sAbsoluteQuantity[]');
+        input.setAttribute('id', 'sAbsoluteQuantity[' + (rows*1 + 1) + ']');
+		
+		cell.appendChild(input);
 
 		row.appendChild(cell);
 		
@@ -333,11 +324,16 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 	function validateForm(form)	{
 		
 		var error = false;
+		var globalError = false;
 		
-		var inputs = Array.filter(document.getElementById(form).elements,	(	function (elm) {
-		     													return (elm.type == "text" || elm.type == "password" || elm.type == "number");
-		   													}
-		   												));
+		var coll = document.getElementById(form).elements;
+		
+		var inputs;
+		
+		for(var i = 0; i < coll.length; i++)	{
+			if((coll[i].type == "number" || coll[i].type == "text" || coll[i].type == "password") && coll[i].disabled == "false")
+				inputs[i] = coll[i];
+		}
 		
 		for(var i = 0; i < inputs.length && inputs[i] != null; i++)	{
 			
@@ -369,10 +365,10 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 						writeError(1, field);
 						error = true;
 					}
-//					if(field.value < kms.getFirstID OR field.value > (kms.getFirstID + kms.getPlayerCount))	{
-//						writeError(5, field);
-//						error = true;
-//					}
+					if(field.value < firstID || field.value > (firstID + playerCount))	{
+						writeError(5, field);
+						error = true;
+					}
 					break;
 				}
 				
@@ -383,13 +379,18 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 			if(!error)
 				removeError(inputs[i]);
 			
+			globalError = globalError || error;
+			
 		}
 		
-		if(form == "arrangement")	{
-			error = error || !isHundred(true);
+		if(form == "arrangement" && !globalError)	{
+			if(!isHundred())	{
+				alert(totalOOB);
+				globalError = true;
+			}
 		}
 		
-		if(error)	{
+		if(globalError)	{
 			return false;
 		}	else
 			return true;
@@ -398,10 +399,15 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 	
 	function createErrorFields(element, numberOfColumns)	{
 		
-		var inputs = Array.filter(document.getElementById(element).elements,	(	function (elm) {
-																						return (elm.type == "number");
-																					}
-																				));
+		var coll = document.getElementById(element).elements;
+		
+		var inputs;
+		
+		for(var i = 0; i < coll.length; i++)	{
+			if(coll[i].type == "number" && coll[i].disabled == "false")
+				inputs[i] = coll[i];
+		}
+		
 		
 		for(var i = 0; i <= inputs.length && inputs[i] != null; i++)	{
 			
@@ -432,7 +438,6 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 				errorRow.appendChild(error);
 				
 			}
-			
 			
 		}
 	}
