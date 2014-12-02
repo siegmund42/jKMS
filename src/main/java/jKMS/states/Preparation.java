@@ -24,27 +24,32 @@ public class Preparation extends State{
 		this.kms = kms;
 	}
 	
-	// load StandardConfiguration into kms
+	//	Loads StandardConfiguration into kms.
+	//	This method only loads the relative values for displaying in Web Interface.
+	//	Absolute Values are calculated by Javascript and stored using the newGroup-Method.
 	public void loadStandardDistribution(){
 
+		// Load Buyer Distribution
 		Map<Integer, Amount> bDistribution = new TreeMap<>();
-		bDistribution.put(70, new Amount(20, Math.round(kms.getPlayerCount()*20/100)));
-		bDistribution.put(65, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
-		bDistribution.put(60, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
-		bDistribution.put(55, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
-		bDistribution.put(50, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
-		bDistribution.put(45, new Amount(16, Math.round(kms.getPlayerCount()*16/100)));
+		bDistribution.put(70, new Amount(20, 0));
+		bDistribution.put(65, new Amount(16, 0));
+		bDistribution.put(60, new Amount(16, 0));
+		bDistribution.put(55, new Amount(16, 0));
+		bDistribution.put(50, new Amount(16, 0));
+		bDistribution.put(45, new Amount(16, 0));
 		kms.getConfiguration().setbDistribution(bDistribution);
 		
+		// Load Seller Distribution
 		Map<Integer, Amount> sDistribution = new TreeMap<>();
-		sDistribution.put(63, new Amount(10, Math.round(kms.getPlayerCount()*10/100)));
-		sDistribution.put(58, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
-		sDistribution.put(53, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
-		sDistribution.put(48, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
-		sDistribution.put(43, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
-		sDistribution.put(38, new Amount(18, Math.round(kms.getPlayerCount()*18/100)));
+		sDistribution.put(63, new Amount(10, 0));
+		sDistribution.put(58, new Amount(18, 0));
+		sDistribution.put(53, new Amount(18, 0));
+		sDistribution.put(48, new Amount(18, 0));
+		sDistribution.put(43, new Amount(18, 0));
+		sDistribution.put(38, new Amount(18, 0));
 		kms.getConfiguration().setsDistribution(sDistribution);
 		
+		// Set Amount of Groups
 		kms.getConfiguration().setGroupCount(6);
 		
 	}
@@ -56,8 +61,6 @@ public class Preparation extends State{
 		kms.getConfiguration().setPlayerCount(playerCount);
 		kms.getConfiguration().setAssistantCount(assistantCount);
 	}
-	
-
 	
 	
 	//load Implementieren
