@@ -79,12 +79,19 @@ public class PreparationTest {
 		kms.getConfiguration().setFirstID(1001);
 		kms.getState().generateCards();
 		Pdf pdf = new Pdf();
-		Document document = new Document();
+		Document documentSeller = new Document();
+		Document documentBuyer = new Document();
 		try {
-			PdfWriter.getInstance(document, new FileOutputStream("/home/justus/document.pdf")); 
-			document.open();
-			pdf.createPdfCardsSeller(document,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
-			document.close();
+			PdfWriter.getInstance(documentSeller, new FileOutputStream("/home/justus/documentseller.pdf")); 
+			documentSeller.open();
+			pdf.createPdfCardsSeller(documentSeller,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+			documentSeller.close();
+			
+			PdfWriter.getInstance(documentBuyer, new FileOutputStream("/home/justus/documentbuyer.pdf")); 
+			documentBuyer.open();
+			pdf.createPdfCardsBuyer(documentBuyer,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+			documentBuyer.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
