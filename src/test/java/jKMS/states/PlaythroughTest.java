@@ -3,6 +3,7 @@ package jKMS.states;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 
 import java.util.LinkedHashSet;
@@ -30,18 +31,21 @@ public class PlaythroughTest {
 	@Before
 	public void setUp(){
 		//Setup Player/Assistant No 
-		kms.getState().setBasicConfig(6, 1);
+		kms.getState().setBasicConfig(10, 1);
 		kms.getConfiguration().setFirstID(1001);
 		
 		//Setup Distribution
 		
-		kms.getState().newGroup(true, 2, 16, 1);
-		kms.getState().newGroup(true, 3, 33, 3);
-		kms.getState().newGroup(false, 3, 33, 3);
-		kms.getState().newGroup(false, 4, 16, 1);
+		kms.getState().newGroup(true, 2, 20, 2);
+		kms.getState().newGroup(true, 3, 20, 2);
+		kms.getState().newGroup(true, 4, 10, 1);
+		kms.getState().newGroup(false, 2, 10, 1);
+		kms.getState().newGroup(false, 3, 20, 2);
+		kms.getState().newGroup(false, 4, 20, 2);
 		
-		//Setup Distribution
-
+		//1001 - Buyer
+		//1002 - Seller
+		//1003 - Buyer
 		
 		kms.getState().generateCards();
 		
@@ -50,22 +54,35 @@ public class PlaythroughTest {
 	
 	@Test
 	public void testRemoveCard(){
-		final Set<Card> expectedSet;
-		final Map<Integer, Amount> expectedBDistrib;
-		final Map<Integer, Amount> expectedSDistrib;
+		Set<Card> expectedSet;
+		Map<Integer, Amount> expectedBDistrib;
+		Map<Integer, Amount> expectedSDistrib;
+		Map<Integer, Amount> distrib;
+		int key;
+		
+		expectedBDistrib = new TreeMap<Integer, Amount>();
+		expectedSDistrib = new TreeMap<Integer, Amount>();
 		
 		//Setup expected values
 		expectedSet = new LinkedHashSet<Card>();
 		
 		for(Card iter : kms.getCards()){
-			if(iter.getId() < 1004) expectedSet.add(iter);;
+			if(iter.getId() < 1004){
+				expectedSet.add(iter);
+				
+				if(iter instanceof BuyerCard) distrib = expectedBDistrib;
+				else distrib = expectedSDistrib;
+				
+				key = iter.getValue();
+						
+				//If key does not exist in map - create a new Amount
+				if(!distrib.containsKey(key))
+					distrib.put(key, new Amount(0, 1));
+				//Else increase absolute of its Amount
+				else
+					distrib.get(key).setAbsolute(distrib.get(key).getAbsolute()+1);
+			}
 		}
-		
-		// Test falsch du legst die Verteilung zufällig über das Set --> du musst schauen wo die verteilung liegt
-		expectedBDistrib = new TreeMap<Integer, Amount>();
-		expectedSDistrib = new TreeMap<Integer, Amount>();
-		expectedBDistrib.put(3, new Amount(0, 2));
-		expectedSDistrib.put(3, new Amount(0, 1));
 		
 		//Test
 		assertTrue("removeCard should return True, if cards are removed", kms.getState().removeCard('A', 1004));

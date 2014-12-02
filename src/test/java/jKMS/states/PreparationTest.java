@@ -1,8 +1,6 @@
 package jKMS.states;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -42,13 +40,6 @@ public class PreparationTest {
 		//Setup Player/Assistant No 
 		kms.getState().setBasicConfig(6, 1);
 		
-		kms.getState().newGroup(true, 2, 16, 1);
-		kms.getState().newGroup(true, 3, 33, 2);
-		kms.getState().newGroup(false, 3, 33, 2);
-		kms.getState().newGroup(false, 4, 16, 1);
-
-		
-		/*
 		//Setup Distribution
 		Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
 		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
@@ -59,7 +50,7 @@ public class PreparationTest {
 		sDistrib.put(4, new Amount(16, 1));
 		
 		kms.getConfiguration().setbDistribution(bDistrib);
-		kms.getConfiguration().setsDistribution(sDistrib);*/
+		kms.getConfiguration().setsDistribution(sDistrib);
 	}
 	
 	@Test
@@ -75,7 +66,7 @@ public class PreparationTest {
 	}
 	
 	@Test
-	public void testcreatePdfCardsSeller(){
+	public void testCreatePdfCardsSeller(){
 		kms.getConfiguration().setFirstID(1001);
 		kms.getState().generateCards();
 		Pdf pdf = new Pdf();
