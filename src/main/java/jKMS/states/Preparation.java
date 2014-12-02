@@ -60,6 +60,9 @@ public class Preparation extends State{
 	public void setBasicConfig(int playerCount, int assistantCount){
 		kms.getConfiguration().setPlayerCount(playerCount);
 		kms.getConfiguration().setAssistantCount(assistantCount);
+		System.out.println("SettingBasicConfiguration:");
+		System.out.println("PlayerCount = " + kms.getConfiguration().getPlayerCount());
+		System.out.println("AssistantCount = " + kms.getConfiguration().getAssistantCount());
 	}
 	
 	
@@ -220,5 +223,15 @@ public class Preparation extends State{
 			distrib.put(price,  new Amount(relativeNumber, absoluteNumber));
 		else 
 			distrib.get(price).setAbsolute(distrib.get(price).getAbsolute() + 1);
+		
+		System.out.println("Registered the following Group:");
+		if(isBuyer)	{
+			Amount registered = kms.getConfiguration().getbDistribution().get(price);
+			System.out.println("Buyer: " + price + "€ " + registered.getRelative() + "% " + registered.getAbsolute());
+		}	else	{
+			Amount registered = kms.getConfiguration().getsDistribution().get(price);
+			System.out.println("Seller: " + price + "€ " + registered.getRelative() + "% " + registered.getAbsolute());
+		}
+		
 	}
 }

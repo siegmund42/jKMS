@@ -14,7 +14,7 @@ public class PrepareController extends AbstractServerController {
 		boolean stateChangeSuccessful = true;
 		
 		try	{
-			ControllerHelper.stateHelper(kms, "prepare");
+			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "prepare");
 		}	catch(Exception e)	{
 			e.printStackTrace();
 			return "error?e=" + e.toString();
@@ -46,7 +46,7 @@ public class PrepareController extends AbstractServerController {
 		boolean stateChangeSuccessful = true;
 		
 		try	{
-			ControllerHelper.stateHelper(kms, "prepare");
+			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "prepare");
 		}	catch(Exception e)	{
 			e.printStackTrace();
 			return "error?e=" + e.toString();
@@ -117,13 +117,17 @@ public class PrepareController extends AbstractServerController {
 							@RequestParam(value = "sPrice[]") String[] sPrice,
 							@RequestParam(value = "sAbsoluteQuantity[]") String[] sAbsoluteQuantity)	{
 		
-		for(int i = 0; i < cRelativeQuantity.length; i++)	{
+		int i;
+		
+		kms.getbDistribution().clear();
+		kms.getsDistribution().clear();
+		
+		for(i = 0; i < cRelativeQuantity.length; i++)	{
 			kms.getState().newGroup(true, Integer.parseInt(cPrice[i]), Integer.parseInt(cRelativeQuantity[i]), Integer.parseInt(cAbsoluteQuantity[i]));
+			kms.getState().newGroup(false, Integer.parseInt(sPrice[i]), Integer.parseInt(sRelativeQuantity[i]), Integer.parseInt(sAbsoluteQuantity[i]));
 		}
-
-		for(int i = 0; i < sRelativeQuantity.length; i++)	{
-			kms.getState().newGroup(true, Integer.parseInt(sPrice[i]), Integer.parseInt(sRelativeQuantity[i]), Integer.parseInt(sAbsoluteQuantity[i]));
-		}
+		
+		kms.getConfiguration().setGroupCount(i);
 		
 		//model.addAttribute("configSavePath", kms.getState().save());
 		model.addAttribute("configSavePath", "/test/test2/config.txt");

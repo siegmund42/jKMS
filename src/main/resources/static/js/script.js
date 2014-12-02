@@ -5,6 +5,15 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		updateSum();
     }
 	
+	function updateAbsolutes()	{
+    	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
+    		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
+	    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = (document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
+	    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = (document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
+    		}
+    	}
+	}
+	
 	function updateSum()	{
 		var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0, i = 1;
 		
@@ -24,7 +33,6 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     	
     	isHundred();
     		
-    	
 	}
 	
 	function isHundred()	{
@@ -53,15 +61,6 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 			return true;
 		}
 		
-	}
-	
-	function updateAbsolutes()	{
-    	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
-    		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
-	    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = (document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
-	    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = (document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
-    		}
-    	}
 	}
 
 	function addRow()	{
@@ -331,7 +330,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		var inputs = [];
 		
 		for(var i = 0; i < coll.length; i++)	{
-			if((coll[i].type == "number" || coll[i].type == "text" || coll[i].type == "password") && coll[i].disabled == false)
+			if((coll[i].type == "number" || coll[i].type == "text" || coll[i].type == "password") && coll[i].readOnly == false)
 				inputs[inputs.length] = coll[i];
 		}
 		
@@ -404,7 +403,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		var inputs = [];
 		
 		for(var i = 0; i < coll.length; i++)	{
-			if(coll[i].type == "number" && coll[i].disabled == false)
+			if(coll[i].type == "number" && coll[i].readOnly == false)
 				inputs[inputs.length] = coll[i];
 		}
 		
