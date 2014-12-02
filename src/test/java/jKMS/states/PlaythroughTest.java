@@ -31,6 +31,9 @@ public class PlaythroughTest {
 	@Before
 	public void setUp(){
 		kms.prepare();
+		kms.getCards().clear();
+		kms.getConfiguration().setbDistribution(new TreeMap<Integer, Amount>());
+		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());
 		
 		//Setup Player/Assistant No 
 		kms.getState().setBasicConfig(10, 1);
@@ -47,6 +50,16 @@ public class PlaythroughTest {
 		kms.getState().generateCards();
 		
 		kms.play();
+	}
+	
+	@Test
+	public void testAddContract(){
+		
+	}
+	
+	@Test
+	public void testLoad(){
+		
 	}
 	
 	@Test

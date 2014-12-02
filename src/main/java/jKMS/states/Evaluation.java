@@ -23,7 +23,7 @@ public class Evaluation extends State{
 	//returns statistic data of all contracts - min, max, average, variance, standard deviation
 	public Map<String,Float> getStatistics(){ 
 		Set<Contract> contracts = kms.getContracts();
-		HashMap<String,Float> statistics = new HashMap();
+		Map<String,Float> statistics = new HashMap<String, Float>();
 		int sum = 0;
 		int max = 0;
 		int tempPrice = 0;
