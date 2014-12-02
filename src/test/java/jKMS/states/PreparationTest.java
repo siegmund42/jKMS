@@ -37,6 +37,8 @@ public class PreparationTest {
 	
 	@Before
 	public void setUp(){
+		kms.prepare();
+		
 		//Setup Player/Assistant No 
 		kms.getState().setBasicConfig(6, 1);
 		
@@ -124,16 +126,30 @@ public class PreparationTest {
 	
 	@Test
 	public void testNewGroup(){
-		assertEquals(2, kms.getbDistribution().keySet().size());
-		assertEquals(2, kms.getsDistribution().keySet().size());
+		Set<Integer> expectedBKeys = new LinkedHashSet<Integer>();
+		Set<Integer> expectedSKeys = new LinkedHashSet<Integer>();
 		
-		kms.getState().newGroup(true, 5, 0, 1);
-		assertEquals("bDistribution does not increase when newGroup is called", 3, kms.getbDistribution().keySet().size());
-		assertEquals("sDistribution must not increase when newGroup is called for a buyer", 2, kms.getsDistribution().keySet().size());
-		kms.getState().newGroup(false, 2, 0, 1);
-		assertEquals("sDistribution does not increase when newGroup is called", 3, kms.getbDistribution().keySet().size());
-		assertEquals("bDistribution must not increase when newGroup is called for a seller", 3, kms.getsDistribution().keySet().size());
 		
+		expectedBKeys.add(3);
+		expectedBKeys.add(4);
+		expectedSKeys.add(3);
+		expectedSKeys.add(4);
+		
+		assertEquals(expectedBKeys, kms.getbDistribution().keySet());
+		assertEquals(expectedSKeys, kms.getsDistribution().keySet());
+		
+		//Test adding new keys to the set
+		kms.getState().newGroup(true, 2, 0, 1);
+		expectedBKeys.add(2);
+		assertEquals("bDistribution does not add a new key when newGroup is called for a buyer", expectedBKeys, kms.getbDistribution().keySet());
+		assertEquals("sDistribution must not add a new key when newGroup is called for a buyer", expectedSKeys, kms.getsDistribution().keySet());
+		
+		kms.getState().newGroup(false, 5, 0, 1);
+		expectedSKeys.add(5);
+		assertEquals("sDistribution does not add a new key when newGroup is called for a seller", expectedSKeys, kms.getsDistribution().keySet());
+		assertEquals("bDistribution must not add a new key when newGroup is called for a seller", expectedBKeys, kms.getbDistribution().keySet());
+		
+		//Test increasing value of already existing keys
 		kms.getState().newGroup(true, 3, 0, 1);
 		assertEquals("bDistribution must not increase when a new group is created for an already existing key", 3, kms.getbDistribution().keySet().size());
 		//assertEquals("bDistribution does not update correctly when a new group is created for an already existing key", );

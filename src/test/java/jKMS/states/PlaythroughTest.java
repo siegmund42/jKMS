@@ -30,22 +30,19 @@ public class PlaythroughTest {
 	
 	@Before
 	public void setUp(){
+		kms.prepare();
+		
 		//Setup Player/Assistant No 
 		kms.getState().setBasicConfig(10, 1);
 		kms.getConfiguration().setFirstID(1001);
 		
 		//Setup Distribution
-		
 		kms.getState().newGroup(true, 2, 20, 2);
 		kms.getState().newGroup(true, 3, 20, 2);
 		kms.getState().newGroup(true, 4, 10, 1);
 		kms.getState().newGroup(false, 2, 10, 1);
 		kms.getState().newGroup(false, 3, 20, 2);
 		kms.getState().newGroup(false, 4, 20, 2);
-		
-		//1001 - Buyer
-		//1002 - Seller
-		//1003 - Buyer
 		
 		kms.getState().generateCards();
 		
