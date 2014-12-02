@@ -90,7 +90,7 @@ public class Pdf {
            }
        }else{
            for(Card iter : printcards){
-        	   if(i <= (printcards.size()/2) + 1){
+        	   if(i < (printcards.size()/2) + 1){
         		   topcards.add(iter);
         		   i++;
         	   }else{
@@ -242,7 +242,7 @@ public class Pdf {
            }
        }else{
            for(Card iter : printcards){
-        	   if(i <= (printcards.size()/2) + 1){
+        	   if(i < (printcards.size()/2) + 1){
         		   topcards.add(iter);
         		   i++;
         	   }else{

@@ -69,7 +69,22 @@ public class PreparationTest {
 	
 	@Test
 	public void testCreatePdfCardsSeller(){
-		kms.getConfiguration().setFirstID(1001);
+		
+		Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
+		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
+		
+		bDistrib.put(5, new Amount(33, 5));
+		bDistrib.put(4, new Amount(16, 5));
+		sDistrib.put(3, new Amount(33, 5));
+		sDistrib.put(2, new Amount(16, 5));
+		
+		kms.getConfiguration().setbDistribution(bDistrib);
+		kms.getConfiguration().setsDistribution(sDistrib);
+		
+		kms.getConfiguration().setFirstID(1000);
+		
+		kms.getState().setBasicConfig(20, 5);
+		
 		kms.getState().generateCards();
 		Pdf pdf = new Pdf();
 		Document documentSeller = new Document();
