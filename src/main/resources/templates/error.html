@@ -24,7 +24,10 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (error)">
 	 	</div>
-	 	<div th:text="${param.e[0]}"></div>
+		<div id='created' th:text="${timestamp}"></div>
+		<div th:text="#{error.hint} + '(' + #{error.type} + '=' + ${error} + ', ' + #{error.status} + '=' + ${status} + ')'">
+		</div>
+		<div th:text="${message}"></div>
 	</div>
  </body>
 </html>

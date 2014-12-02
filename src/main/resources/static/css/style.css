@@ -54,6 +54,11 @@ noscript div	{
 	margin:			0;
 }
 
+.errorDiv	{
+	color:			red;
+	font-size:		120%;
+}
+
 .form	{
 	display:		table;
 	margin:			30px auto;

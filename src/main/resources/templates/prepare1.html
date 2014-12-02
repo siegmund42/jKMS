@@ -36,6 +36,7 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (prepare1)">
 	 	</div>
+	 	<div class="errorDiv" th:if="${error}" th:text="#{error.__${error}__}"></div>
 		<form method="POST" th:action="'prepare2.html?c=load'" id="config" name="config" onsubmit="return validateForm(this.id);">
 			<div id="form">
 				<div class="row">
