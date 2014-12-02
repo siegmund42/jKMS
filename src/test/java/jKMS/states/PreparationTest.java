@@ -151,8 +151,7 @@ public class PreparationTest {
 		
 		//Test increasing value of already existing keys
 		kms.getState().newGroup(true, 3, 0, 1);
-		assertEquals("bDistribution must not increase when a new group is created for an already existing key", 3, kms.getbDistribution().keySet().size());
-		//assertEquals("bDistribution does not update correctly when a new group is created for an already existing key", );
-		//TODO check if Amount has updated correctly
+		assertEquals("sDistribution must not increase when newGroup is called for an already existing buyer-key", 3, kms.getbDistribution().keySet().size());
+		assertEquals("bDistribution does not update correctly when newGroup is called for an already existing key", 3, kms.getbDistribution().get(3).getAbsolute());
 	}
 }

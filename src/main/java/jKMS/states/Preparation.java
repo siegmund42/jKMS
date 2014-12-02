@@ -208,9 +208,14 @@ public class Preparation extends State{
 	// Creates a new entry for the bDistribution or sDistribution Map,
 	// depending if isBuyer is true or false.
 	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber) {
-		if (isBuyer)
-			kms.getConfiguration().getbDistribution().put(price, new Amount(relativeNumber,absoluteNumber));
-		else
-			kms.getConfiguration().getsDistribution().put(price, new Amount(relativeNumber,absoluteNumber));
+		Map<Integer, Amount> distrib;
+		
+		if (isBuyer) distrib = kms.getConfiguration().getbDistribution();
+		else distrib = kms.getConfiguration().getsDistribution();
+		
+		if(!distrib.containsKey(price))
+			distrib.put(price,  new Amount(relativeNumber, absoluteNumber));
+		else 
+			distrib.get(price).setAbsolute(distrib.get(price).getAbsolute() + 1);
 	}
 }
