@@ -54,11 +54,13 @@ public class EvaluationTest {
 	}
 	
 	@Test
+	//TODO testGetStatistics
 	public void testGetStatistics(){
 		
 	}
 	
 	@Test
+	//TODO testPickWinner
 	public void testPickWinner(){
 		
 	}
