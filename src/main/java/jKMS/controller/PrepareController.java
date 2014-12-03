@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class PrepareController extends AbstractServerController {
@@ -115,21 +116,19 @@ public class PrepareController extends AbstractServerController {
 	
 	//defalt load path:Users/yangxinyu/git/jKMS
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
-	public String loadConfig(Model model, @RequestParam(value="input-file") String filename,@RequestParam(value="c") String configuration)	{
+	public String loadConfig(Model model, @RequestParam("input-file") MultipartFile file ,@RequestParam(value="c") String configuration)	{
 		//String fileurl = "/Users/yangxinyu/Desktop/"+filename;
 		try {
-			kms.getState().load(filename);
+			kms.getState().load(file);
+			System.out.println("load successfull");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return "error?e=" + e.toString();
 		}
-
-		model.addAttribute("customerConfiguration", kms.getbDistribution());
-		model.addAttribute("salesmanConfiguration", kms.getsDistribution());
-		model.addAttribute("groupQuantity", kms.getGroupCount());
-		
-		return "redirect:/prepare2";
+		return "redirect:/prepare2?c=" + configuration;
 	}
+
 
 	@RequestMapping(value = "generate", method = RequestMethod.POST)
 	public String generate(	Model model,

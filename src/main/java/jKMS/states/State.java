@@ -3,11 +3,14 @@ package jKMS.states;
 import java.io.IOException;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.itextpdf.text.Document;
 
 import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.exceptionHelper.EmptyFileException;
 
 public abstract class State {
 	protected Kartoffelmarktspiel kms;
@@ -27,5 +30,5 @@ public abstract class State {
 	public int buyerProfit(Contract contract){ return 0; } // DONE
 	public int sellerProfit(Contract contract){ return 0; } // DONE
 	public boolean save(String path){ return false; }
-	public void load(String fileurl) throws NumberFormatException, IOException{}
-}
+	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{}
+}   
