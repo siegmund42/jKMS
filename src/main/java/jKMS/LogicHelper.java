@@ -57,4 +57,14 @@ public class LogicHelper {// have static function to help implementation logic
 				}
 		return sum;
 		}
+	
+	//sum up all relative players in one distribution
+	public static int getRelativeSum(Map<Integer, Amount> distribution){
+		int sum=0;
+			Set<Integer> d = distribution.keySet();
+			for(int i : d){
+				sum = sum + distribution.get(i).getRelative();
+				}
+		return sum;
+		}
 }

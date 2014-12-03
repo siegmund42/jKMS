@@ -46,6 +46,7 @@ public class Pdf {
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
     	//PRINT
+		
 		title = "Seller";
 		value = "costs: ";
 		id = "ID: ";
