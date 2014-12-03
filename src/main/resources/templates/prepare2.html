@@ -47,7 +47,7 @@
 	 	<div th:replace="resources :: heading (prepare2)">
 	 	</div>	
 	 	<div th:text="#{prepare.numberOfPlayers} + ': ' + ${numberOfPlayers}"></div>
-		<form name="arrangement" id="arrangement" method="POST" th:action="generate.html" onChange="updateArrangement();" onsubmit="return validateForm(this.id);">
+		<form name="arrangement" id="arrangement" method="POST" enctype="multipart/form-data" th:action="generate.html" onChange="updateArrangement();" onsubmit="return validateForm(this.id);">
 			<h2 th:text="#{prepare.customerGroups}" style="float: left;">Käufergruppen</h2>
 			<h2 th:text="#{prepare.salesmanGroups}" style="float: right;">Verkäufergruppen</h2>
 			<p style="clear: both;"></p>

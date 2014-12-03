@@ -4,6 +4,7 @@ import jKMS.Amount;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.SellerCard;
+import jKMS.exceptionHelper.EmptyFileException;
 import jKMS.LogicHelper;
 
 import java.io.BufferedReader;
@@ -18,6 +19,8 @@ import java.util.Random;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class Preparation extends State{
 	public Preparation(Kartoffelmarktspiel kms){
@@ -67,31 +70,72 @@ public class Preparation extends State{
 	
 	
 	//load Implementieren
+	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{
+    	int playerCount=0;
+    	int assistantCount=0;
+    	int groupCount=0;
+    	int firstID=0;
+    	Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
+		Map<Integer, Amount> sDistributionLoad = new TreeMap<>();
+    	 if (!file.isEmpty()) {
+            	 BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
+            	 String buf = "";
+            	 int count = 0;
+            	 while ((buf=br.readLine()) != null && count < 4) {
+            		 buf=buf.trim();
+            		 if(count == 0){
+            			 playerCount = Integer.valueOf(buf);
+            			 count = count + 1;
+            			 continue;
+            		 }
+            		 else if(count == 1){
+            			 assistantCount = Integer.valueOf(buf);
+            			 count = count + 1;
+            			 continue;
+            		 }
+            		 else if(count == 2){
+            			 groupCount = Integer.valueOf(buf);
+            			 count = count + 1;
+            			 continue;
+            		 }
+            		 else if(count == 3){
+            			 firstID = Integer.valueOf(buf);
+            			 count = count + 1;
+            			 break;
+            		 }
+            	 }
+            	 while ((buf=br.readLine()) != null && count >= 4){
+            		 buf=buf.trim();
+ 		             String[] sa = buf.split(":|\\s");
+ 		             int bpreis = Integer.valueOf(sa[0]);
+ 		             Amount bAmount =  new Amount(Integer.valueOf(sa[1]),Integer.valueOf(sa[2]));
+ 		             // int banteil = Integer.valueOf(sa[1]);
+ 		             int spreis = Integer.valueOf(sa[3]);
+ 		             Amount sAmount = new Amount(Integer.valueOf(sa[4]),Integer.valueOf(sa[5]));
+ 		             //int santeil = Integer.valueOf(sa[3]);
+ 		            
+ 		             bDistributionLoad.put(bpreis, bAmount);
+ 		             sDistributionLoad.put(spreis, sAmount);
+            	 }
+            	 System.out.println(playerCount);
+    			 System.out.println(assistantCount);
+    			 System.out.println(groupCount);
+    			 System.out.println(firstID);
+    			 
+            	 kms.getConfiguration().setPlayerCount(playerCount);
+    	    	 kms.getConfiguration().setAssistantCount(assistantCount);
+    	    	 kms.getConfiguration().setGroupCount(groupCount);
+    	    	 kms.getConfiguration().setFirstID(firstID);
+    	    	 kms.getConfiguration().setbDistribution(bDistributionLoad);
+    			 kms.getConfiguration().setsDistribution(sDistributionLoad);
+    			 
+    			 
+         }else 
+             throw new EmptyFileException("load file can not be empty!");
+    	
+    }
+
 	
-		public void load(String fileurl) throws NumberFormatException, IOException{
-			 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileurl)));
-			 String buf = "";
-			 Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
-			 Map<Integer, Amount> sDistributionLoad = new TreeMap<>();
-			 int count = 0;
-			 while ((buf=br.readLine()) != null) {
-				 	buf=buf.trim();
-		            String[] sa = buf.split(":|\\s");
-		            int bpreis = Integer.valueOf(sa[0]);
-		            Amount bAmount =  new Amount(Integer.valueOf(sa[1]),Integer.valueOf(sa[2]));
-		           // int banteil = Integer.valueOf(sa[1]);
-		            int spreis = Integer.valueOf(sa[3]);
-		            Amount sAmount = new Amount(Integer.valueOf(sa[4]),Integer.valueOf(sa[5]));
-		            //int santeil = Integer.valueOf(sa[3]);
-		            
-		            bDistributionLoad.put(bpreis, bAmount);
-		            sDistributionLoad.put(spreis, sAmount);
-		            count = count + 1;
-		     }
-			 kms.getConfiguration().setbDistribution(bDistributionLoad);
-			 kms.getConfiguration().setsDistribution(sDistributionLoad);
-			 kms.getConfiguration().setGroupCount(count);
-		}
 		
 		//defalt path:Users/yangxinyu/git/jKMS
 		public boolean save(String path){
