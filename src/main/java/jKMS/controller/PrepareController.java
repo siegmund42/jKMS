@@ -224,7 +224,12 @@ public class PrepareController extends AbstractServerController {
 			kms.getConfiguration().setGroupCount(i);
 			
 			// Generate Cards-Set
-			kms.getState().generateCards();
+			
+			try{
+				kms.getState().generateCards();
+				}catch (Exception e) {
+					e.printStackTrace();	
+				}
 			
 			// TODO discuss Folder Structure and change to correct folder
 			String path = servletContext.getRealPath(".").concat("config.txt");

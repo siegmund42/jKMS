@@ -8,9 +8,14 @@ import java.util.Set;
 import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.LogicHelper;
 import jKMS.cards.Card;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.SellerCard;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
+import jKMS.exceptionHelper.WrongRelativeDistributionException;
 
 public class Playthrough extends State{
 	
@@ -21,10 +26,16 @@ public class Playthrough extends State{
 	//removeCard
 	//removes all cards from the given package (pack)
 	//beginning with lastId up to its size
-	public boolean removeCard(char pack, int lastId){
+	public boolean removeCard(char pack, int lastId) throws WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{
 		Set<Card> oldSet = new LinkedHashSet<Card>(kms.getCards());
 		Map<Integer, Amount> distrib;
 		Integer key;
+		
+		//test is there a conform configuration?
+		if(kms.getPlayerCount() != (LogicHelper.getAbsoluteSum(kms.getbDistribution()) +  LogicHelper.getAbsoluteSum(kms.getsDistribution())))throw new WrongPlayerCountException();
+		if(kms.getAssistantCount() <= 0)throw new WrongAssistantCountException();
+		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
+		if((LogicHelper.getRelativeSum(kms.getbDistribution()) +  LogicHelper.getRelativeSum(kms.getsDistribution())) != 200) throw new WrongRelativeDistributionException();
 		
 		for(Card iter : oldSet){
 			//Check if card must be removed (Id is higher than lasdId)
