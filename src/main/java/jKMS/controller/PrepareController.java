@@ -143,7 +143,9 @@ public class PrepareController extends AbstractServerController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "error?e=" + e.toString();
+			model.addAttribute("message", e.getMessage());
+			model.addAttribute("error", e.getClass().toString());
+			return "error";
 		}
 		return "redirect:/prepare2";
 	}
