@@ -52,7 +52,8 @@ public class ServerController extends AbstractServerController	{
 		kms.getConfiguration().setAssistantCount(0);
 		kms.getConfiguration().setbDistribution(new TreeMap<Integer, Amount>());
 		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());
-		
+		kms.prepare();
+		System.out.println("Reseted all data.");
 		return "redirect:/index";
 	}
 }

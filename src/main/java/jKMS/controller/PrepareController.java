@@ -32,7 +32,9 @@ public class PrepareController extends AbstractServerController {
 			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "prepare");
 		}	catch(Exception e)	{
 			e.printStackTrace();
-			return "error?e=" + e.toString();
+			model.addAttribute("message", e.getMessage());
+			model.addAttribute("error", e.getClass().toString());
+			return "error";
 		}
 		
 		if(stateChangeSuccessful)	{
@@ -55,8 +57,15 @@ public class PrepareController extends AbstractServerController {
 		
 		// Check some things to ensure Data are valid
 		if(numberOfPlayers != "" && numberOfAssistants != "")	{
-			int players = Integer.parseInt(numberOfPlayers);
-			int assistants = Integer.parseInt(numberOfAssistants);
+			int players, assistants;
+			try	{
+				players = Integer.parseInt(numberOfPlayers);
+				assistants = Integer.parseInt(numberOfAssistants);
+			}	catch(Exception e)	{
+				e.printStackTrace();
+				model.addAttribute("error", "fraction");
+				return "prepare1";
+			}
 			
 			if(players > 0 && players <= 8999 && players % 2 == 0 && 
 					assistants > 0 && assistants <= 26 && assistants % 1 == 0)	{
@@ -161,7 +170,7 @@ public class PrepareController extends AbstractServerController {
 							@RequestParam(value = "sAbsoluteQuantity[]") String[] sAbsoluteQuantity)	{
 		
 		int i;
-		boolean error = false;
+		String error = "";
 		
 		// Delete current Maps so they can be completely rewritten.
 		kms.getbDistribution().clear();
@@ -174,37 +183,43 @@ public class PrepareController extends AbstractServerController {
 			if(cPrice[i] != "" && cRelativeQuantity[i] != "" && cAbsoluteQuantity[i] != "" &&
 					sPrice[i] != "" && sRelativeQuantity[i] != "" && sAbsoluteQuantity[i] != "")	{
 			
-				int cP = Integer.parseInt(cPrice[i]);
-				int cR = Integer.parseInt(cRelativeQuantity[i]);
-				int cA = Integer.parseInt(cAbsoluteQuantity[i]);
-				int sP = Integer.parseInt(sPrice[i]);
-				int sR = Integer.parseInt(sRelativeQuantity[i]);
-				int sA = Integer.parseInt(sAbsoluteQuantity[i]);
-				
-				// Checking again....
-				if(	cP > 0 && cP % 1 == 0 && 
-						cR > 0 && cR <= 100 && cR % 1 == 0 &&
-						cA > 0 && cA <= kms.getPlayerCount() && cA % 1 == 0 &&
-						sP > 0 && sP % 1 == 0 && 
-						sR > 0 && sR <= 100 && sR % 1 == 0 &&
-						sA > 0 && sA <= kms.getPlayerCount() && sA % 1 == 0)	{
+				try	{
+					int cP = Integer.parseInt(cPrice[i]);
+					int cR = Integer.parseInt(cRelativeQuantity[i]);
+					int cA = Integer.parseInt(cAbsoluteQuantity[i]);
+					int sP = Integer.parseInt(sPrice[i]);
+					int sR = Integer.parseInt(sRelativeQuantity[i]);
+					int sA = Integer.parseInt(sAbsoluteQuantity[i]);
 					
-					// Data valid -> store in Logic
-					kms.getState().newGroup(true, cP, cR, cA);
-					kms.getState().newGroup(false, sP, sR, sA);
+					// Checking again....
+					if(	cP > 0 && cP % 1 == 0 && 
+							cR > 0 && cR <= 100 && cR % 1 == 0 &&
+							cA > 0 && cA <= kms.getPlayerCount() && cA % 1 == 0 &&
+							sP > 0 && sP % 1 == 0 && 
+							sR > 0 && sR <= 100 && sR % 1 == 0 &&
+							sA > 0 && sA <= kms.getPlayerCount() && sA % 1 == 0)	{
+						
+						// Data valid -> store in Logic
+						kms.getState().newGroup(true, cP, cR, cA);
+						kms.getState().newGroup(false, sP, sR, sA);
 					
-				}	else	{
-					error = true;
+					}	else	{
+						error = "generate";
+						break;
+					}
+				}	catch(Exception e)	{
+					e.printStackTrace();
+					error = "generate.fraction";
 					break;
 				}
 				
 			}	else	{
-				error = true;
+				error = "generate.empty";
 				break;
 			}
 		}
 		
-		if(!error)	{
+		if(error == "")	{
 			// Set Group Count [hidden field].
 			kms.getConfiguration().setGroupCount(i);
 			
@@ -232,7 +247,7 @@ public class PrepareController extends AbstractServerController {
 			}
 			model.addAttribute("customerConfiguration", cConf);
 			model.addAttribute("customerConfiguration", sConf);
-			model.addAttribute("error", "distribution");
+			model.addAttribute("error", error);
 			model.addAttribute("groupQuantity", kms.getGroupCount());
 			model.addAttribute("isStandard", false);
 			return "prepare2";

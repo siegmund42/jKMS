@@ -18,8 +18,8 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (contract)">
 	 	</div>	
-	 	<!-- <div class="error" th:if="${error}" th:text="#{contract.error.__${error}__}">
-        </div> -->
+	 	<div class="error" th:if="${error}" th:text="#{error.contract.__${error}__}">
+        </div>
         <div th:if="${param.success}" th:text="#{contract.success}">
            	Kaufvertrag erfolgreich übermittelt.
         </div>

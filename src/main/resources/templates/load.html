@@ -12,13 +12,15 @@
     /*<![CDATA[*/
     	var pack = /*[[#{load.package}]]*/;
     	var firstID = /*[[${firstID}]]*/;
-    	var playerCount = /*[[${playerCount}]]*/;
+    	var numberOfPlayers = /*[[${numberOfPlayers}]]*/;
+    	var percent = /*[[#{prepare.percent}]]*/ 'Anteil';
+    	var currency = /*[[#{prepare.currency}]]*/ 'Preis';
     /*]]>*/
     </script>
     <script th:src="@{/js/script.js}"></script>
     
 </head>
- <body th:onload="(${param.s} AND ${param.s[0]} == 2)? 'createExcludeFields(' + ${numberOfAssistants} + ');'">
+ <body th:onload="(${param.s} AND ${param.s[0]} == 2)? 'createExcludeFields(' + ${numberOfAssistants} + ');' : 'updateArrangement();'">
  	<div id="toolBar">
  		<div id="path">
  			<div th:class="step" th:id="(${param.s[0]} == 1)? 'step_active'" th:text="#{path.load.step1}"></div>
@@ -53,6 +55,65 @@
 		 	<div th:text="${ip} + ':' + ${port}"></div>
 		 	<br />
 		 	<div style="width: 500px;margin: auto;" th:text="#{load.hintAddress}"></div>
+		 	<br />
+		 	<!-- Display Game Data ###################################################### -->
+		 	
+		 	<h3 th:text="#{load.hintWhichLoaded}"></h3>
+		 	<br />
+		 	<div th:text="#{prepare.numberOfPlayers} + ': ' + ${numberOfPlayers}"></div>
+		 	<div th:text="#{prepare.numberOfAssistants} + ': ' + ${numberOfAssistants}"></div>
+		 	<br />
+		 	<h3 th:text="#{prepare.customerGroups}" style="float: left;">Käufergruppen</h3>
+			<h3 th:text="#{prepare.salesmanGroups}" style="float: right;">Verkäufergruppen</h3>
+			<p style="clear: both;"></p>
+			<div id="customerTable" class="arrangementTable">
+				<div class="row">
+					<div class="cell" th:text="#{prepare.relativeQuantity}"></div>
+					<div class="cell" th:text="#{prepare.price}"></div>
+					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
+				</div>
+				<div class="row" th:each="customer,iter : ${customerConfiguration}">
+					<div class="cell">
+						<input type="number" name="cRelativeQuantity[]" th:id="'cRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${customer.value.relative}" readonly="readonly"/>
+					</div>
+					<div class="cell">
+						<input type="number" name="cPrice[]" th:placeholder="#{prepare.currency}" th:value="${customer.key}" readonly="readonly"/>
+					</div>
+					<div class="cell">
+						<input type="number" name="cAbsoluteQuantity[]" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="cell" id="customerTotalRelative"></div>
+					<div class="cell" th:text="#{prepare.total}"></div>
+					<div class="cell" id="customerTotalAbsolute"></div>
+				</div>
+			</div>
+			<div id="salesmanTable" class="arrangementTable">
+				<div class="row">
+					<div class="cell" th:text="#{prepare.relativeQuantity}"></div>
+					<div class="cell" th:text="#{prepare.price}"></div>
+					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
+				</div>
+				<div class="row" th:id="'row' + ${iter.count}" th:each="salesman,iter : ${salesmanConfiguration}">
+					<div class="cell">
+						<input type="number" name="sRelativeQuantity[]" th:id="'sRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${salesman.value.relative}" readonly="readonly" />
+					</div>
+					<div class="cell">
+						<input type="number" name="sPrice[]" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" readonly="readonly" />
+					</div>
+					<div class="cell">
+						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="cell" id="salesmanTotalRelative"></div>
+					<div class="cell" th:text="#{prepare.total}"></div>
+					<div class="cell" id="salesmanTotalAbsolute"></div>
+				</div>
+			</div>
+			<p style="clear: both;"></p>
+			<input type="hidden" id="groupQuantity" name="groupQuantity" th:value="${groupQuantity}" />
 		 	<br />
 		 	<a href="/load.html?s=2" th:text="#{load.goOn}" th:onclick="'if(!confirm(\'' + #{load.confirm} + '\')) return false;'">Weiter</a>
 	 	</div>

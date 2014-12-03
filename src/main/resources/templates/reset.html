@@ -26,8 +26,8 @@
 	 	</div>
 	 	<div th:text="#{reset.hint}"></div>
 		<a href="javascript:history.go(-1);" th:text="#{reset.back}"></a>
-		<form name="reset" method="POST" action="reset.html">
-		<input type="submit" th:value="#{reset.back}" />
+		<form name="reset" method="POST" th:action="reset.html">
+			<input type="submit" th:value="#{reset.proceed}" />
 		</form>
 	</div>
  </body>
