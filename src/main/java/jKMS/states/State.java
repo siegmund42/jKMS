@@ -29,6 +29,6 @@ public abstract class State {
 	public Contract pickWinner(){ return null; } // DONE
 	public int buyerProfit(Contract contract){ return 0; } // DONE
 	public int sellerProfit(Contract contract){ return 0; } // DONE
-	public boolean save(String path){ return false; }
+	public boolean save(String path) throws IOException{ return false; }
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{}
 }   

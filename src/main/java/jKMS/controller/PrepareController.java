@@ -2,6 +2,7 @@ package jKMS.controller;
 
 import jKMS.Amount;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -140,7 +141,12 @@ public class PrepareController extends AbstractServerController {
 		try {
 			kms.getState().load(file);
 			System.out.println("load successfull");
-		} catch (Exception e) {
+		} catch(NumberFormatException e){
+			e.printStackTrace();
+			model.addAttribute("message", "Bitte die load file nicht verändern,die Nummer kann nicht String sein");
+			model.addAttribute("error", e.getClass().toString());
+			return "error";
+		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			model.addAttribute("message", e.getMessage());
@@ -215,7 +221,12 @@ public class PrepareController extends AbstractServerController {
 			String path = servletContext.getRealPath(".").concat("config.txt");
 			
 			// Save Config File automatically
-			kms.getState().save(path);
+		  try{
+				kms.getState().save(path);
+		  }catch(IOException e){
+			  e.printStackTrace();
+				return "error?e=" + e.toString();	
+		  }
 			
 			// Add path to model
 			model.addAttribute("configSavePath", path);
