@@ -1,5 +1,8 @@
 package jKMS;
 
+import java.util.Map;
+import java.util.Set;
+
 
 
 
@@ -44,4 +47,14 @@ public class LogicHelper {// have static function to help implementation logic
 		
 		return packd;
 	}
+	
+	//sum up all absolute players in one distribution
+	public static int getAbsoluteSum(Map<Integer, Amount> distribution){
+		int sum=0;
+			Set<Integer> d = distribution.keySet();
+			for(int i : d){
+				sum = sum + distribution.get(i).getAbsolute();
+				}
+		return sum;
+		}
 }

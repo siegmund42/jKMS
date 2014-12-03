@@ -85,7 +85,13 @@ public class PreparationTest {
 		
 		kms.getState().setBasicConfig(20, 5);
 		
+		try{
 		kms.getState().generateCards();
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());		
+		}
+		
 		Pdf pdf = new Pdf();
 		Document documentSeller = new Document();
 		Document documentBuyer = new Document();
@@ -100,11 +106,12 @@ public class PreparationTest {
 			pdf.createPdfCardsBuyer(documentBuyer,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
 			documentBuyer.close();
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		}catch (Exception e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			
 		}
 	}
-	
 	@Test
 	//TODO testSave
 	public void testSave(){
@@ -120,9 +127,23 @@ public class PreparationTest {
 		int i = 0;
 		
 		do{
-			kms.getState().generateCards();
+			
+			try{
+				kms.getState().generateCards();
+				}catch (Exception e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());		
+				}
+			
 			s1 = kms.getCards();
-			kms.getState().generateCards();
+			
+			try{
+				kms.getState().generateCards();
+				}catch (Exception e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());		
+				}
+			
 			s2 = kms.getCards();
 			i++;
 		} while(s1 == s2 && i<3);

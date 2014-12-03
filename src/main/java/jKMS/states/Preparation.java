@@ -5,6 +5,9 @@ import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.SellerCard;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
 import jKMS.LogicHelper;
 
 import java.io.BufferedReader;
@@ -176,7 +179,7 @@ public class Preparation extends State{
 	// Generate an ordered, random Set of Cards using
 	// bDistribution and sDistribution
 	
-	public void generateCards() {
+	public void generateCards() throws WrongAssistantCountException, WrongFirstIDException, WrongPlayerCountException {
 		// DECLARATION
 		
 		//for put seller and buyer distribution
@@ -198,6 +201,14 @@ public class Preparation extends State{
 		kms.getCards().clear();
 
 		// IMPLEMENTATION
+		
+		//test is there a conform configuration?
+		if(kms.getPlayerCount() != (LogicHelper.getAbsoluteSum(bTemp) +  LogicHelper.getAbsoluteSum(sTemp)))throw new WrongPlayerCountException();
+		if(kms.getAssistantCount() <= 0)throw new WrongAssistantCountException();
+		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
+		
+		
+		
 		
 		//put seller and buyer distribution and put packages
 		i =0;

@@ -11,16 +11,19 @@ import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
 
 public abstract class State {
 	protected Kartoffelmarktspiel kms;
 	
 	public void loadStandardDistribution(){} // LUKAS - DONE
-	public void generateCards(){} // JUSTUS - DONE
+	public void generateCards() throws WrongFirstIDException, WrongAssistantCountException, WrongPlayerCountException{} // JUSTUS - DONE
 	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber){} // DONE
 	public void setBasicConfig(int playerCount, int assistantCount){} // DOMINIK DONE
 	public String createPDF(Document document, boolean isBuyer){ return ""; } // JUSTUS
-	public boolean removeCard(char pack, int lastId){ return false; } //DOMNINIK DONE
+	public boolean removeCard(char pack, int lastId) throws WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException{ return false; } //DOMNINIK DONE
 	public int addContract(int id1, int id2, int price){ return 0; } // XINYU
 																			
 	public float equilibriumPrice(){ return 0; } // TIMON

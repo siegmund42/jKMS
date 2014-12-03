@@ -32,7 +32,13 @@ public class EvaluationTest {
 		
 		kms.getState().setBasicConfig(800, 10);
 		kms.getState().loadStandardDistribution();
-		kms.getState().generateCards();
+		
+		try{
+			kms.getState().generateCards();
+			}catch (Exception e) {
+				e.printStackTrace();	
+			}
+		
 		
 		//Playthrough
 		kms.play();
