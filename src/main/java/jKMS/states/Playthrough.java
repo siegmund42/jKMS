@@ -35,7 +35,7 @@ public class Playthrough extends State{
 		if(kms.getPlayerCount() != (LogicHelper.getAbsoluteSum(kms.getbDistribution()) +  LogicHelper.getAbsoluteSum(kms.getsDistribution())))throw new WrongPlayerCountException();
 		if(kms.getAssistantCount() <= 0)throw new WrongAssistantCountException();
 		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
-		if((LogicHelper.getRelativeSum(kms.getbDistribution()) +  LogicHelper.getRelativeSum(kms.getsDistribution())) != 100) throw new WrongRelativeDistributionException();
+		if((LogicHelper.getRelativeSum(kms.getbDistribution()) +  LogicHelper.getRelativeSum(kms.getsDistribution())) != 200) throw new WrongRelativeDistributionException();
 		
 		for(Card iter : oldSet){
 			//Check if card must be removed (Id is higher than lasdId)

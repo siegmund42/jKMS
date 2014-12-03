@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 
@@ -15,6 +16,10 @@ import java.util.Set;
 
 
 
+
+
+
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -36,20 +41,41 @@ public class Pdf {
 	private static Font redFont = new Font(Font.FontFamily.COURIER, 12,
 		      Font.NORMAL);
 	
-	private String title;
+	private String cardtitle;
 	private String value;
 	private String id;
 	
-	public Pdf(){}
+	public Pdf(){// to catch crashes
+		this.cardtitle = "Default";
+		this.value = "Default";
+		this.id = "Default";
+	}
 
 	public void createPdfCardsSeller(Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
     	//PRINT
 		
-		title = "Seller";
-		value = "costs: ";
-		id = "ID: ";
+		
+        Properties prop = new Properties();
+        Locale locale = LocaleContextHolder.getLocale(); // get Sprache
+        try {
+            prop.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
+        	}
+        	catch (IOException ioe) {
+        		System.out.println(ioe);
+        		try {
+        			prop.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
+        			}
+        			catch (IOException ioe1) {
+        				System.out.println(ioe1);
+        			}
+        	}
+        
+		cardtitle = prop.getProperty("PDFSeller.cardtitle");
+        value = prop.getProperty("PDFSeller.value") + ": ";
+		id = prop.getProperty("PDF.id") + ": ";
+		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
         Set<Card> printcards = new LinkedHashSet<Card>(); // add first all cards + package idendifikationsites in one Set
@@ -162,7 +188,7 @@ public class Pdf {
         
     	if(isTop){
     		content.setSpacingBefore(100);
-            content.setSpacingAfter(100);
+            content.setSpacingAfter(150);
     		if(card.getId() == -42 && card.getValue() == 0){
                 content.setSpacingAfter(200);
     		}
@@ -171,7 +197,7 @@ public class Pdf {
     	}
     	
         if((card.getId() != -42) && (card.getValue() != 0)){
-        	Chunk cTitle = new Chunk(title,catFont);
+        	Chunk cTitle = new Chunk(cardtitle,catFont);
         	content.add(cTitle);
         	content.add(Chunk.NEWLINE);
         	Chunk cValue = new Chunk(this.value + card.getValue() +"€");
@@ -197,10 +223,24 @@ public class Pdf {
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
     	//PRINT
-		
-		title = "Buyer";
-		value = "price: ";
-		id = "ID: ";
+        Properties prop = new Properties();
+        Locale locale = LocaleContextHolder.getLocale(); // get Sprache
+        try {
+            prop.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
+        	}
+        	catch (IOException ioe) {
+        		System.out.println(ioe);
+        		try {
+        			prop.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
+        			}
+        			catch (IOException ioe1) {
+        				System.out.println(ioe1);
+        			}
+        	}
+        
+		cardtitle = prop.getProperty("PDFBuyer.cardtitle");
+        value = prop.getProperty("PDFBuyer.value") + ": ";
+		id = prop.getProperty("PDF.id") + ": ";
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom

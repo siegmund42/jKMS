@@ -207,7 +207,7 @@ public class Preparation extends State{
 		if(kms.getPlayerCount() != (LogicHelper.getAbsoluteSum(bTemp) +  LogicHelper.getAbsoluteSum(sTemp)))throw new WrongPlayerCountException();
 		if(kms.getAssistantCount() <= 0)throw new WrongAssistantCountException();
 		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
-		if((LogicHelper.getRelativeSum(bTemp) +  LogicHelper.getRelativeSum(sTemp)) != 100) throw new WrongRelativeDistributionException();
+		if((LogicHelper.getRelativeSum(bTemp) +  LogicHelper.getRelativeSum(sTemp)) != 200) throw new WrongRelativeDistributionException(); // muss in der summe 200 ergeben, da jede distribution in sich 100 ergibt
 		
 		
 		

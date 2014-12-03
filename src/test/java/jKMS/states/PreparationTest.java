@@ -46,10 +46,10 @@ public class PreparationTest {
 		Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
 		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
 		
-		bDistrib.put(3, new Amount(33, 2));
-		bDistrib.put(4, new Amount(16, 1));
-		sDistrib.put(3, new Amount(33, 2));
-		sDistrib.put(4, new Amount(16, 1));
+		bDistrib.put(3, new Amount(50, 2));
+		bDistrib.put(4, new Amount(50, 1));
+		sDistrib.put(3, new Amount(50, 2));
+		sDistrib.put(4, new Amount(50, 1));
 		
 		kms.getConfiguration().setbDistribution(bDistrib);
 		kms.getConfiguration().setsDistribution(sDistrib);
@@ -66,17 +66,17 @@ public class PreparationTest {
 	public void testLoad(){
 		
 	}
-	
+
 	@Test
 	public void testCreatePdfCardsSeller(){
 		
 		Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
 		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
 		
-		bDistrib.put(5, new Amount(33, 5));
-		bDistrib.put(4, new Amount(16, 5));
-		sDistrib.put(3, new Amount(33, 5));
-		sDistrib.put(2, new Amount(16, 5));
+		bDistrib.put(5, new Amount(50, 5));
+		bDistrib.put(4, new Amount(50, 5));
+		sDistrib.put(3, new Amount(50, 5));
+		sDistrib.put(2, new Amount(50, 5));
 		
 		kms.getConfiguration().setbDistribution(bDistrib);
 		kms.getConfiguration().setsDistribution(sDistrib);
@@ -96,11 +96,11 @@ public class PreparationTest {
 		Document documentSeller = new Document();
 		Document documentBuyer = new Document();
 		try {
+			
 			PdfWriter.getInstance(documentSeller, new FileOutputStream("/home/justus/documentseller.pdf")); 
 			documentSeller.open();
 			pdf.createPdfCardsSeller(documentSeller,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
 			documentSeller.close();
-			
 			PdfWriter.getInstance(documentBuyer, new FileOutputStream("/home/justus/documentbuyer.pdf")); 
 			documentBuyer.open();
 			pdf.createPdfCardsBuyer(documentBuyer,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());

@@ -39,11 +39,11 @@ public class PlaythroughTest {
 		kms.getState().setBasicConfig(10, 1);
 		kms.getConfiguration().setFirstID(1001);
 		
-		//Setup Distribution
+		//Setup Distribution pro distribution 100 % because eingabemaske
 		kms.getState().newGroup(true, 2, 20, 2);
 		kms.getState().newGroup(true, 3, 20, 2);
-		kms.getState().newGroup(true, 4, 10, 1);
-		kms.getState().newGroup(false, 2, 10, 1);
+		kms.getState().newGroup(true, 4, 60, 1);
+		kms.getState().newGroup(false, 2, 60, 1);
 		kms.getState().newGroup(false, 3, 20, 2);
 		kms.getState().newGroup(false, 4, 20, 2);
 		
