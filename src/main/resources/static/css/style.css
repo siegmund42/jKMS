@@ -54,25 +54,9 @@ noscript div	{
 	margin:			0;
 }
 
-input[type=number]:disabled	{
-	width:			auto;
-	border:			0;
-	box-shadow:		none;
-	background:		none;
-    -moz-appearance:textfield;
-    font-size:		100%;
-    color:			black;
-    text-align:		center;
-}
-
-input[type=number]:focus:disabled	{
-	box-shadow:		none;
-}
-
-input[type=number]:disabled::-webkit-outer-spin-button,
-input[type=number]:disabled::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.errorDiv	{
+	color:			red;
+	font-size:		120%;
 }
 
 .form	{
@@ -191,6 +175,29 @@ input[type="text"], input[type="password"],
 input[type="text"]:focus, input[type="password"]:focus,
  input[type="email"]:focus, input[type="number"]:focus, textarea:focus	{
 	box-shadow:			0px 0px 5px #999;
+}
+
+input[readonly="readonly"], input[readonly]	{
+	width:			auto;
+	border:			0;
+	box-shadow:		none;
+	background:		none;
+    -moz-appearance:textfield;
+    font-size:		100%;
+    color:			black;
+    text-align:		center;
+}
+
+input[readonly="readonly"]:focus, input[readonly]:focus	{
+	box-shadow:		none;
+}
+
+input[readonly="readonly"]::-webkit-outer-spin-button,
+input[readonly]::-webkit-outer-spin-button,
+input[readonly="readonly"]::-webkit-inner-spin-button,
+input[readonly]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .round	{

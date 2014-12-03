@@ -5,6 +5,15 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		updateSum();
     }
 	
+	function updateAbsolutes()	{
+    	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
+    		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
+	    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = (document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
+	    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = (document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
+    		}
+    	}
+	}
+	
 	function updateSum()	{
 		var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0, i = 1;
 		
@@ -24,7 +33,6 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     	
     	isHundred();
     		
-    	
 	}
 	
 	function isHundred()	{
@@ -53,15 +61,6 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 			return true;
 		}
 		
-	}
-	
-	function updateAbsolutes()	{
-    	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
-    		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
-	    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = (document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
-	    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = (document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
-    		}
-    	}
 	}
 
 	function addRow()	{
@@ -105,7 +104,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 
 		var input = document.createElement('input');
 		input.setAttribute('type', 'number');
-		input.setAttribute('disabled', true);
+		input.setAttribute('readonly', 'readonly');
 		input.setAttribute('name', 'cAbsoluteQuantity[]');
 		input.setAttribute('id', 'cAbsoluteQuantity[' + (rows*1 + 1) + ']');
 		
@@ -180,7 +179,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 
 		var input = document.createElement('input');
 		input.setAttribute('type', 'number');
-		input.setAttribute('disabled', true);
+		input.setAttribute('readonly', 'readonly');
         input.setAttribute('name', 'sAbsoluteQuantity[]');
         input.setAttribute('id', 'sAbsoluteQuantity[' + (rows*1 + 1) + ']');
 		
@@ -328,11 +327,11 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var coll = document.getElementById(form).elements;
 		
-		var inputs;
+		var inputs = [];
 		
 		for(var i = 0; i < coll.length; i++)	{
-			if((coll[i].type == "number" || coll[i].type == "text" || coll[i].type == "password") && coll[i].disabled == "false")
-				inputs[i] = coll[i];
+			if((coll[i].type == "number" || coll[i].type == "text" || coll[i].type == "password") && coll[i].readOnly == false)
+				inputs[inputs.length] = coll[i];
 		}
 		
 		for(var i = 0; i < inputs.length && inputs[i] != null; i++)	{
@@ -401,11 +400,11 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 		
 		var coll = document.getElementById(element).elements;
 		
-		var inputs;
+		var inputs = [];
 		
 		for(var i = 0; i < coll.length; i++)	{
-			if(coll[i].type == "number" && coll[i].disabled == "false")
-				inputs[i] = coll[i];
+			if(coll[i].type == "number" && coll[i].readOnly == false)
+				inputs[inputs.length] = coll[i];
 		}
 		
 		

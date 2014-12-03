@@ -16,7 +16,7 @@ public class EvaluationController extends AbstractServerController {
 		boolean stateChangeSuccessful = true;
 		
 		try	{
-			ControllerHelper.stateHelper(kms, "evaluate");
+			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
 		}	catch(Exception e)	{
 			e.printStackTrace();
 			return "error?e=" + e.toString();
@@ -48,7 +48,7 @@ public class EvaluationController extends AbstractServerController {
 		boolean stateChangeSuccessful = true;
 		
 		try	{
-			ControllerHelper.stateHelper(kms, "evaluate");
+			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
 		}	catch(Exception e)	{
 			e.printStackTrace();
 			return "error?e=" + e.toString();

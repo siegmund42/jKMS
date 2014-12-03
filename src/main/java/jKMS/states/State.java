@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.itextpdf.text.Document;
 
+import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 
