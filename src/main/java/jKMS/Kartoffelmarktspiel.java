@@ -23,7 +23,7 @@ public class Kartoffelmarktspiel {
 	private Configuration configuration;
 	private Set<Card> cards;
 	private Kartoffelmarktspiel instance;
-
+    
 	// DEFAULT CONSTRUCTOR
 	private Kartoffelmarktspiel() {
 		// load default settings from file
@@ -69,6 +69,7 @@ public class Kartoffelmarktspiel {
 		return cards;
 	}
 	
+	
 	public Set<Contract> getContracts(){
 		return contracts;
 	}
@@ -80,7 +81,6 @@ public class Kartoffelmarktspiel {
 	public void setCards(Set<Card> cards) {
 		this.cards = cards;
 	}
-	
 	
 	// GETTERS FOR CONFIGURATION
 	

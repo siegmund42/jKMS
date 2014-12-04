@@ -2,6 +2,13 @@ package jKMS.controller;
 
 import jKMS.LogicHelper;
 
+import jKMS.LogicHelper;
+import jKMS.cards.Card;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
+import jKMS.exceptionHelper.WrongRelativeDistributionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,6 +128,13 @@ public class PlaythroughController extends AbstractServerController {
 					model.addAttribute("error", "exclude.empty");
 					return "load";
 				}
+			}	catch (WrongPlayerCountException | WrongAssistantCountException
+					| WrongFirstIDException
+					| WrongRelativeDistributionException e) {
+				e.printStackTrace();
+				model.addAttribute("message", e.getMessage());
+				model.addAttribute("error", e.getClass().toString());
+				return "error";
 			}	catch(Exception e)	{
 				e.printStackTrace();
 				model.addAttribute("error", "exclude.fraction");
