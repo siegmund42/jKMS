@@ -91,23 +91,24 @@ public class Preparation extends State{
             	 int count = 0;
             	 while ((buf=br.readLine()) != null && count < 4) {
             		 buf=buf.trim();
+            		 String[] sa = buf.split(":|\\s");
             		 if(count == 0){
-            			 playerCount = Integer.valueOf(buf);
+            			 playerCount = Integer.valueOf(sa[1].trim());
             			 count = count + 1;
             			 continue;
             		 }
             		 else if(count == 1){
-            			 assistantCount = Integer.valueOf(buf);
+            			 assistantCount = Integer.valueOf(sa[1].trim());
             			 count = count + 1;
             			 continue;
             		 }
             		 else if(count == 2){
-            			 groupCount = Integer.valueOf(buf);
+            			 groupCount = Integer.valueOf(sa[1].trim());
             			 count = count + 1;
             			 continue;
             		 }
             		 else if(count == 3){
-            			 firstID = Integer.valueOf(buf);
+            			 firstID = Integer.valueOf(sa[1].trim());
             			 count = count + 1;
             			 break;
             		 }
@@ -116,11 +117,11 @@ public class Preparation extends State{
             		 if( (buf=br.readLine()) != null){
 	            		 buf=buf.trim();
 	 		             String[] sa = buf.split(":|\\s");
-	 		             int bpreis = Integer.valueOf(sa[0]);
-	 		             Amount bAmount =  new Amount(Integer.valueOf(sa[1]),Integer.valueOf(sa[2]));
+	 		             int bpreis = Integer.valueOf(sa[1].trim());
+	 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
 	 		             // int banteil = Integer.valueOf(sa[1]);
-	 		             int spreis = Integer.valueOf(sa[3]);
-	 		             Amount sAmount = new Amount(Integer.valueOf(sa[4]),Integer.valueOf(sa[5]));
+	 		             int spreis = Integer.valueOf(sa[5].trim());
+	 		             Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
 	 		             //int santeil = Integer.valueOf(sa[3]);
 	 		            
 	 		             bDistributionLoad.put(bpreis, bAmount);
@@ -134,10 +135,10 @@ public class Preparation extends State{
             		 Card card;
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
-            		 if((Integer.valueOf(sa[0])%2) == 0){
-            			card = new BuyerCard(Integer.valueOf(sa[0]),Integer.valueOf(sa[1]),sa[2].charAt(0));
+            		 if((Integer.valueOf(sa[1])%2) == 0){
+            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
             		 }else {
-            			card = new SellerCard(Integer.valueOf(sa[0]),Integer.valueOf(sa[1]),sa[2].charAt(0));
+            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
             		 }
             		 cardSet.add(card);
             	 }
@@ -174,7 +175,10 @@ public class Preparation extends State{
 					   String line = System.getProperty("line.separator");
 					   StringBuffer str = new StringBuffer();
 					   FileWriter fw = new FileWriter(path, false);
-					   str.append(kms.getConfiguration().getPlayerCount()).append(line).append(kms.getConfiguration().getAssistantCount()).append(line).append(kms.getConfiguration().getGroupCount()).append(line).append(kms.getConfiguration().getFirstID()).append(line);
+					   str.append("PlayerCount:").append(kms.getConfiguration().getPlayerCount()).append(line)
+					   .append("AssistantCount:").append(kms.getConfiguration().getAssistantCount()).append(line)
+					   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
+					   .append("FirstID:").append(kms.getConfiguration().getFirstID()).append(line);
 					   
 					   Set bSet = bDistributionSave.entrySet();
 					   Set sSet = sDistributionSave.entrySet();
@@ -184,14 +188,14 @@ public class Preparation extends State{
 						   Map.Entry bEntry = (Map.Entry)bIter.next(); 
 						   Map.Entry sEntry = (Map.Entry)sIter.next(); 
 					    
-						   str.append(bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
-								   " "+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
+						   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
+								   " "+"sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
 					   }
 					   Set cardSet = kms.getCards();
 					   Iterator cardIter = cardSet.iterator();
 					   while(cardIter.hasNext()){
 						   Card card = (Card) cardIter.next();
-						   str.append(card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
+						   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
 					   }
 					   fw.write(str.toString());
 					   fw.close();
