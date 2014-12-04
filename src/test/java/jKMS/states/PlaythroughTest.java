@@ -39,15 +39,20 @@ public class PlaythroughTest {
 		kms.getState().setBasicConfig(10, 1);
 		kms.getConfiguration().setFirstID(1001);
 		
-		//Setup Distribution
+		//Setup Distribution pro distribution 100 % because eingabemaske
 		kms.getState().newGroup(true, 2, 20, 2);
 		kms.getState().newGroup(true, 3, 20, 2);
-		kms.getState().newGroup(true, 4, 10, 1);
-		kms.getState().newGroup(false, 2, 10, 1);
+		kms.getState().newGroup(true, 4, 60, 1);
+		kms.getState().newGroup(false, 2, 60, 1);
 		kms.getState().newGroup(false, 3, 20, 2);
 		kms.getState().newGroup(false, 4, 20, 2);
 		
-		kms.getState().generateCards();
+		try{
+			kms.getState().generateCards();
+			}catch (Exception e) {
+				e.printStackTrace();	
+			}
+		
 		
 		kms.play();
 	}
@@ -69,6 +74,7 @@ public class PlaythroughTest {
 		Map<Integer, Amount> expectedSDistrib;
 		Map<Integer, Amount> distrib;
 		int key;
+		boolean test = false;
 		
 		expectedBDistrib = new TreeMap<Integer, Amount>();
 		expectedSDistrib = new TreeMap<Integer, Amount>();
@@ -95,7 +101,15 @@ public class PlaythroughTest {
 		}
 		
 		//Test
-		assertTrue("removeCard should return True, if cards are removed", kms.getState().removeCard('A', 1004));
+		
+		try{
+		
+			test = kms.getState().removeCard('A', 1004);
+		
+		}catch (Exception e) {
+			e.printStackTrace();	
+		}
+		assertTrue("removeCard should return True, if cards are removed",test );
 		assertEquals("Cards are not removed successfully", expectedSet, kms.getCards());
 		assertEquals("removeCard does not updates the number of players", expectedSet.size(), kms.getPlayerCount());
 		assertEquals("removeCard does not update the (Buyer)-Distribution correctly", expectedBDistrib.size(), kms.getbDistribution().size());

@@ -47,7 +47,7 @@
 	 	<div th:replace="resources :: heading (prepare2)">
 	 	</div>	
 	 	<div th:text="#{prepare.numberOfPlayers} + ': ' + ${numberOfPlayers}"></div>
-		<form name="arrangement" id="arrangement" method="POST" th:action="generate.html" onChange="updateArrangement();" onsubmit="return validateForm(this.id);">
+		<form name="arrangement" id="arrangement" method="POST" enctype="multipart/form-data" th:action="generate.html" onChange="updateArrangement();" onsubmit="return validateForm(this.id);">
 			<h2 th:text="#{prepare.customerGroups}" style="float: left;">Käufergruppen</h2>
 			<h2 th:text="#{prepare.salesmanGroups}" style="float: right;">Verkäufergruppen</h2>
 			<p style="clear: both;"></p>
@@ -106,7 +106,7 @@
 				</div>
 			</div>
 			<p style="clear: both;"></p>
-			<input type="hidden" name="groupQuantity" th:value="${groupQuantity}" />
+			<input type="hidden" id="groupQuantity" name="groupQuantity" th:value="${groupQuantity}" />
 			
 			<input type="file" id="input-file" name="input-file" onchange="document.arrangement.action = 'prepare2.html?c=load'; document.arrangement.submit();"/>
 			<input type="button" value="Konfiguration laden" th:value="#{prepare.loadConfig}" onclick="$('#input-file').click();"/>

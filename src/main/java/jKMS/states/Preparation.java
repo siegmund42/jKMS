@@ -2,8 +2,15 @@ package jKMS.states;
 
 import jKMS.Amount;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.Pdf;
 import jKMS.cards.BuyerCard;
+import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
+import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
+import jKMS.exceptionHelper.WrongRelativeDistributionException;
 import jKMS.LogicHelper;
 
 import java.io.BufferedReader;
@@ -12,16 +19,29 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
-public class Preparation extends State{
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+
+public class Preparation extends State	{
+
+	private Pdf pdf;
+
+	
 	public Preparation(Kartoffelmarktspiel kms){
 		this.kms = kms;
+		this.pdf = new Pdf();
 	}
 	
 	//	Loads StandardConfiguration into kms.
@@ -52,6 +72,8 @@ public class Preparation extends State{
 		// Set Amount of Groups
 		kms.getConfiguration().setGroupCount(6);
 		
+		System.out.println("Loaded Standard Distribution.");
+		
 	}
 	
 	
@@ -67,34 +89,93 @@ public class Preparation extends State{
 	
 	
 	//load Implementieren
+	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{
+    	int playerCount=0;
+    	int assistantCount=0;
+    	int groupCount=0;
+    	int firstID=0;
+    	Set<Card> cardSet = new LinkedHashSet<Card>();
+    	Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
+		Map<Integer, Amount> sDistributionLoad = new TreeMap<>();
+    	 if (!file.isEmpty()) {
+            	 BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
+            	 String buf = "";
+            	 int count = 0;
+            	 while ((buf=br.readLine()) != null && count < 4) {
+            		 buf=buf.trim();
+            		 String[] sa = buf.split(":|\\s");
+            		 if(count == 0){
+            			 playerCount = Integer.valueOf(sa[1].trim());
+            			 count = count + 1;
+            			 continue;
+            		 }
+            		 else if(count == 1){
+            			 assistantCount = Integer.valueOf(sa[1].trim());
+            			 count = count + 1;
+            			 continue;
+            		 }
+            		 else if(count == 2){
+            			 groupCount = Integer.valueOf(sa[1].trim());
+            			 count = count + 1;
+            			 continue;
+            		 }
+            		 else if(count == 3){
+            			 firstID = Integer.valueOf(sa[1].trim());
+            			 count = count + 1;
+            			 break;
+            		 }
+            	 }
+            	 while ( count >=4 && count < groupCount+4){
+            		 if( (buf=br.readLine()) != null){
+	            		 buf=buf.trim();
+	 		             String[] sa = buf.split(":|\\s");
+	 		             int bpreis = Integer.valueOf(sa[1].trim());
+	 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
+	 		             // int banteil = Integer.valueOf(sa[1]);
+	 		             int spreis = Integer.valueOf(sa[5].trim());
+	 		             Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
+	 		             //int santeil = Integer.valueOf(sa[3]);
+	 		            
+	 		             bDistributionLoad.put(bpreis, bAmount);
+	 		             sDistributionLoad.put(spreis, sAmount);
+	 		             count = count + 1;
+            		 }else {
+            			 throw new EmptyFileException("The GroupCount is not enough!");
+            		 }
+            	 }
+            	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
+            		 Card card;
+            		 buf=buf.trim();
+            		 String[] sa = buf.split(":|\\s");
+            		 if((Integer.valueOf(sa[1])%2) == 0){
+            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+            		 }else {
+            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+            		 }
+            		 cardSet.add(card);
+            	 }
+            	 System.out.println(playerCount);
+    			 System.out.println(assistantCount);
+    			 System.out.println(groupCount);
+    			 System.out.println(firstID);
+    			 
+            	 kms.getConfiguration().setPlayerCount(playerCount);
+    	    	 kms.getConfiguration().setAssistantCount(assistantCount);
+    	    	 kms.getConfiguration().setGroupCount(groupCount);
+    	    	 kms.getConfiguration().setFirstID(firstID);
+    	    	 kms.getConfiguration().setbDistribution(bDistributionLoad);
+    			 kms.getConfiguration().setsDistribution(sDistributionLoad);
+    			 kms.setCards(cardSet);
+    			 
+         }else 
+             throw new EmptyFileException("load file can not be empty!");
+    	
+    }
+
 	
-		public void load(String fileurl) throws NumberFormatException, IOException{
-			 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileurl)));
-			 String buf = "";
-			 Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
-			 Map<Integer, Amount> sDistributionLoad = new TreeMap<>();
-			 int count = 0;
-			 while ((buf=br.readLine()) != null) {
-				 	buf=buf.trim();
-		            String[] sa = buf.split(":|\\s");
-		            int bpreis = Integer.valueOf(sa[0]);
-		            Amount bAmount =  new Amount(Integer.valueOf(sa[1]),Integer.valueOf(sa[2]));
-		           // int banteil = Integer.valueOf(sa[1]);
-		            int spreis = Integer.valueOf(sa[3]);
-		            Amount sAmount = new Amount(Integer.valueOf(sa[4]),Integer.valueOf(sa[5]));
-		            //int santeil = Integer.valueOf(sa[3]);
-		            
-		            bDistributionLoad.put(bpreis, bAmount);
-		            sDistributionLoad.put(spreis, sAmount);
-		            count = count + 1;
-		     }
-			 kms.getConfiguration().setbDistribution(bDistributionLoad);
-			 kms.getConfiguration().setsDistribution(sDistributionLoad);
-			 kms.getConfiguration().setGroupCount(count);
-		}
 		
 		//defalt path:Users/yangxinyu/git/jKMS
-		public boolean save(String path){
+		public boolean save(String path) throws IOException{
 			 Map<Integer, Amount> bDistributionSave = new TreeMap<>();
 			 Map<Integer, Amount> sDistributionSave = new TreeMap<>();
 			 bDistributionSave = kms.getConfiguration().getbDistribution();
@@ -102,10 +183,15 @@ public class Preparation extends State{
 			 if(bDistributionSave.isEmpty() || sDistributionSave.isEmpty())
 				 return false;
 			 else{
-				 try {
+				 
 					   String line = System.getProperty("line.separator");
 					   StringBuffer str = new StringBuffer();
-					   FileWriter fw = new FileWriter(path, true);
+					   FileWriter fw = new FileWriter(path, false);
+					   str.append("PlayerCount:").append(kms.getConfiguration().getPlayerCount()).append(line)
+					   .append("AssistantCount:").append(kms.getConfiguration().getAssistantCount()).append(line)
+					   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
+					   .append("FirstID:").append(kms.getConfiguration().getFirstID()).append(line);
+					   
 					   Set bSet = bDistributionSave.entrySet();
 					   Set sSet = sDistributionSave.entrySet();
 					   Iterator bIter = bSet.iterator();
@@ -114,15 +200,18 @@ public class Preparation extends State{
 						   Map.Entry bEntry = (Map.Entry)bIter.next(); 
 						   Map.Entry sEntry = (Map.Entry)sIter.next(); 
 					    
-						   str.append(bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
-								   " "+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
+						   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
+								   " "+"sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
+					   }
+					   Set cardSet = kms.getCards();
+					   Iterator cardIter = cardSet.iterator();
+					   while(cardIter.hasNext()){
+						   Card card = (Card) cardIter.next();
+						   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
 					   }
 					   fw.write(str.toString());
 					   fw.close();
-					  } catch (IOException e) {
-					   // TODO Auto-generated catch block
-					   e.printStackTrace();
-					  }
+					 
 				 return true;
 			 }
 		}
@@ -132,7 +221,7 @@ public class Preparation extends State{
 	// Generate an ordered, random Set of Cards using
 	// bDistribution and sDistribution
 	
-	public void generateCards() {
+	public void generateCards() throws WrongRelativeDistributionException, WrongAssistantCountException, WrongFirstIDException, WrongPlayerCountException {
 		// DECLARATION
 		
 		//for put seller and buyer distribution
@@ -154,6 +243,15 @@ public class Preparation extends State{
 		kms.getCards().clear();
 
 		// IMPLEMENTATION
+		
+		//test is there a conform configuration?
+		if(kms.getPlayerCount() != (LogicHelper.getAbsoluteSum(bTemp) +  LogicHelper.getAbsoluteSum(sTemp)))throw new WrongPlayerCountException();
+		if(kms.getAssistantCount() <= 0)throw new WrongAssistantCountException();
+		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
+		if((LogicHelper.getRelativeSum(bTemp) +  LogicHelper.getRelativeSum(sTemp)) != 200) throw new WrongRelativeDistributionException(); // muss in der summe 200 ergeben, da jede distribution in sich 100 ergibt
+		
+		
+		
 		
 		//put seller and buyer distribution and put packages
 		i =0;
@@ -233,5 +331,15 @@ public class Preparation extends State{
 			System.out.println("Seller: " + price + "€ " + registered.getRelative() + "% " + registered.getAbsolute());
 		}
 		
+	}
+	
+	// createPDF - Delegates to PDF-Class
+	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException	{
+		
+		if(isBuyer)	{
+			pdf.createPdfCardsBuyer(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+		}	else	{
+			pdf.createPdfCardsSeller(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+		}
 	}
 }

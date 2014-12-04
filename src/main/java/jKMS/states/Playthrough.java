@@ -8,9 +8,14 @@ import java.util.Set;
 import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.LogicHelper;
 import jKMS.cards.Card;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.SellerCard;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
+import jKMS.exceptionHelper.WrongRelativeDistributionException;
 
 public class Playthrough extends State{
 	
@@ -21,10 +26,16 @@ public class Playthrough extends State{
 	//removeCard
 	//removes all cards from the given package (pack)
 	//beginning with lastId up to its size
-	public boolean removeCard(char pack, int lastId){
+	public boolean removeCard(char pack, int lastId) throws WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{
 		Set<Card> oldSet = new LinkedHashSet<Card>(kms.getCards());
 		Map<Integer, Amount> distrib;
 		Integer key;
+		
+		//test is there a conform configuration?
+		if(kms.getPlayerCount() != (LogicHelper.getAbsoluteSum(kms.getbDistribution()) +  LogicHelper.getAbsoluteSum(kms.getsDistribution())))throw new WrongPlayerCountException();
+		if(kms.getAssistantCount() <= 0)throw new WrongAssistantCountException();
+		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
+		if((LogicHelper.getRelativeSum(kms.getbDistribution()) +  LogicHelper.getRelativeSum(kms.getsDistribution())) != 200) throw new WrongRelativeDistributionException();
 		
 		for(Card iter : oldSet){
 			//Check if card must be removed (Id is higher than lasdId)
@@ -42,6 +53,8 @@ public class Playthrough extends State{
 				if(distrib.get(key).getAbsolute() == 0) distrib.remove(key);
 				
 				kms.getCards().remove(iter);
+				
+				System.out.println("Excluded Card: " + iter.getId());
 			}
 		}
 		
@@ -56,27 +69,44 @@ public class Playthrough extends State{
 		// TODO Es dürfen nicht beide Käufer/verkäufer sein
 		// TODO Es muss Käufer/Verkäufer geben (dürfen nicht ausgetragen sein)
 		// TODO Weder Käufer noch Verkäufer darf bisher gehandelt haben
+		Set<Card> gehandeltCards = new LinkedHashSet<Card>();
+	    Iterator<Contract> citer = kms.getContracts().iterator();
+	    while(citer.hasNext()){
+	    	Contract gehandeltContract = citer.next();
+	    	gehandeltCards.add(gehandeltContract.getBuyer());
+	    	gehandeltCards.add(gehandeltContract.getSeller());
+	    }
 		Iterator<Card> iter = kms.getCards().iterator();
-	    BuyerCard card1 = null;
-    	SellerCard card2 = null;
+	    Card card1 = null;
+    	Card card2 = null;
 	    while(iter.hasNext()){	
 	    	Card card = iter.next();
 	    	if (card.getId() == id1){
-	    		card1 = (BuyerCard)card;
+	    		card1 = card;
 	    	}
 	    	else if(card.getId() == id2){
-	    		card2 = (SellerCard)card;
-	    	}else
-	    		continue;
+	    		card2 = card;
+	    	}
 	    }
-	    if(card1 != null && card2 != null){
-	    	Contract contract =new Contract(card1,card2,price);
-	    	kms.getContracts().add(contract);
-	    	return 0;
-	    }else{
+	    if(card1 == null || card2 == null){
 	    	return 2;
-	    }
+	    }else if((card1 instanceof BuyerCard && card2 instanceof BuyerCard) 
+	    		|| (card1 instanceof SellerCard && card2 instanceof SellerCard)){
+	    	return 1;
+	    }else if(gehandeltCards.contains(card1) || gehandeltCards.contains(card2)){
+	    	return 3;
+	    }else{
+	    	Contract contract;
+	    	if(card1 instanceof BuyerCard) {
+	    		contract = new Contract((BuyerCard)card1,(SellerCard)card2,price);
+	    	}else{
+	    		contract = new Contract((BuyerCard)card2,(SellerCard)card1,price);
+	    	}
+	    	kms.getContracts().add(contract);
+	    	System.out.println("Added contract: " + contract.toString());
+	    	return 0;
+	    }  
 	}
-
+	
 	public void load(){}
 }

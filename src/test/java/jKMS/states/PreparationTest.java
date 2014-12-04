@@ -46,10 +46,10 @@ public class PreparationTest {
 		Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
 		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
 		
-		bDistrib.put(3, new Amount(33, 2));
-		bDistrib.put(4, new Amount(16, 1));
-		sDistrib.put(3, new Amount(33, 2));
-		sDistrib.put(4, new Amount(16, 1));
+		bDistrib.put(3, new Amount(50, 2));
+		bDistrib.put(4, new Amount(50, 1));
+		sDistrib.put(3, new Amount(50, 2));
+		sDistrib.put(4, new Amount(50, 1));
 		
 		kms.getConfiguration().setbDistribution(bDistrib);
 		kms.getConfiguration().setsDistribution(sDistrib);
@@ -66,23 +66,52 @@ public class PreparationTest {
 	public void testLoad(){
 		
 	}
-	
+
 	@Test
 	public void testCreatePdfCardsSeller(){
-		kms.getConfiguration().setFirstID(1001);
+		
+		Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
+		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
+		
+		bDistrib.put(5, new Amount(50, 5));
+		bDistrib.put(4, new Amount(50, 5));
+		sDistrib.put(3, new Amount(50, 5));
+		sDistrib.put(2, new Amount(50, 5));
+		
+		kms.getConfiguration().setbDistribution(bDistrib);
+		kms.getConfiguration().setsDistribution(sDistrib);
+		
+		kms.getConfiguration().setFirstID(1000);
+		
+		kms.getState().setBasicConfig(20, 5);
+		
+		try{
 		kms.getState().generateCards();
-		Pdf pdf = new Pdf();
-		Document document = new Document();
-		try {
-			PdfWriter.getInstance(document, new FileOutputStream("/home/justus/document.pdf")); 
-			document.open();
-			pdf.createPdfCardsSeller(document,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
-			document.close();
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());		
+		}
+		
+		Pdf pdf = new Pdf();
+		Document documentSeller = new Document();
+		Document documentBuyer = new Document();
+		try {
+			
+			PdfWriter.getInstance(documentSeller, new FileOutputStream("/home/justus/documentseller.pdf")); 
+			documentSeller.open();
+			pdf.createPdfCardsSeller(documentSeller,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+			documentSeller.close();
+			PdfWriter.getInstance(documentBuyer, new FileOutputStream("/home/justus/documentbuyer.pdf")); 
+			documentBuyer.open();
+			pdf.createPdfCardsBuyer(documentBuyer,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+			documentBuyer.close();
+			
+		}catch (Exception e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			
 		}
 	}
-	
 	@Test
 	//TODO testSave
 	public void testSave(){
@@ -98,9 +127,23 @@ public class PreparationTest {
 		int i = 0;
 		
 		do{
-			kms.getState().generateCards();
+			
+			try{
+				kms.getState().generateCards();
+				}catch (Exception e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());		
+				}
+			
 			s1 = kms.getCards();
-			kms.getState().generateCards();
+			
+			try{
+				kms.getState().generateCards();
+				}catch (Exception e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());		
+				}
+			
 			s2 = kms.getCards();
 			i++;
 		} while(s1 == s2 && i<3);

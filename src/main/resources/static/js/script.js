@@ -6,7 +6,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
     }
 	
 	function updateAbsolutes()	{
-    	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
+    	for(var i = 1; i <= document.getElementById('groupQuantity').value; i++)	{
     		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
 	    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = (document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
 	    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = (document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers;
@@ -17,7 +17,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 	function updateSum()	{
 		var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0, i = 1;
 		
-    	for(var i = 1; i <= arrangement.groupQuantity.value; i++)	{
+    	for(var i = 1; i <= document.getElementById('groupQuantity').value; i++)	{
     		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
 	    		customerTotalRelative += document.getElementById('cRelativeQuantity[' + i + ']').value*1;
 	    		salesmanTotalRelative += document.getElementById('sRelativeQuantity[' + i + ']').value*1;
@@ -250,7 +250,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 				
 				var input = document.createElement("input");
 				input.setAttribute("type", "text");
-				input.setAttribute("name", i);
+				input.setAttribute("name", "exclude[]");
 				input.setAttribute("id", i);
 				input.setAttribute("placeholder", alphabet[i].toUpperCase());
 				row.appendChild(input);
@@ -364,7 +364,7 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 						writeError(1, field);
 						error = true;
 					}
-					if(field.value < firstID || field.value > (firstID + playerCount))	{
+					if(field.value < firstID || field.value > (firstID + numberOfPlayers))	{
 						writeError(5, field);
 						error = true;
 					}

@@ -34,4 +34,9 @@ public class Contract {
 	public Date getTime() {
 		return time;
 	}
+	
+	@Override
+	public String toString()	{
+		return "Buyer: " + buyer.getId() + "| Seller: " + seller.getId() + "| Price: " + price + "| Time: " + time;
+	}
 }
