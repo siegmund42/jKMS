@@ -2,6 +2,7 @@ package jKMS.states;
 
 import jKMS.Amount;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.Pdf;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
@@ -27,9 +28,17 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
-public class Preparation extends State{
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+
+public class Preparation extends State	{
+
+	@Autowired
+	protected Pdf pdf;
+	
 	public Preparation(Kartoffelmarktspiel kms){
 		this.kms = kms;
 	}
@@ -319,5 +328,15 @@ public class Preparation extends State{
 			System.out.println("Seller: " + price + "€ " + registered.getRelative() + "% " + registered.getAbsolute());
 		}
 		
+	}
+	
+	// createPDF - Delegates to PDF-Class
+	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException	{
+		
+		if(isBuyer)	{
+			pdf.createPdfCardsBuyer(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+		}	else	{
+			pdf.createPdfCardsSeller(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+		}
 	}
 }

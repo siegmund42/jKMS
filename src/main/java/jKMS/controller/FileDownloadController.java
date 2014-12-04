@@ -8,7 +8,6 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.jni.File;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -31,7 +29,6 @@ public class FileDownloadController extends AbstractServerController {
      
     @RequestMapping(value = "/pdf/cards/{type}")
     public ResponseEntity<byte[]> downloadPDF(@PathVariable String type)	{
-		Pdf pdf = new Pdf();
 		
 		Document document = new Document();
 		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
@@ -39,9 +36,9 @@ public class FileDownloadController extends AbstractServerController {
 			PdfWriter.getInstance(document, outstream); 
 			document.open();
 			if(type.equals("customer"))
-				pdf.createPdfCardsSeller(document,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+				kms.getState().createPdf(true, document);
 			else
-				pdf.createPdfCardsSeller(document,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+				kms.getState().createPdf(false, document);
 			document.close();
 		} catch (Exception e) {
 			e.printStackTrace();

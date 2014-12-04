@@ -19,7 +19,9 @@ import java.util.Set;
 
 
 
+
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -31,8 +33,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
-
-
+@Component
 public class Pdf {
 	
 	 //define Fonts
