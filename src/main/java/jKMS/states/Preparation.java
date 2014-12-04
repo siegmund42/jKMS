@@ -3,6 +3,7 @@ package jKMS.states;
 import jKMS.Amount;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.BuyerCard;
+import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 import jKMS.exceptionHelper.EmptyFileException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
@@ -17,12 +18,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -79,6 +82,7 @@ public class Preparation extends State{
     	int assistantCount=0;
     	int groupCount=0;
     	int firstID=0;
+    	Set<Card> cardSet = new LinkedHashSet<Card>();
     	Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
 		Map<Integer, Amount> sDistributionLoad = new TreeMap<>();
     	 if (!file.isEmpty()) {
@@ -108,18 +112,34 @@ public class Preparation extends State{
             			 break;
             		 }
             	 }
-            	 while ((buf=br.readLine()) != null && count >= 4){
+            	 while ( count >=4 && count < groupCount+4){
+            		 if( (buf=br.readLine()) != null){
+	            		 buf=buf.trim();
+	 		             String[] sa = buf.split(":|\\s");
+	 		             int bpreis = Integer.valueOf(sa[0]);
+	 		             Amount bAmount =  new Amount(Integer.valueOf(sa[1]),Integer.valueOf(sa[2]));
+	 		             // int banteil = Integer.valueOf(sa[1]);
+	 		             int spreis = Integer.valueOf(sa[3]);
+	 		             Amount sAmount = new Amount(Integer.valueOf(sa[4]),Integer.valueOf(sa[5]));
+	 		             //int santeil = Integer.valueOf(sa[3]);
+	 		            
+	 		             bDistributionLoad.put(bpreis, bAmount);
+	 		             sDistributionLoad.put(spreis, sAmount);
+	 		             count = count + 1;
+            		 }else {
+            			 throw new EmptyFileException("The GroupCount is not enough!");
+            		 }
+            	 }
+            	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
+            		 Card card;
             		 buf=buf.trim();
- 		             String[] sa = buf.split(":|\\s");
- 		             int bpreis = Integer.valueOf(sa[0]);
- 		             Amount bAmount =  new Amount(Integer.valueOf(sa[1]),Integer.valueOf(sa[2]));
- 		             // int banteil = Integer.valueOf(sa[1]);
- 		             int spreis = Integer.valueOf(sa[3]);
- 		             Amount sAmount = new Amount(Integer.valueOf(sa[4]),Integer.valueOf(sa[5]));
- 		             //int santeil = Integer.valueOf(sa[3]);
- 		            
- 		             bDistributionLoad.put(bpreis, bAmount);
- 		             sDistributionLoad.put(spreis, sAmount);
+            		 String[] sa = buf.split(":|\\s");
+            		 if((Integer.valueOf(sa[0])%2) == 0){
+            			card = new BuyerCard(Integer.valueOf(sa[0]),Integer.valueOf(sa[1]),sa[2].charAt(0));
+            		 }else {
+            			card = new SellerCard(Integer.valueOf(sa[0]),Integer.valueOf(sa[1]),sa[2].charAt(0));
+            		 }
+            		 cardSet.add(card);
             	 }
             	 System.out.println(playerCount);
     			 System.out.println(assistantCount);
@@ -132,7 +152,7 @@ public class Preparation extends State{
     	    	 kms.getConfiguration().setFirstID(firstID);
     	    	 kms.getConfiguration().setbDistribution(bDistributionLoad);
     			 kms.getConfiguration().setsDistribution(sDistributionLoad);
-    			 
+    			 kms.setCards(cardSet);
     			 
          }else 
              throw new EmptyFileException("load file can not be empty!");
@@ -142,7 +162,7 @@ public class Preparation extends State{
 	
 		
 		//defalt path:Users/yangxinyu/git/jKMS
-		public boolean save(String path){
+		public boolean save(String path) throws IOException{
 			 Map<Integer, Amount> bDistributionSave = new TreeMap<>();
 			 Map<Integer, Amount> sDistributionSave = new TreeMap<>();
 			 bDistributionSave = kms.getConfiguration().getbDistribution();
@@ -150,10 +170,12 @@ public class Preparation extends State{
 			 if(bDistributionSave.isEmpty() || sDistributionSave.isEmpty())
 				 return false;
 			 else{
-				 try {
+				 
 					   String line = System.getProperty("line.separator");
 					   StringBuffer str = new StringBuffer();
-					   FileWriter fw = new FileWriter(path, true);
+					   FileWriter fw = new FileWriter(path, false);
+					   str.append(kms.getConfiguration().getPlayerCount()).append(line).append(kms.getConfiguration().getAssistantCount()).append(line).append(kms.getConfiguration().getGroupCount()).append(line).append(kms.getConfiguration().getFirstID()).append(line);
+					   
 					   Set bSet = bDistributionSave.entrySet();
 					   Set sSet = sDistributionSave.entrySet();
 					   Iterator bIter = bSet.iterator();
@@ -165,12 +187,15 @@ public class Preparation extends State{
 						   str.append(bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
 								   " "+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
 					   }
+					   Set cardSet = kms.getCards();
+					   Iterator cardIter = cardSet.iterator();
+					   while(cardIter.hasNext()){
+						   Card card = (Card) cardIter.next();
+						   str.append(card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
+					   }
 					   fw.write(str.toString());
 					   fw.close();
-					  } catch (IOException e) {
-					   // TODO Auto-generated catch block
-					   e.printStackTrace();
-					  }
+					 
 				 return true;
 			 }
 		}
