@@ -16,10 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -27,34 +29,54 @@ import com.itextpdf.text.pdf.PdfWriter;
 @Controller
 public class FileDownloadController extends AbstractServerController {
      
+	// Downloading Seller-/BuyerCardsPDF
     @RequestMapping(value = "/pdf/cards/{type}")
-    public ResponseEntity<byte[]> downloadPDF(@PathVariable String type)	{
+    public ResponseEntity<byte[]> downloadPDF(Model model, @PathVariable String type) throws Exception	{
 		
+    	// Create new Document
 		Document document = new Document();
+		// Get a new Outputstream for the PDF Library
 		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
 		try {
+			// Very Handwaving itext-PdfWriter.getInstance method
 			PdfWriter.getInstance(document, outstream); 
+			// Open document to write in it
 			document.open();
-			if(type.equals("customer"))
-				kms.getState().createPdf(true, document);
-			else
-				kms.getState().createPdf(false, document);
+			
+			// Create PDF for Buyer/Seller
+			kms.getState().createPdf(type.equals("customer"), document);
+			
+			// Close document
 			document.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
+			// TODO: Think about how to handle this error -.-
+			Exception ex = new RuntimeException("Something went wrong while creating Cards.");
+			throw ex;
 		}
 	
+		// Get a byte Array of the pdf
 	    byte[] contents = outstream.toByteArray();
 	    
+	    // Write Headers
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.parseMediaType("application/pdf"));
+	    
+	    // Set the download-Filename
 	    String filename;
-	    if(type.equals("customer"))
+	    // TODO internationalize! Generate nice Name using timestamp or similar
+	    switch(type)	{
+	    case("customer"):
 	    	filename = "KäuferKarten.pdf";
-	    else
+	    	break;
+	    default:
 	    	filename = "VerkäuferKarten.pdf";
+	    }
+	    
 	    headers.setContentDispositionFormData(filename, filename);
 	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+	    // Serve Data to the browser
 	    ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
 	    return response;
     }
