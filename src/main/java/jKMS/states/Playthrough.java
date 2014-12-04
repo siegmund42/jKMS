@@ -53,6 +53,8 @@ public class Playthrough extends State{
 				if(distrib.get(key).getAbsolute() == 0) distrib.remove(key);
 				
 				kms.getCards().remove(iter);
+				
+				System.out.println("Excluded Card: " + iter.getId());
 			}
 		}
 		
@@ -101,7 +103,7 @@ public class Playthrough extends State{
 	    		contract = new Contract((BuyerCard)card2,(SellerCard)card1,price);
 	    	}
 	    	kms.getContracts().add(contract);
-	    	System.out.println(kms.getContracts().toString());
+	    	System.out.println("Added contract: " + contract.toString());
 	    	return 0;
 	    }  
 	}

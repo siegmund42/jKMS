@@ -22,9 +22,9 @@
  <body th:onload="(${param.s} AND ${param.s[0]} == 2)? 'createExcludeFields(' + ${numberOfAssistants} + ');' : 'updateArrangement();'">
  	<div id="toolBar">
  		<div id="path">
- 			<div th:class="step" th:id="(${param.s[0]} == 1)? 'step_active'" th:text="#{path.load.step1}"></div>
+ 			<div th:class="step" th:id="(${param.s} AND ${param.s[0]} == 1)? 'step_active'" th:text="#{path.load.step1}"></div>
  			<div class="step" th:text="'>'"></div>
- 			<div th:class="step" th:id="(${param.s[0]} == 2)? 'step_active'" th:text="#{path.load.step2}"></div>
+ 			<div th:class="step" th:id="(${param.s} AND ${param.s[0]} == 2)? 'step_active'" th:text="#{path.load.step2}"></div>
  			<div class="step" th:text="'>'"></div>
  			<div class="step" th:text="#{path.load.step3}"></div>
  			<div class="step" th:text="'>'"></div>
@@ -37,7 +37,7 @@
 	 			<a href="index.html" th:text="#{messages.welcome}" ></a>
 	 		</li>
 	 		<li>
- 				<a th:href="(${param.s[0]} == 1)? 'index.html' : 'load.html?s=1'" th:text="#{messages.back}" ></a>
+ 				<a th:href="(${param.s} AND ${param.s[0]} == 1)? 'index.html' : 'load.html?s=1'" th:text="#{messages.back}" ></a>
 	 		</li>
 		</ul>
  	</div>
@@ -45,9 +45,9 @@
  		<div th:text="#{noscript}"></div>
  	</noscript>
 	<div id="inhalt">
-	 	<div th:replace="resources :: heading (load + (${param.s[0]}?: '1'))">
+	 	<div th:replace="resources :: heading (load + (${param.s}? (${param.s[0]}?: '1') : '1'))">
 	 	</div>
-	 	
+	 	<div th:if="${error}" class="errorDiv" th:text="#{load.__${error}__}"></div>
 	 	<!-- For Showing the IP Address -->
 	 	<div th:if="!${param.s} OR ${param.s[0]} == 1">
 		 	<h2 th:text="#{load.address}">Adresse dieses Rechners</h2>

@@ -71,7 +71,7 @@ public class PlaythroughController extends AbstractServerController {
 	}
 
 	@RequestMapping(value = "/load", method = RequestMethod.GET)
-	public String load(Model model, ServletRequest request, @RequestParam("s") String s)	{
+	public String load(Model model, ServletRequest request, @RequestParam(value = "s", required = false) String s)	{
 
 		boolean stateChangeSuccessful = true;
 		
@@ -113,12 +113,13 @@ public class PlaythroughController extends AbstractServerController {
 	
 	@RequestMapping(value = "/load", method = RequestMethod.POST)
 	public String start(Model model, @RequestParam("exclude[]") String exclude[])	{
+		int playerCount = kms.getPlayerCount();
 		for(int i = 0; i < exclude.length; i++)	{
 			try	{
 				if(exclude[i] != "")	{
 					int number = Integer.parseInt(exclude[i]);
 					if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
-							number <= (kms.getConfiguration().getFirstID() + kms.getPlayerCount()))	{
+							number <= (kms.getConfiguration().getFirstID() + playerCount))	{
 						kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
 					}	else	{
 						model.addAttribute("error", "exclude.oob");
@@ -141,7 +142,6 @@ public class PlaythroughController extends AbstractServerController {
 				return "load";
 			}
 		}
-		// TODO exclude Cards
 		return "redirect:/play";
 	}
 	
