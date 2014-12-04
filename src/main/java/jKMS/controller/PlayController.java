@@ -59,12 +59,15 @@ public class PlayController extends AbstractServerController {
 	}
 	
 	@RequestMapping(value = "/play")
-	public String play(Model model)	{
+	public String play(Model model, @RequestParam(value= "s", required = false) String s)	{
 
 		boolean stateChangeSuccessful = true;
 		
 		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "play");
+			if(s != null && s.equals("stop"))
+				stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
+			else
+				stateChangeSuccessful = ControllerHelper.stateHelper(kms, "play");
 		}	catch(Exception e)	{
 			e.printStackTrace();
 			model.addAttribute("message", e.getMessage());
