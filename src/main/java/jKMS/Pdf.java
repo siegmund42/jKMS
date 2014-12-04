@@ -20,6 +20,8 @@ import java.util.Set;
 
 
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +35,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
-@Component
+
 public class Pdf {
 	
 	 //define Fonts
@@ -45,8 +47,11 @@ public class Pdf {
 	private String cardtitle;
 	private String value;
 	private String id;
+	private Properties propertie;
+	
 	
 	public Pdf(){// to catch crashes
+		this.propertie = new Properties();
 		this.cardtitle = "Default";
 		this.value = "Default";
 		this.id = "Default";
@@ -58,24 +63,12 @@ public class Pdf {
     	//PRINT
 		
 		
-        Properties prop = new Properties();
-        Locale locale = LocaleContextHolder.getLocale(); // get Sprache
-        try {
-            prop.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
-        	}
-        	catch (IOException ioe) {
-        		System.out.println(ioe);
-        		try {
-        			prop.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
-        			}
-        			catch (IOException ioe1) {
-        				System.out.println(ioe1);
-        			}
-        	}
+		//get language
+        this.setProperetie();
         
-		cardtitle = prop.getProperty("PDFSeller.cardtitle");
-        value = prop.getProperty("PDFSeller.value") + ": ";
-		id = prop.getProperty("PDF.id") + ": ";
+		cardtitle = this.propertie.getProperty("PDFSeller.cardtitle");
+        value = this.propertie.getProperty("PDFSeller.value") + ": ";
+		id = this.propertie.getProperty("PDF.id") + ": ";
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
@@ -117,6 +110,7 @@ public class Pdf {
         	   	}   
            }
        }else{
+    	   //size of printcards is uneven --> topcards.size = bottomcards.size + 1 --> add withepage to bottomcards
            for(Card iter : printcards){
         	   if(i < (printcards.size()/2) + 1){
         		   topcards.add(iter);
@@ -126,7 +120,7 @@ public class Pdf {
         		   i++;
         	   	}   
            } 
-           bottomcards.add(new SellerCard(-42,0,' '));// add wihteside
+           bottomcards.add(new SellerCard(-42,0,' '));// add wihtepage
        }
        
        //PRINT
@@ -182,66 +176,20 @@ public class Pdf {
   
     }
     
-    public Paragraph createCard(Card card,boolean isTop){
-    	
-    	Paragraph content = new Paragraph();
-        content.setAlignment(Element.ALIGN_CENTER);
-        
-    	if(isTop){
-    		content.setSpacingBefore(100);
-            content.setSpacingAfter(150);
-    		if(card.getId() == -42 && card.getValue() == 0){
-                content.setSpacingAfter(200);
-    		}
-    	}else{
-            content.setSpacingBefore(130);
-    	}
-    	
-        if((card.getId() != -42) && (card.getValue() != 0)){
-        	Chunk cTitle = new Chunk(cardtitle,catFont);
-        	content.add(cTitle);
-        	content.add(Chunk.NEWLINE);
-        	Chunk cValue = new Chunk(this.value + card.getValue() +"€");
-        	content.add(cValue);
-        	content.add(Chunk.NEWLINE);
-        	Chunk cID = new Chunk(this.id + card.getId());
-        	content.add(cID);
-        	content.add(Chunk.NEWLINE);
-        	content.add(Chunk.NEWLINE);
-        	content.add(Chunk.NEWLINE);
-        	Paragraph cPa = new Paragraph(String.valueOf(card.getPackage()),redFont);
-        	cPa.setAlignment(Element.ALIGN_LEFT);
-        	content.add(cPa);
-        }else{
-        	Chunk cPack = new Chunk(String.valueOf(card.getPackage()),catFont);
-        	content.add(cPack);
-        }
-        	
-    	return content;
-    }
+
     
 	public void createPdfCardsBuyer(Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
     	//PRINT
-        Properties prop = new Properties();
-        Locale locale = LocaleContextHolder.getLocale(); // get Sprache
-        try {
-            prop.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
-        	}
-        	catch (IOException ioe) {
-        		System.out.println(ioe);
-        		try {
-        			prop.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
-        			}
-        			catch (IOException ioe1) {
-        				System.out.println(ioe1);
-        			}
-        	}
+		
+		//get language
+        this.setProperetie();
         
-		cardtitle = prop.getProperty("PDFBuyer.cardtitle");
-        value = prop.getProperty("PDFBuyer.value") + ": ";
-		id = prop.getProperty("PDF.id") + ": ";
+        //get Strings
+		cardtitle = this.propertie.getProperty("PDFBuyer.cardtitle");
+        value = this.propertie.getProperty("PDFBuyer.value") + ": ";
+		id = this.propertie.getProperty("PDF.id") + ": ";
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
@@ -347,4 +295,60 @@ public class Pdf {
         }
   
     }
+
+    private Paragraph createCard(Card card,boolean isTop){
+    	
+    	Paragraph content = new Paragraph();
+        content.setAlignment(Element.ALIGN_CENTER);
+        
+    	if(isTop){
+    		content.setSpacingBefore(100);
+            content.setSpacingAfter(150);
+    		if(card.getId() == -42 && card.getValue() == 0){
+                content.setSpacingAfter(200);
+    		}
+    	}else{
+            content.setSpacingBefore(130);
+    	}
+    	
+        if((card.getId() != -42) && (card.getValue() != 0)){
+        	Chunk cTitle = new Chunk(cardtitle,catFont);
+        	content.add(cTitle);
+        	content.add(Chunk.NEWLINE);
+        	Chunk cValue = new Chunk(this.value + card.getValue() +"€");
+        	content.add(cValue);
+        	content.add(Chunk.NEWLINE);
+        	Chunk cID = new Chunk(this.id + card.getId());
+        	content.add(cID);
+        	content.add(Chunk.NEWLINE);
+        	content.add(Chunk.NEWLINE);
+        	content.add(Chunk.NEWLINE);
+        	Paragraph cPa = new Paragraph(String.valueOf(card.getPackage()),redFont);
+        	cPa.setAlignment(Element.ALIGN_LEFT);
+        	content.add(cPa);
+        }else{
+        	Chunk cPack = new Chunk(String.valueOf(card.getPackage()),catFont);
+        	content.add(cPack);
+        }
+        	
+    	return content;
+    }
+   
+    private void setProperetie(){
+
+        Locale locale = LocaleContextHolder.getLocale(); // get lang.
+        try {
+        	this.propertie.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
+        	}
+        	catch (IOException ioe) {
+        		System.out.println(ioe);
+        		try {
+        			this.propertie.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
+        			}
+        			catch (IOException ioe1) {
+        				System.out.println(ioe1);
+        			}
+        	}
+    }
+    
 }

@@ -37,6 +37,7 @@ import com.itextpdf.text.DocumentException;
 public class Preparation extends State	{
 
 	private Pdf pdf;
+
 	
 	public Preparation(Kartoffelmarktspiel kms){
 		this.kms = kms;
