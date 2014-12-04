@@ -39,20 +39,31 @@ function drawEvaluationChart(data){
 		var plot = $.plot($("#placeholder"), chartData , options);
 		
 		//Bildexport bereitstellen
-		var link = document.getElementById("pdf_export");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		var token = $("meta[name='_csrf']").attr("content");
 		var myCanvas = plot.getCanvas();
-		var image = myCanvas.toDataURL("image/jpeg");
+		var formData = new FormData();
 		
-		var timestamp = new Date();
-		timestamp = timestamp.toLocaleDateString();
-		
-		var pdf = new jsPDF('l');
-		//image = image.replace("image/png","image/jpeg");
-		pdf.addImage(image,"JPEG",10,50,280,110); //margin-left, margin-top, width, height
-		
-		//link.setAttribute("href",image);
-		link.setAttribute("href",pdf.output('datauristring'));
-		link.setAttribute("download","chart_export_"+timestamp+".pdf");
+		myCanvas.toBlob(
+			function(image){
+				formData.append("image",image,"image.png");
+			},
+			"image/png");
+		alert();
+		console.log(formData);
+		$.ajax({
+			beforeSend: function(request) {
+				request.setRequestHeader(header, token);
+			},
+			url: "pdfExport.html",
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			mimeType: "multipart/form-data",
+			success:function(response){console.log(response)},
+			error: function(e){console.log(e);}			
+		});
 }
 
 function insertValue(){

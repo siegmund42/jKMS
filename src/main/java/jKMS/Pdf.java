@@ -16,6 +16,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -86,7 +87,7 @@ public class Pdf {
         	   }else{
         		   bottomcards.add(iter);
         		   i++;
-        	   	}   
+        	    }   
            } 
            bottomcards.add(new SellerCard(-42,0,' '));// add wihteside
        }
@@ -109,85 +110,94 @@ public class Pdf {
         //TODO Titlepage
         
         while(itertop.hasNext()){
-        	
-        //Top
-        topcard = (Card) itertop.next();
-        	
-        Paragraph top = new Paragraph(); 
-        top.setSpacingBefore(100);
-        top.setAlignment(Element.ALIGN_CENTER);
-        if((topcard.getId() != -42) && (topcard.getValue() != 0)){
-            top.setSpacingAfter(100);
-        	Chunk sellerT = new Chunk("seller",catFont);
-        	top.add(sellerT);
-        	top.add(Chunk.NEWLINE);
-        	Chunk costsT = new Chunk("costs: " + topcard.getValue() +"€");
-        	top.add(costsT);
-        	top.add(Chunk.NEWLINE);
-        	Chunk idT = new Chunk("ID :" +topcard.getId());
-        	top.add(idT);
-        	top.add(Chunk.NEWLINE);
-        	top.add(Chunk.NEWLINE);
-        	top.add(Chunk.NEWLINE);
-        	Paragraph paT = new Paragraph(String.valueOf(topcard.getPackage()),redFont);
-        	paT.setAlignment(Element.ALIGN_LEFT);
-        	top.add(paT);
-        }else{
-            top.setSpacingAfter(200);
-        	Chunk paT = new Chunk(String.valueOf(topcard.getPackage()),catFont);
-        	top.add(paT);
-        }
-        
-        //bottom
-        bottomcard = (Card) iterbot.next();
-        
-        Paragraph bottom = new Paragraph(); 
-        bottom.setAlignment(Element.ALIGN_CENTER);
-        bottom.setSpacingBefore(130);
-        if((bottomcard.getId() != -42) && (bottomcard.getValue() != 0)){
-        	Chunk sellerB = new Chunk("seller",catFont);
-        	bottom.add(sellerB);
-        	bottom.add(Chunk.NEWLINE);
-        	Chunk costsB = new Chunk("costs: " + bottomcard.getValue() +"€");
-        	bottom.add(costsB);
-        	bottom.add(Chunk.NEWLINE);
-        	Chunk idB = new Chunk("ID: " +bottomcard.getId());
-        	bottom.add(idB);
-        	bottom.add(Chunk.NEWLINE);
-        	bottom.add(Chunk.NEWLINE);
-        	bottom.add(Chunk.NEWLINE);
-        	Paragraph paB = new Paragraph(String.valueOf(bottomcard.getPackage()),redFont);
-        	paB.setAlignment(Element.ALIGN_LEFT);
-        	bottom.add(paB);
-        }else{
-        	Chunk pab = new Chunk(String.valueOf(bottomcard.getPackage()),catFont);
-        	bottom.add(pab);
-        }
-        
-        	//set Content togeser ;-)
-        
-        PdfPCell topcell = new PdfPCell();
-        topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
-        topcell.addElement(top);
-        topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
-        topcell.setBorder(Rectangle.BOTTOM);
-        
-        PdfPCell bottomcell = new PdfPCell();
-        bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
-        bottomcell.addElement(bottom);
-        bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
-        bottomcell.setBorder(Rectangle.NO_BORDER);
-        
-        PdfPTable myTable = new PdfPTable(1);
-        myTable.setWidthPercentage(100.0f);
-        myTable.addCell(topcell);
-        myTable.addCell(bottomcell);
-        
-        
-        cardsSeller.add(myTable);
-        cardsSeller.newPage();
-        }
-
-        
+	        	
+	        //Top
+	        topcard = (Card) itertop.next();
+	        	
+	        Paragraph top = new Paragraph(); 
+	        top.setSpacingBefore(100);
+	        top.setAlignment(Element.ALIGN_CENTER);
+	        if((topcard.getId() != -42) && (topcard.getValue() != 0)){
+	            top.setSpacingAfter(100);
+	        	Chunk sellerT = new Chunk("seller",catFont);
+	        	top.add(sellerT);
+	        	top.add(Chunk.NEWLINE);
+	        	Chunk costsT = new Chunk("costs: " + topcard.getValue() +"€");
+	        	top.add(costsT);
+	        	top.add(Chunk.NEWLINE);
+	        	Chunk idT = new Chunk("ID :" +topcard.getId());
+	        	top.add(idT);
+	        	top.add(Chunk.NEWLINE);
+	        	top.add(Chunk.NEWLINE);
+	        	top.add(Chunk.NEWLINE);
+	        	Paragraph paT = new Paragraph(String.valueOf(topcard.getPackage()),redFont);
+	        	paT.setAlignment(Element.ALIGN_LEFT);
+	        	top.add(paT);
+	        }else{
+	            top.setSpacingAfter(200);
+	        	Chunk paT = new Chunk(String.valueOf(topcard.getPackage()),catFont);
+	        	top.add(paT);
+	        }
+	        
+	        //bottom
+	        bottomcard = (Card) iterbot.next();
+	        
+	        Paragraph bottom = new Paragraph(); 
+	        bottom.setAlignment(Element.ALIGN_CENTER);
+	        bottom.setSpacingBefore(130);
+	        if((bottomcard.getId() != -42) && (bottomcard.getValue() != 0)){
+	        	Chunk sellerB = new Chunk("seller",catFont);
+	        	bottom.add(sellerB);
+	        	bottom.add(Chunk.NEWLINE);
+	        	Chunk costsB = new Chunk("costs: " + bottomcard.getValue() +"€");
+	        	bottom.add(costsB);
+	        	bottom.add(Chunk.NEWLINE);
+	        	Chunk idB = new Chunk("ID: " +bottomcard.getId());
+	        	bottom.add(idB);
+	        	bottom.add(Chunk.NEWLINE);
+	        	bottom.add(Chunk.NEWLINE);
+	        	bottom.add(Chunk.NEWLINE);
+	        	Paragraph paB = new Paragraph(String.valueOf(bottomcard.getPackage()),redFont);
+	        	paB.setAlignment(Element.ALIGN_LEFT);
+	        	bottom.add(paB);
+	        }else{
+	        	Chunk pab = new Chunk(String.valueOf(bottomcard.getPackage()),catFont);
+	        	bottom.add(pab);
+	        }
+	        
+	        	//set Content togeser ;-)
+	        
+	        PdfPCell topcell = new PdfPCell();
+	        topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
+	        topcell.addElement(top);
+	        topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
+	        topcell.setBorder(Rectangle.BOTTOM);
+	        
+	        PdfPCell bottomcell = new PdfPCell();
+	        bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
+	        bottomcell.addElement(bottom);
+	        bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
+	        bottomcell.setBorder(Rectangle.NO_BORDER);
+	        
+	        PdfPTable myTable = new PdfPTable(1);
+	        myTable.setWidthPercentage(100.0f);
+	        myTable.addCell(topcell);
+	        myTable.addCell(bottomcell);
+	        
+	        
+	        cardsSeller.add(myTable);
+	        cardsSeller.newPage();
+        }        
     } 
+    
+    
+    public Document createExportPdf(Document doc, Image pdfImage) throws DocumentException{
+    	//TODO Statistikdaten abfragen und einfügen
+    	float chartWidth = doc.getPageSize().getWidth() - doc.leftMargin() - doc.rightMargin();
+    	float chartHeight = doc.getPageSize().getHeight();
+		pdfImage.scaleToFit(chartWidth, chartHeight);
+		doc.add(pdfImage);
+		
+		return doc;
+    }
 }
