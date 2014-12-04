@@ -3,7 +3,8 @@ package jKMS;
 
 import jKMS.cards.Card;
 import jKMS.states.Evaluation;
-import jKMS.states.Playthrough;
+import jKMS.states.Play;
+import jKMS.states.Load;
 import jKMS.states.Preparation;
 import jKMS.states.State;
 
@@ -40,8 +41,13 @@ public class Kartoffelmarktspiel {
 		System.out.println("Preparing..");
 	}
 
+	public void load() {
+		state = new Load(instance);
+		System.out.println("Loading..");
+	}
+	
 	public void play() {
-		state = new Playthrough(instance);
+		state = new Play(instance);
 		System.out.println("Playing..");
 	}
 

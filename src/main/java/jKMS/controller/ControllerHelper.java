@@ -2,7 +2,8 @@ package jKMS.controller;
 
 import jKMS.Kartoffelmarktspiel;
 import jKMS.states.Evaluation;
-import jKMS.states.Playthrough;
+import jKMS.states.Load;
+import jKMS.states.Play;
 import jKMS.states.Preparation;
 
 import java.net.InetAddress;
@@ -26,17 +27,41 @@ public class ControllerHelper {
 			if(requestedState.equals("prepare"))	{
 				return true;
 			}
-			if(requestedState.equals("play"))	{
-				kms.play();
+			if(requestedState.equals("load"))	{
+				kms.load();
 				return true;
+			}
+			if(requestedState.equals("play"))	{
+				// TODO internationalize
+				throw new IllegalStateException("Statuswechsel von Vorbereitung -> Spiel läuft ist nicht möglich!");
 			}
 			if(requestedState.equals("evaluate"))	{
 				// TODO internationalize
 				throw new IllegalStateException("Statuswechsel von Vorbereitung -> Auswertung ist nicht möglich!");
 			}
 		}
-		if(kms.getState() instanceof Playthrough)	{
+		if(kms.getState() instanceof Load)	{
 			if(requestedState.equals("prepare"))	{
+				return false;
+			}
+			if(requestedState.equals("load"))	{
+				return true;
+			}
+			if(requestedState.equals("play"))	{
+				kms.play();
+				return true;
+			}
+			if(requestedState.equals("evaluate"))	{
+				// TODO internationalize
+				throw new IllegalStateException("Statuswechsel von Spiel laden -> Auswertung ist nicht möglich!");
+			}
+		}
+		if(kms.getState() instanceof Play)	{
+			if(requestedState.equals("prepare"))	{
+				return false;
+			}
+			if(requestedState.equals("load"))	{
+				// TODO discuss validity of that
 				return false;
 			}
 			if(requestedState.equals("play"))	{
@@ -50,6 +75,10 @@ public class ControllerHelper {
 		if(kms.getState() instanceof Evaluation)	{
 			if(requestedState.equals("prepare"))	{
 				return false;
+			}
+			if(requestedState.equals("load"))	{
+				kms.load();
+				return true;
 			}
 			if(requestedState.equals("play"))	{
 				// TODO internationalize
