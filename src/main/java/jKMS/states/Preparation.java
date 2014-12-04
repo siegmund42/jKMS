@@ -36,11 +36,12 @@ import com.itextpdf.text.DocumentException;
 
 public class Preparation extends State	{
 
-	@Autowired
+
 	protected Pdf pdf;
 	
 	public Preparation(Kartoffelmarktspiel kms){
 		this.kms = kms;
+		pdf = new Pdf();
 	}
 	
 	//	Loads StandardConfiguration into kms.
