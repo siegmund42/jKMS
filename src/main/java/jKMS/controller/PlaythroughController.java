@@ -1,5 +1,12 @@
 package jKMS.controller;
 
+import jKMS.LogicHelper;
+import jKMS.cards.Card;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
+import jKMS.exceptionHelper.WrongRelativeDistributionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,8 +101,28 @@ public class PlaythroughController extends AbstractServerController {
 		
 	}
 	
+	//vorbeitung für die überprüfung von addContract()
 	@RequestMapping(value = "/load", method = RequestMethod.POST)
-	public String start()	{
+	public String start(Model model,@RequestParam(value = "excludeNumber[]") String[] excludeNumber ){
+		
+		for (int i = 0; i < excludeNumber.length; i++) {
+			int lastId = Integer.valueOf(excludeNumber[i]);
+			try {
+				kms.getState().removeCard(LogicHelper.IntToPackage(i), lastId);
+			} catch (WrongPlayerCountException | WrongAssistantCountException
+					| WrongFirstIDException
+					| WrongRelativeDistributionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				model.addAttribute("message", e.getMessage());
+				model.addAttribute("error", e.getClass().toString());
+				return "error";
+			}
+			
+		}
+		for(Card card :kms.getCards()){
+			System.out.println(card.getId()+"  "+card.getPackage());
+		}
 		return "redirect:/play";
 	}
 	

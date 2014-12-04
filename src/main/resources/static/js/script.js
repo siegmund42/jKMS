@@ -250,8 +250,10 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 				
 				var input = document.createElement("input");
 				input.setAttribute("type", "text");
-				input.setAttribute("name", i);
-				input.setAttribute("id", i);
+				//input.setAttribute("name", i);
+				//input.setAttribute("id", i);
+				input.setAttribute("name", 'excludeNumber[]');
+				input.setAttribute("id", 'excludeNumber[' + i + ']');
 				input.setAttribute("placeholder", alphabet[i].toUpperCase());
 				row.appendChild(input);
 				

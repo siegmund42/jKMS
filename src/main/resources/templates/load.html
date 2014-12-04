@@ -61,7 +61,7 @@
 	 	<div th:if="${param.s} AND ${param.s[0]} == 2">
 		 	<form th:action="load.html" name="exclude" id="exclude" method="POST" onsubmit="return validateForm(this.id);">
 		 		<div th:text="#{load.hintExclude}"></div>
-			 	<div class="form" id="excludeDiv">
+			 	<div class="form" id="excludeDiv" name="excludeDiv" > 
 			 	</div>
 			 	<p style="clear:both;"></p>
 				<input type="submit" th:value="#{load.start}" />
