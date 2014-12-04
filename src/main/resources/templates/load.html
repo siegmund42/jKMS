@@ -18,7 +18,6 @@
     /*]]>*/
     </script>
     <script th:src="@{/js/script.js}"></script>
-    
 </head>
  <body th:onload="(${param.s} AND ${param.s[0]} == 2)? 'createExcludeFields(' + ${numberOfAssistants} + ');' : 'updateArrangement();'">
  	<div id="toolBar">
