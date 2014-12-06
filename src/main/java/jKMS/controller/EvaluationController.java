@@ -1,15 +1,48 @@
 package jKMS.controller;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import jKMS.Amount;
 import jKMS.Contract;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class EvaluationController extends AbstractServerController {
 	
-	//get all attributes of "winner contract"
+	@RequestMapping("/getEvaluation")
+	@ResponseBody
+	/*
+	 * catches AjaxRequest, concatenates data list with standardDistribution
+	 */
+	public String evaluationChart(){
+		//String of current play data
+		Set<Contract> contracts = kms.getContracts();
+		String playData = ControllerHelper.setToString(contracts);
+		
+		//String of expected supply and demand
+		Map<Integer, Amount> sDistribution = kms.getsDistribution();
+		String expectedSupply = ControllerHelper.mapToString(sDistribution);
+		
+		TreeMap<Integer, Amount> bDistribution = (TreeMap<Integer, Amount>) kms.getbDistribution();
+		String expectedDemand = ControllerHelper.mapToString(bDistribution.descendingMap());
+		
+		String str = playData.concat(";" + expectedSupply + ";" + expectedDemand);
+		
+		return str;
+		
+	}
+	
+	
+	/*
+	 * gets all attributes of "winner contract" and adds them to the model
+	 */
 	@RequestMapping(value = "/lottery")
 	public String lottery(Model model){
 		

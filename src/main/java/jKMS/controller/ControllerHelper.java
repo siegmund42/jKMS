@@ -1,5 +1,7 @@
 package jKMS.controller;
 
+import jKMS.Amount;
+import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.states.Evaluation;
 import jKMS.states.Load;
@@ -10,6 +12,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 
@@ -128,6 +132,50 @@ public class ControllerHelper {
 	 */
 	public static int getPort(ServletRequest request)	{
 		return request.getServerPort();
+	}
+	
+	
+	/*
+	 * Gets the set of contracts and converts it to a string for the javascript flot library
+	 */
+	public static String setToString(Set<Contract> contracts){
+		String str = "[";
+		int i = 0;
+		
+		for(Contract c : contracts){
+			str = str.concat("["+i+","+c.getPrice()+"],");
+			i++;
+		}
+		
+		if(contracts.size() == 1){
+			Contract[] tmp = (Contract[]) contracts.toArray();
+			str = str.concat("[1,"+tmp[0].getPrice()+"],");
+		}
+		
+		str = str.substring(0, str.length()-1).concat("]");
+		
+		return str;		
+	}
+	
+	/*
+	 * Gets a map of distribution and converts it to a string for the javascript flot library
+	 */
+	public static String mapToString(Map<Integer,Amount>  distribution){
+		String str = "[";
+		int absolute = 0;
+		int lastKey = 0;
+		
+		for(Map.Entry<Integer, Amount> entry : distribution.entrySet()){
+			
+			str = str.concat("[" + absolute + "," + entry.getKey() + "],");
+			absolute += entry.getValue().getAbsolute();
+			
+			lastKey = entry.getKey();
+		}
+		
+		str = str.concat("[" + absolute + "," + lastKey + "]]");
+		
+		return str;
 	}
 	
 }

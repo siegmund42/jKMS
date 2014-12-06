@@ -68,12 +68,10 @@ function drawEvaluationChart(data){
 
 function insertValue(){
 	
-	var lastValue = $('#lastValue').val();
 	
 	$.ajax({
 		type: "Get",
 		url: "getData.html",
-		data: "lastValue=" + lastValue,
 		success: function(response) {drawPlayChart(response);},
 		error: function(e){alert('Error' + e);}
 	});
