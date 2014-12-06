@@ -14,7 +14,6 @@ import jKMS.exceptionHelper.WrongRelativeDistributionException;
 import jKMS.LogicHelper;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,9 +25,6 @@ import java.util.Random;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itextpdf.text.Document;
@@ -90,8 +86,6 @@ public class Preparation extends State	{
 	
 	//load Implementieren
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{
-    	int playerCount=0;
-    	int assistantCount=0;
     	int groupCount=0;
     	int firstID=0;
     	Set<Card> cardSet = new LinkedHashSet<Card>();
@@ -105,12 +99,10 @@ public class Preparation extends State	{
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
             		 if(count == 0){
-            			 playerCount = Integer.valueOf(sa[1].trim());
             			 count = count + 1;
             			 continue;
             		 }
             		 else if(count == 1){
-            			 assistantCount = Integer.valueOf(sa[1].trim());
             			 count = count + 1;
             			 continue;
             		 }
@@ -154,13 +146,9 @@ public class Preparation extends State	{
             		 }
             		 cardSet.add(card);
             	 }
-            	 System.out.println(playerCount);
-    			 System.out.println(assistantCount);
     			 System.out.println(groupCount);
     			 System.out.println(firstID);
     			 
-            	 kms.getConfiguration().setPlayerCount(playerCount);
-    	    	 kms.getConfiguration().setAssistantCount(assistantCount);
     	    	 kms.getConfiguration().setGroupCount(groupCount);
     	    	 kms.getConfiguration().setFirstID(firstID);
     	    	 kms.getConfiguration().setbDistribution(bDistributionLoad);
