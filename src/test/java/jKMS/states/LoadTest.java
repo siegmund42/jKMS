@@ -1,5 +1,7 @@
 package jKMS.states;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
@@ -19,12 +21,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class PlaythroughTest {
+public class LoadTest {
 	@Autowired
 	private Kartoffelmarktspiel kms;
 	
@@ -49,22 +49,12 @@ public class PlaythroughTest {
 		
 		try{
 			kms.getState().generateCards();
-			}catch (Exception e) {
-				e.printStackTrace();	
-			}
+		}catch (Exception e) {
+			e.printStackTrace();	
+		}
 		
 		
-		kms.play();
-	}
-	
-	@Test
-	public void testAddContract(){
-		
-	}
-	
-	@Test
-	public void testLoad(){
-		
+		kms.load();
 	}
 	
 	@Test
