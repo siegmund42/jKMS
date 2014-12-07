@@ -45,12 +45,7 @@
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>
-	<div id="chartWrapper">
-		<div id="prototypInput" th:style="${param.s}? 'display:none' : 'display:box'">
-			<div style="float: left; margin: 10px;">Wert hinzufügen</div>
-			<input name="lastValue" id="lastValue" type="text" style="float:left"/>
-			<input type="button" id="button" value="Wert einzeichnen" onclick="insertValue();" style="float:left"/>
-		</div>		
+	<div id="chartWrapper">		
 		<div id="placeholder">
 		</div>
 	</div>
@@ -67,13 +62,10 @@
 			$.plot($("#placeholder"), [[[0,0],[1,100]]] , options);	
 		
 			$(document).ready(function(){
-				$.ajax({
-					type: "Get",
-					url: "getData.html",
-					success: function(response) {drawPlayChart(response);},
-					error: function(e){alert('Error' + e);}
-				});
+				
+				setInterval(function(){getData()},1000);				
 			});
+			
 		</script>
  </body>
 </html>

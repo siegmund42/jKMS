@@ -1,5 +1,5 @@
 function drawPlayChart(data){
-
+	
 		playData = JSON.parse(data);
 
 		var options = {	xaxis:{
@@ -66,8 +66,7 @@ function drawEvaluationChart(data){
 		});
 }
 
-function insertValue(){
-	
+function getData(){
 	
 	$.ajax({
 		type: "Get",

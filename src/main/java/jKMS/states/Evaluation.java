@@ -2,16 +2,12 @@ package jKMS.states;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import scala.annotation.meta.getter;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
-import jKMS.cards.BuyerCard;
-import jKMS.cards.Card;
 
 public class Evaluation extends State{
 	
@@ -79,7 +75,9 @@ public class Evaluation extends State{
 		if(contracts == null) throw new NullPointerException();
 		
 		Random rand = new Random();
-		int randomInt = rand.nextInt(contracts.size() + 1);
+		int randomInt = rand.nextInt(contracts.size());
+		System.out.println(contracts.size());
+		System.out.println(randomInt);
 		int i = 0;
 		Iterator<Contract> k = contracts.iterator();
 		

@@ -145,11 +145,10 @@ public class ControllerHelper {
 		for(Contract c : contracts){
 			str = str.concat("["+i+","+c.getPrice()+"],");
 			i++;
-		}
-		
-		if(contracts.size() == 1){
-			Contract[] tmp = (Contract[]) contracts.toArray();
-			str = str.concat("[1,"+tmp[0].getPrice()+"],");
+			if(i == 1){
+				str = str.concat("["+i+","+c.getPrice()+"],");
+				i++;
+			}
 		}
 		
 		str = str.substring(0, str.length()-1).concat("]");
