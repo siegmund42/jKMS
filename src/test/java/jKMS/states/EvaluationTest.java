@@ -2,7 +2,9 @@ package jKMS.states;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeMap;
 
+import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.cards.*;
@@ -29,6 +31,10 @@ public class EvaluationTest {
 		
 		//Preparation
 		kms.prepare();
+		kms.getCards().clear();
+		
+		kms.getConfiguration().setbDistribution(new TreeMap<Integer, Amount>());
+		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());
 		
 		kms.getState().setBasicConfig(800, 10);
 		kms.getState().loadStandardDistribution();
@@ -41,6 +47,7 @@ public class EvaluationTest {
 		
 		
 		//Playthrough
+		kms.load();
 		kms.play();
 		
 		c = new LinkedHashSet<Card>(kms.getCards());
