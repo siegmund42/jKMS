@@ -58,10 +58,5 @@ public class PlayTest {
 		
 	}
 	
-	@Test
-	public void testLoad(){
-		
-	}
-	
 
 }

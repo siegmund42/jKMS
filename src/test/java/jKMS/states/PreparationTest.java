@@ -135,7 +135,7 @@ public class PreparationTest {
 					System.out.println(e.getMessage());		
 				}
 			
-			s1 = kms.getCards();
+			s1.addAll(kms.getCards());
 			
 			try{
 				kms.getState().generateCards();
@@ -144,8 +144,9 @@ public class PreparationTest {
 					System.out.println(e.getMessage());		
 				}
 			
-			s2 = kms.getCards();
+			s2.addAll(kms.getCards());
 			i++;
+			
 		} while(s1 == s2 && i<3);
 		
 		assertTrue("Bad random generation of cardSet!", s1 != s2);

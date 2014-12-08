@@ -105,4 +105,9 @@ public class LoadTest {
 		assertEquals("removeCard does not update the (Buyer)-Distribution correctly", expectedBDistrib.size(), kms.getbDistribution().size());
 		assertEquals("removeCard does not update the (Seller)-Distribution correctly", expectedSDistrib.size(), kms.getsDistribution().size());
 	}
+	
+	@Test
+	public void testLoad(){
+		
+	}
 }
