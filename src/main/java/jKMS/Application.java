@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.servlet.MultipartConfigElement;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.MultipartConfigFactory;
@@ -19,17 +20,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-public class Application extends WebMvcConfigurerAdapter	{
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-        try	{
-        	//Desktop.getDesktop().browse(new URL("http://localhost:4242/index").toURI());
-        	BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
-        } catch (Exception e)	{
-        	e.printStackTrace();
-        }
-    }
+public class Application extends WebMvcConfigurerAdapter {
     
     @Bean
     public LocaleResolver localeResolver() {
