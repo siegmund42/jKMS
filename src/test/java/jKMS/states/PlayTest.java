@@ -35,12 +35,12 @@ public class PlayTest {
 		kms.getConfiguration().setFirstID(1001);
 		
 		//Setup Distribution pro distribution 100 % because eingabemaske
-		kms.getState().newGroup(true, 2, 20, 2);
-		kms.getState().newGroup(true, 3, 20, 2);
-		kms.getState().newGroup(true, 4, 60, 1);
-		kms.getState().newGroup(false, 2, 60, 1);
-		kms.getState().newGroup(false, 3, 20, 2);
-		kms.getState().newGroup(false, 4, 20, 2);
+		kms.getState().newGroup(true, 2, 40, 2);
+		kms.getState().newGroup(true, 3, 40, 2);
+		kms.getState().newGroup(true, 4, 20, 1);
+		kms.getState().newGroup(false, 2, 20, 1);
+		kms.getState().newGroup(false, 3, 40, 2);
+		kms.getState().newGroup(false, 4, 40, 2);
 		
 		try{
 			kms.getState().generateCards();
@@ -55,7 +55,41 @@ public class PlayTest {
 	
 	@Test
 	public void testAddContract(){
-		
+		//BuyerCard(1001,2,'A')
+				//BuyerCard(1003,2,'A')
+				//BuyerCard(1005,3,'A')
+				//BuyerCard(1007,3,'A')
+				//BuyerCard(1009,4,'A')
+				//SellerCard(1002,2,'A')
+				//SellerCard(1004,3,'A')
+				//SellerCard(1006,3,'A')
+				//SellerCard(1008,4,'A')
+				//SellerCard(1010,4,'A')
+				kms.play();
+				assertEquals("addContract() should return 0 when input both right cardId,id1 and id2 can exchange"
+						,0, kms.getState().addContract(1001, 1010, 6));
+				assertEquals("addContract() should return 0 when input both right cardId,id1 and id2 can exchange"
+						,0, kms.getState().addContract(1002, 1009, 6));
+				assertEquals("addContract() should return 1 when input double Buyer "
+						,1, kms.getState().addContract(1003, 1005, 6));
+				assertEquals("addContract() should return 1 when input double Seller "
+						,1, kms.getState().addContract(1004, 1006, 6));
+				assertEquals("addContract() should return 1 when input 2 same Id number "
+						,1, kms.getState().addContract(1006, 1006, 6));
+				assertEquals("addContract() should return 2 when a cardId is not available "
+						,1, kms.getState().addContract(1011, 1006, 6));
+				assertEquals("addContract() should return 2 when a cardId is not available "
+						,1, kms.getState().addContract(1004, 1021, 6));
+				assertEquals("addContract() should return 2 when both cardId are not available "
+						,1, kms.getState().addContract(1026, 1031, 6));
+				// 1001,1002,1009,1010 are already dealt
+				assertEquals("addContract() should return 3 when the Buyer is already dealt "
+						,1, kms.getState().addContract(1001, 1004, 6));
+				assertEquals("addContract() should return 3 when the Seller is already dealt "
+						,1, kms.getState().addContract(1003, 1010, 6));
+				assertEquals("addContract() should return 3 when both Buyer and Seller are already dealt "
+						,1, kms.getState().addContract(1001, 1002, 6));
+
 	}
 	
 
