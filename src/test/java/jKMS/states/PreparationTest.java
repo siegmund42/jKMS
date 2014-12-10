@@ -1,10 +1,23 @@
 package jKMS.states;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+
+import javax.servlet.ServletContext;
 
 import jKMS.Amount;
 import jKMS.Application;
@@ -13,14 +26,21 @@ import jKMS.Pdf;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
+import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
+import jKMS.exceptionHelper.WrongRelativeDistributionException;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -64,7 +84,111 @@ public class PreparationTest {
 	@Test
 	//TODO testLoad
 	public void testLoad(){
+		ServletContext servletContext = null;
+		int unexpectedPlayerCount = 8;
+		int unexpectedAssistantCount = 2;
+		int expectedGroupCount = 3;
+    	int expectedFirstID = 1001;
+    	Map<Integer, Amount> expectedbDistribution = new TreeMap<>();
+		Map<Integer, Amount> expectedsDistribution = new TreeMap<>();
+		Set<Card> expectedCardSet = new LinkedHashSet<Card>();
+		expectedbDistribution.put(56,new Amount(25,1));
+		expectedbDistribution.put(65,new Amount(25,1));
+		expectedbDistribution.put(66,new Amount(50,2));
+		expectedsDistribution.put(56,new Amount(25,1));
+		expectedsDistribution.put(65,new Amount(25,1));
+		expectedsDistribution.put(66,new Amount(50,2));
+		expectedCardSet.add(new BuyerCard(1001,56,'A'));
+		expectedCardSet.add(new BuyerCard(1003,65,'A'));
+		expectedCardSet.add(new BuyerCard(1005,66,'B'));
+		expectedCardSet.add(new BuyerCard(1007,66,'B'));
+		expectedCardSet.add(new SellerCard(1002,56,'A'));
+		expectedCardSet.add(new SellerCard(1004,65,'A'));
+		expectedCardSet.add(new SellerCard(1006,66,'B'));
+		expectedCardSet.add(new SellerCard(1008,66,'B'));
 		
+		String pathFile = servletContext.getRealPath(".").concat("file.txt");
+		
+	    String line = System.getProperty("line.separator");
+		   StringBuffer str = new StringBuffer();
+		   FileWriter fw = null;
+		try {
+			fw = new FileWriter(pathFile, false);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		   str.append("PlayerCount:").append(kms.getConfiguration().getPlayerCount()).append(line)
+		   .append("AssistantCount:").append(kms.getConfiguration().getAssistantCount()).append(line)
+		   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
+		   .append("FirstID:").append(kms.getConfiguration().getFirstID()).append(line);
+		   
+		   Set<Entry<Integer, Amount>> bSet = expectedbDistribution.entrySet();
+		   Set<Entry<Integer, Amount>> sSet = expectedsDistribution.entrySet();
+		   Iterator<Entry<Integer, Amount>> bIter = bSet.iterator();
+		   Iterator<Entry<Integer, Amount>> sIter = sSet.iterator();
+		   while(bIter.hasNext() && sIter.hasNext()){
+			   Map.Entry bEntry = (Map.Entry)bIter.next(); 
+			   Map.Entry sEntry = (Map.Entry)sIter.next(); 
+		    
+			   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
+					   " "+"sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
+		   }
+		   Iterator<Card> cardIter = expectedCardSet.iterator();
+		   while(cardIter.hasNext()){
+			   Card card = (Card) cardIter.next();
+			   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
+		   }
+		try {
+			fw.write(str.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		try {
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		
+	    Path path = Paths.get(pathFile);
+	    String name = "file.txt";
+	    String originalFileName = "file.txt";
+	    String contentType = "text/plain";
+	    byte[] content = null;
+	    try {
+	        content = Files.readAllBytes(path);
+	    } catch (final IOException e) {
+	    	e.printStackTrace();
+			System.out.println(e.getMessage());
+	    }
+	    MultipartFile configTest = new MockMultipartFile(name,
+	                         originalFileName, contentType, content);
+	   
+	    try {
+			kms.getState().load(configTest);
+		} catch (NumberFormatException | IOException | EmptyFileException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+	   
+	    
+	    assertEquals("the PlayerCount should be 6,system should not load 8 in state preparation"
+	    		, unexpectedPlayerCount, kms.getConfiguration().getPlayerCount());
+		assertEquals("the AssistantCount should be 1,system should not load 2 in state preparation"
+				, unexpectedAssistantCount, kms.getConfiguration().getAssistantCount());
+		assertEquals("system did not load the right PlayerCount in StateLoad", 6, kms.getConfiguration().getPlayerCount());
+		assertEquals("system did not load the right AssistantCount in StateLoad", 1, kms.getConfiguration().getAssistantCount());
+		assertEquals("system did not load the right GroupCount", expectedGroupCount, kms.getConfiguration().getGroupCount());
+		assertEquals("system did not load the right FirstID", expectedFirstID, kms.getConfiguration().getFirstID());
+		assertEquals("system did not load the right bDistributionCount", expectedbDistribution.size(), kms.getConfiguration().getbDistribution().size());
+		assertEquals("system did not load the right sDistributionCount", expectedsDistribution, kms.getConfiguration().getsDistribution().size());
+		assertEquals("system did not load the right bDistributionContent", expectedbDistribution.toString(), kms.getConfiguration().getbDistribution().toString());
+		assertEquals("system did not load the right sDistributionContent", expectedsDistribution.toString(), kms.getConfiguration().getsDistribution().toString());
+		assertEquals("system did not load the right CardNumber", expectedCardSet.size(), kms.getCards().size());
+		assertEquals("system did not load the right CardSetContent", expectedCardSet.toString(), kms.getCards().toString());
+
 	}
 
 	@Test
@@ -115,7 +239,122 @@ public class PreparationTest {
 	@Test
 	//TODO testSave
 	public void testSave(){
-		
+		ServletContext servletContext = null;
+		int expectedPlayerCount = 0;
+		int expectedAssistantCount = 0;
+		int expectedGroupCount = 0;
+    	int expectedFirstID = 0;
+    	Set<Card> expectedCardSet = new LinkedHashSet<Card>();
+    	Map<Integer, Amount> expectedbDistribution = new TreeMap<>();
+		Map<Integer, Amount> expectedsDistribution = new TreeMap<>();
+		try {
+			kms.getCards().clear();
+			kms.getState().generateCards();
+		} catch (WrongFirstIDException | WrongAssistantCountException
+				| WrongPlayerCountException
+				| WrongRelativeDistributionException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		String path = servletContext.getRealPath(".").concat("configTest.txt");
+		try {
+			kms.getState().save(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		File file =new File(path);
+		if (!(file.exists())) {
+       	 BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(file));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+       	 String buf = "";
+       	 int count = 0;
+       	 try {
+			while ((buf=br.readLine()) != null && count < 4) {
+				 buf=buf.trim();
+				 String[] sa = buf.split(":|\\s");
+				 if(count == 0){
+					 expectedPlayerCount = Integer.valueOf(sa[1].trim());
+					 count = count + 1;
+					 continue;
+				 }
+				 else if(count == 1){
+					 expectedAssistantCount = Integer.valueOf(sa[1].trim());
+					 count = count + 1;
+					 continue;
+				 }
+				 else if(count == 2){
+					 expectedGroupCount = Integer.valueOf(sa[1].trim());
+					 count = count + 1;
+					 continue;
+				 }
+				 else if(count == 3){
+					 expectedFirstID = Integer.valueOf(sa[1].trim());
+					 count = count + 1;
+					 break;
+				 }
+			 }
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+       	 while ( count >=4 && count < expectedGroupCount+4){
+       		 try {
+				if( (buf=br.readLine()) != null){
+					 buf=buf.trim();
+				         String[] sa = buf.split(":|\\s");
+				         int bpreis = Integer.valueOf(sa[1].trim());
+				         Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
+				         // int banteil = Integer.valueOf(sa[1]);
+				         int spreis = Integer.valueOf(sa[5].trim());
+				         Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
+				         //int santeil = Integer.valueOf(sa[3]);
+				        
+				         expectedbDistribution.put(bpreis, bAmount);
+				         expectedsDistribution.put(spreis, sAmount);
+				         count = count + 1;
+				 }else {
+					 throw new EmptyFileException("The GroupCount is not enough!");
+				 }
+			} catch (NumberFormatException | IOException | EmptyFileException e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+       	 }
+			try {
+				while (count >= expectedGroupCount +4 && (buf=br.readLine()) != null){
+					 Card card;
+					 buf=buf.trim();
+					 String[] sa = buf.split(":|\\s");
+					 if((Integer.valueOf(sa[1])%2) == 0){
+						card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+					 }else {
+						card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+					 }
+					 expectedCardSet.add(card);
+				 }
+			} catch (NumberFormatException | IOException e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+			assertEquals("system did not save the right PlayerCount", expectedPlayerCount, kms.getConfiguration().getPlayerCount());
+			assertEquals("system did not save the right AssistantCount", expectedAssistantCount, kms.getConfiguration().getAssistantCount());
+			assertEquals("system did not save the right GroupCount", expectedGroupCount, kms.getConfiguration().getGroupCount());
+			assertEquals("system did not save the right FirstID", expectedFirstID, kms.getConfiguration().getFirstID());
+			assertEquals("system did not save the right bDistributionCount", expectedbDistribution.size(), kms.getConfiguration().getbDistribution().size());
+			assertEquals("system did not save the right sDistributionCount", expectedsDistribution, kms.getConfiguration().getsDistribution().size());
+			assertEquals("system did not save the right bDistributionContent", expectedbDistribution.toString(), kms.getConfiguration().getbDistribution().toString());
+			assertEquals("system did not save the right sDistributionContent", expectedsDistribution.toString(), kms.getConfiguration().getsDistribution().toString());
+			assertEquals("system did not save the right CardNumber", expectedCardSet.size(), kms.getCards().size());
+			assertEquals("system did not save the right CardSetContent", expectedCardSet.toString(), kms.getCards().toString());
+
+		}
+
 	}
 	
 	@Test
@@ -135,7 +374,7 @@ public class PreparationTest {
 					System.out.println(e.getMessage());		
 				}
 			
-			s1 = kms.getCards();
+			s1.addAll(kms.getCards());
 			
 			try{
 				kms.getState().generateCards();
@@ -144,8 +383,9 @@ public class PreparationTest {
 					System.out.println(e.getMessage());		
 				}
 			
-			s2 = kms.getCards();
+			s2.addAll(kms.getCards());
 			i++;
+			
 		} while(s1 == s2 && i<3);
 		
 		assertTrue("Bad random generation of cardSet!", s1 != s2);
