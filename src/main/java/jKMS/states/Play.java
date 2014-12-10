@@ -17,11 +17,7 @@ public class Play extends State {
 	}
 	
 	public int addContract(int id1,int id2,int price){ 
-		// TODO return errorCode 0 -> everything fine 1 -> double buyer/seller 2 -> Card not available 3 -> already dealt
-		// TODO Reihenfolge der Eingabe egal --> id2 kann auch buyer sein
-		// TODO Es dürfen nicht beide Käufer/verkäufer sein
-		// TODO Es muss Käufer/Verkäufer geben (dürfen nicht ausgetragen sein)
-		// TODO Weder Käufer noch Verkäufer darf bisher gehandelt haben
+		// returns errorCode: 0 -> everything fine 1 -> double buyer/seller 2 -> Card not available 3 -> already dealt
 		Set<Card> gehandeltCards = new LinkedHashSet<Card>();
 	    Iterator<Contract> citer = kms.getContracts().iterator();
 	    while(citer.hasNext()){

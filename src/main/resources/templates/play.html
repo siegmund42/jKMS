@@ -29,12 +29,6 @@
  		</div>
  		<ul>
  			<li>
- 				<a href="index.html" th:text="#{messages.welcome}" ></a>
- 			</li>
- 			<li>
- 				<a th:if="!${param.s} OR ${param.s[0]} != 'stop'" href="load.html?s=2" th:text="#{messages.back}" ></a>
- 			</li>
- 			<li>
 				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}"></a>
 			</li>
 			<li>

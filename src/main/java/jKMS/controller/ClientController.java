@@ -34,6 +34,7 @@ public class ClientController extends AbstractController {
 			int add = kms.getState().addContract(idOne, idTwo, cost);
 			
 		    if(add == 0)	{
+		    	model.addAttribute("success", "Juhu!");
 		    	return "redirect:/contract";
 		    }	else	{
 		    	model.addAttribute("id1", id1);

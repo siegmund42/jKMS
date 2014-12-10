@@ -36,7 +36,7 @@ function generalValidateField(field)	{
 		
 	}
 
-	// If any Error occured
+	// If any Error occurred
 	if(error != null)	{
 		// Write Error
 		writeError(error, field);
@@ -142,7 +142,7 @@ function validateForm(form)	{
 			if(document.getElementById('customerTotalAbsolute').innerHTML > numberOfPlayers/2 ||
 					document.getElementById('salesmanTotalAbsolute').innerHTML > numberOfPlayers/2)	{
 				// Ask User if it was OK to round
-				globalError = !window.confirm(roundedUp + (document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 - numberOfPlayers);
+				globalError = !window.confirm(roundedUp + (document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 - numberOfPlayers));
 			}
 		}
 	}
