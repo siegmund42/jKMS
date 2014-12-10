@@ -12,6 +12,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -101,8 +103,10 @@ public class ControllerHelper {
 	/*
 	 * Returns IP of the User.
 	 */
-	
-	public static String getIP()	{
+	public static List<String> getIP()	{
+		
+		List<String> IPs = new LinkedList<>();
+		
 		// TODO handle multiple IPs if User is connected to multiple Networks
 		Enumeration<NetworkInterface> ifaces = null;
 		// Pick up all Network Interfaces
@@ -121,11 +125,11 @@ public class ControllerHelper {
 		    	InetAddress ia = (InetAddress)addrs.nextElement();
 		    	// Only display an Address, which is not localhost and has no ":" in it [Filter for MAC Adresses]
 		    	if(!ia.getHostAddress().toString().equals("127.0.0.1") && ia.getHostAddress().toString().indexOf(":") == -1)	{
-		    		return ia.getHostAddress().toString();
+		    		IPs.add(ia.getHostAddress().toString());
 		        }
 		    }
 		}
-		return null;
+		return IPs;
 	}
 	
 	/*

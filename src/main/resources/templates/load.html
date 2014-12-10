@@ -55,10 +55,12 @@
 	 	<!-- For Showing the IP Address -->
 	 	<div th:if="!${param.s} OR ${param.s[0]} == 1">
 		 	<h2 th:text="#{load.address}">Adresse dieses Rechners</h2>
-		 	<div th:text="${ip} + ':' + ${port}"></div>
+		 	<div class="errorDiv textBlock" th:if="${ipError}" th:text="#{load.multipleIP}"></div>
+		 	<div th:each="ip : ${IPs}">
+		 		<div th:text="${ip} + ':' + ${port}"></div>
+		 	</div>
 		 	<br />
-		 	<div style="width: 500px;margin: auto;" th:text="#{load.hintAddress}"></div>
-		 	<br />
+		 	<div class="textBlock" style="padding-bottom: 30px; border-bottom: 2px solid black;" th:text="#{load.hintAddress}"></div>
 		 	<!-- Display Game Data ###################################################### -->
 		 	
 		 	<h3 th:text="#{load.hintWhichLoaded}"></h3>

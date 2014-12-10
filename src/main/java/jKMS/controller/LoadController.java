@@ -1,5 +1,7 @@
 package jKMS.controller;
 
+import java.util.List;
+
 import jKMS.LogicHelper;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
@@ -40,7 +42,11 @@ public class LoadController extends AbstractServerController {
 				model.addAttribute("groupQuantity", kms.getGroupCount());
 				
 				// IP and Port for Client connection
-				model.addAttribute("ip", ControllerHelper.getIP());
+				List<String> IPs = ControllerHelper.getIP();
+				if(IPs.size() > 1)	{
+					model.addAttribute("ipError", true);
+				}
+				model.addAttribute("IPs", IPs);
 				model.addAttribute("port", ControllerHelper.getPort(request));
 			}
 

@@ -29,6 +29,7 @@ h1  {
 h2  {
     padding:            1px 0px 4px 10px;
     font-size:          130%;
+    margin:				15px auto;
 }
 
 h3	{
@@ -57,6 +58,16 @@ noscript div	{
 .errorDiv	{
 	color:				red;
 	font-size:			120%;
+}
+
+.successDiv	{
+	color:				green;
+	font-size:			120%;
+}
+
+.textBlock	{
+	width:				650px;
+	margin:				20px auto;
 }
 
 .form	{
