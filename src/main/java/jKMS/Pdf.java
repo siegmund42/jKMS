@@ -33,9 +33,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 public class Pdf {
 	
 	 //define Fonts
-	private static Font catFont = new Font(Font.FontFamily.COURIER, 18,
+	private static Font titleFont = new Font(Font.FontFamily.HELVETICA, 25,
 		      Font.BOLD);
-	private static Font redFont = new Font(Font.FontFamily.COURIER, 12,
+	private static Font valueFont = new Font(Font.FontFamily.HELVETICA, 18,
+		      Font.NORMAL);
+	
+	private static Font packFont = new Font(Font.FontFamily.HELVETICA, 12,
 		      Font.NORMAL);
 	
 	private String cardtitle;
@@ -149,13 +152,13 @@ public class Pdf {
         	PdfPCell topcell = new PdfPCell();
         	topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
         	topcell.addElement(top);
-        	topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
+        	topcell.addElement(this.createPackOnCard(topcard.getPackage()));//set Package bottom right on card
         	topcell.setBorder(Rectangle.BOTTOM);
-        
+  
         	PdfPCell bottomcell = new PdfPCell();
         	bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
         	bottomcell.addElement(bottom);
-        	bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
+        	bottomcell.addElement(this.createPackOnCard(bottomcard.getPackage()));//set Package bottom right on card
         	bottomcell.setBorder(Rectangle.NO_BORDER);
         
         	PdfPTable myTable = new PdfPTable(1);
@@ -269,15 +272,15 @@ public class Pdf {
         	PdfPCell topcell = new PdfPCell();
         	topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
         	topcell.addElement(top);
-        	topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
+        	topcell.addElement(this.createPackOnCard(topcard.getPackage()));//set Package bottom right on card
         	topcell.setBorder(Rectangle.BOTTOM);
         
         	PdfPCell bottomcell = new PdfPCell();
         	bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
         	bottomcell.addElement(bottom);
-        	bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
+        	bottomcell.addElement(this.createPackOnCard(bottomcard.getPackage()));//set Package bottom right on card        	bottomcell.setBorder(Rectangle.NO_BORDER);
         	bottomcell.setBorder(Rectangle.NO_BORDER);
-        
+        	
         	PdfPTable myTable = new PdfPTable(1);
         	myTable.setWidthPercentage(100.0f);
         	myTable.addCell(topcell);
@@ -290,39 +293,43 @@ public class Pdf {
   
     }
 
+	private Paragraph createPackOnCard(char pack){
+		Paragraph cPa = new Paragraph(String.valueOf(pack),packFont);
+    	cPa.setAlignment(Element.ALIGN_RIGHT);
+    	return cPa;
+	}
+	
     private Paragraph createCard(Card card,boolean isTop){
     	
     	Paragraph content = new Paragraph();
         content.setAlignment(Element.ALIGN_CENTER);
         
     	if(isTop){
-    		content.setSpacingBefore(100);
-            content.setSpacingAfter(150);
+    		content.setSpacingBefore(140);
+            content.setSpacingAfter(140);
     		if(card.getId() == -42 && card.getValue() == 0){
-                content.setSpacingAfter(200);
+                content.setSpacingAfter(168);
     		}
     	}else{
-            content.setSpacingBefore(130);
+            content.setSpacingBefore(140);
+            content.setSpacingAfter(140);
     	}
     	
         if((card.getId() != -42) && (card.getValue() != 0)){
-        	Chunk cTitle = new Chunk(cardtitle,catFont);
+        	Chunk cTitle = new Chunk(cardtitle,titleFont);
         	content.add(cTitle);
         	content.add(Chunk.NEWLINE);
-        	Chunk cValue = new Chunk(this.value + card.getValue() +"€");
+        	content.add(Chunk.NEWLINE);
+        	Chunk cValue = new Chunk(this.value + card.getValue() +"€",valueFont);
         	content.add(cValue);
         	content.add(Chunk.NEWLINE);
-        	Chunk cID = new Chunk(this.id + card.getId());
+        	Chunk cID = new Chunk(this.id + card.getId(),valueFont);
         	content.add(cID);
-        	content.add(Chunk.NEWLINE);
-        	content.add(Chunk.NEWLINE);
-        	content.add(Chunk.NEWLINE);
-        	Paragraph cPa = new Paragraph(String.valueOf(card.getPackage()),redFont);
-        	cPa.setAlignment(Element.ALIGN_LEFT);
-        	content.add(cPa);
         }else{
-        	Chunk cPack = new Chunk(String.valueOf(card.getPackage()),catFont);
-        	content.add(cPack);
+        	Paragraph pack = new Paragraph(String.valueOf(card.getPackage()),titleFont);
+        	pack.setAlignment(Element.ALIGN_CENTER);
+        	content.add(pack);
+        	card.setPackage(' ');
         }
         	
     	return content;
