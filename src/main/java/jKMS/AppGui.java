@@ -46,12 +46,10 @@ import javax.swing.JRadioButton;
 public class AppGui {
 	@Autowired
 	private Kartoffelmarktspiel kms;
-
+	
 	private JFrame frmJkms;
+	private JScrollPane scrollPane;
 	private JButton btnClose;
-
-	private JPanel logPanel;
-	private JCheckBox chckbxShowLog;
 	private JTextArea textArea;
 	private MessageConsole console;
 
@@ -147,18 +145,18 @@ public class AppGui {
 			}
 		});
 		frmJkms.getContentPane().add(btnClose);
-
-		logPanel = new JPanel();
+		
+		JPanel logPanel = new JPanel();
 		logPanel.setBounds(10, 11, 541, 240);
 		frmJkms.getContentPane().add(logPanel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 0, 0 };
-		gbl_panel.rowHeights = new int[] { 0, 0, 0 };
-		gbl_panel.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel.rowWeights = new double[] { 0, 1.0, Double.MIN_VALUE };
+		gbl_panel.columnWidths = new int[]{0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0};
+		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		logPanel.setLayout(gbl_panel);
 		
-		chckbxShowLog = new JCheckBox("show Log");
+		final JCheckBox chckbxShowLog = new JCheckBox("show Log");
 		GridBagConstraints gbc_chckbxShowLog = new GridBagConstraints();
 		gbc_chckbxShowLog.insets = new Insets(0, 0, 5, 0);
 		gbc_chckbxShowLog.gridx = 0;
@@ -166,28 +164,31 @@ public class AppGui {
 		chckbxShowLog.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (chckbxShowLog.isSelected())
-					textArea.setVisible(true);
+					scrollPane.setVisible(true);
 				else
-					textArea.setVisible(false);
+					scrollPane.setVisible(false);
 			}
 		});
 		logPanel.add(chckbxShowLog, gbc_chckbxShowLog);
 		
+		scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 1;
+		logPanel.add(scrollPane, gbc_scrollPane);
+		
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setVisible(false);
-		textArea.setLineWrap(false);
-		textArea.setAutoscrolls(true);
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 0;
-		gbc_textArea.gridy = 1;
-		logPanel.add(textArea, gbc_textArea);
+		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);
 		console.redirectErr();
 		console.redirectOut();
-		console.setMessageLines(14);
+		console.setMessageLines(100);
+		
+		//TODO cannot set scrollPane invisible on startup???
+		//scrollPane.setVisible(false);
 	}
 
 	private void confirmExit() {
