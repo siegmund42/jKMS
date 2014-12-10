@@ -55,7 +55,14 @@ public class ControllerHelper {
 				return true;
 			}
 			if(requestedState.equals("play"))	{
-				kms.play();
+				if(kms.getAssistantCount() > 0 && kms.getPlayerCount() > 0 && kms.getGroupCount() > 0 
+						&& kms.getbDistribution().size() > 0 && kms.getsDistribution().size() > 0
+						&& kms.getCards().size() > 0)	{
+					kms.play();
+				}	else	{
+					// TODO i18n
+					throw new IllegalArgumentException("Mindestens ein wichtiges Spieldatum fehlt!");
+				}
 				return true;
 			}
 			if(requestedState.equals("evaluate"))	{

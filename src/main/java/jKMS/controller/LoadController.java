@@ -56,6 +56,8 @@ public class LoadController extends AbstractServerController {
 			
 			// JavaScript - For Quick-checking the given IDs
 			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+
+			System.out.println(kms.getConfiguration().getbDistribution().size() + "Playercount short before serving GET request" + kms.getPlayerCount());
 			
 			return "load";
 		}	else	{
@@ -66,6 +68,9 @@ public class LoadController extends AbstractServerController {
 	
 	@RequestMapping(value = "/load", method = RequestMethod.POST)
 	public String start(Model model, @RequestParam("exclude[]") String exclude[])	{
+		
+		System.out.println(kms.getConfiguration().getbDistribution().size() + "Playercount at POST request" + kms.getPlayerCount());
+		
 		int playerCount = kms.getPlayerCount();
 		for(int i = 0; i < exclude.length; i++)	{
 			try	{
@@ -73,14 +78,17 @@ public class LoadController extends AbstractServerController {
 					int number = Integer.parseInt(exclude[i]);
 					if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
 							number <= (kms.getConfiguration().getFirstID() + playerCount))	{
+						
+						System.out.println(kms.getConfiguration().getbDistribution().size() + "Playercount short before removeing" + kms.getPlayerCount());
+						
 						kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
 					}	else	{
 						model.addAttribute("error", "exclude.oob");
-						return "load";
+						return "forward:/load?s=2";
 					}	
 				}	else	{
 					model.addAttribute("error", "exclude.empty");
-					return "load";
+					return "forward:/load?s=2";
 				}
 			}	catch (WrongPlayerCountException | WrongAssistantCountException
 					| WrongFirstIDException
@@ -92,7 +100,7 @@ public class LoadController extends AbstractServerController {
 			}	catch(Exception e)	{
 				e.printStackTrace();
 				model.addAttribute("error", "exclude.fraction");
-				return "load";
+				return "forward:/load?s=2";
 			}
 		}
 		return "redirect:/play";

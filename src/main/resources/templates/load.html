@@ -51,7 +51,7 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (load + (${param.s}? (${param.s[0]}?: '1') : '1'))">
 	 	</div>
-	 	<div th:if="${error}" class="errorDiv" th:text="#{load.__${error}__}"></div>
+	 	<div th:if="${error}" class="errorDiv" th:text="#{error.__${error}__}"></div>
 	 	<!-- For Showing the IP Address -->
 	 	<div th:if="!${param.s} OR ${param.s[0]} == 1">
 		 	<h2 th:text="#{load.address}">Adresse dieses Rechners</h2>
