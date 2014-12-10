@@ -9,6 +9,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
+import javax.swing.JRadioButton;
 
 @Component
 @Scope("singleton")
@@ -51,6 +53,7 @@ public class AppGui {
 	private JPanel logPanel;
 	private JCheckBox chckbxShowLog;
 	private JTextArea textArea;
+	private MessageConsole console;
 
 	/**
 	 * Launch the application.
@@ -92,7 +95,7 @@ public class AppGui {
 		frmJkms = new JFrame();
 		frmJkms.setResizable(false);
 		frmJkms.setTitle("jKMS");
-		frmJkms.setBounds(100, 100, 450, 300);
+		frmJkms.setBounds(100, 100, 567, 352);
 		frmJkms.getContentPane().setLayout(null);
 		frmJkms.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmJkms.addWindowListener(new WindowAdapter() {
@@ -102,7 +105,7 @@ public class AppGui {
 		});
 
 		JButton btnOpenBrowser = new JButton("Open Browser");
-		btnOpenBrowser.setBounds(10, 210, 200, 50);
+		btnOpenBrowser.setBounds(20, 262, 200, 50);
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -134,7 +137,7 @@ public class AppGui {
 		frmJkms.getContentPane().add(btnOpenBrowser);
 
 		btnClose = new JButton("Close");
-		btnClose.setBounds(234, 210, 200, 50);
+		btnClose.setBounds(351, 262, 200, 50);
 		btnClose.setActionCommand("Exit");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -146,7 +149,7 @@ public class AppGui {
 		frmJkms.getContentPane().add(btnClose);
 
 		logPanel = new JPanel();
-		logPanel.setBounds(10, 11, 424, 188);
+		logPanel.setBounds(10, 11, 541, 240);
 		frmJkms.getContentPane().add(logPanel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] { 0, 0 };
@@ -154,7 +157,7 @@ public class AppGui {
 		gbl_panel.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gbl_panel.rowWeights = new double[] { 0, 1.0, Double.MIN_VALUE };
 		logPanel.setLayout(gbl_panel);
-
+		
 		chckbxShowLog = new JCheckBox("show Log");
 		GridBagConstraints gbc_chckbxShowLog = new GridBagConstraints();
 		gbc_chckbxShowLog.insets = new Insets(0, 0, 5, 0);
@@ -173,11 +176,18 @@ public class AppGui {
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setVisible(false);
+		textArea.setLineWrap(false);
+		textArea.setAutoscrolls(true);
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
 		gbc_textArea.fill = GridBagConstraints.BOTH;
 		gbc_textArea.gridx = 0;
 		gbc_textArea.gridy = 1;
 		logPanel.add(textArea, gbc_textArea);
+		
+		console = new MessageConsole(textArea, true);
+		console.redirectErr();
+		console.redirectOut();
+		console.setMessageLines(14);
 	}
 
 	private void confirmExit() {
