@@ -14,6 +14,7 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
@@ -175,6 +176,34 @@ public class ControllerHelper {
 		str = str.concat("[" + absolute + "," + lastKey + "]]");
 		
 		return str;
+	}
+	
+	/*
+	 * returns the minimum and maximum values of the distributions. 
+	 * With these values we can limit the chart on 20% difference to the highest and lowest possible value.
+	 */
+	public static int[] getMinMax(TreeMap<Integer,Amount> sDistribution, TreeMap<Integer,Amount> bDistribution) {
+		int smin = sDistribution.firstKey();
+		int smax = sDistribution.lastKey();
+		int bmin = bDistribution.firstKey();
+		int bmax = bDistribution.lastKey();
+		int min, max;
+		
+		if(smin < bmin){
+			min = smin - smin/5;
+		}else {
+			min = bmin - bmin/5;
+		}
+		
+		if(smax > bmax) {
+			max = smax + smax/5;
+		}else{
+			max = bmax + bmax/5;
+		}
+		
+		int[] result = {min,max};
+		
+		return result;
 	}
 	
 }
