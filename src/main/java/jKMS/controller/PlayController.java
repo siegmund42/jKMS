@@ -1,8 +1,10 @@
 package jKMS.controller;
 
+import jKMS.Amount;
 import jKMS.Contract;
 
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,16 @@ public class PlayController extends AbstractServerController {
 	 * Catches Ajax-Request, converts the set of contracts into a String with the help of the ControllerHelper
 	 */
 	public String insertData(){
+		//String with current data of contracts
 		Set<Contract> contracts = kms.getContracts();
 		String str = ControllerHelper.setToString(contracts);
+		
+		//get min and max values of the distributions to limit the chart
+		TreeMap<Integer, Amount> sDistribution = (TreeMap<Integer, Amount>) kms.getsDistribution();
+		TreeMap<Integer, Amount> bDistribution = (TreeMap<Integer, Amount>) kms.getbDistribution();
+		int[] minMax = ControllerHelper.getMinMax(sDistribution, bDistribution);
+		
+		str = str.concat(";" + minMax[0] + ";" + minMax[1]);
 		
 		return str;
 	}

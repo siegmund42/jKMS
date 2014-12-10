@@ -1,11 +1,19 @@
 function drawPlayChart(data){
 	
-		playData = JSON.parse(data);
+		dataArray = data.split(";");
+		playData = JSON.parse(dataArray[0]);
+		
+		var yMin = dataArray[1];
+		var yMax = dataArray[2];
 
 		var options = {	xaxis:{
 							minTickSize: 1,
 							autoscaleMargin:0.02,
 							tickDecimals: 0
+						},
+						yaxis:{
+							min: yMin,
+							max: yMax
 						}
 					}
 		
@@ -17,22 +25,25 @@ function drawEvaluationChart(data){
 		//Daten verarbeiten und darstellen
 		dataArray = data.split(";");
 		playData = JSON.parse(dataArray[0]);
-		if(dataArray.length > 1){
-			sellerData = JSON.parse(dataArray[1]);
-			buyerData = JSON.parse(dataArray[2]);
-			chartData = [{data:playData},{lines:{steps:true},data:sellerData},{lines:{steps:true},data:buyerData}];
-		} else {
-			chartData = "["+playData+"]";
-		}
+
+		sellerData = JSON.parse(dataArray[1]);
+		buyerData = JSON.parse(dataArray[2]);
+		chartData = [{data:playData},{lines:{steps:true},data:sellerData},{lines:{steps:true},data:buyerData}];
+
+		yMin = dataArray[3];
+		yMax = dataArray[4];
 
 		var options = {	xaxis:{
 							minTickSize: 1,
 							autoscaleMargin:0.02,
 							tickDecimals: 0
 						},
+						yaxis:{
+							min: yMin,
+							max: yMax
+						},
 						grid:{
-							backgroundColor: "white",
-							hoverable:true
+							backgroundColor: "white"
 						}
 					}
 		
