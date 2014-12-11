@@ -205,7 +205,7 @@ public class PreparationTest {
 		kms.getConfiguration().setbDistribution(bDistrib);
 		kms.getConfiguration().setsDistribution(sDistrib);
 		
-		kms.getConfiguration().setFirstID(1000);
+		kms.getConfiguration().setFirstID(1001);
 		
 		kms.getState().setBasicConfig(20, 5);
 		
