@@ -87,9 +87,9 @@ public class Load extends State {
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
             		 if((Integer.valueOf(sa[1])%2) == 0){
-            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
-            		 }else {
             			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+            		 }else {
+            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
             		 }
             		 cardSet.add(card);
             	 }

@@ -135,6 +135,7 @@ public class Preparation extends State	{
             			 throw new EmptyFileException("The GroupCount is not enough!");
             		 }
             	 }
+            	 // TODO discuss wether loading Cards
             	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
             		 Card card;
             		 buf=buf.trim();

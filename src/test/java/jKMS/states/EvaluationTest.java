@@ -56,7 +56,8 @@ public class EvaluationTest {
 			if(id1 instanceof BuyerCard){
 				for (Card id2 : c){
 					if(id2 instanceof SellerCard){
-						kms.getState().addContract(id1.getId(), id2.getId(), Math.min(id1.getValue(), id2.getValue()) + Math.abs(id1.getValue() - id2.getValue())/2);
+						// TODO Simulate multiple Stations
+						kms.getState().addContract(id1.getId(), id2.getId(), Math.min(id1.getValue(), id2.getValue()) + Math.abs(id1.getValue() - id2.getValue())/2, "TEST");
 						c.remove(id2);
 						
 						break;

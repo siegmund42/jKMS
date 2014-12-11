@@ -16,7 +16,7 @@ public class Play extends State {
 		this.kms = kms;
 	}
 	
-	public int addContract(int id1,int id2,int price){ 
+	public int addContract(int id1,int id2,int price, String uri){ 
 		// returns errorCode: 0 -> everything fine 1 -> double buyer/seller 2 -> Card not available 3 -> already dealt
 		Set<Card> gehandeltCards = new LinkedHashSet<Card>();
 	    Iterator<Contract> citer = kms.getContracts().iterator();
@@ -47,9 +47,9 @@ public class Play extends State {
 	    }else{
 	    	Contract contract;
 	    	if(card1 instanceof BuyerCard) {
-	    		contract = new Contract((BuyerCard)card1,(SellerCard)card2,price);
+	    		contract = new Contract((BuyerCard)card1,(SellerCard)card2,price,uri);
 	    	}else{
-	    		contract = new Contract((BuyerCard)card2,(SellerCard)card1,price);
+	    		contract = new Contract((BuyerCard)card2,(SellerCard)card1,price,uri);
 	    	}
 	    	kms.getContracts().add(contract);
 	    	System.out.println("Added contract: " + contract.toString());
