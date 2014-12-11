@@ -5,3 +5,8 @@ var alphabet = new Array ('a','b','c','d','e','f','g','h','i','j','k','l','m','n
 function div(a, b)	{
 	return Math.floor(a/b);
 }
+
+// returns the number rounded up - Avoids numbers with .0000000001
+function absoluteRound(number)	{
+	return Math.ceil(Math.floor(number*1000)/1000);
+}

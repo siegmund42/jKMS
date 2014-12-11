@@ -79,13 +79,13 @@
 				</div>
 				<div class="row" th:each="customer,iter : ${customerConfiguration}">
 					<div class="cell">
-						<input type="number" name="cRelativeQuantity[]" th:id="'cRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${customer.value.relative}" readonly="readonly"/>
+						<input type="number" th:id="'cRelativeQuantity[' + ${iter.count} + ']'" th:value="${customer.value.relative}" readonly="readonly"/>
 					</div>
 					<div class="cell">
-						<input type="number" name="cPrice[]" th:placeholder="#{prepare.currency}" th:value="${customer.key}" readonly="readonly"/>
+						<input type="number" th:value="${customer.key}" readonly="readonly"/>
 					</div>
 					<div class="cell">
-						<input type="number" name="cAbsoluteQuantity[]" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+						<input type="number" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" th:value="${customer.value.absolute}" readonly="readonly" />
 					</div>
 				</div>
 				<div class="row">
@@ -102,13 +102,13 @@
 				</div>
 				<div class="row" th:id="'row' + ${iter.count}" th:each="salesman,iter : ${salesmanConfiguration}">
 					<div class="cell">
-						<input type="number" name="sRelativeQuantity[]" th:id="'sRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${salesman.value.relative}" readonly="readonly" />
+						<input type="number" th:id="'sRelativeQuantity[' + ${iter.count} + ']'" th:value="${salesman.value.relative}" readonly="readonly" />
 					</div>
 					<div class="cell">
-						<input type="number" name="sPrice[]" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" readonly="readonly" />
+						<input type="number" th:value="${salesman.key}" readonly="readonly" />
 					</div>
 					<div class="cell">
-						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+						<input type="number" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" th:value="${salesman.value.absolute}" readonly="readonly" />
 					</div>
 				</div>
 				<div class="row">

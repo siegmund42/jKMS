@@ -13,8 +13,8 @@ function updateAbsolutes()	{
 		// Only if Field is not null
 		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
 			// Update Absolute Fields for customer and salesman
-    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = Math.ceil((document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
-    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = Math.ceil((document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
+    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = absoluteRound((document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
+    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = absoluteRound((document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
 		}
 	}
 }
