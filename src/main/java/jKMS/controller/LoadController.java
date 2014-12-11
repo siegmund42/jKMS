@@ -41,6 +41,8 @@ public class LoadController extends AbstractServerController {
 				model.addAttribute("salesmanConfiguration", kms.getsDistribution());
 				model.addAttribute("groupQuantity", kms.getGroupCount());
 				
+				kms.getState().loadStandardDistribution();
+				
 				// IP and Port for Client connection
 				List<String> IPs = ControllerHelper.getIP();
 				if(IPs.size() > 1)	{
