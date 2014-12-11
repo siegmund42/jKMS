@@ -13,11 +13,9 @@ import java.util.Set;
 import java.util.LinkedHashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Service
-@Scope("singleton")
 public class Kartoffelmarktspiel {
 
 	private Set<Contract> contracts;

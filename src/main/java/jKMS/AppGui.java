@@ -18,9 +18,9 @@ import javax.swing.JCheckBox;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
-import java.awt.EventQueue;
+
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -31,12 +31,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-@ComponentScan
-public class AppGui {
+//@Configurable for creating AppGui with new - also some additional changes required in project settings
+@Component
+public class AppGui extends JFrame{
 	@Autowired
 	private Kartoffelmarktspiel kms;
 	
-	private JFrame frmJkms;
 	private JButton btnClose, btnOpenBrowser;
 	private JPanel logPanel;
 	private JCheckBox chckbxShowLog;
@@ -49,16 +49,7 @@ public class AppGui {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AppGui window = new AppGui();
-					window.frmJkms.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		//AppGui window = new AppGui();
 
 		SpringApplication.run(Application.class, args);
 		try {
@@ -82,13 +73,12 @@ public class AppGui {
 	 */
 	private void initialize() {
 		//CREATE AND ADD COMPONENTS
-		frmJkms = new JFrame();
-		frmJkms.setResizable(false);
-		frmJkms.setTitle("jKMS");
-		frmJkms.setBounds(100, 100, 567, 352);
-		frmJkms.getContentPane().setLayout(null);
-		frmJkms.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frmJkms.addWindowListener(new WindowAdapter() {
+		setResizable(false);
+		setTitle("jKMS");
+		setBounds(100, 100, 567, 352);
+		getContentPane().setLayout(null);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				confirmExit();
 			}
@@ -100,30 +90,22 @@ public class AppGui {
 		btnOpenBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getActionCommand() == "Browser") {
-					/*
-					 * if(kms.getState() instanceof Preparation){
-					 * BareBonesBrowserLaunch
-					 * .openURL("http://localhost:8080/index"); } else
-					 * if(kms.getState() instanceof Load){
-					 * BareBonesBrowserLaunch
-					 * .openURL("http://localhost:8080/index"); } else
-					 * if(kms.getState() instanceof Play){
-					 * BareBonesBrowserLaunch
-					 * .openURL("http://localhost:8080/index"); } else
-					 * if(kms.getState() instanceof Evaluation){
-					 * BareBonesBrowserLaunch
-					 * .openURL("http://localhost:8080/index"); }
-					 */
-
-					if (kms == null)
-						System.out.println("null");
-					else {
-						System.out.println(kms.getState().toString());
+					if(kms.getState() instanceof Preparation){
+						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+					}
+					else if(kms.getState() instanceof Load){
+						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+					}
+					else if(kms.getState() instanceof Play){
+						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+					}
+					else if(kms.getState() instanceof Evaluation){
+						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
 					}
 				}
 			}
 		});
-		frmJkms.getContentPane().add(btnOpenBrowser);
+		getContentPane().add(btnOpenBrowser);
 
 		btnClose = new JButton("Close");
 		btnClose.setBounds(351, 262, 200, 50);
@@ -135,11 +117,11 @@ public class AppGui {
 				}
 			}
 		});
-		frmJkms.getContentPane().add(btnClose);
+		getContentPane().add(btnClose);
 		
 		logPanel = new JPanel();
 		logPanel.setBounds(10, 11, 541, 240);
-		frmJkms.getContentPane().add(logPanel);
+		getContentPane().add(logPanel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0};
@@ -156,8 +138,8 @@ public class AppGui {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (chckbxShowLog.isSelected()){
 					scrollPane.setVisible(true);
-					frmJkms.validate();
-					frmJkms.repaint();
+					validate();
+					repaint();
 				}
 				else
 					scrollPane.setVisible(false);
@@ -183,7 +165,7 @@ public class AppGui {
 		console.redirectOut();
 		//console.setMessageLines(500);
 		
-		frmJkms.setVisible(true);
+		setVisible(true);
 	}
 
 	private void confirmExit() {
