@@ -4,7 +4,6 @@ import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -12,11 +11,7 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 
-
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
