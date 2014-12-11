@@ -5,8 +5,6 @@ import jKMS.states.Load;
 import jKMS.states.Play;
 import jKMS.states.Preparation;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -21,11 +19,9 @@ import javax.swing.JCheckBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.awt.GraphicsEnvironment;
+import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -34,15 +30,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
-import javax.swing.JRadioButton;
 
-@Component
-@Scope("singleton")
+@ComponentScan
 public class AppGui {
 	@Autowired
 	private Kartoffelmarktspiel kms;
@@ -55,7 +44,7 @@ public class AppGui {
 	private JScrollPane scrollPane;
 	private JTextArea textArea;
 	private MessageConsole console;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -80,7 +69,7 @@ public class AppGui {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Create the application.
 	 */
@@ -186,12 +175,15 @@ public class AppGui {
 		
 		textArea = new JTextArea();
 		textArea.setEditable(false);
+		textArea.setFont(new Font("Courier New", Font.PLAIN, 10));
 		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);
 		console.redirectErr();
 		console.redirectOut();
-		console.setMessageLines(100);
+		//console.setMessageLines(500);
+		
+		frmJkms.setVisible(true);
 	}
 
 	private void confirmExit() {

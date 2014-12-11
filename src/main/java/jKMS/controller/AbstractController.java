@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 
-import jKMS.AppGui;
 import jKMS.Kartoffelmarktspiel;
 
 @Controller
@@ -13,7 +12,4 @@ public abstract class AbstractController {
 
 	@Autowired
 	protected Kartoffelmarktspiel kms;
-	
-	@Autowired
-	protected AppGui gui;
 }

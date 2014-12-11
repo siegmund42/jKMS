@@ -4,8 +4,6 @@ import java.util.Locale;
 
 import javax.servlet.MultipartConfigElement;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +19,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @ComponentScan
 @EnableAutoConfiguration
 public class Application extends WebMvcConfigurerAdapter {
-    
+	
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
