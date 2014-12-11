@@ -12,6 +12,10 @@ function createExcludeFields(number)	{
 		var errorRow = document.createElement("div");
 		errorRow.setAttribute("class", "row");
 		
+		// Create Row for Checkboxes
+		var checkBoxRow = document.createElement("div");
+		checkBoxRow.setAttribute("class", "row");
+		
 		// 4 Fields in every Row
 		for(var r = 0; r <= 3 && i < number; r++)	{
 			
@@ -28,6 +32,25 @@ function createExcludeFields(number)	{
 			input.setAttribute("id", i);
 			input.setAttribute("placeholder", alphabet[i].toUpperCase());
 			row.appendChild(input);
+
+			// Create Empty Checkbox Div [under Label]
+			var cell = document.createElement("div");
+			cell.setAttribute("class", "cell");
+			checkBoxRow.appendChild(cell);
+			
+			// Create Checkbox-Div
+			var checkDiv = document.createElement("div");
+			checkDiv.setAttribute("class", "cell");
+			
+			// Create CheckBox
+			var box = document.createElement("input");
+			box.setAttribute("type", "checkbox");
+			box.setAttribute("id", "check" + i);
+			box.setAttribute("onchange", "javascript:allExcluded(" + i + ")");
+			
+			checkDiv.appendChild(box);
+			
+			checkBoxRow.appendChild(checkDiv);
 			
 			// Create Empty Error Div [under Label]
 			var cell = document.createElement("div");
@@ -50,8 +73,27 @@ function createExcludeFields(number)	{
 		
 		// Append Rows
 		document.getElementById("excludeDiv").appendChild(row);
+		document.getElementById("excludeDiv").appendChild(checkBoxRow);
 		document.getElementById("excludeDiv").appendChild(errorRow);
 		
 	}
 		
+}
+
+// Disables a Textfield depending on its Checkbox was checked
+function allExcluded(id)	{
+	// Checkbox was checked
+	if(document.getElementById("check" + id).checked)	{
+		// Set readonly and invisible
+		var element = document.getElementById(id);
+		element.readOnly = true;
+		element.style.opacity = "0";
+		// Set very special value (;
+		element.value = -42;
+	}	else	{
+		var element = document.getElementById(id);
+		element.readOnly = false;
+		element.value = "";
+		element.style.opacity = "1";
+	}
 }

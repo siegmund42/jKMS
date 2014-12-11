@@ -100,16 +100,15 @@ function validateForm(form)	{
 			case 'exclude':
 				// Exclude Cards Formular
 				var error;
-				var field = document.getElementById(i);
 				
 				// Field must be a Number (type = text)
-				if(isNaN(field.value))	{
-					writeError(1, field);
+				if(isNaN(inputs[i].value))	{
+					writeError(1, inputs[i]);
 					error = true;
 				}
 				// Number must be between first ID and lastID
-				if(field.value < firstID || field.value > (firstID + numberOfPlayers))	{
-					writeError(5, field);
+				if(inputs[i].value < firstID || inputs[i].value > (firstID + numberOfPlayers))	{
+					writeError(5, inputs[i]);
 					error = true;
 				}
 				break;

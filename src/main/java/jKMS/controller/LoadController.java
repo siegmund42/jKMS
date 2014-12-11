@@ -72,14 +72,17 @@ public class LoadController extends AbstractServerController {
 			try	{
 				if(exclude[i] != "")	{
 					int number = Integer.parseInt(exclude[i]);
-					if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
-							number <= (kms.getConfiguration().getFirstID() + playerCount))	{
-						
-						kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
-					}	else	{
-						model.addAttribute("error", "exclude.oob");
-						return "forward:/load?s=2";
-					}	
+					// Check if not all cards where given out
+					if(number != -42)	{
+						if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
+								number <= (kms.getConfiguration().getFirstID() + playerCount))	{
+							
+							kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
+						}	else	{
+							model.addAttribute("error", "exclude.oob");
+							return "forward:/load?s=2";
+						}
+					}
 				}	else	{
 					model.addAttribute("error", "exclude.empty");
 					return "forward:/load?s=2";
