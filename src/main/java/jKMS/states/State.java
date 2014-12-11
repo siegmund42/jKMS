@@ -19,20 +19,48 @@ import jKMS.exceptionHelper.WrongRelativeDistributionException;
 public abstract class State {
 	protected Kartoffelmarktspiel kms;
 	
-	public void loadStandardDistribution(){} // LUKAS - DONE
-	public void generateCards() throws WrongFirstIDException, WrongAssistantCountException, WrongPlayerCountException, WrongRelativeDistributionException{} // JUSTUS - DONE
-	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber){} // DONE
-	public void setBasicConfig(int playerCount, int assistantCount){} // DOMINIK DONE
-	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException{} // JUSTUS
+	public void loadStandardDistribution() throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // LUKAS - DONE
+	public void generateCards() throws WrongFirstIDException, WrongAssistantCountException, WrongPlayerCountException, WrongRelativeDistributionException, IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // JUSTUS - DONE
+	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber) throws IllegalStateException{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // DONE
+	public void setBasicConfig(int playerCount, int assistantCount) throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // DOMINIK DONE
+	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException,IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // JUSTUS
 	public boolean removeCard(char pack, int lastId) throws WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{ return false; } //DOMNINIK DONE
-	public int addContract(int id1, int id2, int price, String uri){ return 0; } // XINYU
+	public int addContract(int id1, int id2, int price, String uri) throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // XINYU
 																			
-	public float equilibriumPrice(){ return 0; } // TIMON
-	public float equilibriumSet(){ return 0; } // TIMON
-	public Map<String,Float> getStatistics(){ return null; } // DONE
-	public Contract pickWinner(){ return null; } // DONE
-	public int buyerProfit(Contract contract){ return 0; } // DONE
-	public int sellerProfit(Contract contract){ return 0; } // DONE
-	public boolean save(String path) throws IOException{ return false; }
-	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{}
+	public float equilibriumPrice() throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // TIMON
+	public float equilibriumSet() throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // TIMON
+	public Map<String,Float> getStatistics() throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // DONE
+	public Contract pickWinner() throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // DONE
+	public int buyerProfit(Contract contract) throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // DONE
+	public int sellerProfit(Contract contract) throws IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} // DONE
+	public boolean save(String path) throws IOException, IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	}
+	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	}
 }   
