@@ -123,7 +123,7 @@
 		 	<a href="/load.html?s=2" th:text="#{load.goOn}" th:onclick="'if(!confirm(\'' + #{load.confirm} + '\')) return false;'">Weiter</a>
 	 	</div>
 	 	
-	 	<!-- Excluding Cards -->
+	 	<!-- Excluding Cards ###################################################### -->
 	 	<div th:if="${param.s} AND ${param.s[0]} == 2">
 		 	<form th:action="load.html" name="exclude" id="exclude" method="POST" onsubmit="return validateForm(this.id);">
 		 		<div th:text="#{load.hintExclude}"></div>
