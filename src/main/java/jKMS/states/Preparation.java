@@ -313,8 +313,10 @@ public class Preparation extends State	{
 		
 		if(!distrib.containsKey(price))
 			distrib.put(price,  new Amount(relativeNumber, absoluteNumber));
-		else 
-			distrib.get(price).setAbsolute(distrib.get(price).getAbsolute() + 1);
+		else	{ 
+			distrib.get(price).setAbsolute(distrib.get(price).getAbsolute() + absoluteNumber);
+			distrib.get(price).setRelative(distrib.get(price).getRelative() + relativeNumber);
+		}
 		
 		System.out.println("Registered the following Group:");
 		if(isBuyer)	{
@@ -336,5 +338,7 @@ public class Preparation extends State	{
 		}	else	{
 			pdf.createPdfCardsSeller(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
 		}
+		
+		System.out.println("PDF Created!");
 	}
 }
