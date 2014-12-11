@@ -69,8 +69,6 @@ public class LoadController extends AbstractServerController {
 	@RequestMapping(value = "/load", method = RequestMethod.POST)
 	public String start(Model model, @RequestParam("exclude[]") String exclude[])	{
 		
-		System.out.println(kms.getConfiguration().getbDistribution().size() + "Playercount at POST request" + kms.getPlayerCount());
-		
 		int playerCount = kms.getPlayerCount();
 		for(int i = 0; i < exclude.length; i++)	{
 			try	{
@@ -78,8 +76,6 @@ public class LoadController extends AbstractServerController {
 					int number = Integer.parseInt(exclude[i]);
 					if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
 							number <= (kms.getConfiguration().getFirstID() + playerCount))	{
-						
-						System.out.println(kms.getConfiguration().getbDistribution().size() + "Playercount short before removeing" + kms.getPlayerCount());
 						
 						kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
 					}	else	{
