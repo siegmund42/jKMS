@@ -1,5 +1,7 @@
 package jKMS.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,8 @@ public class ClientController extends AbstractController {
 	public String contract(Model model,
 		 	@RequestParam(value = "id1", required = false) String id1, 
 	        @RequestParam(value = "id2", required = false) String id2,
-	        @RequestParam(value = "price", required = false) String price)	{
+	        @RequestParam(value = "price", required = false) String price,
+	        HttpServletRequest request)	{
 		
 		try	{
 			
@@ -31,9 +34,10 @@ public class ClientController extends AbstractController {
 			int idTwo = Integer.parseInt(id2);
 			int cost = Integer.parseInt(price);
 			
-			int add = kms.getState().addContract(idOne, idTwo, cost);
+			int add = kms.getState().addContract(idOne, idTwo, cost, request.getRemoteAddr());
 			
 		    if(add == 0)	{
+		    	model.addAttribute("success", "Juhu!");
 		    	return "redirect:/contract";
 		    }	else	{
 		    	model.addAttribute("id1", id1);

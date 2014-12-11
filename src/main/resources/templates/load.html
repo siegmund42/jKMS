@@ -18,6 +18,10 @@
     /*]]>*/
     </script>
     <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/formValidation.js}"></script>
+    <script th:src="@{/js/distributionUtils.js}"></script>
+    <script th:src="@{/js/excludeUtils.js}"></script>
+    
 </head>
  <body th:onload="(${param.s} AND ${param.s[0]} == 2)? 'createExcludeFields(' + ${numberOfAssistants} + ');' : 'updateArrangement();'">
  	<div id="toolBar">
@@ -47,14 +51,16 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (load + (${param.s}? (${param.s[0]}?: '1') : '1'))">
 	 	</div>
-	 	<div th:if="${error}" class="errorDiv" th:text="#{load.__${error}__}"></div>
+	 	<div th:if="${error}" class="errorDiv" th:text="#{error.__${error}__}"></div>
 	 	<!-- For Showing the IP Address -->
 	 	<div th:if="!${param.s} OR ${param.s[0]} == 1">
 		 	<h2 th:text="#{load.address}">Adresse dieses Rechners</h2>
-		 	<div th:text="${ip} + ':' + ${port}"></div>
+		 	<div class="errorDiv textBlock" th:if="${ipError}" th:text="#{load.multipleIP}"></div>
+		 	<div th:each="ip : ${IPs}">
+		 		<div th:text="${ip} + ':' + ${port}"></div>
+		 	</div>
 		 	<br />
-		 	<div style="width: 500px;margin: auto;" th:text="#{load.hintAddress}"></div>
-		 	<br />
+		 	<div class="textBlock" style="padding-bottom: 30px; border-bottom: 2px solid black;" th:text="#{load.hintAddress}"></div>
 		 	<!-- Display Game Data ###################################################### -->
 		 	
 		 	<h3 th:text="#{load.hintWhichLoaded}"></h3>
@@ -73,13 +79,13 @@
 				</div>
 				<div class="row" th:each="customer,iter : ${customerConfiguration}">
 					<div class="cell">
-						<input type="number" name="cRelativeQuantity[]" th:id="'cRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${customer.value.relative}" readonly="readonly"/>
+						<input type="number" th:id="'cRelativeQuantity[' + ${iter.count} + ']'" th:value="${customer.value.relative}" readonly="readonly"/>
 					</div>
 					<div class="cell">
-						<input type="number" name="cPrice[]" th:placeholder="#{prepare.currency}" th:value="${customer.key}" readonly="readonly"/>
+						<input type="number" th:value="${customer.key}" readonly="readonly"/>
 					</div>
 					<div class="cell">
-						<input type="number" name="cAbsoluteQuantity[]" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+						<input type="number" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" th:value="${customer.value.absolute}" readonly="readonly" />
 					</div>
 				</div>
 				<div class="row">
@@ -96,13 +102,13 @@
 				</div>
 				<div class="row" th:id="'row' + ${iter.count}" th:each="salesman,iter : ${salesmanConfiguration}">
 					<div class="cell">
-						<input type="number" name="sRelativeQuantity[]" th:id="'sRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${salesman.value.relative}" readonly="readonly" />
+						<input type="number" th:id="'sRelativeQuantity[' + ${iter.count} + ']'" th:value="${salesman.value.relative}" readonly="readonly" />
 					</div>
 					<div class="cell">
-						<input type="number" name="sPrice[]" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" readonly="readonly" />
+						<input type="number" th:value="${salesman.key}" readonly="readonly" />
 					</div>
 					<div class="cell">
-						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+						<input type="number" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" th:value="${salesman.value.absolute}" readonly="readonly" />
 					</div>
 				</div>
 				<div class="row">

@@ -1,6 +1,5 @@
 package jKMS.controller;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -26,13 +25,18 @@ public class EvaluationController extends AbstractServerController {
 		String playData = ControllerHelper.setToString(contracts);
 		
 		//String of expected supply and demand
-		Map<Integer, Amount> sDistribution = kms.getsDistribution();
+		TreeMap<Integer, Amount> sDistribution = (TreeMap<Integer, Amount>) kms.getsDistribution();
 		String expectedSupply = ControllerHelper.mapToString(sDistribution);
 		
 		TreeMap<Integer, Amount> bDistribution = (TreeMap<Integer, Amount>) kms.getbDistribution();
 		String expectedDemand = ControllerHelper.mapToString(bDistribution.descendingMap());
 		
-		String str = playData.concat(";" + expectedSupply + ";" + expectedDemand);
+		
+		//min and max values for the chart
+		int[] minMax = ControllerHelper.getMinMax(sDistribution, bDistribution);
+		
+		//concatenate return string
+		String str = playData.concat(";" + expectedSupply + ";" + expectedDemand + ";" + minMax[0] + ";" + minMax[1]);
 		
 		return str;
 		

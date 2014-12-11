@@ -7,6 +7,7 @@
     <meta name="author" content=""/>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/formValidation.js}"></script>
 
     <title th:text="#{titles.welcome}">jKMS - Kaufverträge eingeben</title>
     
@@ -20,7 +21,7 @@
 	 	</div>	
 	 	<div class="error" th:if="${error}" th:text="#{error.contract.__${error}__}">
         </div>
-        <div th:if="${param.success}" th:text="#{contract.success}">
+        <div class="success" th:if="${success}" th:text="#{contract.success}">
            	Kaufvertrag erfolgreich übermittelt.
         </div>
 		<form method="POST" id="contract" th:action="contract" style="margin: auto;" onsubmit="return validateForm(this.id);">
@@ -28,17 +29,13 @@
 				<div class="row">
 					<label for="id1" th:text="#{contract.id1}"></label>
 					<div class="cell">
-						<input type="text" id="id1" name="id1" th:placeholder="#{contract.id1}" />
+						<input type="text" id="id1" name="id1" th:placeholder="#{contract.id1}" th:value="*{id1}" />
 					</div>
-				</div>
-				<div class="row">
-					<div class="cell"></div>
-					<div class="error" id="errorid1"></div>
 				</div>
 				<div class="row">
 					<label for="id2" th:text="#{contract.id2}"></label>
 					<div class="cell">
-						<input type="text" id="id2" name="id2" th:placeholder="#{contract.id2}" />
+						<input type="text" id="id2" name="id2" th:placeholder="#{contract.id2}" th:value="*{id2}" />
 					</div>
 				</div>
 				<div class="row">
@@ -48,7 +45,7 @@
 				<div class="row">
 					<label for="price" th:text="#{contract.price}"></label>
 					<div class="cell">
-						<input type="text" id="price" name="price" th:placeholder="#{contract.price}" />
+						<input type="text" id="price" name="price" th:placeholder="#{contract.price}" th:value="*{price}" />
 					</div>
 				</div>
 				<div class="row">

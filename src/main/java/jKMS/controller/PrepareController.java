@@ -1,6 +1,7 @@
 package jKMS.controller;
 
 import jKMS.Amount;
+import jKMS.LogicHelper;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -226,16 +227,21 @@ public class PrepareController extends AbstractServerController {
 		}
 		
 		if(error == "")	{
-			// Set Group Count [hidden field].
+			// Set Group Count [From hidden field].
 			kms.getConfiguration().setGroupCount(i);
+			
+			// Set new PlayerCount
+			kms.getConfiguration().setPlayerCount(LogicHelper.getAbsoluteSum(kms.getbDistribution()) + LogicHelper.getAbsoluteSum(kms.getsDistribution()));
 			
 			// Generate Cards-Set
 			
-			try{
+			try	{
 				kms.getState().generateCards();
-				}catch (Exception e) {
-					e.printStackTrace();	
-				}
+			}	catch (Exception e) {
+				e.printStackTrace();
+				model.addAttribute("messages", e.getMessage());
+				return "error";
+			}
 			
 			// TODO discuss Folder Structure and change to correct folder
 			String path = servletContext.getRealPath(".").concat("config.txt");

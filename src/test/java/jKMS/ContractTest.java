@@ -17,7 +17,7 @@ public class ContractTest {
 	public void setUp(){
 		buyer = new BuyerCard(1207, 2, 'A');
 		seller = new SellerCard(1624, 4, 'C');
-		con = new Contract(buyer, seller, 3);
+		con = new Contract(buyer, seller, 3, "TEST");
 	}
 	
 	@Test

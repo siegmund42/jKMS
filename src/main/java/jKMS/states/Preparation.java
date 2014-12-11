@@ -43,6 +43,7 @@ public class Preparation extends State	{
 	//	Loads StandardConfiguration into kms.
 	//	This method only loads the relative values for displaying in Web Interface.
 	//	Absolute Values are calculated by Javascript and stored using the newGroup-Method.
+	@Override
 	public void loadStandardDistribution(){
 
 		// Load Buyer Distribution
@@ -75,6 +76,7 @@ public class Preparation extends State	{
 	
 	//setBasicConfig
 	//setter method for the number of players and assistants
+	@Override
 	public void setBasicConfig(int playerCount, int assistantCount){
 		kms.getConfiguration().setPlayerCount(playerCount);
 		kms.getConfiguration().setAssistantCount(assistantCount);
@@ -85,6 +87,7 @@ public class Preparation extends State	{
 	
 	
 	//load Implementieren
+	@Override
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{
     	int groupCount=0;
     	int firstID=0;
@@ -135,6 +138,7 @@ public class Preparation extends State	{
             			 throw new EmptyFileException("The GroupCount is not enough!");
             		 }
             	 }
+            	 // TODO discuss wether loading Cards
             	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
             		 Card card;
             		 buf=buf.trim();
@@ -163,52 +167,53 @@ public class Preparation extends State	{
 	
 		
 		//defalt path:Users/yangxinyu/git/jKMS
-		public boolean save(String path) throws IOException{
-			 Map<Integer, Amount> bDistributionSave = new TreeMap<>();
-			 Map<Integer, Amount> sDistributionSave = new TreeMap<>();
-			 bDistributionSave = kms.getConfiguration().getbDistribution();
-			 sDistributionSave = kms.getConfiguration().getsDistribution();
-			 if(bDistributionSave.isEmpty() || sDistributionSave.isEmpty())
-				 return false;
-			 else{
+	@Override
+	public boolean save(String path) throws IOException{
+		 Map<Integer, Amount> bDistributionSave = new TreeMap<>();
+		 Map<Integer, Amount> sDistributionSave = new TreeMap<>();
+		 bDistributionSave = kms.getConfiguration().getbDistribution();
+		 sDistributionSave = kms.getConfiguration().getsDistribution();
+		 if(bDistributionSave.isEmpty() || sDistributionSave.isEmpty())
+			 return false;
+		 else{
+			 
+				   String line = System.getProperty("line.separator");
+				   StringBuffer str = new StringBuffer();
+				   FileWriter fw = new FileWriter(path, false);
+				   str.append("PlayerCount:").append(kms.getConfiguration().getPlayerCount()).append(line)
+				   .append("AssistantCount:").append(kms.getConfiguration().getAssistantCount()).append(line)
+				   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
+				   .append("FirstID:").append(kms.getConfiguration().getFirstID()).append(line);
+				   
+				   Set bSet = bDistributionSave.entrySet();
+				   Set sSet = sDistributionSave.entrySet();
+				   Iterator bIter = bSet.iterator();
+				   Iterator sIter = sSet.iterator();
+				   while(bIter.hasNext() && sIter.hasNext()){
+					   Map.Entry bEntry = (Map.Entry)bIter.next(); 
+					   Map.Entry sEntry = (Map.Entry)sIter.next(); 
+				    
+					   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
+							   " "+"sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
+				   }
+				   Set cardSet = kms.getCards();
+				   Iterator cardIter = cardSet.iterator();
+				   while(cardIter.hasNext()){
+					   Card card = (Card) cardIter.next();
+					   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
+				   }
+				   fw.write(str.toString());
+				   fw.close();
 				 
-					   String line = System.getProperty("line.separator");
-					   StringBuffer str = new StringBuffer();
-					   FileWriter fw = new FileWriter(path, false);
-					   str.append("PlayerCount:").append(kms.getConfiguration().getPlayerCount()).append(line)
-					   .append("AssistantCount:").append(kms.getConfiguration().getAssistantCount()).append(line)
-					   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
-					   .append("FirstID:").append(kms.getConfiguration().getFirstID()).append(line);
-					   
-					   Set bSet = bDistributionSave.entrySet();
-					   Set sSet = sDistributionSave.entrySet();
-					   Iterator bIter = bSet.iterator();
-					   Iterator sIter = sSet.iterator();
-					   while(bIter.hasNext() && sIter.hasNext()){
-						   Map.Entry bEntry = (Map.Entry)bIter.next(); 
-						   Map.Entry sEntry = (Map.Entry)sIter.next(); 
-					    
-						   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
-								   " "+"sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
-					   }
-					   Set cardSet = kms.getCards();
-					   Iterator cardIter = cardSet.iterator();
-					   while(cardIter.hasNext()){
-						   Card card = (Card) cardIter.next();
-						   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
-					   }
-					   fw.write(str.toString());
-					   fw.close();
-					 
-				 return true;
-			 }
-		}
+			 return true;
+		 }
+	}
 
 	
 	// generateCardSet
 	// Generate an ordered, random Set of Cards using
 	// bDistribution and sDistribution
-	
+	@Override
 	public void generateCards() throws WrongRelativeDistributionException, WrongAssistantCountException, WrongFirstIDException, WrongPlayerCountException {
 		// DECLARATION
 		
@@ -299,6 +304,7 @@ public class Preparation extends State	{
 	// newGroup
 	// Creates a new entry for the bDistribution or sDistribution Map,
 	// depending if isBuyer is true or false.
+	@Override
 	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber) {
 		Map<Integer, Amount> distrib;
 		
@@ -322,6 +328,7 @@ public class Preparation extends State	{
 	}
 	
 	// createPDF - Delegates to PDF-Class
+	@Override
 	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException	{
 		
 		if(isBuyer)	{

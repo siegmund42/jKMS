@@ -1,5 +1,7 @@
 package jKMS.controller;
 
+import java.util.List;
+
 import jKMS.LogicHelper;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
@@ -40,7 +42,11 @@ public class LoadController extends AbstractServerController {
 				model.addAttribute("groupQuantity", kms.getGroupCount());
 				
 				// IP and Port for Client connection
-				model.addAttribute("ip", ControllerHelper.getIP());
+				List<String> IPs = ControllerHelper.getIP();
+				if(IPs.size() > 1)	{
+					model.addAttribute("ipError", true);
+				}
+				model.addAttribute("IPs", IPs);
 				model.addAttribute("port", ControllerHelper.getPort(request));
 			}
 
@@ -60,6 +66,7 @@ public class LoadController extends AbstractServerController {
 	
 	@RequestMapping(value = "/load", method = RequestMethod.POST)
 	public String start(Model model, @RequestParam("exclude[]") String exclude[])	{
+		
 		int playerCount = kms.getPlayerCount();
 		for(int i = 0; i < exclude.length; i++)	{
 			try	{
@@ -67,14 +74,15 @@ public class LoadController extends AbstractServerController {
 					int number = Integer.parseInt(exclude[i]);
 					if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
 							number <= (kms.getConfiguration().getFirstID() + playerCount))	{
+						
 						kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
 					}	else	{
 						model.addAttribute("error", "exclude.oob");
-						return "load";
+						return "forward:/load?s=2";
 					}	
 				}	else	{
 					model.addAttribute("error", "exclude.empty");
-					return "load";
+					return "forward:/load?s=2";
 				}
 			}	catch (WrongPlayerCountException | WrongAssistantCountException
 					| WrongFirstIDException
@@ -86,7 +94,7 @@ public class LoadController extends AbstractServerController {
 			}	catch(Exception e)	{
 				e.printStackTrace();
 				model.addAttribute("error", "exclude.fraction");
-				return "load";
+				return "forward:/load?s=2";
 			}
 		}
 		return "redirect:/play";

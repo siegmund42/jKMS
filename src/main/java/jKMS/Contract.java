@@ -11,12 +11,14 @@ public class Contract {
 
 	private int price;
 	private Date time;
+	private String uri;
 
-	public Contract(BuyerCard buyer, SellerCard seller, int price) {
+	public Contract(BuyerCard buyer, SellerCard seller, int price, String uri) {
 		this.buyer = buyer;
 		this.seller = seller;
 		this.price = price;
 		time = new Date();
+		this.uri = uri;
 	}
 
 	public BuyerCard getBuyer() {
@@ -33,6 +35,10 @@ public class Contract {
 
 	public Date getTime() {
 		return time;
+	}
+	
+	public String getUri()	{
+		return uri;
 	}
 	
 	@Override

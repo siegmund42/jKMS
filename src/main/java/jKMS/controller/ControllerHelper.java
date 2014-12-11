@@ -12,8 +12,11 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
@@ -52,7 +55,14 @@ public class ControllerHelper {
 				return true;
 			}
 			if(requestedState.equals("play"))	{
-				kms.play();
+				if(kms.getAssistantCount() > 0 && kms.getPlayerCount() > 0 && kms.getGroupCount() > 0 
+						&& kms.getbDistribution().size() > 0 && kms.getsDistribution().size() > 0
+						&& kms.getCards().size() > 0)	{
+					kms.play();
+				}	else	{
+					// TODO i18n
+					throw new IllegalArgumentException("Mindestens ein wichtiges Spieldatum fehlt!");
+				}
 				return true;
 			}
 			if(requestedState.equals("evaluate"))	{
@@ -100,8 +110,10 @@ public class ControllerHelper {
 	/*
 	 * Returns IP of the User.
 	 */
-	
-	public static String getIP()	{
+	public static List<String> getIP()	{
+		
+		List<String> IPs = new LinkedList<>();
+		
 		// TODO handle multiple IPs if User is connected to multiple Networks
 		Enumeration<NetworkInterface> ifaces = null;
 		// Pick up all Network Interfaces
@@ -120,11 +132,11 @@ public class ControllerHelper {
 		    	InetAddress ia = (InetAddress)addrs.nextElement();
 		    	// Only display an Address, which is not localhost and has no ":" in it [Filter for MAC Adresses]
 		    	if(!ia.getHostAddress().toString().equals("127.0.0.1") && ia.getHostAddress().toString().indexOf(":") == -1)	{
-		    		return ia.getHostAddress().toString();
+		    		IPs.add(ia.getHostAddress().toString());
 		        }
 		    }
 		}
-		return null;
+		return IPs;
 	}
 	
 	/*
@@ -175,6 +187,34 @@ public class ControllerHelper {
 		str = str.concat("[" + absolute + "," + lastKey + "]]");
 		
 		return str;
+	}
+	
+	/*
+	 * returns the minimum and maximum values of the distributions. 
+	 * With these values we can limit the chart on 20% difference to the highest and lowest possible value.
+	 */
+	public static int[] getMinMax(TreeMap<Integer,Amount> sDistribution, TreeMap<Integer,Amount> bDistribution) {
+		int smin = sDistribution.firstKey();
+		int smax = sDistribution.lastKey();
+		int bmin = bDistribution.firstKey();
+		int bmax = bDistribution.lastKey();
+		int min, max;
+		
+		if(smin < bmin){
+			min = smin - smin/5;
+		}else {
+			min = bmin - bmin/5;
+		}
+		
+		if(smax > bmax) {
+			max = smax + smax/5;
+		}else{
+			max = bmax + bmax/5;
+		}
+		
+		int[] result = {min,max};
+		
+		return result;
 	}
 	
 }

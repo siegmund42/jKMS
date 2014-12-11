@@ -28,6 +28,7 @@ public class Load extends State {
 		this.kms = kms;
 	}
 
+	@Override
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{
     	int playerCount=0;
     	int assistantCount=0;
@@ -87,9 +88,9 @@ public class Load extends State {
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
             		 if((Integer.valueOf(sa[1])%2) == 0){
-            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
-            		 }else {
             			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+            		 }else {
+            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
             		 }
             		 cardSet.add(card);
             	 }
@@ -115,6 +116,7 @@ public class Load extends State {
 	//removeCard
 	//removes all cards from the given package (pack)
 	//beginning with lastId up to its size
+	@Override
 	public boolean removeCard(char pack, int lastId) throws WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{
 		Set<Card> oldSet = new LinkedHashSet<Card>(kms.getCards());
 		Map<Integer, Amount> distrib;
