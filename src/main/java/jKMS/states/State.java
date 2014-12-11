@@ -2,17 +2,14 @@ package jKMS.states;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 
-import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
-import jKMS.cards.Card;
 import jKMS.exceptionHelper.EmptyFileException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;

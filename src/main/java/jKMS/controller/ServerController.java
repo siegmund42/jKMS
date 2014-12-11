@@ -6,8 +6,6 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
-import org.springframework.boot.autoconfigure.web.ErrorController;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
