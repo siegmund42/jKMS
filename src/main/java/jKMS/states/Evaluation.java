@@ -11,12 +11,12 @@ import jKMS.Kartoffelmarktspiel;
 
 public class Evaluation extends State{
 	
-	
 	public Evaluation(Kartoffelmarktspiel kms){
 		this.kms = kms;
 	}
 	
 	//returns statistic data of all contracts - min, max, average, variance, standard deviation
+	@Override
 	public Map<String,Float> getStatistics(){ 
 		Set<Contract> contracts = kms.getContracts();
 		Map<String,Float> statistics = new HashMap<String, Float>();
@@ -69,6 +69,7 @@ public class Evaluation extends State{
 	}
 	
 	//choose random "winner"-contract
+	@Override
 	public Contract pickWinner(){ 
 		Set<Contract> contracts = kms.getContracts();
 		
@@ -91,11 +92,13 @@ public class Evaluation extends State{
 		return winner; 
 	}
 	
+	@Override
 	public int buyerProfit(Contract con){ 
 		int wtp = con.getBuyer().getValue();
 		return (wtp - con.getPrice()); 
 	}
 	
+	@Override
 	public int sellerProfit(Contract con){ 
 		int cost = con.getSeller().getValue();
 		return (con.getPrice() - cost); 

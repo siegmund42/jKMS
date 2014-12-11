@@ -94,13 +94,13 @@ public class AppGui extends JFrame{
 						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
 					}
 					else if(kms.getState() instanceof Load){
-						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+						BareBonesBrowserLaunch.openURL("http://localhost:8080/load?s=1");
 					}
 					else if(kms.getState() instanceof Play){
-						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+						BareBonesBrowserLaunch.openURL("http://localhost:8080/play");
 					}
 					else if(kms.getState() instanceof Evaluation){
-						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+						BareBonesBrowserLaunch.openURL("http://localhost:8080/evaluate");
 					}
 				}
 			}

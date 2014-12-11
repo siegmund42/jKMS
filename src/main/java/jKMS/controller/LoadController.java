@@ -56,8 +56,6 @@ public class LoadController extends AbstractServerController {
 			
 			// JavaScript - For Quick-checking the given IDs
 			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
-
-			System.out.println(kms.getConfiguration().getbDistribution().size() + "Playercount short before serving GET request" + kms.getPlayerCount());
 			
 			return "load";
 		}	else	{
