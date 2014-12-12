@@ -100,16 +100,9 @@ public class PrepareController extends AbstractServerController {
 		}
 		
 		if(stateChangeSuccessful)	{
-		
-			// Load from File
-			if(configuration != null && configuration.equals("load"))	{
-				//TODO: load from file
-				
-			}
 			
 			// Only show the already stored values
 			if(configuration == null)	{
-				 System.out.println("configuration == null");
 				configuration = "load";
 			}
 			
@@ -157,7 +150,6 @@ public class PrepareController extends AbstractServerController {
 			model.addAttribute("error", e.getClass().toString());
 			return "error";
 		}catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			model.addAttribute("message", e.getMessage());
 			model.addAttribute("error", e.getClass().toString());

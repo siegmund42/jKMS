@@ -21,48 +21,6 @@ public class ServerController extends AbstractServerController	{
 		return "index";
 	}
 	
-	@RequestMapping(value = "/index", method = RequestMethod.POST)
-	public String processIndex(Model model, @RequestParam("input-file") MultipartFile file)	{
-		
-		boolean stateChangeSuccessful = true;
-		
-		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "load");
-		}	catch(Exception e)	{
-			e.printStackTrace();
-			model.addAttribute("message", e.getMessage());
-			model.addAttribute("error", e.getClass().toString());
-			return "error";
-		}
-		
-		if(stateChangeSuccessful)	{
-				
-			try {
-				kms.getState().load(file);
-				System.out.println("Load successfull!");
-				
-			} 	catch(NumberFormatException e){
-				e.printStackTrace();
-				// TODO i18n
-				model.addAttribute("message", "Bitte die load file nicht verändern,die Nummer kann nicht String sein");
-				model.addAttribute("error", e.getClass().toString());
-				return "error";
-				
-			}	catch (Exception e) {
-				e.printStackTrace();
-				model.addAttribute("message", e.getMessage());
-				model.addAttribute("error", e.getClass().toString());
-				return "error";
-			}
-			return "redirect:/load?s=1";
-			
-		}	else	{
-			
-			return "reset";
-		}
-		
-	}
-	
 	@RequestMapping("/settings")
 	public String settigs()	{
 		return "settings";

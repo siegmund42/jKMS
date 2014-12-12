@@ -82,9 +82,14 @@ noscript div	{
 	vertical-align:		middle;
 }
 
-.cell	{
+.leftCell	{
 	display:			table-cell;
 	text-align:			left;
+}
+
+.cell	{
+	display:			table-cell;
+	text-align:			center;
 }
 
 .arrangementTable input[type="number"]	{

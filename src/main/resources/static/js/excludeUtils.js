@@ -45,7 +45,7 @@ function createExcludeFields(number)	{
 			
 			// Create Checkbox-Div
 			var checkDiv = document.createElement("div");
-			checkDiv.setAttribute("class", "cell");
+			checkDiv.setAttribute("class", "leftCell");
 			
 			// Create CheckBox
 			var box = document.createElement("input");

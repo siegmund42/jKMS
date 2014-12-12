@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <title th:text="#{titles.load}">Spiel laden</title>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    	var pack = /*[[#{load.package}]]*/;
+    	var firstID = /*[[${firstID}]]*/;
+    	var numberOfPlayers = /*[[${numberOfPlayers}]]*/;
+    	var percent = /*[[#{prepare.percent}]]*/ 'Anteil';
+    	var currency = /*[[#{prepare.currency}]]*/ 'Preis';
+    /*]]>*/
+    </script>
+    <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/formValidation.js}"></script>
+    <script th:src="@{/js/distributionUtils.js}"></script>
+    <script th:src="@{/js/excludeUtils.js}"></script>
+    
+</head>
+ <body th:onload="'createExcludeFields(' + ${numberOfAssistants} + ');'">
+ 	<div id="toolBar">
+ 		<div id="path">
+ 			<div class="step" th:text="#{path.load.step1}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" id="step_activ'" th:text="#{path.load.step2}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step3}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step4}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.load.step5}"></div>
+ 		</div>
+ 		<ul>
+	 		<li>
+	 			<a href="index.html" th:text="#{messages.welcome}" ></a>
+	 		</li>
+	 		<li>
+ 				<a href="load1.html" th:text="#{messages.back}" ></a>
+	 		</li>
+		</ul>
+ 	</div>
+ 	<noscript>
+ 		<div th:text="#{noscript}"></div>
+ 	</noscript>
+	<div id="inhalt">
+	 	<div th:replace="resources :: heading (load2)">
+	 	</div>
+	 	<div th:if="${error}" class="errorDiv" th:text="#{error.__${error}__}"></div>
+	 	<!-- Excluding Cards ###################################################### -->
+		 <form th:action="load2.html" name="exclude" id="exclude" method="POST" onsubmit="return validateForm(this.id);">
+		 	<div th:text="#{load.hintExclude}"></div>
+			 <div class="form" id="excludeDiv" name="excludeDiv" > 
+			 </div>
+			<input type="submit" th:value="#{load.start}" />
+		</form>
+	</div>
+ </body>
+</html>
