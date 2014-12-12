@@ -66,29 +66,30 @@ public class PlayTest {
 				//SellerCard(1008,4,'A')
 				//SellerCard(1010,4,'A')
 				kms.play();
+				
 				assertEquals("addContract() should return 0 when input both right cardId,id1 and id2 can exchange"
-						,0, kms.getState().addContract(1001, 1010, 6, "TEST"));
+						,0, kms.getState().addContract(1001, 1010, 6,"TEST"));
 				assertEquals("addContract() should return 0 when input both right cardId,id1 and id2 can exchange"
-						,0, kms.getState().addContract(1002, 1009, 6, "TEST"));
+						,0, kms.getState().addContract(1002, 1009, 6,"TEST"));
 				assertEquals("addContract() should return 1 when input double Buyer "
-						,1, kms.getState().addContract(1003, 1005, 6, "TEST"));
+						,1, kms.getState().addContract(1003, 1005, 6,"TEST"));
 				assertEquals("addContract() should return 1 when input double Seller "
-						,1, kms.getState().addContract(1004, 1006, 6, "TEST"));
-				assertEquals("addContract() should return 1 when input 2 same Id number "
-						,1, kms.getState().addContract(1006, 1006, 6, "TEST"));
+						,1, kms.getState().addContract(1004, 1006, 6,"TEST"));
+				assertEquals("addContract() should return 2 when input 2 same Id number,also a Id is invalid "
+						,2, kms.getState().addContract(1006, 1006, 6,"TEST"));
 				assertEquals("addContract() should return 2 when a cardId is not available "
-						,1, kms.getState().addContract(1011, 1006, 6, "TEST"));
+						,2, kms.getState().addContract(1011, 1006, 6,"TEST"));
 				assertEquals("addContract() should return 2 when a cardId is not available "
-						,1, kms.getState().addContract(1004, 1021, 6, "TEST"));
+						,2, kms.getState().addContract(1004, 1021, 6,"TEST"));
 				assertEquals("addContract() should return 2 when both cardId are not available "
-						,1, kms.getState().addContract(1026, 1031, 6, "TEST"));
+						,2, kms.getState().addContract(1026, 1031, 6,"TEST"));
 				// 1001,1002,1009,1010 are already dealt
 				assertEquals("addContract() should return 3 when the Buyer is already dealt "
-						,1, kms.getState().addContract(1001, 1004, 6, "TEST"));
+						,3, kms.getState().addContract(1001, 1004, 6,"TEST"));
 				assertEquals("addContract() should return 3 when the Seller is already dealt "
-						,1, kms.getState().addContract(1003, 1010, 6, "TEST"));
+						,3, kms.getState().addContract(1003, 1010, 6,"TEST"));
 				assertEquals("addContract() should return 3 when both Buyer and Seller are already dealt "
-						,1, kms.getState().addContract(1001, 1002, 6, "TEST"));
+						,3, kms.getState().addContract(1001, 1002, 6,"TEST"));
 
 	}
 	

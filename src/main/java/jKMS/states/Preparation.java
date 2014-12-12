@@ -143,7 +143,7 @@ public class Preparation extends State	{
             		 Card card;
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
-            		 if((Integer.valueOf(sa[1])%2) == 0){
+            		 if((Integer.valueOf(sa[1])%2) == 1){
             			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
             		 }else {
             			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
