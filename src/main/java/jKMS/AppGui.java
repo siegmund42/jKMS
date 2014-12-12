@@ -157,8 +157,10 @@ public class AppGui extends JFrame{
 		
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Courier New", Font.PLAIN, 10));
+		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
 		scrollPane.setViewportView(textArea);
+		textArea.setAutoscrolls(true);
+		scrollPane.setAutoscrolls(true);
 		
 		console = new MessageConsole(textArea, true);
 		console.redirectErr();
