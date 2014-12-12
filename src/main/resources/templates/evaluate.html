@@ -48,10 +48,24 @@
 			<li>
 				<a href="lottery.html" th:text="#{messages.lottery}"></a>
 			</li>
-		</ul>
+		</ul> 
  	</div>
  	
+	<noscript>
+ 		<div th:text="#{noscript}"></div>
+ 	</noscript>
  		
+	<div id="stats">
+ 		<h2 th:text="#{evaluate.headline}"> </h2>
+ 		<div th:text="#{evaluate.average} + ': ' + ${average} + '€'"> </div>
+ 		<div th:text="#{evaluate.min} + ': ' + ${min} + '€'"> </div>
+ 		<div th:text="#{evaluate.max} + ': ' + ${max} + '€'"> </div>
+ 		<div th:text="#{evaluate.variance} + ': ' + ${variance}"> </div>
+ 		<div th:text="#{evaluate.standardDeviation} + ': ' + ${standardDeviation}"> </div>
+ 		<div th:text="#{evaluate.eqPrice} + ': ' + ${eqPrice}"> </div>
+ 		<div th:text="#{evaluate.eqQuantity} + ': ' + ${eqQuantity}"> </div>
+ 	</div>
+	
 	<div id="chartWrapper">
 		<!-- Überschrift nicht richtig formatiert 
 		<div th:replace="resources :: heading (evaluate)">
@@ -60,9 +74,7 @@
 		</div>
 	</div>
 	
-	<noscript>
- 		<div th:text="#{noscript}"></div>
- 	</noscript>
+	
 	
 	<script type="text/javascript">
 			$(document).ready(drawEvaluation());

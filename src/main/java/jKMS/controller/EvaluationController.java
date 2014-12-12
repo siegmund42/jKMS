@@ -1,5 +1,6 @@
 package jKMS.controller;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -80,7 +81,7 @@ public class EvaluationController extends AbstractServerController {
 	}
 	
 	@RequestMapping(value = "/evaluate")
-	public String evaluate()	{
+	public String evaluate(Model model)	{
 		boolean stateChangeSuccessful = true;
 		
 		try	{
@@ -91,6 +92,17 @@ public class EvaluationController extends AbstractServerController {
 		}
 		
 		if(stateChangeSuccessful)	{
+			Map<String,Float> stats = kms.getState().getStatistics();
+			
+			model.addAttribute("average", stats.get("averagePrice"));
+			model.addAttribute("min", stats.get("minimum"));
+			model.addAttribute("max", stats.get("maximum"));
+			model.addAttribute("variance", stats.get("variance"));
+			model.addAttribute("standardDeviation", stats.get("standardDeviation"));
+			model.addAttribute("eqPrice", stats.get("eqPrice"));
+			model.addAttribute("eqQuantity", stats.get("eqQuantity"));
+			
+			
 			return "evaluate";
 		}	else	{
 			return "reset";
