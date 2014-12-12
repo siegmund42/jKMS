@@ -3,7 +3,10 @@ package jKMS.controller;
 import jKMS.Amount;
 import jKMS.LogicHelper;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -236,7 +239,8 @@ public class PrepareController extends AbstractServerController {
 			}
 			
 			// TODO discuss Folder Structure and change to correct folder
-			String path = servletContext.getRealPath(".").concat("config.txt");
+			String path = ControllerHelper.getApplicationFolder().concat("Spiele/game.txt");
+
 			
 			// Save Config File automatically
 		  try{
