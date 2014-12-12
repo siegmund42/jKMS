@@ -319,11 +319,10 @@ public class Preparation extends State	{
 		}
 		
 		System.out.println("Registered the following Group:");
+		Amount registered = distrib.get(price);
 		if(isBuyer)	{
-			Amount registered = kms.getConfiguration().getbDistribution().get(price);
 			System.out.println("Buyer: " + price + "€ " + registered.getRelative() + "% " + registered.getAbsolute());
 		}	else	{
-			Amount registered = kms.getConfiguration().getsDistribution().get(price);
 			System.out.println("Seller: " + price + "€ " + registered.getRelative() + "% " + registered.getAbsolute());
 		}
 		
