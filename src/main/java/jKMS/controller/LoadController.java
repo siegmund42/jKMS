@@ -65,39 +65,43 @@ public class LoadController extends AbstractServerController {
 	}
 	
 	@RequestMapping(value = "/load", method = RequestMethod.POST)
-	public String start(Model model, @RequestParam("exclude[]") String exclude[])	{
+	public String start(Model model, @RequestParam("exclude[]") String exclude[], 
+										@RequestParam("check[]") List<String> check)	{
 		
 		int playerCount = kms.getPlayerCount();
 		for(int i = 0; i < exclude.length; i++)	{
-			try	{
-				if(exclude[i] != "")	{
-					int number = Integer.parseInt(exclude[i]);
-					// Check if not all cards where given out
-					if(number != -42)	{
+			// Check if not all cards where given out
+			if(check.indexOf(Integer.toString(i)) == -1)	{
+				System.out.println("Excluding Cards from Package " + LogicHelper.IntToPackage(i));
+				try	{
+					if(exclude[i] != "")	{
+						int number = Integer.parseInt(exclude[i]);
 						if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
 								number <= (kms.getConfiguration().getFirstID() + playerCount))	{
-							
+								
 							kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
 						}	else	{
 							model.addAttribute("error", "exclude.oob");
 							return "forward:/load?s=2";
 						}
+					}	else	{
+						model.addAttribute("error", "exclude.empty");
+						return "forward:/load?s=2";
 					}
-				}	else	{
-					model.addAttribute("error", "exclude.empty");
+				}	catch (WrongPlayerCountException | WrongAssistantCountException
+						| WrongFirstIDException
+						| WrongRelativeDistributionException e) {
+					e.printStackTrace();
+					model.addAttribute("message", e.getMessage());
+					model.addAttribute("error", e.getClass().toString());
+					return "error";
+				}	catch(Exception e)	{
+					e.printStackTrace();
+					model.addAttribute("error", "exclude.fraction");
 					return "forward:/load?s=2";
 				}
-			}	catch (WrongPlayerCountException | WrongAssistantCountException
-					| WrongFirstIDException
-					| WrongRelativeDistributionException e) {
-				e.printStackTrace();
-				model.addAttribute("message", e.getMessage());
-				model.addAttribute("error", e.getClass().toString());
-				return "error";
-			}	catch(Exception e)	{
-				e.printStackTrace();
-				model.addAttribute("error", "exclude.fraction");
-				return "forward:/load?s=2";
+			}	else	{
+				System.out.println("Nothing to exclude in Package " + LogicHelper.IntToPackage(i));
 			}
 		}
 		return "redirect:/play";

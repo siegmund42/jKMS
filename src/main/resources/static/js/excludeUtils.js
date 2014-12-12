@@ -33,10 +33,15 @@ function createExcludeFields(number)	{
 			input.setAttribute("placeholder", alphabet[i].toUpperCase());
 			row.appendChild(input);
 
-			// Create Empty Checkbox Div [under Label]
-			var cell = document.createElement("div");
-			cell.setAttribute("class", "cell");
-			checkBoxRow.appendChild(cell);
+			// Create Description Checkbox Div [under Label]
+			// Create Label for Field
+			var label = document.createElement("label");
+			label.setAttribute("for", "check" + i);
+			label.setAttribute("class", "small");
+			// TODO i18n
+			label.innerHTML = "Alle Karten ausgeteilt:";
+			
+			checkBoxRow.appendChild(label);
 			
 			// Create Checkbox-Div
 			var checkDiv = document.createElement("div");
@@ -46,6 +51,8 @@ function createExcludeFields(number)	{
 			var box = document.createElement("input");
 			box.setAttribute("type", "checkbox");
 			box.setAttribute("id", "check" + i);
+			box.setAttribute("name", "check[]");
+			box.setAttribute("value", i);
 			box.setAttribute("onchange", "javascript:allExcluded(" + i + ")");
 			
 			checkDiv.appendChild(box);
@@ -83,17 +90,15 @@ function createExcludeFields(number)	{
 // Disables a Textfield depending on its Checkbox was checked
 function allExcluded(id)	{
 	// Checkbox was checked
-	if(document.getElementById("check" + id).checked)	{
-		// Set readonly and invisible
-		var element = document.getElementById(id);
-		element.readOnly = true;
-		element.style.opacity = "0";
-		// Set very special value (;
-		element.value = -42;
-	}	else	{
-		var element = document.getElementById(id);
-		element.readOnly = false;
-		element.value = "";
-		element.style.opacity = "1";
-	}
+//	if(document.getElementById("check" + id).checked)	{
+//		// Set readonly and invisible
+//		var element = document.getElementById(id);
+//		element.readOnly = true;
+//		element.style.opacity = "0";
+//	}	else	{
+//		var element = document.getElementById(id);
+//		element.readOnly = false;
+//		element.style.opacity = "1";
+//	}
+	document.getElementById(id).readOnly = document.getElementById("check" + id).checked
 }

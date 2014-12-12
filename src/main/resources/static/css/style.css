@@ -43,7 +43,7 @@ p	{
 
 label	{
 	display:			table-cell;
-	padding:			10px 30px;
+	padding:			10px 15px;
 	vertical-align:		middle;
 }
 
@@ -75,6 +75,32 @@ noscript div	{
 	margin:				30px auto;
 }
 
+.small	{
+	font-size:			60%;
+	width:				80px;
+	margin:				auto;
+	vertical-align:		middle;
+}
+
+.cell	{
+	display:			table-cell;
+	text-align:			left;
+}
+
+.arrangementTable input[type="number"]	{
+	float:				none;
+	width:				60px;
+}
+
+.arrangementTable	{
+	margin:				5px;
+	display:			table;
+}
+
+.row	{
+	display:			table-row;
+}
+
 #form input[type=number]	{
 	display:			table-cell;
 	float:				none;
@@ -88,6 +114,11 @@ noscript div	{
 	font-size:			95%;
 	/*position:			absolute;
 	z-index:			2;*/
+}
+
+input[type=checkbox]	{
+	vertical-align:		middle;
+	margin:				15px 0 0 10px;
 }
 
 .step	{
@@ -267,24 +298,6 @@ form#login	{
 	margin:				0 auto;
 }
 
-.cell	{
-	display:			table-cell;
-}
-
-.arrangementTable input[type="number"]	{
-	float:				none;
-	width:				60px;
-}
-
-.arrangementTable	{
-	margin:				5px;
-	display:			table;
-}
-
-.row	{
-	display:			table-row;
-}
-
 #logout	{
 	position:			relative;
 	float:				right;
@@ -325,6 +338,6 @@ form#login	{
 	color:				red;
 }
 
-.seuccessDiv	{
+.successDiv	{
 	color:				green;
 }

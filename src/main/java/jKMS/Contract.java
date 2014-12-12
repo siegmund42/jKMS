@@ -43,6 +43,6 @@ public class Contract {
 	
 	@Override
 	public String toString()	{
-		return "Buyer: " + buyer.getId() + "| Seller: " + seller.getId() + "| Price: " + price + "| Time: " + time;
+		return "Buyer: " + buyer.getId() + "| Seller: " + seller.getId() + "| Price: " + price + "| Time: " + time + "| Station: " + uri;
 	}
 }
