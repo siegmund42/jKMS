@@ -5,6 +5,8 @@ import jKMS.Pdf;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
@@ -153,5 +157,39 @@ public class FileDownloadController extends AbstractServerController {
     	      throw new RuntimeException("IOError writing file to output stream");
     	    }
      }
+    
+    @RequestMapping(value = "/csv")
+    public ResponseEntity<byte[]> downloadCsv() throws Exception{ 
+    	
+    	ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+    	CSVWriter writer = new CSVWriter(new OutputStreamWriter(outstream));
+    	
+		try {
+			// Create CSV
+			kms.getState().generateCSV(writer);
+			
+			// Close document
+			writer.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: Think about how to handle this error -.-
+			Exception ex = new RuntimeException("Something went wrong while export CSV.");
+			throw ex;
+		}
+		
+		// Get a byte Array of the csv
+	    byte[] contents = outstream.toByteArray();
+	    
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.parseMediaType("text/csv"));
+	    //TODO timestamp for filename
+	    String filename = "Export.csv";
+	    headers.setContentDispositionFormData(filename, filename);
+	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+	    ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
+	    return response;
+	      
+    }
     
 }
