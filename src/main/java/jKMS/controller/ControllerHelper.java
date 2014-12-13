@@ -163,6 +163,7 @@ public class ControllerHelper {
 	
 	/*
 	 * Checks and, if not yet existing, creates the Folder Structure
+	 * Returns true if something was created, false if not.
 	 */
 	public static boolean checkFolders() throws IOException	{
 
@@ -176,8 +177,7 @@ public class ControllerHelper {
 				System.out.println("Created Folder: " + games.getPath());
 				created = true;
 			}	else	{
-				// TODO i18n
-				throw new IOException("Die Ordnerstruktur konnte nicht aufgebaut werden.");
+				throw new IOException("Folder Structure could not be built.");
 			}
 		}
 		
@@ -186,7 +186,7 @@ public class ControllerHelper {
 				System.out.println("Created Folder: " + exports.getAbsolutePath());
 				created = true;
 			}	else	{
-				throw new IOException("Die Ordnerstruktur konnte nicht aufgebaut werden.");
+				throw new IOException("Folder Structure could not be built.");
 			}
 		}
 		return created;
