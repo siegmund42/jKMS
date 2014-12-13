@@ -55,7 +55,7 @@ public class PlayTest {
 	
 	@Test
 	public void testAddContract(){
-		//BuyerCard(1001,2,'A')
+				//BuyerCard(1001,2,'A')
 				//BuyerCard(1003,2,'A')
 				//BuyerCard(1005,3,'A')
 				//BuyerCard(1007,3,'A')
@@ -65,8 +65,10 @@ public class PlayTest {
 				//SellerCard(1006,3,'A')
 				//SellerCard(1008,4,'A')
 				//SellerCard(1010,4,'A')
+		
+			//set the state to play
 				kms.play();
-				
+			//test addContract()	
 				assertEquals("addContract() should return 0 when input both right cardId,id1 and id2 can exchange"
 						,0, kms.getState().addContract(1001, 1010, 6,"TEST"));
 				assertEquals("addContract() should return 0 when input both right cardId,id1 and id2 can exchange"

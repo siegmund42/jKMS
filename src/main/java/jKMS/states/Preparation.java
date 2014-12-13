@@ -89,11 +89,13 @@ public class Preparation extends State	{
 	//load Implementieren
 	@Override
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{
+	//set initial value for load
     	int groupCount=0;
     	int firstID=0;
     	Set<Card> cardSet = new LinkedHashSet<Card>();
     	Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
 		Map<Integer, Amount> sDistributionLoad = new TreeMap<>();
+		//deal with PlayerCount,AssistantCount,GroupCount and fistID
     	 if (!file.isEmpty()) {
             	 BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             	 String buf = "";
@@ -101,10 +103,12 @@ public class Preparation extends State	{
             	 while ((buf=br.readLine()) != null && count < 4) {
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
+            		 //in State Preparation did not load PlayerCount
             		 if(count == 0){
             			 count = count + 1;
             			 continue;
             		 }
+            		 //in State Preparation did not load AssistantCount
             		 else if(count == 1){
             			 count = count + 1;
             			 continue;
@@ -120,6 +124,10 @@ public class Preparation extends State	{
             			 break;
             		 }
             	 }
+            	 System.out.println("GroupCount:"+groupCount);
+    			 System.out.println("firstID:"+firstID);
+            	 System.out.println("load GroupCount and fistID successful");
+            	 //load bDistribution and sDistribution
             	 while ( count >=4 && count < groupCount+4){
             		 if( (buf=br.readLine()) != null){
 	            		 buf=buf.trim();
@@ -138,7 +146,11 @@ public class Preparation extends State	{
             			 throw new EmptyFileException("The GroupCount is not enough!");
             		 }
             	 }
+            	 System.out.println("bDistribution:"+bDistributionLoad.toString());
+    			 System.out.println("sDistribution:"+sDistributionLoad.toString());
+            	 System.out.println("load bDistribution and sDistribution successful");
             	 // TODO discuss wether loading Cards
+            	 //load Cards and set them in cardSet
             	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
             		 Card card;
             		 buf=buf.trim();
@@ -150,9 +162,10 @@ public class Preparation extends State	{
             		 }
             		 cardSet.add(card);
             	 }
-    			 System.out.println(groupCount);
-    			 System.out.println(firstID);
-    			 
+            	 System.out.println("Cards Number:"+cardSet.size());
+            	 System.out.println("load cardSet successful");
+
+    			 //set load information in Configuration
     	    	 kms.getConfiguration().setGroupCount(groupCount);
     	    	 kms.getConfiguration().setFirstID(firstID);
     	    	 kms.getConfiguration().setbDistribution(bDistributionLoad);
@@ -161,7 +174,9 @@ public class Preparation extends State	{
     			 
          }else 
              throw new EmptyFileException("load file can not be empty!");
-    	
+    	 
+    	 System.out.println("load() successful");
+    	 
     }
 
 	
@@ -169,10 +184,12 @@ public class Preparation extends State	{
 		//defalt path:Users/yangxinyu/git/jKMS
 	@Override
 	public boolean save(String path) throws IOException{
+		//take out information aus Configuration and kms
 		 Map<Integer, Amount> bDistributionSave = new TreeMap<>();
 		 Map<Integer, Amount> sDistributionSave = new TreeMap<>();
 		 bDistributionSave = kms.getConfiguration().getbDistribution();
 		 sDistributionSave = kms.getConfiguration().getsDistribution();
+		 //create outputformat for the outputstream 
 		 if(bDistributionSave.isEmpty() || sDistributionSave.isEmpty())
 			 return false;
 		 else{
@@ -202,10 +219,12 @@ public class Preparation extends State	{
 					   Card card = (Card) cardIter.next();
 					   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
 				   }
+				   System.out.println("create outputstreamformat successful");
+				   //write information to file
 				   fw.write(str.toString());
 				   fw.close();
-				 
-			 return true;
+				   System.out.println("save() successful");
+			       return true;
 		 }
 	}
 

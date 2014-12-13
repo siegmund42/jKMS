@@ -122,6 +122,7 @@ public class LoadTest {
 	
 	@Test
 	public void testLoad(){
+		//create initial information for testLoad
 		int expectedPlayerCount = 8;
 		int expectedAssistantCount = 2;
 		int expectedGroupCount = 3;
@@ -144,8 +145,9 @@ public class LoadTest {
 		expectedCardSet.add(new SellerCard(1006,66,'B'));
 		expectedCardSet.add(new SellerCard(1008,66,'B'));
 		
+		//setup loadTestFile for load()
 		String pathFile = "src/test/java/jKMS/states/loadTestFile.txt";
-		
+		//input the initial information in loadTestFiel.txt
 	    String line = System.getProperty("line.separator");
 		   StringBuffer str = new StringBuffer();
 		   FileWriter fw = null;
@@ -188,7 +190,7 @@ public class LoadTest {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-		
+		//convert File to MutipartFile as the parameter for load()
 	    Path path = Paths.get(pathFile);
 	    String name = "loadTestFile.txt";
 	    String originalFileName = "loadTestFile.txt";
@@ -200,6 +202,7 @@ public class LoadTest {
 	    	e.printStackTrace();
 			System.out.println(e.getMessage());
 	    }
+	  //create MultipartFile configTest as parameter for load()
 	    MultipartFile configTest = new MockMultipartFile(name,
 	                         originalFileName, contentType, content);
 	    
@@ -215,7 +218,7 @@ public class LoadTest {
 //			e1.printStackTrace(); 
 //		}                                                                             // read multipartfile
 //   	    
-   	   
+	  //load() execute and check
 	    try {
 			kms.getState().load(configTest);
 		} catch (NumberFormatException | IOException | EmptyFileException e) {
@@ -223,7 +226,7 @@ public class LoadTest {
 			System.out.println(e.getMessage());
 		}
 	   
-	    
+	  //check PlayerCount,AssistantCount,FirstId and GroupCount
 	    assertEquals("the PlayerCount should be 8,system should load 8 in state Load"
 	    		, expectedPlayerCount, kms.getConfiguration().getPlayerCount());
 		assertEquals("the AssistantCount should be 2,system should load 2 in state Load"
@@ -234,6 +237,7 @@ public class LoadTest {
 		assertEquals("system did not load the right bDistributionCount", expectedbDistribution.size(), kms.getConfiguration().getbDistribution().size());
 		assertEquals("system did not load the right sDistributionCount", expectedsDistribution.size(), kms.getConfiguration().getsDistribution().size());
 		
+		//check bDistribution and sDistribution
 		Set bd_key1 = expectedbDistribution.keySet();
 		Set bd_key2 = kms.getConfiguration().getbDistribution().keySet();
 		if(bd_key1.equals(bd_key2)){
@@ -251,9 +255,9 @@ public class LoadTest {
 			}
 		}
 		
+		//check CardSet
 		assertEquals("system did not load the right CardNumber", expectedCardSet.size(), kms.getCards().size());
 		assertEquals("system did not load the right CardSetContent", expectedCardSet.toString(), kms.getCards().toString());
-		System.out.println("load zuo wan la ");
 	
 
 	}

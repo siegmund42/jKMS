@@ -84,7 +84,7 @@ public class PreparationTest {
 	@Test
 	//TODO testLoad
 	public void testLoad(){
-		//ServletContext servletContext = null;
+		//create initial information for testLoad
 				int unexpectedPlayerCount = 8;
 				int unexpectedAssistantCount = 2;
 				int expectedGroupCount = 3;
@@ -107,8 +107,9 @@ public class PreparationTest {
 				expectedCardSet.add(new SellerCard(1006,66,'B'));
 				expectedCardSet.add(new SellerCard(1008,66,'B'));
 				
+				//setup loadTestFile for load()
 				String pathFile = "src/test/java/jKMS/states/loadTestFile.txt";
-				
+				//input the initial information in loadTestFiel.txt
 			    String line = System.getProperty("line.separator");
 				   StringBuffer str = new StringBuffer();
 				   FileWriter fw = null;
@@ -151,7 +152,7 @@ public class PreparationTest {
 					e.printStackTrace();
 					System.out.println(e.getMessage());
 				}
-				
+				//convert File to MutipartFile as the parameter for load()
 			    Path path = Paths.get(pathFile);
 			    String name = "loadTestFile.txt";
 			    String originalFileName = "loadTestFile.txt";
@@ -163,6 +164,7 @@ public class PreparationTest {
 			    	e.printStackTrace();
 					System.out.println(e.getMessage());
 			    }
+			    //create MultipartFile configTest as parameter for load()
 			    MultipartFile configTest = new MockMultipartFile(name,
 			                         originalFileName, contentType, content);
 			    
@@ -178,7 +180,7 @@ public class PreparationTest {
 //					e1.printStackTrace(); 
 //				}                                                                             // read multipartfile
 //		   	    
-		   	   
+		   	   //load() execute and check
 			    try {
 					kms.getState().load(configTest);
 				} catch (NumberFormatException | IOException | EmptyFileException e) {
@@ -186,7 +188,7 @@ public class PreparationTest {
 					System.out.println(e.getMessage());
 				}
 			   
-			    
+			    //check PlayerCount,AssistantCount,FirstId and GroupCount
 			    assertEquals("the PlayerCount should be 6,system should not load 8 in state preparation"
 			    		, 6, kms.getConfiguration().getPlayerCount());
 				assertEquals("the AssistantCount should be 1,system should not load 2 in state preparation"
@@ -197,6 +199,7 @@ public class PreparationTest {
 				assertEquals("system did not load the right bDistributionCount", expectedbDistribution.size(), kms.getConfiguration().getbDistribution().size());
 				assertEquals("system did not load the right sDistributionCount", expectedsDistribution.size(), kms.getConfiguration().getsDistribution().size());
 				
+				//check bDistribution and sDistribution
 				Set bd_key1 = expectedbDistribution.keySet();
 				Set bd_key2 = kms.getConfiguration().getbDistribution().keySet();
 				if(bd_key1.equals(bd_key2)){
@@ -214,10 +217,9 @@ public class PreparationTest {
 					}
 				}
 				
+				//check CardSet
 				assertEquals("system did not load the right CardNumber", expectedCardSet.size(), kms.getCards().size());
 				assertEquals("system did not load the right CardSetContent", expectedCardSet.toString(), kms.getCards().toString());
-				System.out.println("load zuo wan la ");
-
 
 	}
 
@@ -277,6 +279,7 @@ public class PreparationTest {
     	Set<Card> expectedCardSet = new LinkedHashSet<Card>();
     	Map<Integer, Amount> expectedbDistribution = new TreeMap<>();
 		Map<Integer, Amount> expectedsDistribution = new TreeMap<>();
+		//create initial information for testsave()
 		try {
 			kms.getCards().clear();
 			kms.getState().generateCards();
@@ -286,6 +289,8 @@ public class PreparationTest {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
+		
+		//save() execute and create saveTestFile 
 		String path = "src/test/java/jKMS/states/saveTestFile.txt";;
 		try {
 			kms.getState().save(path);
@@ -294,11 +299,9 @@ public class PreparationTest {
 			System.out.println(e.getMessage());
 		}
 		
-		System.out.println("dao le a ");
-		
+		//read saveTestFile ,take out the information for test
 		File file =new File(path);
 		
-		System.out.println("dao le a ");
 //		if (file.exists()) 
 //		
        	 String buf = "";
@@ -306,7 +309,7 @@ public class PreparationTest {
        	 try {
        		BufferedReader br = null;
        		br = new BufferedReader(new FileReader(file));
-
+       		//read PlayerCount,AssistantCount,GroupCount and FirstId
 			while ((buf=br.readLine()) != null && count < 4) {
 				 buf=buf.trim();
 				 String[] sa = buf.split(":|\\s");
@@ -332,6 +335,7 @@ public class PreparationTest {
 				 }
 			 }
 			
+			//read bDistribution and sDistribution
 			while ( count >=4 && count < expectedGroupCount+4){
 					if( (buf=br.readLine()) != null){
 						 buf=buf.trim();
@@ -355,7 +359,7 @@ public class PreparationTest {
 						}
 					 }
 			}
-			
+			//read cards
 			while (count >= expectedGroupCount +4 && (buf=br.readLine()) != null){
 				 Card card;
 				 buf=buf.trim();
@@ -372,14 +376,15 @@ public class PreparationTest {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-
+       	 //test save()
+       	 //test PlayerCount,AssistantCount,GroupCount and FirstId
 			assertEquals("system did not save the right PlayerCount", expectedPlayerCount, kms.getConfiguration().getPlayerCount());
 			assertEquals("system did not save the right AssistantCount", expectedAssistantCount, kms.getConfiguration().getAssistantCount());
 			assertEquals("system did not save the right GroupCount", expectedGroupCount, kms.getConfiguration().getGroupCount());
 			assertEquals("system did not save the right FirstID", expectedFirstID, kms.getConfiguration().getFirstID());
 			assertEquals("system did not save the right bDistributionCount", expectedbDistribution.size(), kms.getConfiguration().getbDistribution().size());
 			assertEquals("system did not save the right sDistributionCount", expectedsDistribution.size(), kms.getConfiguration().getsDistribution().size());
-			
+		//test bDistribution and sDistribution
 			Set bd_key1 = expectedbDistribution.keySet();
 			Set bd_key2 = kms.getConfiguration().getbDistribution().keySet();
 			if(bd_key1.equals(bd_key2)){
@@ -396,11 +401,9 @@ public class PreparationTest {
 					assertSame("system did not save the right Relative value for sDistribution", expectedsDistribution.get(sd_key1.toArray()[i]).getRelative(), kms.getConfiguration().getsDistribution().get(sd_key1.toArray()[i]).getRelative());
 				}
 			}
-			
+		//test cardSet
 			assertEquals("system did not save the right CardNumber", expectedCardSet.size(), kms.getCards().size());
 			assertEquals("system did not save the right CardSetContent", expectedCardSet.toString(), kms.getCards().toString());
-
-			System.out.println("save zuo wan la ");
 
 
 	}
