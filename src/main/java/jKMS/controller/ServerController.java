@@ -3,6 +3,7 @@ package jKMS.controller;
 import jKMS.Amount;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,7 +22,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class ServerController extends AbstractServerController	{
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(ServletRequest request) {
+	public String index(Model model, ServletRequest request) {
+		try {
+			if(ControllerHelper.checkFolders())	{
+				System.out.println("Adding Folders Succeeded!");
+			}	else	{
+				System.out.println("All Folders already here.");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			// TODO i18n
+			model.addAttribute("message", e.getMessage());
+			model.addAttribute("error", "Ordnerstruktur");
+			return "error";
+		}
 		return "index";
 	}
 	
