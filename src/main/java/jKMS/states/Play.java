@@ -26,6 +26,7 @@ public class Play extends State {
 	    	gehandeltCards.add(gehandeltContract.getBuyer());
 	    	gehandeltCards.add(gehandeltContract.getSeller());
 	    }
+	    //getCardset for card check
 		Iterator<Card> iter = kms.getCards().iterator();
 	    Card card1 = null;
     	Card card2 = null;
@@ -38,13 +39,19 @@ public class Play extends State {
 	    		card2 = card;
 	    	}
 	    }
+	    // return 2 when Card not available
 	    if(card1 == null || card2 == null){
+	    	System.out.println("addContract() not successful,because Card not available");
 	    	return 2;
 	    }else if((card1 instanceof BuyerCard && card2 instanceof BuyerCard) 
 	    		|| (card1 instanceof SellerCard && card2 instanceof SellerCard)){
+	    	System.out.println("addContract() not successful,because deal with double buyer or seller");
 	    	return 1;
+	    //return 1 when double buyer or seller
 	    }else if(gehandeltCards.contains(card1) || gehandeltCards.contains(card2)){
+	    	System.out.println("addContract() not successful,because Card already dealt");
 	    	return 3;
+	    //return 3 when card already dealt
 	    }else{
 	    	Contract contract;
 	    	if(card1 instanceof BuyerCard) {
@@ -54,7 +61,9 @@ public class Play extends State {
 	    	}
 	    	kms.getContracts().add(contract);
 	    	System.out.println("Added contract: " + contract.toString());
+	    	System.out.println("addContract() successful");
 	    	return 0;
+	    //return 0 when everything fine	
 	    }  
 	}
 }
