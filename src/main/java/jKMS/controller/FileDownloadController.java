@@ -5,6 +5,7 @@ import jKMS.Pdf;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -103,9 +104,10 @@ public class FileDownloadController extends AbstractServerController {
 		try {
 			PdfWriter.getInstance(document, outstream); 
 			Image pdfImage = Image.getInstance(imageBytes);
+			Map<String,Float> stats = kms.getState().getStatistics();
 			
 			document.open();
-			document = pdf.createExportPdf(document, pdfImage);
+			document = pdf.createExportPdf(document, pdfImage, stats);
 			document.close();
 			
 		} catch (Exception e) {

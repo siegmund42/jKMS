@@ -7,9 +7,9 @@ import jKMS.cards.SellerCard;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -399,10 +399,68 @@ public class Pdf {
     	return titlep;
     }
     
-    public Document createExportPdf(Document doc, Image pdfImage) throws DocumentException{
-    	//TODO Statistikdaten abfragen und einfügen
+    public Document createExportPdf(Document doc, Image pdfImage, Map<String, Float> stats) throws DocumentException{
+    	//get language
+		Properties property;
+        property = LogicHelper.getProperetie();
+        
+        //get Strings
+        String headline = property.getProperty("evaluate.headline");
+		String average = property.getProperty("evaluate.average") + ": ";
+        String min = property.getProperty("evaluate.min") + ": ";
+		String max = property.getProperty("evaluate.max") + ": ";
+		String variance = property.getProperty("evaluate.variance") + ": ";
+		String standDev = property.getProperty("evaluate.standardDeviation") + ": ";
+		String eqPrice = property.getProperty("evaluate.eqPrice") + ": ";
+		String eqQuantity = property.getProperty("evaluate.eqQuantity") + ": ";
+		
+    	//insert stats
+		Font font = new Font(Font.FontFamily.HELVETICA  , 25, Font.BOLD);
+		Paragraph head = new Paragraph(headline, font);
+    	head.setAlignment(Element.ALIGN_CENTER);
+    	head.setSpacingAfter(20);
+    	
+		doc.add(head);
+    	
+    	PdfPTable table = new PdfPTable(3);
+    	
+    	PdfPCell cell11 = new PdfPCell(new Paragraph(average + stats.get("averagePrice") + "€"));
+    	cell11.setBorder(Rectangle.NO_BORDER);
+    	PdfPCell cell21 = new PdfPCell(new Paragraph(min + stats.get("minimum") + "€"));
+    	cell21.setBorder(Rectangle.NO_BORDER);
+    	PdfPCell cell31 = new PdfPCell(new Paragraph(max + stats.get("maximum") + "€"));
+    	cell31.setBorder(Rectangle.NO_BORDER);
+    	PdfPCell cell12 = new PdfPCell(new Paragraph(variance + stats.get("variance")));
+    	cell12.setBorder(Rectangle.NO_BORDER);
+    	PdfPCell cell22 = new PdfPCell(new Paragraph(standDev + stats.get("standardDeviation")));
+    	cell22.setBorder(Rectangle.NO_BORDER);
+    	PdfPCell cell13 = new PdfPCell(new Paragraph(eqPrice + stats.get("eqPrice") + "€"));
+    	cell13.setBorder(Rectangle.NO_BORDER);
+    	PdfPCell cell23 = new PdfPCell(new Paragraph(eqQuantity + stats.get("eqQuantity")));
+    	cell23.setBorder(Rectangle.NO_BORDER);
+    	
+    	//dummy cell to complete the the third row
+    	PdfPCell cell3 = new PdfPCell();
+    	cell3.setBorder(Rectangle.NO_BORDER);
+
+    	
+    	table.addCell(cell11);
+    	table.addCell(cell12);
+    	table.addCell(cell13);
+    	table.addCell(cell21);
+    	table.addCell(cell22);
+    	table.addCell(cell23);
+    	table.addCell(cell31);
+    	table.addCell(cell3);
+    	table.addCell(cell3);
+    	
+    	doc.add(table);
+    	
+    	
+    	//insert image of the chart
     	float chartWidth = doc.getPageSize().getWidth() - doc.leftMargin() - doc.rightMargin();
-    	float chartHeight = doc.getPageSize().getHeight();
+    	float chartHeight = doc.getPageSize().getHeight() - doc.topMargin() - doc.bottomMargin() - 120;
+    	System.out.println(chartHeight);
 		pdfImage.scaleToFit(chartWidth, chartHeight);
 		doc.add(pdfImage);
 		
