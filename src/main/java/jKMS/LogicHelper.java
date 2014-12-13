@@ -1,9 +1,11 @@
 package jKMS;
 
-import java.io.IOException;
-import java.util.Locale;
+//import java.io.IOException;
+//import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
+import java.util.MissingResourceException;
+//import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -72,7 +74,7 @@ public class LogicHelper {// have static function to help implementation logic
 				}
 		return sum;
 		}
-	
+	/*
 	//get the right propertie with the international strings
     public static Properties getProperetie(){
     	Properties propertie = new Properties();
@@ -90,7 +92,20 @@ public class LogicHelper {// have static function to help implementation logic
         				System.out.println(ioe1);
         			}
         	}
+    	
         return propertie;
+    }*/
+    
+    public static String getLocalizedMessage(String key)	{
+
+    	try	{
+    		ResourceBundle messages = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
+    		String message = messages.getString(key);
+        	return message;
+    	}	catch(MissingResourceException e)	{
+    		return "??" + key + "??";
+    	}
+    	
     }
     
 }

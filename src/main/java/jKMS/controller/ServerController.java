@@ -1,6 +1,7 @@
 package jKMS.controller;
 
 import jKMS.Amount;
+import jKMS.LogicHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +32,8 @@ public class ServerController extends AbstractServerController	{
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			// TODO i18n
-			model.addAttribute("message", e.getMessage());
-			model.addAttribute("error", "Ordnerstruktur");
+			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.message.buildFolderStructure"));
+			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.short.buildFolderStructure"));
 			return "error";
 		}
 		return "index";
