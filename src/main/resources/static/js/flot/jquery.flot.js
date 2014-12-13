@@ -514,7 +514,7 @@ Licensed under the MIT license.
         var series = [],
             options = {
                 // the color theme used for graphs
-                colors: ["#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed"],
+                colors: ["#ea831c", "#1d3cec", "#cb4b4b", "#4da74d", "#9440ed"],   //#edc240, #afd8f8
                 legend: {
                     show: true,
                     noColumns: 1, // number of colums in legend table

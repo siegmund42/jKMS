@@ -6,14 +6,27 @@ function drawPlayChart(data){
 		var yMin = dataArray[1];
 		var yMax = dataArray[2];
 
-		var options = {	xaxis:{
+		var options = {	axisLabels: {
+							show:true
+						},
+						xaxis:{
 							minTickSize: 1,
 							autoscaleMargin:0.02,
-							tickDecimals: 0
+							tickDecimals: 0,
+							axisLabel: "Menge",
+							axisLabelPadding: 10,
+							axisLabelUseCanvas: true,
+							axisLabelColour: "rgba(0,0,0,0.7)",
+							axisLabelFontSizePixels: 18
 						},
 						yaxis:{
 							min: yMin,
-							max: yMax
+							max: yMax,
+							axisLabel: "Preis",
+							axisLabelPadding: 10,
+							axisLabelUseCanvas: true,
+							axisLabelColour: "rgba(0,0,0,0.7)",
+							axisLabelFontSizePixels: 18
 						}
 					}
 		
@@ -33,14 +46,27 @@ function drawEvaluationChart(data){
 		yMin = dataArray[3];
 		yMax = dataArray[4];
 
-		var options = {	xaxis:{
+		var options = {	axisLabels : {
+							show: true
+						},
+						xaxis:{
 							minTickSize: 1,
 							autoscaleMargin:0.02,
-							tickDecimals: 0
+							tickDecimals: 0,
+							axisLabel: "Menge",
+							axisLabelPadding: 10,
+							axisLabelUseCanvas: true,
+							axisLabelColour: "rgba(0,0,0,0.7)",
+							axisLabelFontSizePixels: 18
 						},
 						yaxis:{
 							min: yMin,
-							max: yMax
+							max: yMax,
+							axisLabel: "Preis",
+							axisLabelPadding: 10,
+							axisLabelUseCanvas: true,
+							axisLabelColour: "rgba(0,0,0,0.7)",
+							axisLabelFontSizePixels: 18
 						},
 						grid:{
 							backgroundColor: "white"
@@ -57,24 +83,26 @@ function drawEvaluationChart(data){
 		
 		myCanvas.toBlob(
 			function(image){
+
 				formData.append("image",image,"image.png");
+				
+				$.ajax({
+					beforeSend: function(request) {
+						request.setRequestHeader(header, token);
+					},
+					url: "pdfExport.html",
+					type: "POST",
+					data: formData,
+					processData: false,
+					contentType: false,
+					mimeType: "multipart/form-data",
+					success:function(response){console.log(response)},
+					error: function(e){console.log(e);}			
+				});
 			},
 			"image/png");
-		alert();
-		console.log(formData);
-		$.ajax({
-			beforeSend: function(request) {
-				request.setRequestHeader(header, token);
-			},
-			url: "pdfExport.html",
-			type: "POST",
-			data: formData,
-			processData: false,
-			contentType: false,
-			mimeType: "multipart/form-data",
-			success:function(response){console.log(response)},
-			error: function(e){console.log(e);}			
-		});
+
+		
 }
 
 function getData(){

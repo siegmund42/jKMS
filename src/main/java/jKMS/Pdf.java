@@ -460,7 +460,7 @@ public class Pdf {
     	//insert image of the chart
     	float chartWidth = doc.getPageSize().getWidth() - doc.leftMargin() - doc.rightMargin();
     	float chartHeight = doc.getPageSize().getHeight() - doc.topMargin() - doc.bottomMargin() - 120;
-    	System.out.println(chartHeight);
+
 		pdfImage.scaleToFit(chartWidth, chartHeight);
 		doc.add(pdfImage);
 		

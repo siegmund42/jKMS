@@ -196,6 +196,8 @@ public class ControllerHelper {
 	 * Gets the set of contracts and converts it to a string for the javascript flot library
 	 */
 	public static String setToString(Set<Contract> contracts){
+		if(contracts == null) return "[]";
+		
 		String str = "[";
 		int i = 0;
 		

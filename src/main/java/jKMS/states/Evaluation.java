@@ -23,6 +23,7 @@ public class Evaluation extends State{
 	public Evaluation(Kartoffelmarktspiel kms){
 		this.kms = kms;
 	}
+	private Contract winner = null;
 	
 	//returns statistic data of all contracts - min, max, average, variance, standard deviation
 	@Override
@@ -125,23 +126,26 @@ public class Evaluation extends State{
 	//choose random "winner"-contract
 	@Override
 	public Contract pickWinner() throws NoContractsException{ 
-		Set<Contract> contracts = kms.getContracts();
-		
-		if(contracts == null) throw new NoContractsException();
-		
-		Random rand = new Random();
-		int randomInt = rand.nextInt(contracts.size());
-		int i = 0;
-		Iterator<Contract> k = contracts.iterator();
-		
-		while(k.hasNext() && i < randomInt){
-			k.next();
-			i++;
+		if(winner == null){
+			Set<Contract> contracts = kms.getContracts();
+			
+			if(contracts == null) throw new NoContractsException();
+			
+			Random rand = new Random();
+			int randomInt = rand.nextInt(contracts.size());
+			int i = 0;
+			Iterator<Contract> k = contracts.iterator();
+			
+			while(k.hasNext() && i < randomInt){
+				k.next();
+				i++;
+			}
+			
+			winner = k.next();
+			
 		}
 		
-		Contract winner = k.next();
-		
-		return winner; 
+		return winner;
 	}
 	
 	@Override
