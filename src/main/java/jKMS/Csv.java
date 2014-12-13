@@ -45,6 +45,8 @@ public class Csv {
 		Set<Card> playedCards = new LinkedHashSet<Card>();
 		List<String[]> data = new ArrayList<String[]>();
 		Properties propertie = LogicHelper.getProperetie();
+		playedCards.clear();
+		data.clear();
 		Integer idb =0;
 		Integer ids =0;
 		Integer price =0;
@@ -84,6 +86,9 @@ public class Csv {
 		//Create table for Contracts
 		
 		data.add(new String[] {this.contracts});
+		
+		data.add(new String[] {});//Leerzeile 
+		
 		data.add(new String[] {this.idB,this.valueB,this.packB,this.idS,this.valueS,this.packS, this.price,this.time,this.station});
 		
 
@@ -117,12 +122,12 @@ public class Csv {
 		//Create table for unplayed player
 		data.add(new String[] {this.unplayedcards});
 		
-		data.add(new String[] {});//Leerzeile ?
+		data.add(new String[] {});//Leerzeile 
 		
 		data.add(new String[] {this.cardid, this.cardtyp,this.cardpack, this.cardval});
 		
 		for(Card iter : cards){
-			if(!playedCards.contains((Card) iter)){
+			if(playedCards.contains(iter) == false){
 				cid = iter.getId();
 				cpack = iter.getPackage();
 				if(iter instanceof BuyerCard) ctyp = this.buyerCard;
