@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import au.com.bytecode.opencsv.CSVWriter;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 
@@ -104,5 +105,10 @@ public class Evaluation extends State{
 		return (con.getPrice() - cost); 
 	}
 	
+	/*
+	@Override
+	public void generateCSV(CSVWriter writer){
+		
+	}*/
 	
 }

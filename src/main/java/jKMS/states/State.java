@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import au.com.bytecode.opencsv.CSVWriter;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 
@@ -61,6 +63,10 @@ public abstract class State {
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	}
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, IllegalStateException	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	}
+	
+	public void generateCSV(CSVWriter writer){
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	}
 }   

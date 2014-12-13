@@ -1,7 +1,12 @@
 package jKMS;
 
+import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+
+import org.springframework.context.i18n.LocaleContextHolder;
 
 
 
@@ -67,4 +72,25 @@ public class LogicHelper {// have static function to help implementation logic
 				}
 		return sum;
 		}
+	
+	//get the right propertie with the international strings
+    public static Properties getProperetie(){
+    	Properties propertie = new Properties();
+    	
+        Locale locale = LocaleContextHolder.getLocale(); // get lang.
+        try {
+        	propertie.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
+        	}
+        	catch (IOException ioe) {
+        		System.out.println(ioe);
+        		try {
+        			propertie.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
+        			}
+        			catch (IOException ioe1) {
+        				System.out.println(ioe1);
+        			}
+        	}
+        return propertie;
+    }
+    
 }

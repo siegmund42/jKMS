@@ -7,11 +7,9 @@ import jKMS.cards.SellerCard;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 
-import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -39,7 +37,6 @@ public class Pdf {
 	private String cardtitle;
 	private String value;
 	private String id;
-	private Properties propertie;
 	private String titlepage;
 	private String packet;
 	private String from;
@@ -47,7 +44,6 @@ public class Pdf {
 	
 	
 	public Pdf(){// to catch crashes
-		this.propertie = new Properties();
 		this.cardtitle = "Default";
 		this.value = "Default";
 		this.id = "Default";
@@ -60,15 +56,16 @@ public class Pdf {
 		
 		
 		//get language
-        this.setProperetie();
+		Properties propertie;
+        propertie = LogicHelper.getProperetie();
         
-		cardtitle = this.propertie.getProperty("PDFSeller.cardtitle");
-        value = this.propertie.getProperty("PDFSeller.value") + ": ";
-		id = this.propertie.getProperty("PDF.id") + ": ";
-		titlepage = this.propertie.getProperty("PDFSeller.titlepage");
-		packet = this.propertie.getProperty("PDF.package");
-		from = this.propertie.getProperty("PDF.from");
-		to = this.propertie.getProperty("PDF.to");
+		cardtitle = propertie.getProperty("PDFSeller.cardtitle");
+        value = propertie.getProperty("PDFSeller.value") + ": ";
+		id = propertie.getProperty("PDF.id") + ": ";
+		titlepage = propertie.getProperty("PDFSeller.titlepage");
+		packet = propertie.getProperty("PDF.package");
+		from = propertie.getProperty("PDF.from");
+		to = propertie.getProperty("PDF.to");
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
@@ -185,16 +182,17 @@ public class Pdf {
     	//PRINT
 		
 		//get language
-        this.setProperetie();
+		Properties propertie;
+        propertie = LogicHelper.getProperetie();
         
         //get Strings
-		cardtitle = this.propertie.getProperty("PDFBuyer.cardtitle");
-        value = this.propertie.getProperty("PDFBuyer.value") + ": ";
-		id = this.propertie.getProperty("PDF.id") + ": ";
-		titlepage = this.propertie.getProperty("PDFBuyer.titlepage");
-		packet = this.propertie.getProperty("PDF.package");
-		from = this.propertie.getProperty("PDF.from");
-		to = this.propertie.getProperty("PDF.to");
+		cardtitle = propertie.getProperty("PDFBuyer.cardtitle");
+        value = propertie.getProperty("PDFBuyer.value") + ": ";
+		id = propertie.getProperty("PDF.id") + ": ";
+		titlepage = propertie.getProperty("PDFBuyer.titlepage");
+		packet = propertie.getProperty("PDF.package");
+		from = propertie.getProperty("PDF.from");
+		to = propertie.getProperty("PDF.to");
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
@@ -346,23 +344,7 @@ public class Pdf {
     	return content;
     }
    
-    private void setProperetie(){
 
-        Locale locale = LocaleContextHolder.getLocale(); // get lang.
-        try {
-        	this.propertie.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
-        	}
-        	catch (IOException ioe) {
-        		System.out.println(ioe);
-        		try {
-        			this.propertie.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
-        			}
-        			catch (IOException ioe1) {
-        				System.out.println(ioe1);
-        			}
-        	}
-    }
-    
     private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer){
     	byte isbuyer = 0;
     	
