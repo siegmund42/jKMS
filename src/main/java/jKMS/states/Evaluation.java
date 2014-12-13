@@ -5,8 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 
-import au.com.bytecode.opencsv.CSVWriter;
+import jKMS.Amount;
+
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 
@@ -49,7 +51,7 @@ public class Evaluation extends State{
 		
 		Iterator<Contract> k = contracts.iterator();
 		while(k.hasNext()){
-			tempPrice = i.next().getPrice();
+			tempPrice = k.next().getPrice();
 			
 			//minimum
 			if(tempPrice < min){
@@ -61,12 +63,53 @@ public class Evaluation extends State{
 		}
 		
 		variance = sumOfSquares/contracts.size();
+		variance = Math.round(variance*100)/100;
 		standardDeviation = Math.sqrt(variance);
+		standardDeviation = Math.round(standardDeviation*100)/100;
 		statistics.put("minimum", (float) min);
 		statistics.put("variance", variance);
 		statistics.put("standardDeviation",(float) standardDeviation);
 		
+		float[] equilibrium = getEquilibrium();
+		statistics.put("eqPrice",equilibrium[0]);
+		statistics.put("eqQuantity",equilibrium[1]);
 		return statistics; 
+	}
+	
+	/*
+	 * calculate equilibrium price and equilibrium quantity
+	 */
+	public float[] getEquilibrium(){
+		TreeMap<Integer,Amount> sDistr = (TreeMap<Integer, Amount>) kms.getsDistribution();
+		TreeMap<Integer,Amount> bDistr = (TreeMap<Integer, Amount>) kms.getbDistribution();
+		int bCount = 0, sCount = 0;
+		int sPrice = 0;
+		int bPrice = 0;
+		Map.Entry<Integer, Amount> sEntry = sDistr.firstEntry();
+		Map.Entry<Integer, Amount> bEntry = bDistr.lastEntry();
+		
+		while(bEntry != null && sEntry != null){
+			bCount += bEntry.getValue().getAbsolute();
+			bEntry = bDistr.lowerEntry(bEntry.getKey());
+			bPrice = bEntry.getKey();
+			
+			sCount += sEntry.getValue().getAbsolute();
+			sEntry = sDistr.higherEntry(sEntry.getKey());
+			sPrice = sEntry.getKey();
+			
+					
+			if(bPrice < sPrice){
+				if(bCount < sCount){
+					float[] result = {bPrice, sCount};
+					return result;
+				}else{
+					float[] result = {sPrice, bCount};
+					return result;
+				}
+			}
+		}
+		
+		return null;
 	}
 	
 	//choose random "winner"-contract

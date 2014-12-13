@@ -11,6 +11,7 @@ import jKMS.states.Preparation;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -144,6 +145,16 @@ public class ControllerHelper {
 	 */
 	public static int getPort(ServletRequest request)	{
 		return request.getServerPort();
+	}
+	
+	/*
+	 * Returns the path to the Application Folder, which holds the jar
+	 */
+	public static String getApplicationFolder()	{
+		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
+		String path = url.toString().substring(0, url.toString().lastIndexOf("/", url.toString().length() - 2) + 1);
+		System.out.println("Located the .jar in: " + path);
+		return path;
 	}
 	
 	

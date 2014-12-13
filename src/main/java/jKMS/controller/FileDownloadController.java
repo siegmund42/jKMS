@@ -144,7 +144,8 @@ public class FileDownloadController extends AbstractServerController {
     	    	InputStream is = resource.getInputStream();
     	      // copy it to response's OutputStream
     	      IOUtils.copy(is, response.getOutputStream());
-    	      response.setContentType("application/txt");      
+    	      response.setContentType("application/txt");
+    	      // TODO Dateinamen ordentlich machen
     	      response.setHeader("Content-Disposition", "attachment; filename=config.txt");
     	      response.flushBuffer();
     	    } catch (IOException ex) {
