@@ -8,7 +8,13 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import jKMS.Amount;
+
+import java.util.TreeMap;
+
+import au.com.bytecode.opencsv.CSVWriter;
+import jKMS.Amount;
 import jKMS.Contract;
+import jKMS.Csv;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.exceptionHelper.NoContractsException;
 
@@ -150,5 +156,13 @@ public class Evaluation extends State{
 		return (con.getPrice() - cost); 
 	}
 	
+
+	@Override
+	public void generateCSV(CSVWriter writer){
+		Csv csv = new Csv();
+		
+		csv.generateCSV(writer, kms.getCards(), kms.getContracts());
+		
+	}
 	
 }

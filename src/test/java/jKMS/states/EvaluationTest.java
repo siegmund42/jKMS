@@ -1,5 +1,7 @@
 package jKMS.states;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeMap;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -76,5 +80,14 @@ public class EvaluationTest {
 	//TODO testPickWinner
 	public void testPickWinner(){
 		
+	}
+	
+	@Test
+	//CSV
+	public void testCsv() throws IOException{
+		
+		CSVWriter writer = new CSVWriter(new FileWriter("/home/justus/test.csv"));
+		kms.getState().generateCSV(writer);
+		writer.close();
 	}
 }
