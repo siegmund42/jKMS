@@ -331,6 +331,20 @@ form#login	{
 	z-index:			2;
 }
 
+#card			{
+	background:			white;
+	position:			relative;
+	padding:			5% 0 5%;
+	width:				400px;
+	height:				20%;
+	font-family:		Helvetica;	
+}
+
+#winner			{
+	
+	
+}
+
 .error	{
 	font-size:			70%;
 	display:			table-cell;
@@ -346,12 +360,4 @@ form#login	{
 
 #salesmanTable	{
 	float:				right;
-}
-
-.errorDiv	{
-	color:				red;
-}
-
-.successDiv	{
-	color:				green;
 }

@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.exceptionHelper.NoContractsException;
 
 public class Evaluation extends State{
 	
@@ -19,12 +20,14 @@ public class Evaluation extends State{
 	
 	//returns statistic data of all contracts - min, max, average, variance, standard deviation
 	@Override
-	public Map<String,Float> getStatistics(){ 
+	public Map<String,Float> getStatistics() throws NoContractsException{ 
 		Set<Contract> contracts = kms.getContracts();
 		Map<String,Float> statistics = new HashMap<String, Float>();
 		int sum = 0;
 		int max = 0;
 		int tempPrice = 0;
+		
+		if(contracts.size() == 0) throw new NoContractsException();
 		
 		Iterator<Contract> i = contracts.iterator();
 		while(i.hasNext()){
@@ -70,6 +73,7 @@ public class Evaluation extends State{
 		statistics.put("standardDeviation",(float) standardDeviation);
 		
 		float[] equilibrium = getEquilibrium();
+		if(equilibrium  == null) throw new NullPointerException("Obviously there is no intersection of the two lines.");
 		statistics.put("eqPrice",equilibrium[0]);
 		statistics.put("eqQuantity",equilibrium[1]);
 		return statistics; 
@@ -78,6 +82,7 @@ public class Evaluation extends State{
 	/*
 	 * calculate equilibrium price and equilibrium quantity
 	 */
+	//TODO think about a good algorithm
 	public float[] getEquilibrium(){
 		TreeMap<Integer,Amount> sDistr = (TreeMap<Integer, Amount>) kms.getsDistribution();
 		TreeMap<Integer,Amount> bDistr = (TreeMap<Integer, Amount>) kms.getbDistribution();
@@ -87,7 +92,7 @@ public class Evaluation extends State{
 		Map.Entry<Integer, Amount> sEntry = sDistr.firstEntry();
 		Map.Entry<Integer, Amount> bEntry = bDistr.lastEntry();
 		
-		while(bEntry != null && sEntry != null){
+		while(bDistr.lowerEntry(bEntry.getKey()) != null && sDistr.higherEntry(sEntry.getKey()) != null){
 			bCount += bEntry.getValue().getAbsolute();
 			bEntry = bDistr.lowerEntry(bEntry.getKey());
 			bPrice = bEntry.getKey();
@@ -113,15 +118,13 @@ public class Evaluation extends State{
 	
 	//choose random "winner"-contract
 	@Override
-	public Contract pickWinner(){ 
+	public Contract pickWinner() throws NoContractsException{ 
 		Set<Contract> contracts = kms.getContracts();
 		
-		if(contracts == null) throw new NullPointerException();
+		if(contracts == null) throw new NoContractsException();
 		
 		Random rand = new Random();
 		int randomInt = rand.nextInt(contracts.size());
-		System.out.println(contracts.size());
-		System.out.println(randomInt);
 		int i = 0;
 		Iterator<Contract> k = contracts.iterator();
 		

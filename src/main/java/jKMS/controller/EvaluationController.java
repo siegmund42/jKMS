@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import jKMS.Amount;
 import jKMS.Contract;
+import jKMS.exceptionHelper.NoContractsException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +49,7 @@ public class EvaluationController extends AbstractServerController {
 	 * gets all attributes of "winner contract" and adds them to the model
 	 */
 	@RequestMapping(value = "/lottery")
-	public String lottery(Model model){
+	public String lottery(Model model) throws NoContractsException{
 		
 		boolean stateChangeSuccessful = true;
 		
@@ -81,7 +82,7 @@ public class EvaluationController extends AbstractServerController {
 	}
 	
 	@RequestMapping(value = "/evaluate")
-	public String evaluate(Model model)	{
+	public String evaluate(Model model) throws NoContractsException	{
 		boolean stateChangeSuccessful = true;
 		
 		try	{
