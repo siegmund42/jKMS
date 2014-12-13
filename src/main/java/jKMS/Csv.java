@@ -20,10 +20,25 @@ public class Csv {
 		
 	}
 	
-	private String idb;
-	private String ids;
+	//Überschriften tabelle contracts
+	private String contracts;
+	private String idB;
+	private String idS;
 	private String price;
 	private String station;
+	private String time;
+	private String packB;
+	private String packS;
+	private String valueB;
+	private String valueS;
+	//Überschriften tabelle unplayed cards
+	private String unplayedcards;
+	private String cardid;
+	private String cardtyp;
+	private String cardpack;
+	private String cardval;
+	private String buyerCard;
+	private String sellerCard;
 	
 	public void generateCSV(CSVWriter writer, Set<Card> cards,Set<Contract> contracts){
 		
@@ -44,13 +59,32 @@ public class Csv {
 		char cpack = ' ';
 		String ctyp = "";
 		
+		// get Überschriften
 		
-		//TODO set Strings
+		this.contracts = propertie.getProperty("CSV.headlineContract");
+		this.idB = propertie.getProperty("CSV.idBuyer");
+		this.idS = propertie.getProperty("CSV.idSeller");
+		this.price = propertie.getProperty("CSV.price");
+		this.station = propertie.getProperty("CSV.station");
+		this.time = propertie.getProperty("CSV.time");
+		this.packB = propertie.getProperty("CSV.packageBuyer");
+		this.packS = propertie.getProperty("CSV.packageSeller");
+		this.valueB = propertie.getProperty("CSV.valueBuyer");
+		this.valueS = propertie.getProperty("CSV.valueSeller");
+		this.unplayedcards = propertie.getProperty("CSV.headlineUnplayedCards");
+		this.cardid = propertie.getProperty("CSV.unplayedCardID");
+		this.cardpack = propertie.getProperty("CSV.unplayedCardPackage");
+		this.cardtyp = propertie.getProperty("CSV.unplayedCardTyp");
+		this.cardval = propertie.getProperty("CSV.unplayedCardValue");
+		this.sellerCard =propertie.getProperty("CSV.sellerCard");
+		this.buyerCard = propertie.getProperty("CSV.buyerCard");
+		
+	
 		
 		//Create table for Contracts
 		
-		data.add(new String[] {"Contracts"});
-		data.add(new String[] {"id buyer","buyer value","Package Buyer","id seller","seller value","Package Seller", "price","Time","Station"});
+		data.add(new String[] {this.contracts});
+		data.add(new String[] {this.idB,this.valueB,this.packB,this.idS,this.valueS,this.packS, this.price,this.time,this.station});
 		
 
 		for(Contract iter : contracts){
@@ -81,18 +115,18 @@ public class Csv {
 
 		
 		//Create table for unplayed player
-		data.add(new String[] {"unplayed cards"});
+		data.add(new String[] {this.unplayedcards});
 		
 		data.add(new String[] {});//Leerzeile ?
 		
-		data.add(new String[] {"Card ID", "Typ","Package", "Value"});
+		data.add(new String[] {this.cardid, this.cardtyp,this.cardpack, this.cardval});
 		
 		for(Card iter : cards){
 			if(!playedCards.contains((Card) iter)){
 				cid = iter.getId();
 				cpack = iter.getPackage();
-				if(iter instanceof BuyerCard) ctyp = "Buyercard";
-				if(iter instanceof SellerCard) ctyp = "Sellercard";
+				if(iter instanceof BuyerCard) ctyp = this.buyerCard;
+				if(iter instanceof SellerCard) ctyp = this.sellerCard;
 				cvalue = iter.getValue();
 				
 				//add to CSV
