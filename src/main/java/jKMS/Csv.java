@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Properties;
+//import java.util.Properties;
 import java.util.Set;
 
 import au.com.bytecode.opencsv.CSVWriter;
@@ -44,7 +44,7 @@ public class Csv {
 		
 		Set<Card> playedCards = new LinkedHashSet<Card>();
 		List<String[]> data = new ArrayList<String[]>();
-		Properties propertie = LogicHelper.getProperetie();
+		//Properties propertie = LogicHelper.getProperetie();
 		playedCards.clear();
 		data.clear();
 		Integer idb =0;
@@ -63,23 +63,23 @@ public class Csv {
 		
 		// get Überschriften
 		
-		this.contracts = propertie.getProperty("CSV.headlineContract");
-		this.idB = propertie.getProperty("CSV.idBuyer");
-		this.idS = propertie.getProperty("CSV.idSeller");
-		this.price = propertie.getProperty("CSV.price");
-		this.station = propertie.getProperty("CSV.station");
-		this.time = propertie.getProperty("CSV.time");
-		this.packB = propertie.getProperty("CSV.packageBuyer");
-		this.packS = propertie.getProperty("CSV.packageSeller");
-		this.valueB = propertie.getProperty("CSV.valueBuyer");
-		this.valueS = propertie.getProperty("CSV.valueSeller");
-		this.unplayedcards = propertie.getProperty("CSV.headlineUnplayedCards");
-		this.cardid = propertie.getProperty("CSV.unplayedCardID");
-		this.cardpack = propertie.getProperty("CSV.unplayedCardPackage");
-		this.cardtyp = propertie.getProperty("CSV.unplayedCardTyp");
-		this.cardval = propertie.getProperty("CSV.unplayedCardValue");
-		this.sellerCard =propertie.getProperty("CSV.sellerCard");
-		this.buyerCard = propertie.getProperty("CSV.buyerCard");
+		this.contracts = LogicHelper.getLocalizedMessage("CSV.headlineContract");
+		this.idB = LogicHelper.getLocalizedMessage("CSV.idBuyer");
+		this.idS = LogicHelper.getLocalizedMessage("CSV.idSeller");
+		this.price = LogicHelper.getLocalizedMessage("CSV.price");
+		this.station = LogicHelper.getLocalizedMessage("CSV.station");
+		this.time = LogicHelper.getLocalizedMessage("CSV.time");
+		this.packB = LogicHelper.getLocalizedMessage("CSV.packageBuyer");
+		this.packS = LogicHelper.getLocalizedMessage("CSV.packageSeller");
+		this.valueB = LogicHelper.getLocalizedMessage("CSV.valueBuyer");
+		this.valueS = LogicHelper.getLocalizedMessage("CSV.valueSeller");
+		this.unplayedcards = LogicHelper.getLocalizedMessage("CSV.headlineUnplayedCards");
+		this.cardid = LogicHelper.getLocalizedMessage("CSV.unplayedCardID");
+		this.cardtyp = LogicHelper.getLocalizedMessage("CSV.unplayedCardTyp");
+		this.cardval = LogicHelper.getLocalizedMessage("CSV.unplayedCardValue");
+		this.sellerCard =LogicHelper.getLocalizedMessage("CSV.sellerCard");
+		this.buyerCard = LogicHelper.getLocalizedMessage("CSV.buyerCard");
+		this.cardpack = LogicHelper.getLocalizedMessage("CSV.unplayedCardPackage");
 		
 	
 		

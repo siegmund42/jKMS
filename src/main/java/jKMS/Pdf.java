@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Properties;
+//import java.util.Properties;
 import java.util.Set;
 
 import com.itextpdf.text.Chunk;
@@ -56,16 +56,16 @@ public class Pdf {
 		
 		
 		//get language
-		Properties propertie;
-        propertie = LogicHelper.getProperetie();
+		//Properties propertie;
+        //propertie = LogicHelper.getProperetie();
         
-		cardtitle = propertie.getProperty("PDFSeller.cardtitle");
-        value = propertie.getProperty("PDFSeller.value") + ": ";
-		id = propertie.getProperty("PDF.id") + ": ";
-		titlepage = propertie.getProperty("PDFSeller.titlepage");
-		packet = propertie.getProperty("PDF.package");
-		from = propertie.getProperty("PDF.from");
-		to = propertie.getProperty("PDF.to");
+		cardtitle = LogicHelper.getLocalizedMessage("PDFSeller.cardtitle");
+        value = LogicHelper.getLocalizedMessage("PDFSeller.value") + ": ";
+		id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
+		titlepage = LogicHelper.getLocalizedMessage("PDFSeller.titlepage");
+		packet = LogicHelper.getLocalizedMessage("PDF.package");
+		from = LogicHelper.getLocalizedMessage("PDF.from");
+		to = LogicHelper.getLocalizedMessage("PDF.to");
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
@@ -182,17 +182,17 @@ public class Pdf {
     	//PRINT
 		
 		//get language
-		Properties propertie;
-        propertie = LogicHelper.getProperetie();
+		//Properties propertie;
+        //propertie = LogicHelper.getProperetie();
         
         //get Strings
-		cardtitle = propertie.getProperty("PDFBuyer.cardtitle");
-        value = propertie.getProperty("PDFBuyer.value") + ": ";
-		id = propertie.getProperty("PDF.id") + ": ";
-		titlepage = propertie.getProperty("PDFBuyer.titlepage");
-		packet = propertie.getProperty("PDF.package");
-		from = propertie.getProperty("PDF.from");
-		to = propertie.getProperty("PDF.to");
+		cardtitle = LogicHelper.getLocalizedMessage("PDFBuyer.cardtitle");
+        value = LogicHelper.getLocalizedMessage("PDFBuyer.value") + ": ";
+		id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
+		titlepage = LogicHelper.getLocalizedMessage("PDFBuyer.titlepage");
+		packet = LogicHelper.getLocalizedMessage("PDF.package");
+		from = LogicHelper.getLocalizedMessage("PDF.from");
+		to = LogicHelper.getLocalizedMessage("PDF.to");
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
@@ -401,18 +401,18 @@ public class Pdf {
     
     public Document createExportPdf(Document doc, Image pdfImage, Map<String, Float> stats) throws DocumentException{
     	//get language
-		Properties property;
-        property = LogicHelper.getProperetie();
+		//Properties property;
+        //property = LogicHelper.getProperetie();
         
         //get Strings
-        String headline = property.getProperty("evaluate.headline");
-		String average = property.getProperty("evaluate.average") + ": ";
-        String min = property.getProperty("evaluate.min") + ": ";
-		String max = property.getProperty("evaluate.max") + ": ";
-		String variance = property.getProperty("evaluate.variance") + ": ";
-		String standDev = property.getProperty("evaluate.standardDeviation") + ": ";
-		String eqPrice = property.getProperty("evaluate.eqPrice") + ": ";
-		String eqQuantity = property.getProperty("evaluate.eqQuantity") + ": ";
+        String headline = LogicHelper.getLocalizedMessage("evaluate.headline");
+		String average = LogicHelper.getLocalizedMessage("evaluate.average") + ": ";
+        String min = LogicHelper.getLocalizedMessage("evaluate.min") + ": ";
+		String max = LogicHelper.getLocalizedMessage("evaluate.max") + ": ";
+		String variance = LogicHelper.getLocalizedMessage("evaluate.variance") + ": ";
+		String standDev = LogicHelper.getLocalizedMessage("evaluate.standardDeviation") + ": ";
+		String eqPrice = LogicHelper.getLocalizedMessage("evaluate.eqPrice") + ": ";
+		String eqQuantity = LogicHelper.getLocalizedMessage("evaluate.eqQuantity") + ": ";
 		
     	//insert stats
 		Font font = new Font(Font.FontFamily.HELVETICA  , 25, Font.BOLD);
