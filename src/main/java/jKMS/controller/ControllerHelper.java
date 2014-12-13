@@ -8,6 +8,8 @@ import jKMS.states.Load;
 import jKMS.states.Play;
 import jKMS.states.Preparation;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -149,14 +151,46 @@ public class ControllerHelper {
 	
 	/*
 	 * Returns the path to the Application Folder, which holds the jar
+	 * Example: /media/user/jKMS/
 	 */
 	public static String getApplicationFolder()	{
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
-		String path = url.toString().substring(0, url.toString().lastIndexOf("/", url.toString().length() - 2) + 1);
-		System.out.println("Located the .jar in: " + path);
-		return path;
+		String path = url.getPath();
+		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
+		System.out.println("Located the .jar in: " + folderPath);
+		return folderPath;
 	}
 	
+	/*
+	 * Checks and, if not yet existing, creates the Folder Structure
+	 */
+	public static boolean checkFolders() throws IOException	{
+
+		String path = getApplicationFolder();
+		File games = new File(path + "Spiele");
+		File exports = new File(path + "Export");
+		Boolean created = false;
+		
+		if(!games.exists())	{
+			if(games.mkdir())	{
+				System.out.println("Created Folder: " + games.getPath());
+				created = true;
+			}	else	{
+				// TODO i18n
+				throw new IOException("Die Ordnerstruktur konnte nicht aufgebaut werden.");
+			}
+		}
+		
+		if(!exports.exists())	{
+			if(exports.mkdir())	{
+				System.out.println("Created Folder: " + exports.getAbsolutePath());
+				created = true;
+			}	else	{
+				throw new IOException("Die Ordnerstruktur konnte nicht aufgebaut werden.");
+			}
+		}
+		return created;
+	}
 	
 	/*
 	 * Gets the set of contracts and converts it to a string for the javascript flot library
