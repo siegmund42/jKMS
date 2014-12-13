@@ -328,7 +328,16 @@ form#login	{
 	margin:				2.5% 3%;
 	padding:			1%;
 	background:			rgba(110,205,0,0.3);
-	z-index:			2;
+	z-index:			1;
+}
+
+#card			{
+	background:			white;
+	position:			relative;
+	padding:			5% 0 5%;
+	width:				400px;
+	height:				20%;
+	font-family:		Helvetica;	
 }
 
 .error	{
@@ -346,12 +355,4 @@ form#login	{
 
 #salesmanTable	{
 	float:				right;
-}
-
-.errorDiv	{
-	color:				red;
-}
-
-.successDiv	{
-	color:				green;
 }

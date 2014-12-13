@@ -13,6 +13,7 @@ import com.itextpdf.text.DocumentException;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.NoContractsException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
@@ -47,10 +48,10 @@ public abstract class State {
 	public float equilibriumSet() throws IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // TIMON
-	public Map<String,Float> getStatistics() throws IllegalStateException	{
+	public Map<String,Float> getStatistics() throws NoContractsException, IllegalStateException{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // DONE
-	public Contract pickWinner() throws IllegalStateException	{
+	public Contract pickWinner() throws NoContractsException,IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // DONE
 	public int buyerProfit(Contract contract) throws IllegalStateException	{
