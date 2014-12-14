@@ -75,7 +75,7 @@ public class AppGui extends JFrame{
 		//CREATE AND ADD COMPONENTS
 		setResizable(false);
 		setTitle("jKMS");
-		setBounds(100, 100, 567, 352);
+		setBounds(100, 100, 640, 480);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -85,7 +85,7 @@ public class AppGui extends JFrame{
 		});
 
 		btnOpenBrowser = new JButton("Open Browser");
-		btnOpenBrowser.setBounds(20, 262, 200, 50);
+		btnOpenBrowser.setBounds(50, 390, 200, 50);
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -108,7 +108,7 @@ public class AppGui extends JFrame{
 		getContentPane().add(btnOpenBrowser);
 
 		btnClose = new JButton("Close");
-		btnClose.setBounds(351, 262, 200, 50);
+		btnClose.setBounds(380, 390, 200, 50);
 		btnClose.setActionCommand("Exit");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -120,7 +120,7 @@ public class AppGui extends JFrame{
 		getContentPane().add(btnClose);
 		
 		logPanel = new JPanel();
-		logPanel.setBounds(10, 11, 541, 240);
+		logPanel.setBounds(10, 11, 614, 368);
 		getContentPane().add(logPanel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0};
@@ -157,7 +157,7 @@ public class AppGui extends JFrame{
 		
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Courier New", Font.PLAIN, 10));
+		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
 		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);
