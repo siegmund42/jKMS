@@ -55,7 +55,7 @@ public class AppGui extends JFrame{
 		try {
 			// Desktop.getDesktop().browse(new
 			// URL("http://localhost:4242/index").toURI());
-			BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+			//BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,6 +76,7 @@ public class AppGui extends JFrame{
 		setResizable(false);
 		setTitle("jKMS");
 		setBounds(100, 100, 640, 480);
+		setSize(640, 180);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -85,7 +86,7 @@ public class AppGui extends JFrame{
 		});
 
 		btnOpenBrowser = new JButton("Open Browser");
-		btnOpenBrowser.setBounds(50, 390, 200, 50);
+		btnOpenBrowser.setBounds(50, 65, 200, 50);
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -108,7 +109,7 @@ public class AppGui extends JFrame{
 		getContentPane().add(btnOpenBrowser);
 
 		btnClose = new JButton("Close");
-		btnClose.setBounds(380, 390, 200, 50);
+		btnClose.setBounds(380, 65, 200, 50);
 		btnClose.setActionCommand("Exit");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -137,12 +138,19 @@ public class AppGui extends JFrame{
 		chckbxShowLog.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (chckbxShowLog.isSelected()){
+					setSize(640, 480);
+					btnOpenBrowser.setBounds(50, 390, 200, 50);
+					btnClose.setBounds(380, 390, 200, 50);
 					scrollPane.setVisible(true);
 					validate();
 					repaint();
 				}
-				else
+				else{
+					setSize(640, 180);
+					btnOpenBrowser.setBounds(50, 65, 200, 50);
+					btnClose.setBounds(380, 65, 200, 50);
 					scrollPane.setVisible(false);
+				}
 			}
 		});
 		logPanel.add(chckbxShowLog, gbc_chckbxShowLog);
