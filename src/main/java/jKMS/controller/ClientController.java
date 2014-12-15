@@ -38,7 +38,7 @@ public class ClientController extends AbstractController {
 			
 		    if(add == 0)	{
 		    	model.addAttribute("success", "Juhu!");
-		    	return "redirect:/contract";
+		    	return "contract";
 		    }	else	{
 		    	model.addAttribute("id1", id1);
 		    	model.addAttribute("id2", id2);
@@ -49,7 +49,7 @@ public class ClientController extends AbstractController {
 			
 		}	catch(Exception e)	{
 			e.printStackTrace();
-			model.addAttribute("error", "contract.fraction");
+			model.addAttribute("error", "fraction");
 			return "contract";
 		}
 	}

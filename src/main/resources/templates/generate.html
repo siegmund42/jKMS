@@ -35,7 +35,8 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (generate)">
 	 	</div>
-	 	<div th:text="#{generate.configSavedIn} + ${configSavePath}"></div>
+	 	<div th:text="#{generate.configSavedIn}"></div>
+	 	<div th:text="${configSavePath}"></div>
 	 	<br />
 	 	<div th:text="#{generate.configSaveExtra}"></div>
 	 	<br />

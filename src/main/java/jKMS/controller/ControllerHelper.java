@@ -14,6 +14,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +26,17 @@ import java.util.TreeMap;
 import javax.servlet.ServletRequest;
 
 public class ControllerHelper {
+	
+	private static String configFolder = "KMS_Konfigurationen";
+	private static String exportFolder = "KMS_Exports";
+	
+	public static String getConfigFolderName()	{
+		return configFolder;
+	}
+	
+	public static String getExportFolderName()	{
+		return exportFolder;
+	}
 	
 	/*
 	 * Responsible for state setting.
@@ -168,8 +181,8 @@ public class ControllerHelper {
 	public static boolean checkFolders() throws IOException	{
 
 		String path = getApplicationFolder();
-		File games = new File(path + "Spiele");
-		File exports = new File(path + "Export");
+		File games = new File(path + configFolder);
+		File exports = new File(path + exportFolder);
 		Boolean created = false;
 		
 		if(!games.exists())	{
@@ -190,6 +203,13 @@ public class ControllerHelper {
 			}
 		}
 		return created;
+	}
+	
+	public static String getNiceDate()	{
+		Date dNow = new Date( );
+	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
+	    System.out.println("Current Date: " + ft.format(dNow));
+	    return ft.format(dNow);
 	}
 	
 	/*
