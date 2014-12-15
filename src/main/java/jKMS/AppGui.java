@@ -85,7 +85,7 @@ public class AppGui extends JFrame{
 			}
 		});
 
-		btnOpenBrowser = new JButton("Open Browser");
+		btnOpenBrowser = new JButton("Open Game in Browser");
 		btnOpenBrowser.setBounds(50, 65, 200, 50);
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
@@ -108,7 +108,7 @@ public class AppGui extends JFrame{
 		});
 		getContentPane().add(btnOpenBrowser);
 
-		btnClose = new JButton("Close");
+		btnClose = new JButton("Shut Down Server");
 		btnClose.setBounds(380, 65, 200, 50);
 		btnClose.setActionCommand("Exit");
 		btnClose.addActionListener(new ActionListener() {
@@ -130,7 +130,7 @@ public class AppGui extends JFrame{
 		gbl_panel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		logPanel.setLayout(gbl_panel);
 		
-		chckbxShowLog = new JCheckBox("show Log");
+		chckbxShowLog = new JCheckBox("Show Log");
 		GridBagConstraints gbc_chckbxShowLog = new GridBagConstraints();
 		gbc_chckbxShowLog.insets = new Insets(0, 0, 5, 0);
 		gbc_chckbxShowLog.gridx = 0;
