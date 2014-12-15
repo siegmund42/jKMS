@@ -229,7 +229,6 @@ public class PrepareController extends AbstractServerController {
 			kms.getConfiguration().setPlayerCount(LogicHelper.getAbsoluteSum(kms.getbDistribution()) + LogicHelper.getAbsoluteSum(kms.getsDistribution()));
 			
 			// Generate Cards-Set
-			
 			try	{
 				kms.getState().generateCards();
 			}	catch (Exception e) {
@@ -238,16 +237,15 @@ public class PrepareController extends AbstractServerController {
 				return "error";
 			}
 			
-			// TODO discuss Folder Structure and change to correct folder
-			String path = ControllerHelper.getApplicationFolder().concat("Spiele/game.txt");
-
+			String path = ControllerHelper.getApplicationFolder().concat(
+					ControllerHelper.getConfigFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt");
 			
 			// Save Config File automatically
 		  try{
 				kms.getState().save(path);
 		  }catch(IOException e){
 			  e.printStackTrace();
-				return "error?e=" + e.toString();	
+				return "error";	
 		  }
 			
 			// Add path to model

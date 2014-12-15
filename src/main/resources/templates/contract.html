@@ -19,9 +19,9 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (contract)">
 	 	</div>	
-	 	<div class="error" th:if="${error}" th:text="#{error.contract.__${error}__}">
+	 	<div class="errorDiv" th:if="${error}" th:text="#{error.contract.__${error}__}">
         </div>
-        <div class="success" th:if="${success}" th:text="#{contract.success}">
+        <div class="successDiv" th:if="${success}" th:text="#{contract.success}">
            	Kaufvertrag erfolgreich übermittelt.
         </div>
 		<form method="POST" id="contract" th:action="contract" style="margin: auto;" onsubmit="return validateForm(this.id);">

@@ -1,17 +1,24 @@
 package jKMS.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import jKMS.Amount;
 import jKMS.Contract;
+import jKMS.LogicHelper;
 import jKMS.exceptionHelper.NoContractsException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 @Controller
 public class EvaluationController extends AbstractServerController {
@@ -93,6 +100,18 @@ public class EvaluationController extends AbstractServerController {
 		}
 		
 		if(stateChangeSuccessful)	{
+			
+			String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.csv") + ControllerHelper.getNiceDate() + ".csv";
+	    	
+			try {
+		    	CSVWriter writer = new CSVWriter(new FileWriter(path));
+				kms.getState().generateCSV(writer);
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			Map<String,Float> stats = kms.getState().getStatistics();
 			
 			model.addAttribute("average", stats.get("averagePrice"));
