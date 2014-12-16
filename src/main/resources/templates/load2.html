@@ -33,15 +33,13 @@
  			<div class="step" th:text="#{path.load.step3}"></div>
  			<div class="step" th:text="'>'"></div>
  			<div class="step" th:text="#{path.load.step4}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step5}"></div>
  		</div>
  		<ul>
 	 		<li>
 	 			<a href="index.html" th:text="#{messages.welcome}" ></a>
 	 		</li>
 	 		<li>
- 				<a href="load1.html" th:text="#{messages.back}" ></a>
+ 				<a href="load1.html" th:text="#{backSign} + #{messages.back}" ></a>
 	 		</li>
 		</ul>
  	</div>

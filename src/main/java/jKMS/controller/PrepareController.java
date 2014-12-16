@@ -162,8 +162,8 @@ public class PrepareController extends AbstractServerController {
 	}
 
 	// Processes Posted Values from Distribution-Site
-	@RequestMapping(value = "generate", method = RequestMethod.POST)
-	public String generate(	Model model,
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	public String save(	Model model,
 							@RequestParam(value = "cRelativeQuantity[]") String[] cRelativeQuantity,
 							@RequestParam(value = "cPrice[]") String[] cPrice,
 							@RequestParam(value = "cAbsoluteQuantity[]") String[] cAbsoluteQuantity,
@@ -206,17 +206,17 @@ public class PrepareController extends AbstractServerController {
 						kms.getState().newGroup(false, sP, sR, sA);
 					
 					}	else	{
-						error = "generate";
+						error = "save";
 						break;
 					}
 				}	catch(Exception e)	{
 					e.printStackTrace();
-					error = "generate.fraction";
+					error = "save.fraction";
 					break;
 				}
 				
 			}	else	{
-				error = "generate.empty";
+				error = "save.empty";
 				break;
 			}
 		}
@@ -251,7 +251,7 @@ public class PrepareController extends AbstractServerController {
 			// Add path to model
 			model.addAttribute("configSavePath", path);
 			
-			return "generate";
+			return "save";
 			
 		}	else	{
 			// Build a new Map for giving it to the model to display the mistakes stupid deactivated-javascript-User made.
@@ -270,6 +270,13 @@ public class PrepareController extends AbstractServerController {
 			
 		}
 	}
+	
+	// Processes Posted Values from Distribution-Site
+		@RequestMapping(value = "generate", method = RequestMethod.GET)
+		public String generate()	{
+			
+			return "generate";
+		}
 
 	
 }

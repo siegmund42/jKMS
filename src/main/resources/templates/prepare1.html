@@ -21,13 +21,15 @@
  			<div class="step" th:text="#{path.step2}"></div>
  			<div class="step" th:text="'>'"></div>
  			<div class="step" th:text="#{path.step3}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:text="#{path.step4}"></div>
  		</div>
  		<ul>
  			<li>
  				<a href="index.html" th:text="#{messages.welcome}" ></a>
  			</li>
  			<li>
- 				<a href="index.html" th:text="#{messages.back}" ></a>
+ 				<a href="index.html" th:text="#{backSign} + #{messages.back}" ></a>
  			</li>
  		</ul>
  	</div>
