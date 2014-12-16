@@ -141,16 +141,23 @@ public class ControllerHelper {
 		// Go through the Network Interfaces
 		while (ifaces.hasMoreElements()) {
 			NetworkInterface ni = (NetworkInterface)ifaces.nextElement();
-			// Pick up all Addresses of the Network Interface
-		    Enumeration<InetAddress> addrs = ni.getInetAddresses();
-		    // Go through the Addresses
-		    while (addrs.hasMoreElements()) {
-		    	InetAddress ia = (InetAddress)addrs.nextElement();
-		    	// Only display an Address, which is not localhost and has no ":" in it [Filter for MAC Adresses]
-		    	if(!ia.getHostAddress().toString().equals("127.0.0.1") && ia.getHostAddress().toString().indexOf(":") == -1)	{
-		    		IPs.add(ia.getHostAddress().toString());
-		        }
-		    }
+		    try {
+				if(ni.isUp() && !ni.isVirtual())	{
+					// Pick up all Addresses of the Network Interface
+				    Enumeration<InetAddress> addrs = ni.getInetAddresses();
+					// Go through the Addresses
+					while (addrs.hasMoreElements()) {
+						InetAddress ia = (InetAddress)addrs.nextElement();
+						// Only display an Address, which is not localhost and has no ":" in it [Filter for MAC Adresses]
+						if(!ia.getHostAddress().toString().equals("127.0.0.1") && ia.getHostAddress().toString().indexOf(":") == -1)	{
+							IPs.add(ia.getHostAddress().toString());
+					    }
+					}
+				}
+			} catch (SocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return IPs;
 	}
