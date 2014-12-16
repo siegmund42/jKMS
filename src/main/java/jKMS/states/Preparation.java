@@ -175,7 +175,7 @@ public class Preparation extends State	{
          }else 
              throw new EmptyFileException("load file can not be empty!");
     	 
-    	 System.out.println("load() successful");
+    	 System.out.println("load() successful!");
     	 
     }
 

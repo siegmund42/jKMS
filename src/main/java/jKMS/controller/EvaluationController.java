@@ -1,9 +1,7 @@
 package jKMS.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -62,9 +60,11 @@ public class EvaluationController extends AbstractServerController {
 		
 		try	{
 			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
-		}	catch(Exception e)	{
+		}	catch(IllegalStateException e)	{
 			e.printStackTrace();
-			return "error?e=" + e.toString();
+			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
+			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
+			return "error";
 		}
 		
 		if(stateChangeSuccessful)	{
@@ -88,30 +88,40 @@ public class EvaluationController extends AbstractServerController {
 		
 	}
 	
+	/*
+	 * Evaluation Site
+	 */
 	@RequestMapping(value = "/evaluate")
 	public String evaluate(Model model) throws NoContractsException	{
+		// State Change
 		boolean stateChangeSuccessful = true;
 		
 		try	{
 			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
-		}	catch(Exception e)	{
+		}	catch(IllegalStateException e)	{
 			e.printStackTrace();
-			return "error?e=" + e.toString();
+			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
+			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
+			return "error";
 		}
 		
 		if(stateChangeSuccessful)	{
-			
+			// Build path for storing the .csv automatically
 			String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.csv") + ControllerHelper.getNiceDate() + ".csv";
 	    	
 			try {
+				// Save the .csv automatically
 		    	CSVWriter writer = new CSVWriter(new FileWriter(path));
 				kms.getState().generateCSV(writer);
 				writer.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				// Error during CSV generation
 				e.printStackTrace();
+				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.csv.message"));
+				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.csv.error"));
+				return "error";
 			}
-			
+			// Get statistics
 			Map<String,Float> stats = kms.getState().getStatistics();
 			
 			model.addAttribute("average", stats.get("averagePrice"));

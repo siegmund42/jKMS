@@ -2,11 +2,13 @@ package jKMS.controller;
 
 import jKMS.Amount;
 import jKMS.LogicHelper;
+import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
+import jKMS.exceptionHelper.WrongRelativeDistributionException;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,10 +37,10 @@ public class PrepareController extends AbstractServerController {
 		
 		try	{
 			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "prepare");
-		}	catch(Exception e)	{
+		}	catch(IllegalStateException e)	{
 			e.printStackTrace();
-			model.addAttribute("message", e.getMessage());
-			model.addAttribute("error", e.getClass().toString());
+			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
+			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
 			return "error";
 		}
 		
@@ -66,7 +68,7 @@ public class PrepareController extends AbstractServerController {
 			try	{
 				players = Integer.parseInt(numberOfPlayers);
 				assistants = Integer.parseInt(numberOfAssistants);
-			}	catch(Exception e)	{
+			}	catch(NumberFormatException e)	{
 				e.printStackTrace();
 				model.addAttribute("error", "fraction");
 				return "prepare1";
@@ -99,7 +101,9 @@ public class PrepareController extends AbstractServerController {
 			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "prepare");
 		}	catch(Exception e)	{
 			e.printStackTrace();
-			return "error?e=" + e.toString();
+			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
+			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
+			return "error";
 		}
 		
 		if(stateChangeSuccessful)	{
@@ -139,23 +143,17 @@ public class PrepareController extends AbstractServerController {
 		}
 	}
 	
-	//defalt load path:Users/yangxinyu/git/jKMS
 	// POST Request on Distribution-Site -> Loading values from File, Display them by redirecting to "prepare2"
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
 	public String loadConfig(Model model, @RequestParam("input-file") MultipartFile file)	{
 		//String fileurl = "/Users/yangxinyu/Desktop/"+filename;
 		try {
 			kms.getState().load(file);
-			System.out.println("load successfull");
-		} catch(NumberFormatException e){
+		} 	catch(NumberFormatException | IOException | EmptyFileException e)	{
+			// File empty/broken/something went wrong
 			e.printStackTrace();
-			model.addAttribute("message", "Bitte die load file nicht verändern,die Nummer kann nicht String sein");
-			model.addAttribute("error", e.getClass().toString());
-			return "error";
-		}catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("message", e.getMessage());
-			model.addAttribute("error", e.getClass().toString());
+			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));
+			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
 			return "error";
 		}
 		return "redirect:/prepare2";
@@ -209,7 +207,7 @@ public class PrepareController extends AbstractServerController {
 						error = "save";
 						break;
 					}
-				}	catch(Exception e)	{
+				}	catch(NumberFormatException e)	{
 					e.printStackTrace();
 					error = "save.fraction";
 					break;
@@ -231,22 +229,26 @@ public class PrepareController extends AbstractServerController {
 			// Generate Cards-Set
 			try	{
 				kms.getState().generateCards();
-			}	catch (Exception e) {
+			}	catch (WrongFirstIDException | WrongAssistantCountException | WrongPlayerCountException | WrongRelativeDistributionException e) {
 				e.printStackTrace();
-				model.addAttribute("messages", e.getMessage());
+				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.PDF.error"));
+				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.PDF.message"));
 				return "error";
 			}
 			
+			// Set File Path
 			String path = ControllerHelper.getApplicationFolder().concat(
 					ControllerHelper.getConfigFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt");
 			
 			// Save Config File automatically
-		  try{
+			try	{
 				kms.getState().save(path);
-		  }catch(IOException e){
-			  e.printStackTrace();
+			} catch(IOException e){
+				e.printStackTrace();
+				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.config.save.error"));
+				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.config.save.message"));
 				return "error";	
-		  }
+			}
 			
 			// Add path to model
 			model.addAttribute("configSavePath", path);
@@ -255,28 +257,27 @@ public class PrepareController extends AbstractServerController {
 			
 		}	else	{
 			// Build a new Map for giving it to the model to display the mistakes stupid deactivated-javascript-User made.
-			Map<Integer, Amount> cConf = new HashMap<>();
-			Map<Integer, Amount> sConf = new HashMap<>();
-			for(int a = 0; a <= cRelativeQuantity.length; a++)	{
-				cConf.put(Integer.parseInt(cPrice[a]), new Amount(Integer.parseInt(cRelativeQuantity[a]), Integer.parseInt(cAbsoluteQuantity[a])));
-				sConf.put(Integer.parseInt(sPrice[a]), new Amount(Integer.parseInt(sRelativeQuantity[a]), Integer.parseInt(sAbsoluteQuantity[a])));
+			if(error != "save.fraction")	{
+				Map<Integer, Amount> cConf = new HashMap<>();
+				Map<Integer, Amount> sConf = new HashMap<>();
+				for(int a = 0; a <= cRelativeQuantity.length; a++)	{
+					cConf.put(Integer.parseInt(cPrice[a]), new Amount(Integer.parseInt(cRelativeQuantity[a]), Integer.parseInt(cAbsoluteQuantity[a])));
+					sConf.put(Integer.parseInt(sPrice[a]), new Amount(Integer.parseInt(sRelativeQuantity[a]), Integer.parseInt(sAbsoluteQuantity[a])));
+				}
+				model.addAttribute("customerConfiguration", cConf);
+				model.addAttribute("customerConfiguration", sConf);
 			}
-			model.addAttribute("customerConfiguration", cConf);
-			model.addAttribute("customerConfiguration", sConf);
 			model.addAttribute("error", error);
 			model.addAttribute("groupQuantity", kms.getGroupCount());
 			model.addAttribute("isStandard", false);
 			return "prepare2";
-			
 		}
 	}
 	
 	// Processes Posted Values from Distribution-Site
-		@RequestMapping(value = "generate", method = RequestMethod.GET)
-		public String generate()	{
-			
-			return "generate";
-		}
-
+	@RequestMapping(value = "generate", method = RequestMethod.GET)
+	public String generate()	{
+		return "generate";
+	}
 	
 }

@@ -50,7 +50,7 @@
  	<div th:if="${error}" class="errorDiv" th:text="#{error.__${error}__}"></div>
  	<!-- For Showing the IP Address -->
 	 	<h2 th:text="#{load.address}">Adresse dieses Rechners</h2>
-	 	<div class="errorDiv textBlock" th:if="${ipError}" th:text="#{load.multipleIP}"></div>
+	 	<div class="errorDiv textBlock" th:if="${ipError}" th:text="#{load.__${ipError}__}"></div>
 	 	<div th:each="ip : ${IPs}">
 	 		<div th:text="${ip} + ':' + ${port}"></div>
 	 	</div>

@@ -10,8 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +33,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -43,7 +42,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class FileDownloadController extends AbstractServerController {
 	byte[] pdfBytes = null;
 	
-	// Downloading Seller-/BuyerCardsPDF
+	/*
+	 *  Downloading Seller-/BuyerCardsPDF
+	 */
     @RequestMapping(value = "/pdf/cards/{type}")
     public ResponseEntity<byte[]> downloadPDF(Model model, @PathVariable String type) throws Exception	{
 		
@@ -63,11 +64,10 @@ public class FileDownloadController extends AbstractServerController {
 			// Close document
 			document.close();
 			
-		} catch (Exception e) {
+		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
-			// TODO: Think about how to handle this error -.-
-			Exception ex = new RuntimeException("Something went wrong while creating Cards.");
-			throw ex;
+			// Throw new Exception because were not able to return an Error page at this moment
+			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.cards"));
 		}
 	
 		// Get a byte Array of the pdf
@@ -101,9 +101,12 @@ public class FileDownloadController extends AbstractServerController {
     	byte[] imageBytes = null;
 
     	if(!image.isEmpty()){
-    		try{
+    		try	{
     			imageBytes = image.getBytes();
-    		} catch(Exception e){}
+    		} catch(IOException e){
+    			e.printStackTrace();
+    			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export"));
+    		}
     	}
 
 		Image pdfImage = null;
@@ -111,9 +114,12 @@ public class FileDownloadController extends AbstractServerController {
 		try {
 			pdfImage = Image.getInstance(imageBytes);
 			stats = kms.getState().getStatistics();
-		} catch (Exception e2) {
-			// TODO Auto-generated catch block
+		} catch (BadElementException | IOException e2) {
 			e2.printStackTrace();
+			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export"));
+		}	catch(NoContractsException e)	{
+			e.printStackTrace();
+			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.noContracts"));
 		}
 		
     	// Save byteArray ########################################
@@ -128,15 +134,16 @@ public class FileDownloadController extends AbstractServerController {
 			document = pdf.createExportPdf(document, pdfImage, stats);
 			document.close();
 			
-		} catch (Exception e) {
+		} catch (DocumentException e) {
 			e.printStackTrace();
+			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export"));
 		}
 		
 		pdfBytes = outstream.toByteArray();
 		
 		// Write to File ######################################
     	FileOutputStream fos;
-    	String path = "";
+    	String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + ControllerHelper.getNiceDate() + ".pdf";
 		try {
 			fos = new FileOutputStream(path);
 			PdfWriter.getInstance(document, fos);
@@ -144,9 +151,9 @@ public class FileDownloadController extends AbstractServerController {
 			document.open();
 			document = pdf.createExportPdf(document, pdfImage, stats);
 			document.close();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+		} catch (FileNotFoundException | DocumentException e1) {
 			e1.printStackTrace();
+			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export"));
 		}
 
     }
@@ -157,16 +164,20 @@ public class FileDownloadController extends AbstractServerController {
 
 	    if(pdfBytes != null){
 	    	byte[] contents = pdfBytes;
+
+		    // Define filename for download
+		    String filename = LogicHelper.getLocalizedMessage("filename.PDF.export") + "_" + ControllerHelper.getNiceDate() + ".pdf";
 		    
 		    HttpHeaders headers = new HttpHeaders();
+		    // Write headers
 		    headers.setContentType(MediaType.parseMediaType("application/pdf"));
-		    String filename = LogicHelper.getLocalizedMessage("filename.PDF.export") + "_" + ControllerHelper.getNiceDate() + ".pdf";
 		    headers.setContentDispositionFormData(filename, filename);
 		    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-		    ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
-		    return response;
+		    
+		    return new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
+	    }	else	{
+	    	throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export.download"));
 	    }
-	    else return null;
     	
     }
     
@@ -182,13 +193,12 @@ public class FileDownloadController extends AbstractServerController {
     	      // copy it to response's OutputStream
     	      IOUtils.copy(is, response.getOutputStream());
     	      response.setContentType("application/txt");
-    	      // TODO Dateinamen ordentlich machen
     	      String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
     	      response.setHeader("Content-Disposition", "attachment; filename=" + filename);
     	      response.flushBuffer();
     	    } catch (IOException ex) {
     	      ex.printStackTrace();
-    	      throw new RuntimeException("IOError writing file to output stream");
+    	      throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
     	    }
      }
     
@@ -205,25 +215,23 @@ public class FileDownloadController extends AbstractServerController {
 			// Close document
 			writer.close();
 			
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
-			// TODO: Think about how to handle this error -.-
-			Exception ex = new RuntimeException("Something went wrong while export CSV.");
-			throw ex;
+			// Throw new Exception because were not able to return an Error page at this moment
+			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.csv.download"));
 		}
 		
 		// Get a byte Array of the csv
 	    byte[] contents = outstream.toByteArray();
-	    
+	    // Define Filename for download
+	    String filename = LogicHelper.getLocalizedMessage("filename.csv") + "_" + ControllerHelper.getNiceDate() + ".csv";
+	    // Write headers
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.parseMediaType("text/csv"));
-	    //TODO timestamp for filename
-	    String filename = LogicHelper.getLocalizedMessage("filename.csv") + "_" + ControllerHelper.getNiceDate() + ".csv";
 	    headers.setContentDispositionFormData(filename, filename);
 	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-	    ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
-	    return response;
-	      
+	    
+	    return new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
     }
     
 }

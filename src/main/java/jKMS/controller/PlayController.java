@@ -2,6 +2,7 @@ package jKMS.controller;
 
 import jKMS.Amount;
 import jKMS.Contract;
+import jKMS.LogicHelper;
 
 import java.util.Set;
 import java.util.TreeMap;
@@ -45,10 +46,10 @@ public class PlayController extends AbstractServerController {
 				stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
 			else
 				stateChangeSuccessful = ControllerHelper.stateHelper(kms, "play");
-		}	catch(Exception e)	{
+		}	catch(IllegalStateException e)	{
 			e.printStackTrace();
-			model.addAttribute("message", e.getMessage());
-			model.addAttribute("error", e.getClass().toString());
+			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
+			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
 			return "error";
 		}
 		

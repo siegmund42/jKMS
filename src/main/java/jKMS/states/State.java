@@ -67,7 +67,7 @@ public abstract class State {
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	}
 	
-	public void generateCSV(CSVWriter writer){
+	public void generateCSV(CSVWriter writer) throws IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	}
 }   

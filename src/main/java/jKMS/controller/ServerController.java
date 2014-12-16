@@ -3,11 +3,7 @@ package jKMS.controller;
 import jKMS.Amount;
 import jKMS.LogicHelper;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
@@ -16,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ServerController extends AbstractServerController	{
@@ -32,8 +26,8 @@ public class ServerController extends AbstractServerController	{
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.message.buildFolderStructure"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.short.buildFolderStructure"));
+			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.buildFolderStructure.message"));
+			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.buildFolderStructure.error"));
 			return "error";
 		}
 		return "index";
