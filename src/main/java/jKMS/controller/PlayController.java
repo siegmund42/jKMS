@@ -29,7 +29,7 @@ public class PlayController extends AbstractServerController {
 		//get min and max values of the distributions to limit the chart
 		TreeMap<Integer, Amount> sDistribution = (TreeMap<Integer, Amount>) kms.getsDistribution();
 		TreeMap<Integer, Amount> bDistribution = (TreeMap<Integer, Amount>) kms.getbDistribution();
-		int[] minMax = ControllerHelper.getMinMax(sDistribution, bDistribution);
+		int[] minMax = ControllerHelper.getMinMax(contracts, sDistribution, bDistribution);
 		
 		str = str.concat(";" + minMax[0] + ";" + minMax[1]);
 		

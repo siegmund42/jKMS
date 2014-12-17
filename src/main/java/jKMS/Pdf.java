@@ -365,37 +365,123 @@ public class Pdf {
     	}
     	
     	Paragraph titlep = new Paragraph();
-    	int id = firstID;
-    	Chunk packa;
-    	
+    	Integer id = firstID;
+    	Integer endid =0;
+    	//Set Headline
     	titlep.setAlignment(Element.ALIGN_CENTER);
     	titlep.setFont(titleFont);
     	titlep.add(this.titlepage);
     	titlep.add(Chunk.NEWLINE);
     	titlep.add(Chunk.NEWLINE);
+    	//set table headline's
     	titlep.setFont(valueFont);
+    	PdfPTable table = new PdfPTable(3);
 
+    	Chunk content;
+    	
+    	Paragraph allcontent1 = new Paragraph();
+    	Paragraph allcontent2 = new Paragraph();
+    	Paragraph allcontent3 = new Paragraph();
+    	
+    	PdfPCell cell1y = new PdfPCell();
+    	PdfPCell cell2y = new PdfPCell();
+    	PdfPCell cell3y = new PdfPCell();
+    	
+    	allcontent1.setAlignment(Element.ALIGN_CENTER);
+    	allcontent2.setAlignment(Element.ALIGN_CENTER);
+    	allcontent3.setAlignment(Element.ALIGN_CENTER);
+    	//cellxy.setBorder(Rectangle.NO_BORDER); // no border for all cells
+    	//set table headlines
+    	content = new Chunk(this.packet,valueFont);
+    	allcontent1.add(content);
+    	allcontent1.add(Chunk.NEWLINE);
+      	content =new Chunk(this.from,valueFont);
+    	allcontent2.add(content);
+    	allcontent2.add(Chunk.NEWLINE);
+      	content = new Chunk(this.to,valueFont);
+    	allcontent3.add(content);
+    	allcontent3.add(Chunk.NEWLINE);
+      	
+      	//greate table contentcells
+
+      	
+      	
     	for(int i=0; i < packdis.length;i++){
     			if((id % 2)== isbuyer){
     				if(((id + packdis[i] - 1) % 2)== isbuyer){// anfangs/endid von paket gerade wenn isBuyer = false (Seller) anfangs/endid ungerade wenn isBuyer = true (Buyer)
-    					packa = new Chunk(packet + " " + String.valueOf(LogicHelper.IntToPackage(i)) + " "+ from + " " + id + " "+ to + " " + (id + packdis[i]-1));
-    			    	titlep.add(Chunk.NEWLINE);
+    					//add Package
+    					content = new Chunk(String.valueOf(LogicHelper.IntToPackage(i)),valueFont);
+    			    	allcontent1.add(content);
+    			    	allcontent1.add(Chunk.NEWLINE);
+    			      	//add start id
+    					content = new Chunk(id.toString(),valueFont);
+    			    	allcontent2.add(content);
+    			    	allcontent2.add(Chunk.NEWLINE);
+    			      	//add end id
+    			      	endid = id + packdis[i]-1;
+    			      	content = new Chunk(endid.toString(),valueFont);
+    			    	allcontent3.add(content);
+    			    	allcontent3.add(Chunk.NEWLINE);
+    			      	
     				}else{//anfangsID entspricht ist "richtig" end id ist falsch
-    					packa = new Chunk(packet + " "+ String.valueOf(LogicHelper.IntToPackage(i)) + " "+ from +" " + id +  " "+ to + " " + (id +packdis[i]-2));
-    			    	titlep.add(Chunk.NEWLINE);
+    					//add Package
+    					content  = new Chunk(String.valueOf(LogicHelper.IntToPackage(i)),valueFont);
+    			    	allcontent1.add(content);
+    			    	allcontent1.add(Chunk.NEWLINE);
+    			      	//add start id
+    					content = new Chunk(id.toString(),valueFont);
+    			    	allcontent2.add(content);
+    			    	allcontent2.add(Chunk.NEWLINE);
+    			      	//add end id
+    			      	endid = id + packdis[i]-2;
+    			      	content =  new Chunk(endid.toString(),valueFont);
+    			    	allcontent3.add(content);
+    			    	allcontent3.add(Chunk.NEWLINE);
     				}
     			}else{
     				if(((id + packdis[i] - 1) % 2)== isbuyer){// Anfangsid passt nicht endid passt
-    					packa = new Chunk(packet + " "+ String.valueOf(LogicHelper.IntToPackage(i)) + " "+ from +" " + (id+1) +  " "+ to + " " + (id + packdis[i]-1));
-    			    	titlep.add(Chunk.NEWLINE);
+    					//add Package
+    					content = new Chunk(String.valueOf(LogicHelper.IntToPackage(i)),valueFont);
+    			    	allcontent1.add(content);
+    			    	allcontent1.add(Chunk.NEWLINE);
+    			      	//add start id
+    					content = new Chunk(id.toString(),valueFont);
+    			    	allcontent2.add(content);
+    			    	allcontent2.add(Chunk.NEWLINE);
+    			      	//add end id
+    			      	endid = id + packdis[i]-1;
+    			      	content =new Chunk(endid.toString(),valueFont);
+    			    	allcontent3.add(content);
+    			    	allcontent3.add(Chunk.NEWLINE);
     				}else{//Anfangs und end ID vom Paket passen nicht
-    					packa = new Chunk(packet + " "+ String.valueOf(LogicHelper.IntToPackage(i)) + " "+ from +" " + (id+1) +  " "+ to + " " + (id +packdis[i]-2));
-    			    	titlep.add(Chunk.NEWLINE);
+    					//add Package
+    					content = new Chunk(String.valueOf(LogicHelper.IntToPackage(i)),valueFont);
+    			    	allcontent1.add(content);
+    			    	allcontent1.add(Chunk.NEWLINE);
+    			      	//add start id
+    					content = new Chunk(id.toString(),valueFont);
+    			    	allcontent2.add(content);
+    			    	allcontent2.add(Chunk.NEWLINE);
+    			      	//add end id
+    			      	endid = id + packdis[i]-2;
+    			      	content = new Chunk(endid.toString(),valueFont);
+    			    	allcontent3.add(content);
+    			    	allcontent3.add(Chunk.NEWLINE);
     				}
     			}
-    			titlep.add(packa);
     			id = id + packdis[i];
     	}
+    	
+    	cell1y.addElement(allcontent1);
+    	cell2y.addElement(allcontent2);
+    	cell3y.addElement(allcontent3);
+    	cell1y.setBorder(Rectangle.NO_BORDER);
+    	cell2y.setBorder(Rectangle.NO_BORDER);
+    	cell3y.setBorder(Rectangle.NO_BORDER);
+    	table.addCell(cell1y);
+    	table.addCell(cell2y);
+    	table.addCell(cell3y);
+    	titlep.add(table);
     	return titlep;
     }
     

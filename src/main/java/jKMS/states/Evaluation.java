@@ -125,8 +125,8 @@ public class Evaluation extends State{
 	
 	//choose random "winner"-contract
 	@Override
-	public Contract pickWinner() throws NoContractsException{ 
-		if(winner == null){
+	public Contract pickWinner(boolean repeat) throws NoContractsException{ 
+		if(winner == null || repeat == true){
 			Set<Contract> contracts = kms.getContracts();
 			
 			if(contracts == null) throw new NoContractsException();

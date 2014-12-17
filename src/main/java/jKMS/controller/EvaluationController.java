@@ -14,6 +14,7 @@ import jKMS.exceptionHelper.NoContractsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import au.com.bytecode.opencsv.CSVWriter;
@@ -40,7 +41,7 @@ public class EvaluationController extends AbstractServerController {
 		
 		
 		//min and max values for the chart
-		int[] minMax = ControllerHelper.getMinMax(sDistribution, bDistribution);
+		int[] minMax = ControllerHelper.getMinMax(contracts, sDistribution, bDistribution);
 		
 		//concatenate return string
 		String str = playData.concat(";" + expectedSupply + ";" + expectedDemand + ";" + minMax[0] + ";" + minMax[1]);
@@ -54,7 +55,8 @@ public class EvaluationController extends AbstractServerController {
 	 * gets all attributes of "winner contract" and adds them to the model
 	 */
 	@RequestMapping(value = "/lottery")
-	public String lottery(Model model) throws NoContractsException{
+	public String lottery(@RequestParam(value="repeat", defaultValue = "false") boolean repeat,
+						  Model model) throws NoContractsException{
 		
 		boolean stateChangeSuccessful = true;
 		
@@ -69,7 +71,7 @@ public class EvaluationController extends AbstractServerController {
 		
 		if(stateChangeSuccessful)	{
 		
-			Contract winner = kms.getState().pickWinner();
+			Contract winner = kms.getState().pickWinner(repeat);
 			int bProfit = kms.getState().buyerProfit(winner);
 			int sProfit = kms.getState().sellerProfit(winner);
 			

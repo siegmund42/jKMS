@@ -1,10 +1,16 @@
 function drawPlayChart(data){
-	
+
 		dataArray = data.split(";");
+		//0 - current play data, 1 - Minimum, 2 - Maximum
+		
 		playData = JSON.parse(dataArray[0]);
 		
 		var yMin = dataArray[1];
 		var yMax = dataArray[2];
+
+		//if there is no limitation -> min and max automatically due to values
+		if(yMin == 0) yMin = null;
+		if(yMax == 0) yMax = null;
 
 		var options = {	axisLabels: {
 							show:true
@@ -20,6 +26,7 @@ function drawPlayChart(data){
 							axisLabelFontSizePixels: 18
 						},
 						yaxis:{
+							autoscaleMargin:0.02,
 							min: yMin,
 							max: yMax,
 							axisLabel: "Preis",
@@ -30,22 +37,29 @@ function drawPlayChart(data){
 						}
 					}
 		
+		//draw the chart
 		$.plot($("#placeholder"), [playData] , options);
 	
 }
 
 function drawEvaluationChart(data){
 		//Daten verarbeiten und darstellen
-		dataArray = data.split(";");
-		playData = JSON.parse(dataArray[0]);
 
+		dataArray = data.split(";");
+		// 0 - current play data, 1 - sellerDistribution, 2 - buyerDistribution, 3 - Minimum, 4 - Maximum
+		
+		playData = JSON.parse(dataArray[0]);
 		sellerData = JSON.parse(dataArray[1]);
 		buyerData = JSON.parse(dataArray[2]);
 		chartData = [{data:playData},{lines:{steps:true},data:sellerData},{lines:{steps:true},data:buyerData}];
 
 		yMin = dataArray[3];
 		yMax = dataArray[4];
-
+		
+		//if there is no limitation -> min and max automatically due to values
+		if(yMin == 0) yMin = null;
+		if(yMax == 0) yMax = null;
+		
 		var options = {	axisLabels : {
 							show: true
 						},
@@ -73,9 +87,10 @@ function drawEvaluationChart(data){
 						}
 					}
 		
+		//draw the chart
 		var plot = $.plot($("#placeholder"), chartData , options);
 		
-		//Bildexport bereitstellen
+		//prepare export of the image of the chart
 		var header = $("meta[name='_csrf_header']").attr("content");
 		var token = $("meta[name='_csrf']").attr("content");
 		var myCanvas = plot.getCanvas();
@@ -86,6 +101,7 @@ function drawEvaluationChart(data){
 
 				formData.append("image",image,"image.png");
 				
+				//send image to logic/java
 				$.ajax({
 					beforeSend: function(request) {
 						request.setRequestHeader(header, token);

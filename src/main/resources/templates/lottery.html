@@ -44,22 +44,24 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (lottery)"></div>
 	 	<div style="font-size:130%; margin-bottom:25px;">  And the winner is ... </div>
-	 	<div id="card" style="float:left;">
+	 	<div id="card" style="float:left; margin-bottom:25px;">
 	 		<div th:text="#{lottery.buyer}"></div> 
-	 		<div th:text="'ID:' + ${buyerID}"></div>
 	 		<div th:text="#{PDFBuyer.value} + ': ' + ${wtp} + '€'"></div>
+	 		<div th:text="'ID:' + ${buyerID}"></div>	 		
 	 	</div>
-	 	<div id="card" style="float:right; margin-left:50px;">
+	 	<div id="card" style="float:right; margin: 0px 0px 25px 50px;">
 	 		<div th:text="#{lottery.seller}"></div> 
-	 		<div th:text="'ID:' + ${sellerID}"></div>
-	 		<div th:text="#{PDFSeller.value} + ': ' + ${costs} + '€'"></div>
+	 		<div th:text="#{PDFSeller.value} + ': ' + ${cost} + '€'"></div>
+	 		<div th:text="'ID:' + ${sellerID}"></div> 		
 	 	</div>
-	 	<div style="clear:both; float:right; width:100%; visibility:hidden">  Test </div>
+	 	
 	 	<div id="winner">
 		 	<div th:text="#{lottery.contract} + ': ' + ${price} + '€'" style="margin-bottom:25px;"></div>
 		 	<div th:class="((${bprofit} > '0')? 'successDiv' : 'errorDiv')" th:text="#{lottery.bprofit} + ': ' + ${bprofit} + '€'"></div>
-		 	<div th:class="((${sprofit} > '0')? 'successDiv' : 'errorDiv')" th:text="#{lottery.sprofit} + ': ' + ${sprofit} + '€'"></div>
-			<div th:text="#{lottery.congrats}" style="font-size:130%; margin-top:50px;"></div>	 	
+		 	<div th:class="((${sprofit} > '0')? 'successDiv' : 'errorDiv')" th:text="#{lottery.sprofit} + ': ' + ${sprofit} + '€'"></div> 	
+	 	</div>
+	 	<div style="margin-top:3%; float:right; font-size:80%">
+	 		<a href="/lottery?repeat=true" th:text="#{lottery.repeat}" ></a>
 	 	</div>
 	</div>
  </body>

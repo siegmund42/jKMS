@@ -17,6 +17,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -221,7 +222,7 @@ public class ControllerHelper {
 	 * Gets the set of contracts and converts it to a string for the javascript flot library
 	 */
 	public static String setToString(Set<Contract> contracts){
-		if(contracts == null) return "[]";
+		if(contracts.isEmpty()) return "[]";
 		
 		String str = "[";
 		int i = 0;
@@ -262,16 +263,17 @@ public class ControllerHelper {
 	}
 	
 	/*
-	 * returns the minimum and maximum values of the distributions. 
-	 * With these values we can limit the chart on 20% difference to the highest and lowest possible value.
+	 * gets the minimum and maximum values of the distributions and compares it to the min and max of the contracts set. 
+	 * With these values we can limit the chart on 20% difference to the highest and lowest possible value, if a contract price is much to high or much to low .
 	 */
-	public static int[] getMinMax(TreeMap<Integer,Amount> sDistribution, TreeMap<Integer,Amount> bDistribution) {
+	public static int[] getMinMax(Set<Contract> contracts, TreeMap<Integer,Amount> sDistribution, TreeMap<Integer,Amount> bDistribution) {
 		int smin = sDistribution.firstKey();
 		int smax = sDistribution.lastKey();
 		int bmin = bDistribution.firstKey();
 		int bmax = bDistribution.lastKey();
-		int min, max;
+		int min, max, tempPrice;
 		
+		//get the min and max values (+20%) of the distributions
 		if(smin < bmin){
 			min = smin - smin/5;
 		}else {
@@ -282,6 +284,29 @@ public class ControllerHelper {
 			max = smax + smax/5;
 		}else{
 			max = bmax + bmax/5;
+		}
+		
+		//get the min and max prices of the contracts
+		int maxPrice = 0;
+		int minPrice = max;
+		Iterator<Contract> i = contracts.iterator();
+		while(i.hasNext()){
+			tempPrice = i.next().getPrice();
+			
+			if(tempPrice < minPrice){
+				minPrice = tempPrice;
+			}
+			if(tempPrice > maxPrice){
+				maxPrice = tempPrice;
+			}
+		}
+		
+		//cases in which we don't have to limit the chart with the distribution values
+		if(maxPrice < max){
+			max = 0;
+		}
+		if(minPrice > min){
+			min = 0;
 		}
 		
 		int[] result = {min,max};
