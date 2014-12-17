@@ -77,38 +77,31 @@ function validateForm(form)	{
 			switch(form)	{
 			case 'config':
 				// Basic Configuration/Metadata Formular
-				var players = document.getElementById('players');
-				var assistants = document.getElementById('assistants');
 				
-				// Number of players must be even
-				if(players.value % 2 != 0)	{
-					writeError(4, players);
-					error = true;
-				}
-				// Number of Players must be lower than (10000 - firstID)
-				// TODO get firstID from Logic
-				if(players.value > (10000 - 1001))	{
-					writeError(5, players);
-					error = true;
+				if(inputs[i] == document.getElementById('players'))	{
+					// Number of players must be even
+					if(inputs[i].value % 2 != 0)	{
+						writeError(4, inputs[i]);
+						error = true;
+					}
+					// Number of Players must be lower than (10000 - firstID)
+					if(inputs[i].value > (10000 - firstID))	{
+						writeError(5, inputs[i]);
+						error = true;
+					}
 				}
 				// Number of Assistants must be lower or equal 26 (Because of max 26 letters)
-				if(assistants.value > 26)	{
-					writeError(5, assistants);
+				if(inputs[i] == document.getElementById('assistants') && inputs[i].value > 26)	{
+					writeError(6, inputs[i]);
 					error = true;
 				}
 				break;
 			case 'exclude':
 				// Exclude Cards Formular
 				var error;
-				
-				// Field must be a Number (type = text)
-				if(isNaN(inputs[i].value))	{
-					writeError(1, inputs[i]);
-					error = true;
-				}
 				// Number must be between first ID and lastID
 				if(inputs[i].value < firstID || inputs[i].value > (firstID + numberOfPlayers))	{
-					writeError(5, inputs[i]);
+					writeError(7, inputs[i]);
 					error = true;
 				}
 				break;
@@ -116,9 +109,18 @@ function validateForm(form)	{
 				// Contract Form
 				// Number must be between first ID and lastID
 				if(inputs[i].value < firstID || inputs[i].value > (firstID + numberOfPlayers))	{
-					writeError(5, inputs[i]);
+					writeError(7, inputs[i]);
 					error = true;
 				}
+				break;
+			case 'arrangement':
+				if(inputs[i].name == "sRelativeQuantity[]" || inputs[i].name == "cRelativeQuantity[]")	{
+					if(inputs[i].value > 100)	{
+						writeError(8, inputs[i]);
+						error = true;
+					}
+				}
+				break;
 			}
 			
 		}	else	{
@@ -210,17 +212,7 @@ function createErrorFields(element, numberOfColumns)	{
 
 // Write Error "error" in field under Element "element"
 function writeError(error, element)	{
-	
-	var errorCodes = new Array();
-	
-	// TODO i18n
-	errorCodes[0] = "Feld leer";
-	errorCodes[1] = "NaN";
-	errorCodes[2] = "Zahl <= 0";
-	errorCodes[3] = "Zahl gebrochen";
-	errorCodes[4] = "Zahl ungerade";
-	errorCodes[5] = "Zahl zu groß";
-	
+	// errorCodes is defined in resources.html
 	// Write Error Text in Field
 	document.getElementById('error' + element.id).innerHTML = errorCodes[error];
 	// Paint border of element red

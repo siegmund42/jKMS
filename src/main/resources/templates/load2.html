@@ -11,8 +11,6 @@
     <script th:inline="javascript">
     /*<![CDATA[*/
     	var pack = /*[[#{load.package}]]*/;
-    	var firstID = /*[[${firstID}]]*/;
-    	var numberOfPlayers = /*[[${numberOfPlayers}]]*/;
     	var percent = /*[[#{prepare.percent}]]*/ 'Anteil';
     	var currency = /*[[#{prepare.currency}]]*/ 'Preis';
     /*]]>*/
@@ -24,6 +22,8 @@
     
 </head>
  <body th:onload="'createExcludeFields(' + ${numberOfAssistants} + ');'">
+ 	<div th:replace="resources :: js">
+	</div>
  	<div id="toolBar">
  		<div id="path">
  			<div class="step" th:text="#{path.load.step1}"></div>

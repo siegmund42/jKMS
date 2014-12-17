@@ -212,7 +212,6 @@ input[type="text"], input[type="password"],
  input[type="email"], input[type="number"], textarea	{
  	width:				60px;
  	margin:				5px 10px;
-	float:				right;
 	border-radius:		5px;
 	height:				25px;
 	padding:			5px 15px;

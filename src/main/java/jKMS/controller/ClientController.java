@@ -25,7 +25,9 @@ public class ClientController extends AbstractController {
 	 * Display the contract Form
 	 */
 	@RequestMapping(value = "/contract", method = RequestMethod.GET)
-	public String contract(){
+	public String contract(Model model)	{
+		model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+		model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 		return "contract";
 	}
 	
@@ -52,6 +54,7 @@ public class ClientController extends AbstractController {
 			    if(add == 0)	{
 			    	// Succeeded
 			    	model.addAttribute("success");
+			    	return "redirect:/contract";
 			    }	else	{
 			    	// Failed - add Attributes to model
 			    	model.addAttribute("id1", id1);

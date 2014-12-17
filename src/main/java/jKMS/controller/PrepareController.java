@@ -46,6 +46,7 @@ public class PrepareController extends AbstractServerController {
 		
 		if(stateChangeSuccessful)	{
 			// Add Metadata if already set
+			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
 			return "prepare1";
@@ -136,6 +137,7 @@ public class PrepareController extends AbstractServerController {
 			}
 			
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
+			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
 	
 			return "prepare2";
 		}	else	{

@@ -9,9 +9,12 @@
 	    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
     	<script th:src="@{/js/script.js}"></script>
     	<script th:src="@{/js/formValidation.js}"></script>
+    	
         <title th:text="#{titles.login}">jKMS - Login</title>
     </head>
     <body>
+	 	<div th:replace="resources :: js">
+		</div>
 		<div id="inhalt">
 			<div th:replace="resources :: heading (login)">
  			</div>
