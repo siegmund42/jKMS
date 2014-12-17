@@ -4,26 +4,26 @@ function generalValidateField(field)	{
 	var error = null;
 	
 	// Validate number fields
-	if(field.type == "number")	{
-		
-		// Field must be a number
-		if(isNaN(field.value))	{
-			error = 1;
-		}
-		
-		// Number must be bigger than 0 
-		if(field.value <= 0)	{
-			error = 2;
-		}
+	if(field.type == "number" || field.className == "numberText")	{
 
 		// Field must not be empty
 		if(field.value == "")	{
 			error = 0;
-		}
+		}	else
 		
+		// Field must be a number
+		if(isNaN(field.value))	{
+			error = 1;
+		}	else
+			
 		// Number must not be fractional 
 		if((field.value % 1) != 0)	{
 			error = 3;
+		}	else
+		
+		// Number must be bigger than 0 
+		if(field.value <= 0)	{
+			error = 2;
 		}
 		
 	}	else	{
@@ -112,6 +112,13 @@ function validateForm(form)	{
 					error = true;
 				}
 				break;
+			case 'contract':
+				// Contract Form
+				// Number must be between first ID and lastID
+				if(inputs[i].value < firstID || inputs[i].value > (firstID + numberOfPlayers))	{
+					writeError(5, inputs[i]);
+					error = true;
+				}
 			}
 			
 		}	else	{
@@ -206,6 +213,7 @@ function writeError(error, element)	{
 	
 	var errorCodes = new Array();
 	
+	// TODO i18n
 	errorCodes[0] = "Feld leer";
 	errorCodes[1] = "NaN";
 	errorCodes[2] = "Zahl <= 0";

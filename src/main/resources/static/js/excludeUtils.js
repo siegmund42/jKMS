@@ -28,6 +28,7 @@ function createExcludeFields(number)	{
 			// Create Text field
 			var input = document.createElement("input");
 			input.setAttribute("type", "text");
+			input.setAttribute("class", "numberText");
 			input.setAttribute("name", "exclude[]");
 			input.setAttribute("id", i);
 			input.setAttribute("placeholder", alphabet[i].toUpperCase());

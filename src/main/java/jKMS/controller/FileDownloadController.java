@@ -126,35 +126,23 @@ public class FileDownloadController extends AbstractServerController {
     	Pdf pdf = new Pdf();
     	Document document = new Document(PageSize.A4.rotate());
 		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-		
-		try {
-			PdfWriter.getInstance(document, outstream); 
-			
-			document.open();
-			document = pdf.createExportPdf(document, pdfImage, stats);
-			document.close();
-			
-		} catch (DocumentException e) {
-			e.printStackTrace();
-			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export"));
-		}
-		
-		pdfBytes = outstream.toByteArray();
-		
-		// Write to File ######################################
-    	FileOutputStream fos;
+		FileOutputStream fos;
     	String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + ControllerHelper.getNiceDate() + ".pdf";
-		try {
+		
+    	try {
+			PdfWriter.getInstance(document, outstream);
 			fos = new FileOutputStream(path);
 			PdfWriter.getInstance(document, fos);
-				
 			document.open();
 			document = pdf.createExportPdf(document, pdfImage, stats);
 			document.close();
+			System.out.println("Saved the Export-PDF in: " + path);
 		} catch (FileNotFoundException | DocumentException e1) {
 			e1.printStackTrace();
 			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export"));
 		}
+
+		pdfBytes = outstream.toByteArray();
 
     }
     

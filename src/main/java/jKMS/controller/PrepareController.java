@@ -243,6 +243,7 @@ public class PrepareController extends AbstractServerController {
 			// Save Config File automatically
 			try	{
 				kms.getState().save(path);
+				System.out.println("Saved Config File in: " + path);
 			} catch(IOException e){
 				e.printStackTrace();
 				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.config.save.error"));

@@ -17,6 +17,7 @@ public class ExceptionController {
 	}
 	
 	@ExceptionHandler
+	// TODO create Model
 	public String handleRuntimeException(Model model, RuntimeException e) {
 		model.addAttribute("error", LogicHelper.getLocalizedMessage("error"));
 		model.addAttribute("message", e.getMessage());

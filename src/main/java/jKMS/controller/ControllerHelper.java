@@ -177,7 +177,6 @@ public class ControllerHelper {
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
 		String path = url.getPath();
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
-		System.out.println("Located the .jar in: " + folderPath);
 		return folderPath;
 	}
 	
@@ -215,7 +214,6 @@ public class ControllerHelper {
 	public static String getNiceDate()	{
 		Date dNow = new Date( );
 	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
-	    System.out.println("Current Date: " + ft.format(dNow));
 	    return ft.format(dNow);
 	}
 	
