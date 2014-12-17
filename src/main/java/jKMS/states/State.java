@@ -51,7 +51,7 @@ public abstract class State {
 	public Map<String,Float> getStatistics() throws NoContractsException, IllegalStateException{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // DONE
-	public Contract pickWinner() throws NoContractsException,IllegalStateException	{
+	public Contract pickWinner(boolean repeat) throws NoContractsException,IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // DONE
 	public int buyerProfit(Contract contract) throws IllegalStateException	{
