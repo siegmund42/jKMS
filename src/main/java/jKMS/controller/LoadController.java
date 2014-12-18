@@ -5,6 +5,7 @@ import java.util.List;
 
 import jKMS.LogicHelper;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
@@ -70,7 +71,7 @@ public class LoadController extends AbstractServerController {
 			// Load from File
 			try {
 				kms.getState().load(file);
-			} 	catch(NumberFormatException | IOException | EmptyFileException e)	{
+			} 	catch(NumberFormatException | IOException | EmptyFileException | FalseLoadFileException e)	{
 				// File empty/broken/something went wrong
 				e.printStackTrace();
 				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));

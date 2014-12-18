@@ -27,6 +27,7 @@ import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
@@ -183,7 +184,7 @@ public class PreparationTest {
 		   	   //load() execute and check
 			    try {
 					kms.getState().load(configTest);
-				} catch (NumberFormatException | IOException | EmptyFileException e) {
+				} catch (NumberFormatException | IOException | EmptyFileException | FalseLoadFileException e) {
 					e.printStackTrace();
 					System.out.println(e.getMessage());
 				}

@@ -10,6 +10,7 @@ import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.FalseLoadFileException;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -221,7 +222,7 @@ public class LoadTest {
 	  //load() execute and check
 	    try {
 			kms.getState().load(configTest);
-		} catch (NumberFormatException | IOException | EmptyFileException e) {
+		} catch (NumberFormatException | IOException | EmptyFileException | FalseLoadFileException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
