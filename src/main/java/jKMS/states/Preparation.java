@@ -7,6 +7,7 @@ import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
@@ -25,6 +26,7 @@ import java.util.Random;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itextpdf.text.Document;
@@ -88,7 +90,7 @@ public class Preparation extends State	{
 	
 	//load Implementieren
 	@Override
-	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{
+	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, FalseLoadFileException{
 	//set initial value for load
     	int groupCount=0;
     	int firstID=0;
@@ -120,6 +122,9 @@ public class Preparation extends State	{
             		 }
             		 else if(count == 3){
             			 firstID = Integer.valueOf(sa[1].trim());
+            			 if(firstID != 1001){
+            				 throw new FalseLoadFileException("firsstID is not 1001,please do not change the load file!");
+            			 }
             			 count = count + 1;
             			 break;
             		 }
@@ -132,48 +137,58 @@ public class Preparation extends State	{
             		 if( (buf=br.readLine()) != null){
 	            		 buf=buf.trim();
 	 		             String[] sa = buf.split(":|\\s");
-	 		             int bpreis = Integer.valueOf(sa[1].trim());
-	 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
-	 		             // int banteil = Integer.valueOf(sa[1]);
-	 		             int spreis = Integer.valueOf(sa[5].trim());
-	 		             Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
-	 		             //int santeil = Integer.valueOf(sa[3]);
-	 		            
-	 		             bDistributionLoad.put(bpreis, bAmount);
-	 		             sDistributionLoad.put(spreis, sAmount);
-	 		             count = count + 1;
+	 		             if(sa[0].equals("bDistribution") && sa[4].equals("sDistribution")){
+		 		             int bpreis = Integer.valueOf(sa[1].trim());
+		 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
+		 		             // int banteil = Integer.valueOf(sa[1]);
+		 		             int spreis = Integer.valueOf(sa[5].trim());
+		 		             Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
+		 		             //int santeil = Integer.valueOf(sa[3]);
+		 		            
+		 		             bDistributionLoad.put(bpreis, bAmount);
+		 		             sDistributionLoad.put(spreis, sAmount);
+		 		             count = count + 1;
+	 		             }else{
+	 		            	 throw new FalseLoadFileException("the nember of sDistribution should be equal to the number of bDistribution!");
+	 		             }
             		 }else {
-            			 throw new EmptyFileException("The GroupCount is not enough!");
+            			 throw new FalseLoadFileException("The GroupCount is not right,please do not change the load file!");
             		 }
+            	 }
+            	 buf = br.readLine();
+            	 buf = buf.trim();
+            	 String[] sa = buf.split(":|\\s");
+            	 if(sa[0].equals("bDistribution") && sa[4].equals("sDistribution")){
+            		 throw new FalseLoadFileException("the nember of bDistribution should be equal to groupCount,the nember of sDistribution should be equal to groupCount");
             	 }
             	 System.out.println("bDistribution:"+bDistributionLoad.toString());
     			 System.out.println("sDistribution:"+sDistributionLoad.toString());
             	 System.out.println("load bDistribution and sDistribution successful");
             	 // TODO discuss wether loading Cards
             	 //load Cards and set them in cardSet
-            	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
-            		 Card card;
-            		 buf=buf.trim();
-            		 String[] sa = buf.split(":|\\s");
-            		 if((Integer.valueOf(sa[1])%2) == 1){
-            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
-            		 }else {
-            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
-            		 }
-            		 cardSet.add(card);
-            	 }
-            	 System.out.println("Cards Number:"+cardSet.size());
-            	 System.out.println("load cardSet successful");
+//            	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
+//            		 Card card;
+//            		 buf=buf.trim();
+//            		 String[] sa = buf.split(":|\\s");
+//            		 if((Integer.valueOf(sa[1])%2) == 1){
+//            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+//            		 }else {
+//            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+//            		 }
+//            		 cardSet.add(card);
+//            	 }
+//            	 System.out.println("Cards Number:"+cardSet.size());
+//            	 System.out.println("load cardSet successful");
 
     			 //set load information in Configuration
     	    	 kms.getConfiguration().setGroupCount(groupCount);
     	    	 kms.getConfiguration().setFirstID(firstID);
     	    	 kms.getConfiguration().setbDistribution(bDistributionLoad);
     			 kms.getConfiguration().setsDistribution(sDistributionLoad);
-    			 kms.setCards(cardSet);
+//    			 kms.setCards(cardSet);
     			 
          }else 
-             throw new EmptyFileException("load file can not be empty!");
+             throw new EmptyFileException("load file can not be empty, please do not delete loadfile!");
     	 
     	 System.out.println("load() successful!");
     	 

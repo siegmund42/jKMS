@@ -13,6 +13,7 @@ import com.itextpdf.text.DocumentException;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.NoContractsException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
@@ -63,7 +64,7 @@ public abstract class State {
 	public boolean save(String path) throws IOException, IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	}
-	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, IllegalStateException	{
+	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, IllegalStateException, FalseLoadFileException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	}
 	
