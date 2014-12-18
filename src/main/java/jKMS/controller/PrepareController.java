@@ -3,6 +3,7 @@ package jKMS.controller;
 import jKMS.Amount;
 import jKMS.LogicHelper;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
@@ -30,21 +31,10 @@ public class PrepareController extends AbstractServerController {
 	
 	// Get Requests to first Site of Preparation - Metadata-Input
 	@RequestMapping(value = "/prepare1", method = RequestMethod.GET)
-	public String prepare1(Model model)	{
+	public String prepare1(Model model) throws InvalidStateChangeException	{
 		
 		// STATE-CHANGE
-		boolean stateChangeSuccessful = true;
-		
-		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "prepare");
-		}	catch(IllegalStateException e)	{
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
-			return "error";
-		}
-		
-		if(stateChangeSuccessful)	{
+		if(ControllerHelper.stateHelper(kms, "prepare"))	{
 			// Add Metadata if already set
 			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
@@ -93,21 +83,10 @@ public class PrepareController extends AbstractServerController {
 
 	// GET Requests on Site for Distribution
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
-	public String prepare2(Model model, @RequestParam(value="c", required = false) String configuration)	{
+	public String prepare2(Model model, @RequestParam(value="c", required = false) String configuration) throws IllegalStateException, InvalidStateChangeException	{
 		
 		// STATE-CHANGE
-		boolean stateChangeSuccessful = true;
-		
-		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "prepare");
-		}	catch(Exception e)	{
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
-			return "error";
-		}
-		
-		if(stateChangeSuccessful)	{
+		if(ControllerHelper.stateHelper(kms, "prepare"))	{
 			
 			// Only show the already stored values
 			if(configuration == null)	{
@@ -279,8 +258,13 @@ public class PrepareController extends AbstractServerController {
 	
 	// Processes Posted Values from Distribution-Site
 	@RequestMapping(value = "generate", method = RequestMethod.GET)
-	public String generate()	{
-		return "generate";
+	public String generate() throws InvalidStateChangeException	{
+		// STATE-CHANGE
+		if(ControllerHelper.stateHelper(kms, "prepare"))	{
+			return "generate";
+		}	else	{
+			return "reset";
+		}
 	}
 	
 }

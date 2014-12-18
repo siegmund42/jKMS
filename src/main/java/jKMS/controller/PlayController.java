@@ -2,7 +2,7 @@ package jKMS.controller;
 
 import jKMS.Amount;
 import jKMS.Contract;
-import jKMS.LogicHelper;
+import jKMS.exceptionHelper.InvalidStateChangeException;
 
 import java.util.Set;
 import java.util.TreeMap;
@@ -37,21 +37,14 @@ public class PlayController extends AbstractServerController {
 	}
 	
 	@RequestMapping(value = "/play")
-	public String play(Model model, @RequestParam(value= "s", required = false) String s)	{
+	public String play(Model model, @RequestParam(value= "s", required = false) String s) throws InvalidStateChangeException	{
 
 		boolean stateChangeSuccessful = true;
 		
-		try	{
-			if(s != null && s.equals("stop"))
-				stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
-			else
-				stateChangeSuccessful = ControllerHelper.stateHelper(kms, "play");
-		}	catch(IllegalStateException e)	{
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
-			return "error";
-		}
+		if(s != null && s.equals("stop"))
+			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
+		else
+			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "play");
 		
 		if(stateChangeSuccessful)	{
 			return "play";

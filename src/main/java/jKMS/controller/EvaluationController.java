@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.LogicHelper;
+import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.NoContractsException;
 
 import org.springframework.stereotype.Controller;
@@ -56,20 +57,9 @@ public class EvaluationController extends AbstractServerController {
 	 */
 	@RequestMapping(value = "/lottery")
 	public String lottery(@RequestParam(value="repeat", defaultValue = "false") boolean repeat,
-						  Model model) throws NoContractsException{
+						  Model model) throws NoContractsException, InvalidStateChangeException	{
 		
-		boolean stateChangeSuccessful = true;
-		
-		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
-		}	catch(IllegalStateException e)	{
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
-			return "error";
-		}
-		
-		if(stateChangeSuccessful)	{
+		if(ControllerHelper.stateHelper(kms, "evaluate"))	{
 		
 			Contract winner = kms.getState().pickWinner(repeat);
 			int bProfit = kms.getState().buyerProfit(winner);
@@ -94,20 +84,10 @@ public class EvaluationController extends AbstractServerController {
 	 * Evaluation Site
 	 */
 	@RequestMapping(value = "/evaluate")
-	public String evaluate(Model model) throws NoContractsException	{
+	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException	{
 		// State Change
-		boolean stateChangeSuccessful = true;
 		
-		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "evaluate");
-		}	catch(IllegalStateException e)	{
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
-			return "error";
-		}
-		
-		if(stateChangeSuccessful)	{
+		if(ControllerHelper.stateHelper(kms, "evaluate"))	{
 			// Build path for storing the .csv automatically
 			String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.csv") + ControllerHelper.getNiceDate() + ".csv";
 	    	

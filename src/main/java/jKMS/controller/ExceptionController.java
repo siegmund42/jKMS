@@ -12,33 +12,38 @@ public class ExceptionController {
 	
 	@ExceptionHandler
 	public ModelAndView handleIllegalStateException(IllegalStateException e) {
+		e.printStackTrace();
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("error");
-		mav.addObject("error", LogicHelper.getLocalizedMessage("error.state.error"));
-		mav.addObject("message", LogicHelper.getLocalizedMessage("error.state.message"));
-		return mav;
-	}
-	
-	@ExceptionHandler
-	public ModelAndView handleInavlidStateChangeException(InvalidStateChangeException e) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("error");
+		mav.setViewName("standardException");
 		mav.addObject("error", LogicHelper.getLocalizedMessage("error.load.error"));
 		mav.addObject("message", LogicHelper.getLocalizedMessage("error.load.message"));
 		return mav;
 	}
 	
 	@ExceptionHandler
-	public ModelAndView handleRuntimeException(RuntimeException e) {
+	public ModelAndView handleInavlidStateChangeException(InvalidStateChangeException e) {
+		e.printStackTrace();
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("error");
+		mav.setViewName("standardException");
+		mav.addObject("error", LogicHelper.getLocalizedMessage("error.state.error"));
+		mav.addObject("message", LogicHelper.getLocalizedMessage("error.state.message"));
+		return mav;
+	}
+	
+	@ExceptionHandler
+	public ModelAndView handleRuntimeException(RuntimeException e) {
+		e.printStackTrace();
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("standardException");
 		mav.addObject("error", LogicHelper.getLocalizedMessage("error"));
+		// RunTime Exceptions are already localized
 		mav.addObject("message", e.getMessage());
 		return mav;
 	}
 	
 	@ExceptionHandler
 	public ModelAndView handleSomeException(Exception e) {
+		e.printStackTrace();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("error");
 		mav.addObject("error", e.getClass());

@@ -5,6 +5,7 @@ import java.util.List;
 
 import jKMS.LogicHelper;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
@@ -23,20 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class LoadController extends AbstractServerController {
 	
 	@RequestMapping(value = "/load1", method = RequestMethod.GET)
-	public String load1(Model model, ServletRequest request)	{
-
-		boolean stateChangeSuccessful = true;
+	public String load1(Model model, ServletRequest request) throws InvalidStateChangeException	{
 		
-		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "load");
-		}	catch(IllegalStateException e)	{
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
-			return "error";
-		}
-		
-		if(stateChangeSuccessful)	{
+		if(ControllerHelper.stateHelper(kms, "load"))	{
 			// Add some Attributes to display the Configuration of the game again
 			model.addAttribute("customerConfiguration", kms.getbDistribution());
 			model.addAttribute("salesmanConfiguration", kms.getsDistribution());
@@ -73,20 +63,10 @@ public class LoadController extends AbstractServerController {
 	 * For loading an existing Config.txt File
 	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.POST)
-	public String processIndex(Model model, @RequestParam("input-file") MultipartFile file)	{
+	public String processIndex(Model model, @RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
 		// State Change
-		boolean stateChangeSuccessful = true;
 		
-		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "load");
-		}	catch(IllegalStateException e)	{
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
-			return "error";
-		}
-		
-		if(stateChangeSuccessful)	{
+		if(ControllerHelper.stateHelper(kms, "load"))	{
 			// Load from File
 			try {
 				kms.getState().load(file);
@@ -109,21 +89,10 @@ public class LoadController extends AbstractServerController {
 	 * Page for excluding Cards
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.GET)
-	public String load(Model model, ServletRequest request)	{
+	public String load(Model model, ServletRequest request) throws InvalidStateChangeException	{
 
 		// State Change
-		boolean stateChangeSuccessful = true;
-		
-		try	{
-			stateChangeSuccessful = ControllerHelper.stateHelper(kms, "load");
-		}	catch(IllegalStateException e)	{
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.state.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.state.error"));
-			return "error";
-		}
-		
-		if(stateChangeSuccessful)	{
+		if(ControllerHelper.stateHelper(kms, "load"))	{
 
 			// Javascript - For number of Exclude Fields
 			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
