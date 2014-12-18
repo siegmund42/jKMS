@@ -17,8 +17,10 @@ import java.awt.GridBagLayout;
 import javax.swing.JCheckBox;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
+
 
 
 import java.awt.Font;
@@ -31,8 +33,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-//@Configurable for creating AppGui with new - also some additional changes required in project settings
-@Component
+@Configurable //for creating AppGui with new - also some additional changes required in project settings
+//@Component
 public class AppGui extends JFrame{
 	@Autowired
 	private Kartoffelmarktspiel kms;
@@ -48,7 +50,7 @@ public class AppGui extends JFrame{
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		//AppGui window = new AppGui();
 
 		SpringApplication.run(Application.class, args);
@@ -59,7 +61,7 @@ public class AppGui extends JFrame{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	/**
 	 * Create the application.
