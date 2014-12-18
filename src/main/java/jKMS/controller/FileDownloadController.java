@@ -4,7 +4,10 @@ import jKMS.LogicHelper;
 import jKMS.Pdf;
 import jKMS.exceptionHelper.NoContractsException;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -172,23 +175,49 @@ public class FileDownloadController extends AbstractServerController {
     /*
      * Gets the in (hopefully) "path" pre-saved Config File for download.
      */
-    @RequestMapping(value = "/config", method = RequestMethod.GET)
-     public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
-    	    try {
-    	      // get your file as InputStream
-    	    	Resource resource = new FileSystemResource(fileName);
-    	    	InputStream is = resource.getInputStream();
-    	      // copy it to response's OutputStream
-    	      IOUtils.copy(is, response.getOutputStream());
-    	      response.setContentType("application/txt");
-    	      String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
-    	      response.setHeader("Content-Disposition", "attachment; filename=" + filename);
-    	      response.flushBuffer();
-    	    } catch (IOException ex) {
-    	      ex.printStackTrace();
-    	      throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
-    	    }
-     }
+   
+//    @RequestMapping(value = "/config", method = RequestMethod.GET)
+//    public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
+//   	    try {
+//   	      // get your file as InputStream
+//   	    	Resource resource = new FileSystemResource(fileName);
+//   	    	InputStream is = resource.getInputStream();
+//   	      // copy it to response's OutputStream
+//   	      IOUtils.copy(is, response.getOutputStream());
+//   	      response.setContentType("application/txt");
+//   	      String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
+//   	      response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+//   	      response.flushBuffer();
+//   	    } catch (IOException ex) {
+//   	      ex.printStackTrace();
+//   	      throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
+//   	    }
+//    }
+    @RequestMapping(value = "/config",method = RequestMethod.GET)
+    public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
+    	response.setContentType("text/html;charset=UTF-8"); 
+    	BufferedInputStream bis = null; 
+    	BufferedOutputStream bos = null; 
+    	String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
+        response.setContentType("application/txt");
+        response.setHeader("Content-disposition", "attachment; filename="  
+                + filename);  
+        try{
+	        bis = new BufferedInputStream(new FileInputStream(fileName));  
+	        bos = new BufferedOutputStream(response.getOutputStream());  
+	        byte[] buff = new byte[2048];  
+	        int bytesRead;  
+	        while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {  
+	            bos.write(buff, 0, bytesRead);  
+	        }  
+	        bis.close();  
+	        bos.close();  
+        }catch(IOException ex){
+        	ex.printStackTrace();
+        	throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
+        }
+    }
+    
     
     @RequestMapping(value = "/csv")
     public ResponseEntity<byte[]> downloadCsv() throws Exception{ 
