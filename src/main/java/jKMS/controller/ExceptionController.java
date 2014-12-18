@@ -1,34 +1,49 @@
 package jKMS.controller;
 
 import jKMS.LogicHelper;
+import jKMS.exceptionHelper.InvalidStateChangeException;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class ExceptionController {
 	
 	@ExceptionHandler
-	public String handleIllegalStateException(Model model, IllegalStateException e) {
-		model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
-		model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));
-		return "error";
+	public ModelAndView handleIllegalStateException(IllegalStateException e) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("error");
+		mav.addObject("error", LogicHelper.getLocalizedMessage("error.state.error"));
+		mav.addObject("message", LogicHelper.getLocalizedMessage("error.state.message"));
+		return mav;
 	}
 	
 	@ExceptionHandler
-	// TODO create Model
-	public String handleRuntimeException(Model model, RuntimeException e) {
-		model.addAttribute("error", LogicHelper.getLocalizedMessage("error"));
-		model.addAttribute("message", e.getMessage());
-		return "error";
+	public ModelAndView handleInavlidStateChangeException(InvalidStateChangeException e) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("error");
+		mav.addObject("error", LogicHelper.getLocalizedMessage("error.load.error"));
+		mav.addObject("message", LogicHelper.getLocalizedMessage("error.load.message"));
+		return mav;
 	}
 	
 	@ExceptionHandler
-	public String handleSomeException(Model model, Exception e) {
-		model.addAttribute("error", e.getClass());
-		model.addAttribute("message", e.getMessage());
-		return "error";
+	public ModelAndView handleRuntimeException(RuntimeException e) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("error");
+		mav.addObject("error", LogicHelper.getLocalizedMessage("error"));
+		mav.addObject("message", e.getMessage());
+		return mav;
+	}
+	
+	@ExceptionHandler
+	public ModelAndView handleSomeException(Exception e) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("error");
+		mav.addObject("error", e.getClass());
+		mav.addObject("message", e.getMessage());
+		return mav;
 	}
 	
 }

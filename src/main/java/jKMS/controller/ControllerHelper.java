@@ -3,6 +3,8 @@ package jKMS.controller;
 import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.LogicHelper;
+import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.states.Evaluation;
 import jKMS.states.Load;
 import jKMS.states.Play;
@@ -43,9 +45,9 @@ public class ControllerHelper {
 	 * Responsible for state setting.
 	 * Returns true if state setting done or not necessary.
 	 * Returns false if requested changing of state requires deletion of Data.
-	 * Throws Exception if State-changing is invalid.
+	 * Throws Exception if State-changing is invalid or if State is undefined.
 	 */
-	public static boolean stateHelper(Kartoffelmarktspiel kms, String requestedState) throws IllegalStateException	{
+	public static boolean stateHelper(Kartoffelmarktspiel kms, String requestedState) throws InvalidStateChangeException	{
 		
 		if(kms.getState() instanceof Preparation)	{
 			if(requestedState.equals("prepare"))	{
@@ -56,12 +58,10 @@ public class ControllerHelper {
 				return true;
 			}
 			if(requestedState.equals("play"))	{
-				// TODO internationalize
-				throw new IllegalStateException("Statuswechsel von Vorbereitung -> Spiel läuft ist nicht möglich!");
+				throw new InvalidStateChangeException("Statechange Preparation -> Play is invalid!");
 			}
 			if(requestedState.equals("evaluate"))	{
-				// TODO internationalize
-				throw new IllegalStateException("Statuswechsel von Vorbereitung -> Auswertung ist nicht möglich!");
+				throw new InvalidStateChangeException("Statechange Preparation -> Evaluation is invalid!");
 			}
 		}
 		if(kms.getState() instanceof Load)	{
@@ -73,18 +73,17 @@ public class ControllerHelper {
 			}
 			if(requestedState.equals("play"))	{
 				if(kms.getAssistantCount() > 0 && kms.getPlayerCount() > 0 && kms.getGroupCount() > 0 
-						&& kms.getbDistribution().size() > 0 && kms.getsDistribution().size() > 0
+						&& kms.getbDistribution().size() == kms.getGroupCount() 
+						&& kms.getsDistribution().size() == kms.getGroupCount()
 						&& kms.getCards().size() > 0)	{
 					kms.play();
 				}	else	{
-					// TODO i18n
-					throw new IllegalArgumentException("Mindestens ein wichtiges Spieldatum fehlt!");
+					throw new RuntimeException(LogicHelper.getLocalizedMessage("error.uncompleteConfiguration"));
 				}
 				return true;
 			}
 			if(requestedState.equals("evaluate"))	{
-				// TODO internationalize
-				throw new IllegalStateException("Statuswechsel von Spiel laden -> Auswertung ist nicht möglich!");
+				throw new InvalidStateChangeException("Statechange Load -> Evaluation is invalid!");
 			}
 		}
 		if(kms.getState() instanceof Play)	{
@@ -112,15 +111,14 @@ public class ControllerHelper {
 				return true;
 			}
 			if(requestedState.equals("play"))	{
-				// TODO internationalize
-				throw new IllegalStateException("Statuswechsel von Auswertung -> Spiel ist nicht möglich!");
+				throw new InvalidStateChangeException("Statechange of Evaluation -> Play is invalid!");
 			}
 			if(requestedState.equals("evaluate"))	{
 				return true;
 			}
 		}
 		
-		throw new IllegalStateException("Kein Status.");
+		throw new IllegalStateException("The game has no or an invalid State.");
 		
 	}
 	
