@@ -7,6 +7,7 @@ import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
@@ -15,10 +16,13 @@ import jKMS.exceptionHelper.WrongRelativeDistributionException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +33,7 @@ public class Load extends State {
 	}
 
 	@Override
-	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException{
+	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, FalseLoadFileException{
 		//set initial value for load
     	int playerCount=0;
     	int assistantCount=0;
@@ -63,6 +67,9 @@ public class Load extends State {
             		 }
             		 else if(count == 3){
             			 firstID = Integer.valueOf(sa[1].trim());
+            			 if(firstID != 1001){
+            				 throw new FalseLoadFileException("firsstID is not 1001,please do not change the load file!");
+            			 }
             			 count = count + 1;
             			 break;
             		 }
@@ -77,18 +84,22 @@ public class Load extends State {
             		 if( (buf=br.readLine()) != null){
 	            		 buf=buf.trim();
 	 		             String[] sa = buf.split(":|\\s");
-	 		             int bpreis = Integer.valueOf(sa[1].trim());
-	 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
-	 		             // int banteil = Integer.valueOf(sa[1]);
-	 		             int spreis = Integer.valueOf(sa[5].trim());
-	 		             Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
-	 		             //int santeil = Integer.valueOf(sa[3]);
-	 		            
-	 		             bDistributionLoad.put(bpreis, bAmount);
-	 		             sDistributionLoad.put(spreis, sAmount);
-	 		             count = count + 1;
+	 		             if(sa[0].equals("bDistribution") && sa[4].equals("sDistribution")){
+		 		             int bpreis = Integer.valueOf(sa[1].trim());
+		 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
+		 		             // int banteil = Integer.valueOf(sa[1]);
+		 		             int spreis = Integer.valueOf(sa[5].trim());
+		 		             Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
+		 		             //int santeil = Integer.valueOf(sa[3]);
+		 		            
+		 		             bDistributionLoad.put(bpreis, bAmount);
+		 		             sDistributionLoad.put(spreis, sAmount);
+		 		             count = count + 1;
+	 		             }else{
+	 		            	throw new FalseLoadFileException("the nember of sDistribution should be equal to the number of bDistribution!");
+	 		             }
             		 }else {
-            			 throw new EmptyFileException("The GroupCount is not enough!");
+            			 throw new FalseLoadFileException("The GroupCount is not right,please do not change the load file!");
             		 }
             	 }
             	 System.out.println("bDistribution:"+bDistributionLoad.toString());
@@ -107,6 +118,23 @@ public class Load extends State {
             		 }
             		 cardSet.add(card);
             	 }
+            	 if(cardSet.size() != playerCount){
+            		 throw new FalseLoadFileException("playerCount is not equal to the number of card,please do not change the load file!");
+            	 }
+            	 Set<Integer> cardNumber = new TreeSet<Integer>();
+            	 Iterator<Card> citer = cardSet.iterator();
+            	 while(citer.hasNext()){
+            		 Card card = citer.next();
+            		 cardNumber.add(card.getId());
+            	 }
+            	 int maxNumber = Collections.max(cardNumber);
+            	 int minNumber = Collections.min(cardNumber);
+            	 if(maxNumber != 1000+playerCount || minNumber != 1001){
+            		 throw new FalseLoadFileException("cardId should beginn at 1001 and can not more than playerCount+1000!");
+            	 }
+            	 if(cardNumber.size() != playerCount){
+            		 throw new FalseLoadFileException("card can not more than once in cardSet!");
+            	 }
             	 System.out.println("Cards Number:"+cardSet.size());
             	 System.out.println("load cardSet successful");
     			 
@@ -120,7 +148,7 @@ public class Load extends State {
     			 kms.setCards(cardSet);
     			 
          }else 
-             throw new EmptyFileException("load file can not be empty!");
+             throw new EmptyFileException("load file can not be empty, please do not delete loadfile!");
     	 System.out.println("load() successful");
     }
 
