@@ -28,7 +28,7 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
-public class ControllerHelper {
+public class ControllerHelper extends AbstractController {
 	
 	private static String configFolder = "KMS_Konfigurationen";
 	private static String exportFolder = "KMS_Exports";
@@ -123,7 +123,7 @@ public class ControllerHelper {
 	}
 	
 	/*
-	 * Returns IP of the User.
+	 * Returns IPs of the User in a List of Strings.
 	 */
 	public static List<String> getIP()	{
 		
@@ -212,7 +212,7 @@ public class ControllerHelper {
 	
 	public static String getNiceDate()	{
 		Date dNow = new Date( );
-	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
+	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMddHHmmss");
 	    return ft.format(dNow);
 	}
 	
