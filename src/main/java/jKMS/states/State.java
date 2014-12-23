@@ -15,6 +15,7 @@ import jKMS.Kartoffelmarktspiel;
 import jKMS.exceptionHelper.EmptyFileException;
 import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.NoContractsException;
+import jKMS.exceptionHelper.NoIntersectionException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
@@ -43,13 +44,10 @@ public abstract class State {
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // XINYU
 																			
-	public float equilibriumPrice() throws IllegalStateException	{
+	public float[] getEquilibrium() throws NoIntersectionException, IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
-	} // TIMON
-	public float equilibriumSet() throws IllegalStateException	{
-		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
-	} // TIMON
-	public Map<String,Float> getStatistics() throws NoContractsException, IllegalStateException{
+	} // DONE
+	public Map<String,Float> getStatistics() throws NoContractsException, NoIntersectionException, IllegalStateException{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // DONE
 	public Contract pickWinner(boolean repeat) throws NoContractsException,IllegalStateException	{

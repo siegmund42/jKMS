@@ -17,6 +17,7 @@ import jKMS.Contract;
 import jKMS.Csv;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.exceptionHelper.NoContractsException;
+import jKMS.exceptionHelper.NoIntersectionException;
 
 public class Evaluation extends State{
 	
@@ -27,7 +28,7 @@ public class Evaluation extends State{
 	
 	//returns statistic data of all contracts - min, max, average, variance, standard deviation
 	@Override
-	public Map<String,Float> getStatistics() throws NoContractsException{ 
+	public Map<String,Float> getStatistics() throws NoContractsException, NoIntersectionException{ 
 		Set<Contract> contracts = kms.getContracts();
 		Map<String,Float> statistics = new HashMap<String, Float>();
 		int sum = 0;
@@ -80,46 +81,110 @@ public class Evaluation extends State{
 		statistics.put("standardDeviation",(float) standardDeviation);
 		
 		float[] equilibrium = getEquilibrium();
-		if(equilibrium  == null) throw new NullPointerException("Obviously there is no intersection of the two lines.");
+		if(equilibrium  == null) throw new NoIntersectionException();
 		statistics.put("eqPrice",equilibrium[0]);
 		statistics.put("eqQuantity",equilibrium[1]);
 		return statistics; 
 	}
 	
+	
 	/*
-	 * calculate equilibrium price and equilibrium quantity
-	 */
-	//TODO think about a good algorithm
-	public float[] getEquilibrium(){
-		TreeMap<Integer,Amount> sDistr = (TreeMap<Integer, Amount>) kms.getsDistribution();
-		TreeMap<Integer,Amount> bDistr = (TreeMap<Integer, Amount>) kms.getbDistribution();
-		int bCount = 0, sCount = 0;
-		int sPrice = 0;
-		int bPrice = 0;
-		Map.Entry<Integer, Amount> sEntry = sDistr.firstEntry();
-		Map.Entry<Integer, Amount> bEntry = bDistr.lastEntry();
-		
-		while(bDistr.lowerEntry(bEntry.getKey()) != null && sDistr.higherEntry(sEntry.getKey()) != null){
-			bCount += bEntry.getValue().getAbsolute();
-			bEntry = bDistr.lowerEntry(bEntry.getKey());
-			bPrice = bEntry.getKey();
-			
-			sCount += sEntry.getValue().getAbsolute();
-			sEntry = sDistr.higherEntry(sEntry.getKey());
-			sPrice = sEntry.getKey();
-			
-					
-			if(bPrice < sPrice){
-				if(bCount < sCount){
-					float[] result = {bPrice, sCount};
+ 	 * calculate equilibrium price and equilibrium quantity
+	 * return null or throws NoIntersectionException, if there is no intersection between supply and demand function
+ 	 */
+	public float[] getEquilibrium() throws NoIntersectionException{
+ 		TreeMap<Integer,Amount> sDistr = (TreeMap<Integer, Amount>) kms.getsDistribution();
+ 		TreeMap<Integer, Amount> bDistr = (TreeMap<Integer, Amount>) kms.getbDistribution();
+ 		
+ 		int bCount = 0, sCount = 0, max = 0, bTemp = 0, sTemp = 0;	
+ 		int bStaticCount = 0, sStaticCount = 0;
+ 		boolean bIsInFront = false;
+ 			
+ 		Map.Entry<Integer, Amount> sEntry = sDistr.firstEntry();
+ 		Map.Entry<Integer, Amount> bEntry = bDistr.lastEntry();
+ 		int sPrice = sEntry.getKey();
+ 		int bPrice = bEntry.getKey();
+	
+ 		max = sDistr.size() + bDistr.size();
+ 		
+ 		bStaticCount += bEntry.getValue().getAbsolute();
+ 		sStaticCount += sEntry.getValue().getAbsolute();
+ 		
+ 		for(int i = 0; i < max; i++){
+ 			//yippee...for that case, we've found an intersection
+ 		 	if(bPrice < sPrice){
+ 		 		if(bIsInFront){
+ 		 			float[] result = {sPrice, sCount};
+ 		 			return result;
+ 		 		}else{
+ 		 			float[] result = {bPrice, bCount};
+ 					return result;
+ 				}
+				
+			}
+			//if there are many points of intersection, the last point is the right one :)
+			else if(bPrice == sPrice){
+				bTemp = bStaticCount  -  bCount;
+				sTemp = sStaticCount  -  sCount;
+				if(bTemp < sTemp){
+					float[] result = {bPrice, bCount + bTemp};
 					return result;
-				}else{
-					float[] result = {sPrice, bCount};
+				}
+				else{
+					float[] result = {sPrice, sCount + sTemp};
 					return result;
 				}
 			}
-		}
-		
+			/*
+			 * For that case we have to keep on searching
+			 * We search the next point, where one of the functions does the next "step".
+			 * We move both counters to that point(quantity) and repeat the loop.
+			 */			
+			else if(bPrice > sPrice) {			
+				
+				bTemp = bStaticCount  -  bCount;
+				sTemp = sStaticCount  -  sCount;
+				
+				if(bTemp < sTemp){
+					bEntry = bDistr.lowerEntry(bPrice);
+					if(bEntry == null) throw new NoIntersectionException(); 
+					bPrice = bEntry.getKey();
+					bCount += bTemp;
+					bStaticCount += bEntry.getValue().getAbsolute();
+					
+					bIsInFront = true;	
+					
+					sCount = bCount;
+				}else if(bTemp > sTemp){
+					sEntry = sDistr.higherEntry(sPrice);
+					if(sEntry == null) throw new NoIntersectionException();
+					sPrice = sEntry.getKey();
+					sCount += sTemp;
+					sStaticCount += sEntry.getValue().getAbsolute();
+					
+					bIsInFront = false;
+						
+					bCount = sCount;
+				}else if(bTemp == sTemp){
+					bEntry = bDistr.lowerEntry(bPrice);
+					if(bEntry == null) throw new NoIntersectionException();
+					bPrice = bEntry.getKey();
+					bCount += bTemp;
+					bStaticCount += bEntry.getValue().getAbsolute();
+					
+					sEntry = sDistr.higherEntry(sPrice);
+					if(sEntry == null) throw new NoIntersectionException();
+					sPrice = sEntry.getKey();
+					sCount += sTemp;
+					sStaticCount += sEntry.getValue().getAbsolute();
+					
+					//This increment is needed, because the maximum of the for-loop is the sum of the sizes 
+					//of both distributions and here we iterate both distributions.
+					i++;
+				}
+			}
+ 		}
+			
 		return null;
 	}
 	
