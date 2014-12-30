@@ -288,6 +288,12 @@ public class ControllerHelper extends AbstractController {
 			max = bmax + bmax/5;
 		}
 		
+		//if there are no contracts yet, we will limit the y-axis scale. otherwise there is a weird scale with negatives...
+		if(contracts.isEmpty()){
+			int[] result = {min,max};
+			return result;
+		}
+		
 		//get the min and max prices of the contracts
 		int maxPrice = 0;
 		int minPrice = max;
