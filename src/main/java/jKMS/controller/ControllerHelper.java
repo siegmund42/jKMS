@@ -199,7 +199,7 @@ public class ControllerHelper extends AbstractController {
 				System.out.println("Created Folder: " + games.getPath());
 				created = true;
 			}	else	{
-				throw new IOException("Folder Structure could not be built.");
+				throw new IOException("Failed to generate folder \"" + games + "\".");
 			}
 		}
 		
@@ -208,7 +208,7 @@ public class ControllerHelper extends AbstractController {
 				System.out.println("Created Folder: " + exports.getAbsolutePath());
 				created = true;
 			}	else	{
-				throw new IOException("Folder Structure could not be built.");
+				throw new IOException("Failed to generate folder \"" + exports + "\".");
 			}
 		}
 		return created;
