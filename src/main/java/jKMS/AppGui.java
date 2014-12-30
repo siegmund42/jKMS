@@ -50,7 +50,7 @@ public class AppGui extends JFrame{
 	 */
 	public static void main(String[] args) {
 		//AppGui window = new AppGui();
-
+		
 		SpringApplication.run(Application.class, args);
 		try {
 			// Desktop.getDesktop().browse(new
@@ -59,6 +59,7 @@ public class AppGui extends JFrame{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	/**
@@ -84,7 +85,8 @@ public class AppGui extends JFrame{
 				confirmExit();
 			}
 		});
-
+		
+		
 		btnOpenBrowser = new JButton("Open Game in Browser");
 		btnOpenBrowser.setBounds(50, 65, 200, 50);
 		btnOpenBrowser.setActionCommand("Browser");
@@ -107,7 +109,7 @@ public class AppGui extends JFrame{
 			}
 		});
 		getContentPane().add(btnOpenBrowser);
-
+		
 		btnClose = new JButton("Shut Down Server");
 		btnClose.setBounds(380, 65, 200, 50);
 		btnClose.setActionCommand("Exit");

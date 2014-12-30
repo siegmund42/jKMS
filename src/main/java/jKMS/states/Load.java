@@ -67,9 +67,9 @@ public class Load extends State {
             		 }
             		 else if(count == 3){
             			 firstID = Integer.valueOf(sa[1].trim());
-            			 if(firstID != 1001){
-            				 throw new FalseLoadFileException("firsstID is not 1001,please do not change the load file!");
-            			 }
+            			// if(firstID != 1001){ //TODO
+            			//	 throw new FalseLoadFileException("firsstID is not 1001,please do not change the load file!");
+            			// }
             			 count = count + 1;
             			 break;
             		 }

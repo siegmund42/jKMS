@@ -88,7 +88,7 @@ public class FileDownloadController extends AbstractServerController {
 	    	filename = LogicHelper.getLocalizedMessage("filename.PDF.buyer") + "_" + ControllerHelper.getNiceDate();
 	    	break;
 	    default:
-	    	filename = LogicHelper.getLocalizedMessage("filename.PDF.buyer") + "_" + ControllerHelper.getNiceDate();
+	    	filename = LogicHelper.getLocalizedMessage("filename.PDF.seller") + "_" + ControllerHelper.getNiceDate();
 	    }
 	    
 	    headers.setContentDispositionFormData(filename, filename);

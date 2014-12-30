@@ -259,11 +259,10 @@ public class Preparation extends State	{
 		Map<Integer, Amount> bTemp = new TreeMap<Integer, Amount>(kms.getConfiguration().getbDistribution());
 		Map<Integer, Amount> sTemp = new TreeMap<Integer, Amount>(kms.getConfiguration().getsDistribution());
 		
-		int id = kms.getConfiguration().getFirstID();
 		int randomKey, randomListEntry;
 		
 		//for put packages
-		int i,ide;
+		int packid,ide, id;
 		int[] packdistribution =LogicHelper.getPackageDistribution(kms.getPlayerCount(),kms.getAssistantCount());
 		
 		//clear Card Set
@@ -280,58 +279,67 @@ public class Preparation extends State	{
 		
 		
 		
-		//put seller and buyer distribution and put packages
-		i =0;
+
+		packid =0;//package index 0 for Pack A, 1 for Pack B ...		
 		ide = kms.getConfiguration().getFirstID() + packdistribution[0];
+		id  = kms.getConfiguration().getFirstID();
 		
-		while (!bTemp.isEmpty() && !sTemp.isEmpty()) {
-			// Create Buyer Card
-			randomListEntry = random.nextInt(bKeys.size());
-			randomKey = bKeys.get(randomListEntry);
+		//put seller and buyer distribution and put packages		
+		while ((bTemp.isEmpty() != true) || (sTemp.isEmpty() != true)) {
 			
-			if(id < ide){
-				kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(i)));
-			}else {
-				if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){
-					i++;
-					ide = ide + packdistribution[i];
-					kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(i)));
+			// Create Buyer Card
+			if((id % 2) == 1){ // TODO TEST !!!
+				//all buyercards have an uneven id
+				randomListEntry = random.nextInt(bKeys.size());
+				randomKey = bKeys.get(randomListEntry);
+			
+				if(id < ide){
+					kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+				}else {
+					if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){
+						packid++;
+						ide = ide + packdistribution[packid];
+						kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+					}
 				}
-			}
 
 
 		
-			bTemp.put(randomKey, new Amount(bTemp.get(randomKey).getRelative(), bTemp.get(randomKey).getAbsolute() - 1)); 
-			if (bTemp.get(randomKey).getAbsolute() == 0) {
-				bTemp.remove(randomKey);
-				bKeys.remove(randomListEntry);
-			}
+				bTemp.put(randomKey, new Amount(bTemp.get(randomKey).getRelative(), bTemp.get(randomKey).getAbsolute() - 1)); 
+				if (bTemp.get(randomKey).getAbsolute() == 0) {
+					bTemp.remove(randomKey);
+					bKeys.remove(randomListEntry);
+				}
 
-			id++;
+			 id++;
+			 
+			}else{
 
-			// Create Seller Card
-			randomListEntry = random.nextInt(sKeys.size());
-			randomKey = sKeys.get(randomListEntry);
+				// Create Seller Card
+				randomListEntry = random.nextInt(sKeys.size());
+				randomKey = sKeys.get(randomListEntry);
 
-			if(id < ide){
-				kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(i)));
-			}else {
-				if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){
-						i++;
-					ide = ide + packdistribution[i];
-					kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(i)));
-			    }
-			}
+				if(id < ide){
+					kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+				}else {
+				//a new package start 
+					if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){
+						//it's in 
+						packid++;
+						ide = ide + packdistribution[packid];
+						kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+					}
+				}
 
-			sTemp.put(randomKey, new Amount(sTemp.get(randomKey).getRelative(), sTemp.get(randomKey).getAbsolute() - 1));
-			if (sTemp.get(randomKey).getAbsolute() == 0) {
-				sTemp.remove(randomKey);
-				sKeys.remove(randomListEntry);
-			}
+				sTemp.put(randomKey, new Amount(sTemp.get(randomKey).getRelative(), sTemp.get(randomKey).getAbsolute() - 1));
+				if (sTemp.get(randomKey).getAbsolute() == 0) {
+					sTemp.remove(randomKey);
+					sKeys.remove(randomListEntry);
+				}
 
-			id++;
+			 id++;
+		  }
 		}
-		
 		
 	}			
 
