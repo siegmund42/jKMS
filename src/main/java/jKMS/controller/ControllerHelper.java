@@ -133,7 +133,6 @@ public class ControllerHelper extends AbstractController {
 		
 		List<String> IPs = new LinkedList<>();
 		
-		// TODO handle multiple IPs if User is connected to multiple Networks
 		Enumeration<NetworkInterface> ifaces = null;
 		// Pick up all Network Interfaces
 		try {
@@ -179,6 +178,9 @@ public class ControllerHelper extends AbstractController {
 	public static String getApplicationFolder()	{
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
 		String path = url.getPath();
+		// remove "file:" part of the URL if existing
+		if(!path.substring(0, 1).equals(File.separator))
+			path = path.substring(path.indexOf(File.separator));
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
 		return folderPath;
 	}
@@ -190,16 +192,17 @@ public class ControllerHelper extends AbstractController {
 	public static boolean checkFolders() throws IOException	{
 
 		String path = getApplicationFolder();
+		System.out.println(path);
 		File games = new File(path + configFolder);
 		File exports = new File(path + exportFolder);
 		Boolean created = false;
 		
 		if(!games.exists())	{
 			if(games.mkdir())	{
-				System.out.println("Created Folder: " + games.getPath());
+				System.out.println("Created Folder: " + games.getAbsolutePath());
 				created = true;
 			}	else	{
-				throw new IOException("Failed to generate folder \"" + games + "\".");
+				throw new IOException("Failed to generate folder \"" + games.getAbsolutePath() + "\".");
 			}
 		}
 		
@@ -208,7 +211,7 @@ public class ControllerHelper extends AbstractController {
 				System.out.println("Created Folder: " + exports.getAbsolutePath());
 				created = true;
 			}	else	{
-				throw new IOException("Failed to generate folder \"" + exports + "\".");
+				throw new IOException("Failed to generate folder \"" + exports.getAbsolutePath() + "\".");
 			}
 		}
 		return created;
