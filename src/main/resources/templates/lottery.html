@@ -57,8 +57,8 @@
 	 	
 	 	<div id="winner">
 		 	<div th:text="#{lottery.contract} + ': ' + ${price} + '€'" style="margin-bottom:25px;"></div>
-		 	<div th:class="((${bprofit} > '0')? 'successDiv' : 'errorDiv')" th:text="#{lottery.bprofit} + ': ' + ${bprofit} + '€'"></div>
-		 	<div th:class="((${sprofit} > '0')? 'successDiv' : 'errorDiv')" th:text="#{lottery.sprofit} + ': ' + ${sprofit} + '€'"></div> 	
+		 	<div th:class="((${bprofit} >= '0')? 'successDiv' : 'errorDiv')" th:text="((${bprofit} >= '0')? #{lottery.bprofit} : #{lottery.bLoss}) + ': ' + ${bprofit} + '€'"></div>
+		 	<div th:class="((${sprofit} >= '0')? 'successDiv' : 'errorDiv')" th:text="((${sprofit} >= '0')? #{lottery.sprofit} : #{lottery.sLoss}) + ': ' + ${sprofit} + '€'"></div> 	
 	 	</div>
 	 	<div style="margin-top:3%; float:right; font-size:80%">
 	 		<a href="/lottery?repeat=true" th:text="#{lottery.repeat}" ></a>

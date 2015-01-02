@@ -27,6 +27,7 @@ function drawPlayChart(data){
 						},
 						yaxis:{
 							autoscaleMargin:0.02,
+							tickDecimals: 0,
 							min: yMin,
 							max: yMax,
 							axisLabel: "Preis",
