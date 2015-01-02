@@ -348,21 +348,23 @@ public class Pdf {
     private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer){
     	byte isbuyer = 0;
     	
-    	//TODO wenn Buyercards immer ungerade dann code ändern !!!
-    	//modulo rechnung zur kartentyp bestimmung ist abhängig von first ID
-    	// erste Karte ist immer BuyerCard --> Wenn firstID gerade dann aller BuyerCard's gerade ansonsten ungerade
-    	if(isBuyer && ((firstID % 2 == 1))){
-    		isbuyer = 1; // Buyercards ungerade
+    	
+    	if(isBuyer){
+    		isbuyer = 1; // Buyercards uneven
     	}
+    	
+    	/*
     	if(isBuyer && ((firstID % 2 == 0))){
     		isbuyer = 0;
+    	}*/
+    	
+    	if(!isBuyer){
+    		isbuyer = 0; // Sellercards even
     	}
-    	if(!isBuyer && ((firstID % 2 == 1))){
-    		isbuyer = 0;
-    	}
+    	/*
     	if(!isBuyer && ((firstID % 2 == 0))){
     		isbuyer = 1; // sellercards ungerade
-    	}
+    	}*/
     	
     	Paragraph titlep = new Paragraph();
     	Integer id = firstID;
@@ -373,7 +375,8 @@ public class Pdf {
     	titlep.add(this.titlepage);
     	titlep.add(Chunk.NEWLINE);
     	titlep.add(Chunk.NEWLINE);
-    	//set table headline's
+
+    	
     	titlep.setFont(valueFont);
     	PdfPTable table = new PdfPTable(3);
 
@@ -403,9 +406,7 @@ public class Pdf {
     	allcontent3.add(Chunk.NEWLINE);
       	
       	//greate table contentcells
-
-      	
-      	
+	
     	for(int i=0; i < packdis.length;i++){
     			if((id % 2)== isbuyer){
     				if(((id + packdis[i] - 1) % 2)== isbuyer){// anfangs/endid von paket gerade wenn isBuyer = false (Seller) anfangs/endid ungerade wenn isBuyer = true (Buyer)
@@ -445,7 +446,9 @@ public class Pdf {
     			    	allcontent1.add(content);
     			    	allcontent1.add(Chunk.NEWLINE);
     			      	//add start id
+    			    	id = id + 1;// nächste id weil anfangsid nich passt
     					content = new Chunk(id.toString(),valueFont);
+    					id = id - 1;//id gibt ausschluss über packetstart id --> muss immer an den anfang des Paketes zeigen
     			    	allcontent2.add(content);
     			    	allcontent2.add(Chunk.NEWLINE);
     			      	//add end id
@@ -459,7 +462,9 @@ public class Pdf {
     			    	allcontent1.add(content);
     			    	allcontent1.add(Chunk.NEWLINE);
     			      	//add start id
+    			    	id = id + 1;
     					content = new Chunk(id.toString(),valueFont);
+    			    	id = id - 1;
     			    	allcontent2.add(content);
     			    	allcontent2.add(Chunk.NEWLINE);
     			      	//add end id

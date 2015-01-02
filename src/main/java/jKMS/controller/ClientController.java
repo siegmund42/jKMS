@@ -69,12 +69,16 @@ public class ClientController extends AbstractController {
 		    	model.addAttribute("price", price);
 		    	model.addAttribute("error", "empty");
 			}
+			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+			model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 	    	return "contract";
 			
 		}	catch(NumberFormatException e)	{
 			// Number seems to be fractional
 			e.printStackTrace();
 			model.addAttribute("error", "fraction");
+			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+			model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 			return "contract";
 		}	catch(IllegalStateException e)	{
 			// Game not running
@@ -86,6 +90,8 @@ public class ClientController extends AbstractController {
 				// Guess Game not running
 				model.addAttribute("error", "notRunning");
 			}
+			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+			model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 			return "contract";
 		}
 	}

@@ -31,7 +31,7 @@ public class ExceptionController {
 	}
 	
 	@ExceptionHandler
-	public ModelAndView handleRuntimeException(RuntimeException e) {
+	public ModelAndView handleExceptions(Exception e) {
 		e.printStackTrace();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("standardException");
@@ -41,14 +41,14 @@ public class ExceptionController {
 		return mav;
 	}
 	
-	@ExceptionHandler
-	public ModelAndView handleSomeException(Exception e) {
-		e.printStackTrace();
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("error");
-		mav.addObject("error", e.getClass());
-		mav.addObject("message", e.getMessage());
-		return mav;
-	}
+//	@ExceptionHandler
+//	public ModelAndView handleSomeOtherException(Exception e) {
+//		e.printStackTrace();
+//		ModelAndView mav = new ModelAndView();
+//		mav.setViewName("error");
+//		mav.addObject("error", e.getClass());
+//		mav.addObject("message", e.getMessage());
+//		return mav;
+//	}
 	
 }

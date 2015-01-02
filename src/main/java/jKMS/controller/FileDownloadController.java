@@ -3,6 +3,7 @@ package jKMS.controller;
 import jKMS.LogicHelper;
 import jKMS.Pdf;
 import jKMS.exceptionHelper.NoContractsException;
+import jKMS.exceptionHelper.NoIntersectionException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -87,7 +88,7 @@ public class FileDownloadController extends AbstractServerController {
 	    	filename = LogicHelper.getLocalizedMessage("filename.PDF.buyer") + "_" + ControllerHelper.getNiceDate();
 	    	break;
 	    default:
-	    	filename = LogicHelper.getLocalizedMessage("filename.PDF.buyer") + "_" + ControllerHelper.getNiceDate();
+	    	filename = LogicHelper.getLocalizedMessage("filename.PDF.seller") + "_" + ControllerHelper.getNiceDate();
 	    }
 	    
 	    headers.setContentDispositionFormData(filename, filename);
@@ -100,7 +101,7 @@ public class FileDownloadController extends AbstractServerController {
     //catch ajax-request when evaluate.html is ready, prepare export-pdf for download
     @RequestMapping(value = "/pdfExport",
     				method = RequestMethod.POST)
-    public void exportPDF(@RequestParam("image") MultipartFile image)	{
+    public void exportPDF(@RequestParam("image") MultipartFile image) throws IllegalStateException, NoIntersectionException	{
     	byte[] imageBytes = null;
 
     	if(!image.isEmpty()){
@@ -175,7 +176,7 @@ public class FileDownloadController extends AbstractServerController {
     /*
      * Gets the in (hopefully) "path" pre-saved Config File for download.
      */
-   
+   // TODO serve generated and no loaded File
 //    @RequestMapping(value = "/config", method = RequestMethod.GET)
 //    public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
 //   	    try {

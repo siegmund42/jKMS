@@ -1,6 +1,7 @@
 package jKMS.controller;
 
 import jKMS.Amount;
+import jKMS.BareBonesBrowserLaunch;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.LogicHelper;
@@ -10,11 +11,14 @@ import jKMS.states.Load;
 import jKMS.states.Play;
 import jKMS.states.Preparation;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +32,7 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
-public class ControllerHelper {
+public class ControllerHelper extends AbstractController {
 	
 	private static String configFolder = "KMS_Konfigurationen";
 	private static String exportFolder = "KMS_Exports";
@@ -123,13 +127,12 @@ public class ControllerHelper {
 	}
 	
 	/*
-	 * Returns IP of the User.
+	 * Returns IPs of the User in a List of Strings.
 	 */
 	public static List<String> getIP()	{
 		
 		List<String> IPs = new LinkedList<>();
 		
-		// TODO handle multiple IPs if User is connected to multiple Networks
 		Enumeration<NetworkInterface> ifaces = null;
 		// Pick up all Network Interfaces
 		try {
@@ -175,6 +178,9 @@ public class ControllerHelper {
 	public static String getApplicationFolder()	{
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
 		String path = url.getPath();
+		// remove "file:" part of the URL if existing
+		if(!path.substring(0, 1).equals(File.separator))
+			path = path.substring(path.indexOf(File.separator));
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
 		return folderPath;
 	}
@@ -186,16 +192,17 @@ public class ControllerHelper {
 	public static boolean checkFolders() throws IOException	{
 
 		String path = getApplicationFolder();
+		System.out.println(path);
 		File games = new File(path + configFolder);
 		File exports = new File(path + exportFolder);
 		Boolean created = false;
 		
 		if(!games.exists())	{
 			if(games.mkdir())	{
-				System.out.println("Created Folder: " + games.getPath());
+				System.out.println("Created Folder: " + games.getAbsolutePath());
 				created = true;
 			}	else	{
-				throw new IOException("Folder Structure could not be built.");
+				throw new IOException("Failed to generate folder \"" + games.getAbsolutePath() + "\".");
 			}
 		}
 		
@@ -204,7 +211,7 @@ public class ControllerHelper {
 				System.out.println("Created Folder: " + exports.getAbsolutePath());
 				created = true;
 			}	else	{
-				throw new IOException("Folder Structure could not be built.");
+				throw new IOException("Failed to generate folder \"" + exports.getAbsolutePath() + "\".");
 			}
 		}
 		return created;
@@ -212,7 +219,7 @@ public class ControllerHelper {
 	
 	public static String getNiceDate()	{
 		Date dNow = new Date( );
-	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
+	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMddHHmmss");
 	    return ft.format(dNow);
 	}
 	
@@ -284,6 +291,12 @@ public class ControllerHelper {
 			max = bmax + bmax/5;
 		}
 		
+		//if there are no contracts yet, we will limit the y-axis scale. otherwise there is a weird scale with negatives...
+		if(contracts.isEmpty()){
+			int[] result = {min,max};
+			return result;
+		}
+		
 		//get the min and max prices of the contracts
 		int maxPrice = 0;
 		int minPrice = max;
@@ -311,5 +324,25 @@ public class ControllerHelper {
 		
 		return result;
 	}
+	
+//	public static boolean openBrowser() throws MalformedURLException, IOException, URISyntaxException	{
+//		if(kms.getState() instanceof Preparation){
+////			BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+//			Desktop.getDesktop().browse(new URL("http://localhost:8080/index").toURI());
+//		}
+//		else if(kms.getState() instanceof Load){
+////			BareBonesBrowserLaunch.openURL("http://localhost:8080/load?s=1");
+//			Desktop.getDesktop().browse(new URL("http://localhost:8080/load1").toURI());
+//		}
+//		else if(kms.getState() instanceof Play){
+////			BareBonesBrowserLaunch.openURL("http://localhost:8080/play");
+//			Desktop.getDesktop().browse(new URL("http://localhost:8080/play").toURI());
+//		}
+//		else if(kms.getState() instanceof Evaluation){
+////			BareBonesBrowserLaunch.openURL("http://localhost:8080/evaluate");
+//			Desktop.getDesktop().browse(new URL("http://localhost:8080/evaluate").toURI());
+//		}
+//		return true;
+//	}
 	
 }

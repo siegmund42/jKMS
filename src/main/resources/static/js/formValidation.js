@@ -107,8 +107,8 @@ function validateForm(form)	{
 				break;
 			case 'contract':
 				// Contract Form
-				// Number must be between first ID and lastID
-				if(inputs[i].value < firstID || inputs[i].value > (firstID + numberOfPlayers))	{
+				// Number must be between first ID and lastID - ONLY IF id FIELD!
+				if(inputs[i].name != "price" && (inputs[i].value < firstID || inputs[i].value > (firstID + numberOfPlayers)))	{
 					writeError(7, inputs[i]);
 					error = true;
 				}

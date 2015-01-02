@@ -48,22 +48,6 @@ public class AppGui extends JFrame{
 	private MessageConsole console;
 	
 	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		//AppGui window = new AppGui();
-
-		SpringApplication.run(Application.class, args);
-		try {
-			// Desktop.getDesktop().browse(new
-			// URL("http://localhost:4242/index").toURI());
-			//BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-	
-	/**
 	 * Create the application.
 	 */
 	public AppGui() {
@@ -86,7 +70,8 @@ public class AppGui extends JFrame{
 				confirmExit();
 			}
 		});
-
+		
+		
 		btnOpenBrowser = new JButton("Open Game in Browser");
 		btnOpenBrowser.setBounds(50, 65, 200, 50);
 		btnOpenBrowser.setActionCommand("Browser");
@@ -109,7 +94,7 @@ public class AppGui extends JFrame{
 			}
 		});
 		getContentPane().add(btnOpenBrowser);
-
+		
 		btnClose = new JButton("Shut Down Server");
 		btnClose.setBounds(380, 65, 200, 50);
 		btnClose.setActionCommand("Exit");

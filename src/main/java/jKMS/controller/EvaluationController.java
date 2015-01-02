@@ -11,6 +11,7 @@ import jKMS.Contract;
 import jKMS.LogicHelper;
 import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.NoContractsException;
+import jKMS.exceptionHelper.NoIntersectionException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,7 +85,7 @@ public class EvaluationController extends AbstractServerController {
 	 * Evaluation Site
 	 */
 	@RequestMapping(value = "/evaluate")
-	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException	{
+	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException	{
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "evaluate"))	{
