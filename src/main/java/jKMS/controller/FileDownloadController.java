@@ -176,7 +176,7 @@ public class FileDownloadController extends AbstractServerController {
     /*
      * Gets the in (hopefully) "path" pre-saved Config File for download.
      */
-   
+   // TODO serve generated and no loaded File
 //    @RequestMapping(value = "/config", method = RequestMethod.GET)
 //    public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
 //   	    try {
