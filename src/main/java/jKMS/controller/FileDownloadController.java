@@ -5,22 +5,13 @@ import jKMS.Pdf;
 import jKMS.exceptionHelper.NoContractsException;
 import jKMS.exceptionHelper.NoIntersectionException;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -194,30 +185,68 @@ public class FileDownloadController extends AbstractServerController {
 //   	      throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
 //   	    }
 //    }
-    @RequestMapping(value = "/config",method = RequestMethod.GET)
-    public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
-    	response.setContentType("text/html;charset=UTF-8"); 
-    	BufferedInputStream bis = null; 
-    	BufferedOutputStream bos = null; 
-    	String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
-        response.setContentType("application/txt");
-        response.setHeader("Content-disposition", "attachment; filename="  
-                + filename);  
-        try{
-	        bis = new BufferedInputStream(new FileInputStream(fileName));  
-	        bos = new BufferedOutputStream(response.getOutputStream());  
-	        byte[] buff = new byte[2048];  
-	        int bytesRead;  
-	        while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {  
-	            bos.write(buff, 0, bytesRead);  
-	        }  
-	        bis.close();  
-	        bos.close();  
-        }catch(IOException ex){
-        	ex.printStackTrace();
-        	throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
-        }
+//    @RequestMapping(value = "/config",method = RequestMethod.GET)
+//    public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
+//    	response.setContentType("text/html;charset=UTF-8"); 
+//      //BufferedInputStream bis = null; 
+//    	BufferedOutputStream bos = null; 
+//    	String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
+//        response.setContentType("application/txt");
+//        response.setHeader("Content-disposition", "attachment; filename="  
+//                + filename);  
+//        try{
+//	      //bis = new BufferedInputStream(new FileInputStream(fileName));  
+//        	ByteArrayOutputStream bis = new ByteArrayOutputStream();
+//        	kms.getState().save(bis);
+//	        bos = new BufferedOutputStream(response.getOutputStream());  
+////	        byte[] buff = new byte[2048];  
+////	        int bytesRead;  
+////	        while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {  
+////	            bos.write(buff, 0, bytesRead);  
+////	        }  
+//        	
+//        	byte[] buff = bis.toByteArray();
+//        	bos.write(buff);
+//	        bis.close();  
+//	        bos.close();  
+//        }catch(IOException ex){
+//        	ex.printStackTrace();
+//        	throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
+//        }
+//    }
+
+    /*
+     * Serve the config.txt for download. 
+     * Note that it is processed again [save(bos)] to avoid deletion of the file between saving and loading.
+     */
+    @RequestMapping(value = "/config", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> downloadConfig() throws Exception{ 
+    	
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	
+		try {
+			// Create CSV
+			kms.getState().save(bos);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			// Throw new Exception because were not able to return an Error page at this moment
+			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
+		}
+		
+		// Get a byte Array of the csv
+	    byte[] contents = bos.toByteArray();
+	    // Define Filename for download
+	    String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
+	    // Write headers
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.parseMediaType("application/txt"));
+	    headers.setContentDispositionFormData(filename, filename);
+	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+	    
+	    return new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
     }
+    
     
     
     @RequestMapping(value = "/csv")

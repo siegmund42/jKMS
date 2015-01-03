@@ -1,6 +1,7 @@
 package jKMS.states;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -59,7 +60,7 @@ public abstract class State {
 	public int sellerProfit(Contract contract) throws IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // DONE
-	public boolean save(String path) throws IOException, IllegalStateException	{
+	public boolean save(OutputStream o) throws IOException, IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	}
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, IllegalStateException, FalseLoadFileException	{

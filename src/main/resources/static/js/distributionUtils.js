@@ -86,7 +86,7 @@ function addRow()	{
 	// add Customer Group ----------------------------------
 	var row = document.createElement("div");
 	row.setAttribute("class", "row");
-	row.setAttribute("id", "row" + ((rows*1) + 1));
+	row.setAttribute("id", "row" + (rows*1));
 	
 	// Add field for relative Quantity
 	var cell = document.createElement('div');
@@ -130,7 +130,8 @@ function addRow()	{
 	
 	// add Row for Error displaying
 	var errorRow = document.createElement("div");
-	errorRow.setAttribute("class", "row");
+	errorRow.setAttribute("id", "errorRow" + (rows*1));
+	errorRow.setAttribute("class", "errorRow");
 	
 	var error = document.createElement("div");
 	error.setAttribute("class", "error");
@@ -150,14 +151,14 @@ function addRow()	{
 	// Verkäufer Gruppe hinzufügen ---------------------------------------
 	var row = document.createElement("div");
 	row.setAttribute("class", "row");
-	row.setAttribute("id", "row" + (rows*1 + 1));
+	row.setAttribute("id", "row" + (rows*1));
 	
 	// Add remove Link
 	var cell = document.createElement('div');
 	cell.setAttribute('class', 'cell');
 	var div = document.createElement('div');
 	div.setAttribute('class', 'round');
-	div.setAttribute('onclick', 'javascript:removeRow(' + (rows*1 + 1) + ');');
+	div.setAttribute('onclick', 'javascript:removeRow(' + (rows*1) + ');');
 	div.innerHTML = "-";
 	cell.appendChild(div);
 	
@@ -205,7 +206,8 @@ function addRow()	{
 	
 	// add Row for Error displaying
 	var errorRow = document.createElement("div");
-	errorRow.setAttribute("class", "row");
+	errorRow.setAttribute("id", "errorRow" + (rows*1));
+	errorRow.setAttribute("class", "errorRow");
 	
 	var error = document.createElement("div");
 	error.setAttribute("class", "cell");

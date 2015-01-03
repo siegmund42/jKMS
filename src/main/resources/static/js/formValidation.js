@@ -180,13 +180,15 @@ function createErrorFields(element, numberOfColumns)	{
 	// For every Error relevant field
 	for(var i = 0; i <= inputs.length && inputs[i] != null; i++)	{
 		
+		// No error div for the current field
 		if(document.getElementById('error' + inputs[i].name) == null)	{
 			
+			// No such row to contain error div for current field
 			if(document.getElementById('errorRow' + div(i, numberOfColumns)) == null)	{
 			
 				// create Error Row
 				var errorRow = document.createElement("div");
-				errorRow.setAttribute("class", "row");
+				errorRow.setAttribute("class", "errorRow");
 				errorRow.setAttribute("id", "errorRow" + div(i, numberOfColumns));
 				
 				// Append Error Row

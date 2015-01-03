@@ -294,7 +294,8 @@ public class PreparationTest {
 		//save() execute and create saveTestFile 
 		String path = "src/test/java/jKMS/states/saveTestFile.txt";;
 		try {
-			kms.getState().save(path);
+			FileOutputStream fos = new FileOutputStream(path);
+			kms.getState().save(fos);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
