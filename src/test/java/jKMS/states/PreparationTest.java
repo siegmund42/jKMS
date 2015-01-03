@@ -448,7 +448,7 @@ public class PreparationTest {
 	public void testGenerateCardsAlternating(){
 		int i = 1;
 		for(Card iter : kms.getCards()){
-			if(i==1){
+			if(i==1 && (iter.getId() % 2) == 1){
 				assertTrue(iter instanceof BuyerCard);
 				i=2;
 			}
