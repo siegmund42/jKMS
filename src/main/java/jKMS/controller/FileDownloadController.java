@@ -197,20 +197,25 @@ public class FileDownloadController extends AbstractServerController {
     @RequestMapping(value = "/config",method = RequestMethod.GET)
     public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
     	response.setContentType("text/html;charset=UTF-8"); 
-    	BufferedInputStream bis = null; 
+      //BufferedInputStream bis = null; 
     	BufferedOutputStream bos = null; 
     	String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
         response.setContentType("application/txt");
         response.setHeader("Content-disposition", "attachment; filename="  
                 + filename);  
         try{
-	        bis = new BufferedInputStream(new FileInputStream(fileName));  
+	      //bis = new BufferedInputStream(new FileInputStream(fileName));  
+        	ByteArrayOutputStream bis = new ByteArrayOutputStream();
+        	kms.getState().save(bis);
 	        bos = new BufferedOutputStream(response.getOutputStream());  
-	        byte[] buff = new byte[2048];  
-	        int bytesRead;  
-	        while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {  
-	            bos.write(buff, 0, bytesRead);  
-	        }  
+//	        byte[] buff = new byte[2048];  
+//	        int bytesRead;  
+//	        while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {  
+//	            bos.write(buff, 0, bytesRead);  
+//	        }  
+        	
+        	byte[] buff = bis.toByteArray();
+        	bos.write(buff);
 	        bis.close();  
 	        bos.close();  
         }catch(IOException ex){
@@ -218,6 +223,7 @@ public class FileDownloadController extends AbstractServerController {
         	throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
         }
     }
+
     
     
     @RequestMapping(value = "/csv")

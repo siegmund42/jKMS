@@ -15,9 +15,12 @@ import jKMS.exceptionHelper.WrongRelativeDistributionException;
 import jKMS.LogicHelper;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -198,7 +201,7 @@ public class Preparation extends State	{
 		
 		//defalt path:Users/yangxinyu/git/jKMS
 	@Override
-	public boolean save(String path) throws IOException{
+	public boolean save(OutputStream o) throws IOException{
 		//take out information aus Configuration and kms
 		 Map<Integer, Amount> bDistributionSave = new TreeMap<>();
 		 Map<Integer, Amount> sDistributionSave = new TreeMap<>();
@@ -211,7 +214,7 @@ public class Preparation extends State	{
 			 
 				   String line = System.getProperty("line.separator");
 				   StringBuffer str = new StringBuffer();
-				   FileWriter fw = new FileWriter(path, false);
+				// FileWriter fw = new FileWriter(path, false);
 				   str.append("PlayerCount:").append(kms.getConfiguration().getPlayerCount()).append(line)
 				   .append("AssistantCount:").append(kms.getConfiguration().getAssistantCount()).append(line)
 				   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
@@ -236,12 +239,27 @@ public class Preparation extends State	{
 				   }
 				   System.out.println("create outputstreamformat successful");
 				   //write information to file
-				   fw.write(str.toString());
-				   fw.close();
+				   if(o instanceof FileOutputStream){
+					   FileOutputStream fo = (FileOutputStream)o;
+					   fo.write(str.toString().getBytes());
+					   fo.close();
+				   }
+				   else if(o instanceof ByteArrayOutputStream){
+					   ByteArrayOutputStream bo = (ByteArrayOutputStream)o;
+					   bo.write(str.toString().getBytes());
+					   bo.close();
+				   }
+				   else{
+					   return false;
+				   }
+				 //fw.write(str.toString());
+				 //fw.close();
 				   System.out.println("save() successful");
 			       return true;
 		 }
 	}
+
+
 
 	
 	// generateCardSet
