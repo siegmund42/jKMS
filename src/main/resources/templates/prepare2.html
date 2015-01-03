@@ -63,7 +63,7 @@
 					<div class="cell" th:text="#{prepare.price}"></div>
 					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
 				</div>
-				<div class="row" th:each="customer,iter : ${customerConfiguration}">
+				<div class="row" th:id="'row' + ${iter.index}" th:each="customer,iter : ${customerConfiguration}">
 					<div class="cell">
 						<input type="number" name="cRelativeQuantity[]" th:id="'cRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${customer.value.relative}" th:readonly="*{isStandard}"/>
 					</div>
@@ -87,9 +87,9 @@
 					<div class="cell" th:text="#{prepare.price}"></div>
 					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
 				</div>
-				<div class="row" th:id="'row' + ${iter.count}" th:each="salesman,iter : ${salesmanConfiguration}">
+				<div class="row" th:id="'row' + ${iter.index}" th:each="salesman,iter : ${salesmanConfiguration}">
 					<div th:if="!*{isStandard}" class="cell">
-						<div class="round" onclick="'javascript:removeRow(' + ${iter.count} + ');'">-</div>
+						<div class="round" th:onclick="'javascript:removeRow(' + ${iter.index} + ');'">-</div>
 					</div>
 					<div class="cell">
 						<input type="number" name="sRelativeQuantity[]" th:id="'sRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${salesman.value.relative}" th:readonly="*{isStandard}" />
