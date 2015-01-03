@@ -238,20 +238,22 @@ public class Preparation extends State	{
 					   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
 				   }
 				   System.out.println("create outputstreamformat successful");
+				   o.write(str.toString().getBytes());
+				   
 				   //write information to file
-				   if(o instanceof FileOutputStream){
-					   FileOutputStream fo = (FileOutputStream)o;
-					   fo.write(str.toString().getBytes());
-					   fo.close();
-				   }
-				   else if(o instanceof ByteArrayOutputStream){
-					   ByteArrayOutputStream bo = (ByteArrayOutputStream)o;
-					   bo.write(str.toString().getBytes());
-					   bo.close();
-				   }
-				   else{
-					   return false;
-				   }
+//				   if(o instanceof FileOutputStream){
+//					   FileOutputStream fo = (FileOutputStream)o;
+//					   fo.write(str.toString().getBytes());
+//					   fo.close();
+//				   }
+//				   else if(o instanceof ByteArrayOutputStream){
+//					   ByteArrayOutputStream bo = (ByteArrayOutputStream)o;
+//					   bo.write(str.toString().getBytes());
+//					   bo.close();
+//				   }
+//				   else{
+//					   return false;
+//				   }
 				 //fw.write(str.toString());
 				 //fw.close();
 				   System.out.println("save() successful");
