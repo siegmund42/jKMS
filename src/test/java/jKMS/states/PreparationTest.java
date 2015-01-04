@@ -83,7 +83,6 @@ public class PreparationTest {
 	}
 	
 	@Test
-	//TODO testLoad
 	public void testLoad(){
 		//create initial information for testLoad
 				int unexpectedPlayerCount = 8;
@@ -201,16 +200,16 @@ public class PreparationTest {
 				assertEquals("system did not load the right sDistributionCount", expectedsDistribution.size(), kms.getConfiguration().getsDistribution().size());
 				
 				//check bDistribution and sDistribution
-				Set bd_key1 = expectedbDistribution.keySet();
-				Set bd_key2 = kms.getConfiguration().getbDistribution().keySet();
+				Set<Integer> bd_key1 = expectedbDistribution.keySet();
+				Set<Integer> bd_key2 = kms.getConfiguration().getbDistribution().keySet();
 				if(bd_key1.equals(bd_key2)){
 					for(int i =0;i<bd_key1.size();i++){
 						assertSame("system did not load the right Absolute value bDistribution", expectedbDistribution.get(bd_key1.toArray()[i]).getAbsolute(), kms.getConfiguration().getbDistribution().get(bd_key1.toArray()[i]).getAbsolute());
 						assertSame("system did not load the right Relative value bDistribution", expectedbDistribution.get(bd_key1.toArray()[i]).getRelative(), kms.getConfiguration().getbDistribution().get(bd_key1.toArray()[i]).getRelative());
 					}
 				}
-				Set sd_key1 = expectedsDistribution.keySet();
-				Set sd_key2 = kms.getConfiguration().getsDistribution().keySet();
+				Set<Integer> sd_key1 = expectedsDistribution.keySet();
+				Set<Integer> sd_key2 = kms.getConfiguration().getsDistribution().keySet();
 				if(sd_key1.equals(sd_key2)){
 					for(int i =0;i<sd_key1.size();i++){
 						assertSame("system did not load the right Absolute value for sDistribution", expectedsDistribution.get(sd_key1.toArray()[i]).getAbsolute(), kms.getConfiguration().getsDistribution().get(sd_key1.toArray()[i]).getAbsolute());
@@ -269,8 +268,8 @@ public class PreparationTest {
 			
 		}
 	}
+	
 	@Test
-	//TODO testSave
 	public void testSave(){
 		kms.getConfiguration().setGroupCount(2);
 		int expectedPlayerCount = 0;
@@ -373,6 +372,8 @@ public class PreparationTest {
 				 expectedCardSet.add(card);
 			 }
 			
+			br.close();
+			
 		} catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -386,16 +387,16 @@ public class PreparationTest {
 			assertEquals("system did not save the right bDistributionCount", expectedbDistribution.size(), kms.getConfiguration().getbDistribution().size());
 			assertEquals("system did not save the right sDistributionCount", expectedsDistribution.size(), kms.getConfiguration().getsDistribution().size());
 		//test bDistribution and sDistribution
-			Set bd_key1 = expectedbDistribution.keySet();
-			Set bd_key2 = kms.getConfiguration().getbDistribution().keySet();
+			Set<Integer> bd_key1 = expectedbDistribution.keySet();
+			Set<Integer> bd_key2 = kms.getConfiguration().getbDistribution().keySet();
 			if(bd_key1.equals(bd_key2)){
 				for(int i =0;i<bd_key1.size();i++){
 					assertSame("system did not save the right Absolute value bDistribution", expectedbDistribution.get(bd_key1.toArray()[i]).getAbsolute(), kms.getConfiguration().getbDistribution().get(bd_key1.toArray()[i]).getAbsolute());
 					assertSame("system did not save the right Relative value bDistribution", expectedbDistribution.get(bd_key1.toArray()[i]).getRelative(), kms.getConfiguration().getbDistribution().get(bd_key1.toArray()[i]).getRelative());
 				}
 			}
-			Set sd_key1 = expectedsDistribution.keySet();
-			Set sd_key2 = kms.getConfiguration().getsDistribution().keySet();
+			Set<Integer> sd_key1 = expectedsDistribution.keySet();
+			Set<Integer> sd_key2 = kms.getConfiguration().getsDistribution().keySet();
 			if(sd_key1.equals(sd_key2)){
 				for(int i =0;i<sd_key1.size();i++){
 					assertSame("system did not save the right Absolute value for sDistribution", expectedsDistribution.get(sd_key1.toArray()[i]).getAbsolute(), kms.getConfiguration().getsDistribution().get(sd_key1.toArray()[i]).getAbsolute());
@@ -405,8 +406,6 @@ public class PreparationTest {
 		//test cardSet
 			assertEquals("system did not save the right CardNumber", expectedCardSet.size(), kms.getCards().size());
 			assertEquals("system did not save the right CardSetContent", expectedCardSet.toString(), kms.getCards().toString());
-
-
 	}
 	
 	@Test

@@ -55,19 +55,18 @@ public class LoadTest {
 		kms.getConfiguration().setFirstID(1001);
 		
 		//Setup Distribution pro distribution 100 % because eingabemaske
-		kms.getState().newGroup(true, 2, 20, 2);
-		kms.getState().newGroup(true, 3, 20, 2);
-		kms.getState().newGroup(true, 4, 60, 1);
-		kms.getState().newGroup(false, 2, 60, 1);
-		kms.getState().newGroup(false, 3, 20, 2);
-		kms.getState().newGroup(false, 4, 20, 2);
+		kms.getState().newGroup(true, 2, 40, 2);
+		kms.getState().newGroup(true, 3, 40, 2);
+		kms.getState().newGroup(true, 4, 20, 1);
+		kms.getState().newGroup(false, 2, 20, 1);
+		kms.getState().newGroup(false, 3, 40, 2);
+		kms.getState().newGroup(false, 4, 40, 2);
 		
 		try{
 			kms.getState().generateCards();
 		}catch (Exception e) {
 			e.printStackTrace();	
 		}
-		
 		
 		kms.load();
 	}
