@@ -64,10 +64,10 @@ public class PreparationTest {
 		Map<Integer, Amount> bDistrib = new TreeMap<Integer, Amount>();
 		Map<Integer, Amount> sDistrib = new TreeMap<Integer, Amount>();
 		
-		bDistrib.put(3, new Amount(50, 2));
-		bDistrib.put(4, new Amount(50, 1));
-		sDistrib.put(3, new Amount(50, 2));
-		sDistrib.put(4, new Amount(50, 1));
+		bDistrib.put(3, new Amount(75, 2));
+		bDistrib.put(4, new Amount(25, 1));
+		sDistrib.put(3, new Amount(75, 2));
+		sDistrib.put(4, new Amount(25, 1));
 		
 		kms.getConfiguration().setbDistribution(bDistrib);
 		kms.getConfiguration().setsDistribution(sDistrib);
@@ -86,8 +86,8 @@ public class PreparationTest {
 				int unexpectedAssistantCount = 2;
 				int expectedGroupCount = 3;
 		    	int expectedFirstID = 1001;
-		    	Map<Integer, Amount> expectedbDistribution = new TreeMap<>();
-				Map<Integer, Amount> expectedsDistribution = new TreeMap<>();
+		    	Map<Integer, Amount> expectedbDistribution = new TreeMap<Integer, Amount>();
+				Map<Integer, Amount> expectedsDistribution = new TreeMap<Integer, Amount>();
 				Set<Card> expectedCardSet = new LinkedHashSet<Card>();
 				expectedbDistribution.put(56,new Amount(25,1));
 				expectedbDistribution.put(65,new Amount(25,1));
