@@ -13,3 +13,4 @@ hs_err_pid*
 /bin/
 /target/
 /Spiele/
+/src/test/java/jKMS/states/*.txt

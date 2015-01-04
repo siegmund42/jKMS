@@ -78,6 +78,7 @@ public class Pdf {
         int i = 0;
         
         //----------------------IMPLEMENTATION-------------------------------
+        
         for(Card iter : cards){
         	
         	if(iter instanceof SellerCard){ //seller or buyer?
@@ -305,6 +306,7 @@ public class Pdf {
 	private Paragraph createPackOnCard(char pack){
 		Paragraph cPa = new Paragraph(String.valueOf(pack),packFont);
     	cPa.setAlignment(Element.ALIGN_RIGHT);
+    	cPa.setSpacingAfter(20);
     	return cPa;
 	}
 	
@@ -315,13 +317,13 @@ public class Pdf {
         
     	if(isTop){
     		content.setSpacingBefore(140);
-            content.setSpacingAfter(140);
+            content.setSpacingAfter(121);
     		if(card.getId() == -42 && card.getValue() == 0){
-                content.setSpacingAfter(168);
+                content.setSpacingAfter(146);
     		}
     	}else{
             content.setSpacingBefore(140);
-            content.setSpacingAfter(140);
+            content.setSpacingAfter(121);
     	}
     	
         if((card.getId() != -42) && (card.getValue() != 0)){

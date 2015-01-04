@@ -10,6 +10,7 @@ import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
 import jKMS.exceptionHelper.WrongRelativeDistributionException;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -224,7 +225,8 @@ public class PrepareController extends AbstractServerController {
 			
 			// Save Config File automatically
 			try	{
-				kms.getState().save(path);
+				FileOutputStream fos = new FileOutputStream(path);
+				kms.getState().save(fos);
 				System.out.println("Saved Config File in: " + path);
 			} catch(IOException e){
 				e.printStackTrace();

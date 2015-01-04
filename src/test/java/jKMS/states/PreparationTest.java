@@ -293,7 +293,8 @@ public class PreparationTest {
 		//save() execute and create saveTestFile 
 		String path = "src/test/java/jKMS/states/saveTestFile.txt";;
 		try {
-			kms.getState().save(path);
+			FileOutputStream fos = new FileOutputStream(path);
+			kms.getState().save(fos);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -447,7 +448,7 @@ public class PreparationTest {
 	public void testGenerateCardsAlternating(){
 		int i = 1;
 		for(Card iter : kms.getCards()){
-			if(i==1){
+			if(i==1 && (iter.getId() % 2) == 1){
 				assertTrue(iter instanceof BuyerCard);
 				i=2;
 			}
