@@ -3,6 +3,7 @@ package jKMS.states;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -40,7 +41,33 @@ public class EvaluationTest {
 		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());
 		
 		kms.getState().setBasicConfig(800, 10);
-		kms.getState().loadStandardDistribution();
+		//kms.getState().loadStandardDistribution();
+		
+		//STANDARD DISTRIB:
+		// Load Buyer Distribution
+		Map<Integer, Amount> bDistribution = new TreeMap<>();
+		bDistribution.put(70, new Amount(20, 80));
+		bDistribution.put(65, new Amount(16, 64));
+		bDistribution.put(60, new Amount(16, 64));
+		bDistribution.put(55, new Amount(16, 64));
+		bDistribution.put(50, new Amount(16, 64));
+		bDistribution.put(45, new Amount(16, 64));
+		kms.getConfiguration().setbDistribution(bDistribution);
+		
+		// Load Seller Distribution
+		Map<Integer, Amount> sDistribution = new TreeMap<>();
+		sDistribution.put(63, new Amount(10, 40));
+		sDistribution.put(58, new Amount(18, 72));
+		sDistribution.put(53, new Amount(18, 72));
+		sDistribution.put(48, new Amount(18, 72));
+		sDistribution.put(43, new Amount(18, 72));
+		sDistribution.put(38, new Amount(18, 72));
+		kms.getConfiguration().setsDistribution(sDistribution);
+		
+		// Set Amount of Groups
+		kms.getConfiguration().setGroupCount(6);
+		
+		System.out.println("Loaded Standard Distribution.");
 		
 		try{
 			kms.getState().generateCards();
@@ -53,7 +80,7 @@ public class EvaluationTest {
 		kms.load();
 		kms.play();
 		
-		c = new LinkedHashSet<Card>(kms.getCards());
+		/*c = new LinkedHashSet<Card>(kms.getCards());
 		
 		for(Card id1 : kms.getCards()){
 			if(id1 instanceof BuyerCard){
@@ -67,7 +94,9 @@ public class EvaluationTest {
 					}
 				}
 			}
-		}
+		}*/
+		
+		kms.evaluate();
 	}
 	
 	@Test
@@ -86,7 +115,7 @@ public class EvaluationTest {
 	//CSV
 	public void testCsv() throws IOException{
 		
-		CSVWriter writer = new CSVWriter(new FileWriter("/home/justus/test.csv"));
+		CSVWriter writer = new CSVWriter(new FileWriter("src/test/java/jKMS/states/test.csv"));
 		kms.getState().generateCSV(writer);
 		writer.close();
 	}
