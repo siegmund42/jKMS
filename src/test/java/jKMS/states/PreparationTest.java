@@ -215,9 +215,7 @@ public class PreparationTest {
 				}
 				
 				//check CardSet
-				assertEquals("system did not load the right CardNumber", expectedCardSet.size(), kms.getCards().size());
-				assertEquals("system did not load the right CardSetContent", expectedCardSet.toString(), kms.getCards().toString());
-
+				assertEquals("the CardNumber should be 6,system should not load CardSet in state preparation", 6 , kms.getCards().size());
 	}
 
 	@Test
