@@ -2,7 +2,6 @@ package jKMS.states;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -16,8 +15,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-
-import javax.servlet.ServletContext;
 
 import jKMS.Amount;
 import jKMS.Application;
@@ -253,11 +250,11 @@ public class PreparationTest {
 		Document documentBuyer = new Document();
 		try {
 			
-			PdfWriter.getInstance(documentSeller, new FileOutputStream("/home/justus/documentseller.pdf")); 
+			PdfWriter.getInstance(documentSeller, new FileOutputStream("src/test/java/jKMS/states/documentseller.pdf")); 
 			documentSeller.open();
 			pdf.createPdfCardsSeller(documentSeller,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
 			documentSeller.close();
-			PdfWriter.getInstance(documentBuyer, new FileOutputStream("/home/justus/documentbuyer.pdf")); 
+			PdfWriter.getInstance(documentBuyer, new FileOutputStream("src/test/java/jKMS/states/documentbuyer.pdf")); 
 			documentBuyer.open();
 			pdf.createPdfCardsBuyer(documentBuyer,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
 			documentBuyer.close();
@@ -291,7 +288,7 @@ public class PreparationTest {
 		}
 		
 		//save() execute and create saveTestFile 
-		String path = "src/test/java/jKMS/states/saveTestFile.txt";;
+		String path = "src/test/java/jKMS/states/saveTestFile.txt";
 		try {
 			FileOutputStream fos = new FileOutputStream(path);
 			kms.getState().save(fos);

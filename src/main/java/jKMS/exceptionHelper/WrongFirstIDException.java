@@ -1,5 +1,6 @@
 package jKMS.exceptionHelper;
 
+@SuppressWarnings("serial")
 public class WrongFirstIDException extends Exception{
 	
 	public WrongFirstIDException(){

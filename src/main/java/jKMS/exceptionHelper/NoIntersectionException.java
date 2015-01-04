@@ -1,5 +1,6 @@
 package jKMS.exceptionHelper;
 
+@SuppressWarnings("serial")
 public class NoIntersectionException extends Exception{
 	
 	public NoIntersectionException()

@@ -1,5 +1,6 @@
 package jKMS.exceptionHelper;
 
+@SuppressWarnings("serial")
 public class InvalidStateChangeException extends Exception {
 
 	private String errorMessage;

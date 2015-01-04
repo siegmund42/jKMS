@@ -1,5 +1,6 @@
 package jKMS.exceptionHelper;
 
+	@SuppressWarnings("serial")
 	public class FalseLoadFileException extends Exception{
 	    String errorMessage;
 	 

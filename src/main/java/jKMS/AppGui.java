@@ -18,10 +18,6 @@ import javax.swing.JCheckBox;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.boot.SpringApplication;
-import org.springframework.stereotype.Component;
-
-
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -36,6 +32,8 @@ import java.awt.event.WindowEvent;
 @Configurable //for creating AppGui with new - also some additional changes required in project settings
 //@Component
 public class AppGui extends JFrame{
+	static final long serialVersionUID = 1337;
+	
 	@Autowired
 	private Kartoffelmarktspiel kms;
 	

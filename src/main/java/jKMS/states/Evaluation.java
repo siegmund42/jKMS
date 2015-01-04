@@ -9,10 +9,7 @@ import java.util.TreeMap;
 
 import jKMS.Amount;
 
-import java.util.TreeMap;
-
 import au.com.bytecode.opencsv.CSVWriter;
-import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.Csv;
 import jKMS.Kartoffelmarktspiel;

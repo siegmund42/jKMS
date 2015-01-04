@@ -15,16 +15,13 @@ import jKMS.exceptionHelper.WrongRelativeDistributionException;
 import jKMS.LogicHelper;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Map;
 import java.util.Set;
@@ -97,7 +94,7 @@ public class Preparation extends State	{
 	//set initial value for load
     	int groupCount=0;
     	int firstID=0;
-    	Set<Card> cardSet = new LinkedHashSet<Card>();
+    	//Set<Card> cardSet = new LinkedHashSet<Card>();
     	Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
 		Map<Integer, Amount> sDistributionLoad = new TreeMap<>();
 		//deal with PlayerCount,AssistantCount,GroupCount and fistID
@@ -220,10 +217,10 @@ public class Preparation extends State	{
 				   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
 				   .append("FirstID:").append(kms.getConfiguration().getFirstID()).append(line);
 				   
-				   Set bSet = bDistributionSave.entrySet();
-				   Set sSet = sDistributionSave.entrySet();
-				   Iterator bIter = bSet.iterator();
-				   Iterator sIter = sSet.iterator();
+				   Set<Entry<Integer, Amount>> bSet = bDistributionSave.entrySet();
+				   Set<Entry<Integer, Amount>> sSet = sDistributionSave.entrySet();
+				   Iterator<Entry<Integer, Amount>> bIter = bSet.iterator();
+				   Iterator<Entry<Integer, Amount>> sIter = sSet.iterator();
 				   while(bIter.hasNext() && sIter.hasNext()){
 					   Map.Entry bEntry = (Map.Entry)bIter.next(); 
 					   Map.Entry sEntry = (Map.Entry)sIter.next(); 
@@ -231,8 +228,8 @@ public class Preparation extends State	{
 					   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
 							   " "+"sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
 				   }
-				   Set cardSet = kms.getCards();
-				   Iterator cardIter = cardSet.iterator();
+				   Set<Card> cardSet = kms.getCards();
+				   Iterator<Card> cardIter = cardSet.iterator();
 				   while(cardIter.hasNext()){
 					   Card card = (Card) cardIter.next();
 					   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);

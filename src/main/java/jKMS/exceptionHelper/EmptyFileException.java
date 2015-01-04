@@ -1,7 +1,8 @@
 package jKMS.exceptionHelper;
 
+	@SuppressWarnings("serial")
 	public class EmptyFileException extends Exception{
-	    String errorMessage;
+		String errorMessage;
 	 
 	    public EmptyFileException(String errorMessage)
 	    {

@@ -1,5 +1,6 @@
 package jKMS.exceptionHelper;
 
+@SuppressWarnings("serial")
 public class NoContractsException extends Exception{
  
     public NoContractsException()

@@ -1,7 +1,6 @@
 package jKMS.controller;
 
 import jKMS.Amount;
-import jKMS.BareBonesBrowserLaunch;
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.LogicHelper;
@@ -11,14 +10,11 @@ import jKMS.states.Load;
 import jKMS.states.Play;
 import jKMS.states.Preparation;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
