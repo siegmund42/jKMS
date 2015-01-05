@@ -279,7 +279,7 @@ public class Preparation extends State	{
 		int randomKey, randomListEntry;
 		
 		//for put packages
-		int packid,ide, id;
+		int packid, id, packsize;
 		int[] packdistribution =LogicHelper.getPackageDistribution(kms.getPlayerCount(),kms.getAssistantCount());
 		
 		//clear Card Set
@@ -297,8 +297,9 @@ public class Preparation extends State	{
 		
 		
 
-		packid =0;//package index 0 for Pack A, 1 for Pack B ...		
-		ide = kms.getConfiguration().getFirstID() + packdistribution[0];
+		packid =0;//package index 0 for Pack A, 1 for Pack B ...	
+		//amount of cards in the first pack
+		packsize = packdistribution[0];
 		id  = kms.getConfiguration().getFirstID();
 		
 		//put seller and buyer distribution and put packages		
@@ -310,14 +311,14 @@ public class Preparation extends State	{
 				randomListEntry = random.nextInt(bKeys.size());
 				randomKey = bKeys.get(randomListEntry);
 			
-				if(id < ide){
+			   //card is in the pack
+				if(packsize < packdistribution[packid]){
 					kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+					packsize++;
 				}else {
-					if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){ // fehler !!!
-						packid++;
-						ide = ide + packdistribution[packid];
+						packid++; //get amount of cards from the next package
+						packsize = 0; // reset packsize
 						kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
-					}
 				}
 
 
@@ -336,16 +337,14 @@ public class Preparation extends State	{
 				randomListEntry = random.nextInt(sKeys.size());
 				randomKey = sKeys.get(randomListEntry);
 
-				if(id < ide){
+				if(packsize < packdistribution[packid]){
 					kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+					packsize++;
 				}else {
-				//a new package start 
-					if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){
-						//it's in 
+				//a new package start
 						packid++;
-						ide = ide + packdistribution[packid];
+						packsize = 0;
 						kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
-					}
 				}
 
 				sTemp.put(randomKey, new Amount(sTemp.get(randomKey).getRelative(), sTemp.get(randomKey).getAbsolute() - 1));
@@ -359,7 +358,6 @@ public class Preparation extends State	{
 		  id++;
 		  
 		}
-		
 	}			
 
 	// newGroup
