@@ -15,6 +15,21 @@
  <body>
  	<div th:replace="resources :: js">
 	</div>
+ 	<div id="toolBar">
+ 		<ul>
+ 			<li>
+ 				<a href="#" th:text="#{settings.language}"></a>
+ 				<ul>
+ 					<li>
+ 						<a href="settings.html?lang=de" th:text="#{settings.german}"></a>
+ 					</li>
+ 					<li>
+ 						<a href="settings.html?lang=en" th:text="#{settings.english}"></a>
+ 					</li>
+ 				</ul>
+ 			</li>
+ 		</ul>
+ 	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>

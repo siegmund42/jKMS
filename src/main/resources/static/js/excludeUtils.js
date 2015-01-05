@@ -81,8 +81,8 @@ function createExcludeFields(number)	{
 		
 		// Append Rows
 		document.getElementById("excludeDiv").appendChild(row);
-		document.getElementById("excludeDiv").appendChild(checkBoxRow);
 		document.getElementById("excludeDiv").appendChild(errorRow);
+		document.getElementById("excludeDiv").appendChild(checkBoxRow);
 		
 	}
 		

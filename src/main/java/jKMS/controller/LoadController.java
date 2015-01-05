@@ -113,13 +113,13 @@ public class LoadController extends AbstractServerController {
 	 * Exclude Cards POST Request
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.POST)
-	public String start(Model model, @RequestParam("exclude[]") String exclude[], 
-										@RequestParam("check[]") List<String> check)	{
+	public String start(Model model, @RequestParam(value = "exclude[]") String exclude[], 
+										@RequestParam(value = "check[]", required = false) List<String> check)	{
 		
 		int playerCount = kms.getPlayerCount();
 		for(int i = 0; i < exclude.length; i++)	{
 			// Check if not all cards where given out [Checkbox]
-			if(check.indexOf(Integer.toString(i)) == -1)	{
+			if(check == null || check.indexOf(Integer.toString(i)) == -1)	{
 				System.out.println("Excluding Cards from Package " + LogicHelper.IntToPackage(i));
 				try	{
 					if(exclude[i] != "")	{

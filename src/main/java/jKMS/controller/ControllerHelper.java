@@ -175,12 +175,11 @@ public class ControllerHelper extends AbstractController {
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
 		String path = url.getPath();
 		// remove "file:" part of the URL if existing
-		if(path.substring(0, 4).equals("file:"))
+		if(path.substring(0, 5).equals("file:"))	{
 			path = path.substring(path.indexOf(File.separator));
-		// 
+		}
+		// Go to parent Folder
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
-		System.out.println(path);
-		System.out.println(folderPath);
 		return folderPath;
 	}
 	
@@ -218,7 +217,7 @@ public class ControllerHelper extends AbstractController {
 	
 	public static String getNiceDate()	{
 		Date dNow = new Date( );
-	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMddHHmmss");
+	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd_HHmmss");
 	    return ft.format(dNow);
 	}
 	

@@ -202,9 +202,14 @@ public class PrepareController extends AbstractServerController {
 			}
 		}
 		
+		// Check if number of buyerGroups == number of sellerGroups
+		if(kms.getbDistribution().size() == kms.getsDistribution().size())	{
+			error = "config.groupcount";
+		}
+		
 		if(error == "")	{
-			// Set Group Count [From hidden field].
-			kms.getConfiguration().setGroupCount(i);
+			// Set Group Count [From data!! Not from hidden field!!1einself!1].
+			kms.getConfiguration().setGroupCount((kms.getbDistribution().size() + kms.getsDistribution().size())/2);
 			
 			// Set new PlayerCount
 			kms.getConfiguration().setPlayerCount(LogicHelper.getAbsoluteSum(kms.getbDistribution()) + LogicHelper.getAbsoluteSum(kms.getsDistribution()));
@@ -250,7 +255,7 @@ public class PrepareController extends AbstractServerController {
 					sConf.put(Integer.parseInt(sPrice[a]), new Amount(Integer.parseInt(sRelativeQuantity[a]), Integer.parseInt(sAbsoluteQuantity[a])));
 				}
 				model.addAttribute("customerConfiguration", cConf);
-				model.addAttribute("customerConfiguration", sConf);
+				model.addAttribute("salesmanConfiguration", sConf);
 			}
 			model.addAttribute("error", error);
 			model.addAttribute("groupQuantity", kms.getGroupCount());
