@@ -73,28 +73,30 @@ public class Pdf {
         Set<Card> topcards = new LinkedHashSet<Card>();
         Set<Card> bottomcards = new LinkedHashSet<Card>();
         int[] packdis = LogicHelper.getPackageDistribution(cards.size(), assistancount);
-        int packID = -1;
-        int ide = firstID;
+        int packID = 0;
+        int packsize = 0;
         int i = 0;
         
         //----------------------IMPLEMENTATION-------------------------------
+        //add titlecard for package A 
+        printcards.add(new SellerCard(-42,0,LogicHelper.IntToPackage(packID))); 
         
         for(Card iter : cards){
         	
         	if(iter instanceof SellerCard){ //seller or buyer?
         		//seller
-        			if(iter.getId() < ide){ //is there a new package ?
+        			if(packsize < packdis[packID] ){ //is there a new package ?
         			//no
         				printcards.add(new SellerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}else{
         			//yes
         				packID++;
-        				ide = ide + packdis[packID];
+        				packsize = 0;
         				printcards.add(new SellerCard(-42,0,LogicHelper.IntToPackage(packID))); //add card for package idedifikation
         				printcards.add(new SellerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}
         	}
-        	
+		packsize++;	
         }
         	
        if((printcards.size() % 2) == 0){ // split printcards in top and bottom
@@ -201,27 +203,31 @@ public class Pdf {
         Set<Card> topcards = new LinkedHashSet<Card>();
         Set<Card> bottomcards = new LinkedHashSet<Card>();
         int[] packdis = LogicHelper.getPackageDistribution(cards.size(), assistancount);
-        int packID = -1;
-        int ide = firstID;
+        int packID = 0;
+        int packsize = 0;
         int i = 0;
         
         //----------------------IMPLEMENTATION-------------------------------
+       
+        //add card for package idedifikation (first package) 
+        printcards.add(new BuyerCard(-42,0,LogicHelper.IntToPackage(packID))); 
+        
         for(Card iter : cards){
         	
         	if(iter instanceof BuyerCard){ //seller or buyer?
         		//buyer
-        			if(iter.getId() < ide){ //is there a new package ?
+        			if(packsize < packdis[packID]){ //is there a new package ?
         			//no
         				printcards.add(new BuyerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}else{
         			//yes
         				packID++;
-        				ide = ide + packdis[packID];
+        				packsize = 0;
         				printcards.add(new BuyerCard(-42,0,LogicHelper.IntToPackage(packID))); //add card for package idedifikation
         				printcards.add(new BuyerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}
         	}
-        	
+		packsize++;
         }
         	
        if((printcards.size() % 2) == 0){ // split printcards in top and bottom
@@ -347,7 +353,7 @@ public class Pdf {
     }
    
 
-    private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer){
+    private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer){ //TODO neue fkt. !
     	byte isbuyer = 0;
     	
     	
@@ -409,7 +415,7 @@ public class Pdf {
       	
       	//greate table contentcells
 	
-    	for(int i=0; i < packdis.length;i++){
+    	for(int i=0; i < packdis.length-1;i++){
     			if((id % 2)== isbuyer){
     				if(((id + packdis[i] - 1) % 2)== isbuyer){// anfangs/endid von paket gerade wenn isBuyer = false (Seller) anfangs/endid ungerade wenn isBuyer = true (Buyer)
     					//add Package
