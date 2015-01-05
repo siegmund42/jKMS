@@ -202,8 +202,8 @@ public class PrepareController extends AbstractServerController {
 			}
 		}
 		
-		// Check if number of buyerGroups == number of sellerGroups
-		if(kms.getbDistribution().size() == kms.getsDistribution().size())	{
+		// Check if number of buyerGroups != number of sellerGroups
+		if(kms.getbDistribution().size() != kms.getsDistribution().size())	{
 			error = "config.groupcount";
 		}
 		

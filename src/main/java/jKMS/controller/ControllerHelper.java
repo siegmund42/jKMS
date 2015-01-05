@@ -183,22 +183,15 @@ public class ControllerHelper extends AbstractController {
 		return folderPath;
 	}
 	
-	/*
-	 * Checks and, if not yet existing, creates the Folder Structure
-	 * Returns true if something was created, false if not.
-	 */
-	public static boolean checkFolders() throws IOException	{
+	public static boolean createFolders() throws IOException	{
 
 		String path = getApplicationFolder();
-		System.out.println(path);
 		File games = new File(path + configFolder);
 		File exports = new File(path + exportFolder);
-		Boolean created = false;
 		
 		if(!games.exists())	{
 			if(games.mkdir())	{
 				System.out.println("Created Folder: " + games.getAbsolutePath());
-				created = true;
 			}	else	{
 				throw new IOException("Failed to generate folder \"" + games.getAbsolutePath() + "\".");
 			}
@@ -207,12 +200,29 @@ public class ControllerHelper extends AbstractController {
 		if(!exports.exists())	{
 			if(exports.mkdir())	{
 				System.out.println("Created Folder: " + exports.getAbsolutePath());
-				created = true;
 			}	else	{
 				throw new IOException("Failed to generate folder \"" + exports.getAbsolutePath() + "\".");
 			}
 		}
-		return created;
+		return games.exists() && exports.exists();
+	}
+	
+	/*
+	 * Checks and, if not yet existing, creates the Folder Structure
+	 * Returns true if something was created, false if not.
+	 */
+	public static boolean checkFolders() throws IOException	{
+
+		String path = getApplicationFolder();
+		File games = new File(path + configFolder);
+		File exports = new File(path + exportFolder);
+		
+		if(!games.exists() || !exports.exists())	{
+			return createFolders();
+		}	else	{
+			return true;
+		}
+		
 	}
 	
 	public static String getNiceDate()	{
