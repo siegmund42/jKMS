@@ -51,7 +51,7 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (prepare2)">
 	 	</div>	
-	 	<div class="errorDiv" th:if="${error}" th:text="${error}">
+	 	<div class="errorDiv" th:if="${error}" th:text="#{error.__${error}__}">
         </div>
 	 	<div th:text="#{prepare.numberOfPlayers} + ': ' + ${numberOfPlayers}"></div>
 		<form name="arrangement" id="arrangement" method="POST" enctype="multipart/form-data" th:action="save.html" onChange="updateArrangement();" onsubmit="return validateForm(this.id);">
