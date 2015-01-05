@@ -1,13 +1,9 @@
 package jKMS;
 
 import java.awt.Desktop;
-<<<<<<< HEAD
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-=======
-import java.net.URL;
->>>>>>> branch 'master' of https://github.com/freeDom-/jKMS.git
 import java.util.Locale;
 
 import javax.servlet.MultipartConfigElement;
