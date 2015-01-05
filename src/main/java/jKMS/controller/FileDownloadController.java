@@ -122,7 +122,7 @@ public class FileDownloadController extends AbstractServerController {
     	Document document = new Document(PageSize.A4.rotate());
 		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
 		FileOutputStream fos;
-    	String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + ControllerHelper.getNiceDate() + ".pdf";
+    	String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.PDF.export") + "_" + ControllerHelper.getNiceDate() + ".pdf";
 		
     	try {
 			PdfWriter.getInstance(document, outstream);

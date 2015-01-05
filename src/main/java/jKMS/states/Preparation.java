@@ -305,7 +305,7 @@ public class Preparation extends State	{
 		while ((bTemp.isEmpty() != true) || (sTemp.isEmpty() != true)) {
 			
 			// Create Buyer Card
-			if((id % 2) == 1){ // TODO TEST !!!
+			if((id % 2) == 1 && bKeys.size() > 0){ // TODO TEST !!!
 				//all buyercards have an uneven id
 				randomListEntry = random.nextInt(bKeys.size());
 				randomKey = bKeys.get(randomListEntry);
@@ -313,7 +313,7 @@ public class Preparation extends State	{
 				if(id < ide){
 					kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
 				}else {
-					if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){
+					if(id < kms.getConfiguration().getFirstID() + kms.getPlayerCount()){ // fehler !!!
 						packid++;
 						ide = ide + packdistribution[packid];
 						kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
@@ -328,9 +328,9 @@ public class Preparation extends State	{
 					bKeys.remove(randomListEntry);
 				}
 
-			 id++;
 			 
-			}else{
+			}
+			if((id % 2) == 0 && sKeys.size() > 0){
 
 				// Create Seller Card
 				randomListEntry = random.nextInt(sKeys.size());
@@ -354,8 +354,10 @@ public class Preparation extends State	{
 					sKeys.remove(randomListEntry);
 				}
 
-			 id++;
 		  }
+			
+		  id++;
+		  
 		}
 		
 	}			

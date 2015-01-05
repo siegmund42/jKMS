@@ -175,9 +175,12 @@ public class ControllerHelper extends AbstractController {
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
 		String path = url.getPath();
 		// remove "file:" part of the URL if existing
-		if(!path.substring(0, 1).equals(File.separator))
+		if(path.substring(0, 4).equals("file:"))
 			path = path.substring(path.indexOf(File.separator));
+		// 
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
+		System.out.println(path);
+		System.out.println(folderPath);
 		return folderPath;
 	}
 	
