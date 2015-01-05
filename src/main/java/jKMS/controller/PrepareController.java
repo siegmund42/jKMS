@@ -250,13 +250,14 @@ public class PrepareController extends AbstractServerController {
 			if(error != "save.fraction")	{
 				Map<Integer, Amount> cConf = new HashMap<>();
 				Map<Integer, Amount> sConf = new HashMap<>();
-				for(int a = 0; a <= cRelativeQuantity.length; a++)	{
+				for(int a = 0; a < cRelativeQuantity.length; a++)	{
 					cConf.put(Integer.parseInt(cPrice[a]), new Amount(Integer.parseInt(cRelativeQuantity[a]), Integer.parseInt(cAbsoluteQuantity[a])));
 					sConf.put(Integer.parseInt(sPrice[a]), new Amount(Integer.parseInt(sRelativeQuantity[a]), Integer.parseInt(sAbsoluteQuantity[a])));
 				}
 				model.addAttribute("customerConfiguration", cConf);
 				model.addAttribute("salesmanConfiguration", sConf);
 			}
+			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 			model.addAttribute("error", error);
 			model.addAttribute("groupQuantity", kms.getGroupCount());
 			model.addAttribute("isStandard", false);
