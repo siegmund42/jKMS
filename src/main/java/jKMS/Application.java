@@ -1,5 +1,7 @@
 package jKMS;
 
+import java.awt.Desktop;
+import java.net.URL;
 import java.util.Locale;
 
 import javax.servlet.MultipartConfigElement;
@@ -26,9 +28,20 @@ public class Application extends WebMvcConfigurerAdapter {
 
 		SpringApplication.run(Application.class, args);
 		try {
-			// Desktop.getDesktop().browse(new
-			// URL("http://localhost:4242/index").toURI());
-			BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
+			System.out.println();
+			System.out.println("     ██╗██╗  ██╗███╗   ███╗███████╗");
+			System.out.println("     ██║██║ ██╔╝████╗ ████║██╔════╝");
+			System.out.println("     ██║█████╔╝ ██╔████╔██║███████╗");
+			System.out.println("██   ██║██╔═██╗ ██║╚██╔╝██║╚════██║");
+			System.out.println("╚█████╔╝██║  ██╗██║ ╚═╝ ██║███████║");
+			System.out.println(" ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝");
+			System.out.println("01101010 01001011 01001101 01010011");
+			System.out.println();
+			System.out.println("By Quiryn, freeDom, jUSTUS, yangxinyu and siegmund42.");
+			System.out.println();
+			System.out.println();
+
+			Desktop.getDesktop().browse(new URL("http://localhost:8080/index").toURI());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
