@@ -254,12 +254,25 @@ public class PrepareController extends AbstractServerController {
 					cConf.put(Integer.parseInt(cPrice[a]), new Amount(Integer.parseInt(cRelativeQuantity[a]), Integer.parseInt(cAbsoluteQuantity[a])));
 					sConf.put(Integer.parseInt(sPrice[a]), new Amount(Integer.parseInt(sRelativeQuantity[a]), Integer.parseInt(sAbsoluteQuantity[a])));
 				}
+				int diff = cConf.size() - sConf.size();
+				if(diff > 0)	{
+					for(int a = 0; a < diff; a++)	{
+						sConf.put(0, new Amount(0, 0));
+					}
+				}
+				if(diff < 0)	{
+					for(int a = 0; a > diff; a--)	{
+						cConf.put(0, new Amount(0, 0));
+					}
+				}
 				model.addAttribute("customerConfiguration", cConf);
 				model.addAttribute("salesmanConfiguration", sConf);
+				model.addAttribute("groupQuantity", cConf.size());
+			}	else	{
+				model.addAttribute("groupQuantity", 0);
 			}
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 			model.addAttribute("error", error);
-			model.addAttribute("groupQuantity", kms.getGroupCount());
 			model.addAttribute("isStandard", false);
 			return "prepare2";
 		}

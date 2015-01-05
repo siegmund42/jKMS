@@ -1,9 +1,13 @@
 package jKMS;
 
 import java.awt.Desktop;
+<<<<<<< HEAD
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+=======
+import java.net.URL;
+>>>>>>> branch 'master' of https://github.com/freeDom-/jKMS.git
 import java.util.Locale;
 
 import javax.servlet.MultipartConfigElement;
@@ -43,6 +47,20 @@ public class Application extends WebMvcConfigurerAdapter {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		
+		System.out.println();
+		System.out.println("     ██╗██╗  ██╗███╗   ███╗███████╗");
+		System.out.println("     ██║██║ ██╔╝████╗ ████║██╔════╝");
+		System.out.println("     ██║█████╔╝ ██╔████╔██║███████╗");
+		System.out.println("██   ██║██╔═██╗ ██║╚██╔╝██║╚════██║");
+		System.out.println("╚█████╔╝██║  ██╗██║ ╚═╝ ██║███████║");
+		System.out.println(" ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝");
+		System.out.println("01101010 01001011 01001101 01010011");
+		System.out.println();
+		System.out.println("By Quiryn, freeDom, jUSTUS, yangxinyu and siegmund42.");
+		System.out.println();
+		System.out.println();
+		
 	}
 	
     @Bean
