@@ -87,7 +87,6 @@ public class Pdf {
         		//seller
         			if(packsize < packdis[packID] ){ //is there a new package ?
         			//no
-        				packsize++;
         				printcards.add(new SellerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}else{
         			//yes
@@ -97,7 +96,7 @@ public class Pdf {
         				printcards.add(new SellerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}
         	}
-        	
+		packsize++;	
         }
         	
        if((printcards.size() % 2) == 0){ // split printcards in top and bottom
@@ -219,7 +218,6 @@ public class Pdf {
         		//buyer
         			if(packsize < packdis[packID]){ //is there a new package ?
         			//no
-        				packsize++;
         				printcards.add(new BuyerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}else{
         			//yes
@@ -229,7 +227,7 @@ public class Pdf {
         				printcards.add(new BuyerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}
         	}
-        	
+		packsize++;
         }
         	
        if((printcards.size() % 2) == 0){ // split printcards in top and bottom

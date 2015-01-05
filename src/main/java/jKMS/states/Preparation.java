@@ -299,7 +299,7 @@ public class Preparation extends State	{
 
 		packid =0;//package index 0 for Pack A, 1 for Pack B ...	
 		//amount of cards in the first pack
-		packsize = packdistribution[0];
+		packsize = 0;
 		id  = kms.getConfiguration().getFirstID();
 		
 		//put seller and buyer distribution and put packages		
