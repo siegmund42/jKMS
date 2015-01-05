@@ -332,25 +332,4 @@ public class ControllerHelper extends AbstractController {
 		
 		return result;
 	}
-	
-//	public static boolean openBrowser() throws MalformedURLException, IOException, URISyntaxException	{
-//		if(kms.getState() instanceof Preparation){
-////			BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
-//			Desktop.getDesktop().browse(new URL("http://localhost:8080/index").toURI());
-//		}
-//		else if(kms.getState() instanceof Load){
-////			BareBonesBrowserLaunch.openURL("http://localhost:8080/load?s=1");
-//			Desktop.getDesktop().browse(new URL("http://localhost:8080/load1").toURI());
-//		}
-//		else if(kms.getState() instanceof Play){
-////			BareBonesBrowserLaunch.openURL("http://localhost:8080/play");
-//			Desktop.getDesktop().browse(new URL("http://localhost:8080/play").toURI());
-//		}
-//		else if(kms.getState() instanceof Evaluation){
-////			BareBonesBrowserLaunch.openURL("http://localhost:8080/evaluate");
-//			Desktop.getDesktop().browse(new URL("http://localhost:8080/evaluate").toURI());
-//		}
-//		return true;
-//	}
-	
 }

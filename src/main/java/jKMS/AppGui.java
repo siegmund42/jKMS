@@ -1,10 +1,5 @@
 package jKMS;
 
-import jKMS.states.Evaluation;
-import jKMS.states.Load;
-import jKMS.states.Play;
-import jKMS.states.Preparation;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -16,9 +11,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JCheckBox;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -28,14 +21,12 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-@Configurable //for creating AppGui with new - also some additional changes required in project settings
-//@Component
 public class AppGui extends JFrame{
 	static final long serialVersionUID = 1337;
-	
-	@Autowired
-	private Kartoffelmarktspiel kms;
 	
 	private JButton btnClose, btnOpenBrowser;
 	private JPanel logPanel;
@@ -75,19 +66,18 @@ public class AppGui extends JFrame{
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand() == "Browser") {
-					if(kms.getState() instanceof Preparation){
-						BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
-					}
-					else if(kms.getState() instanceof Load){
-						BareBonesBrowserLaunch.openURL("http://localhost:8080/load?s=1");
-					}
-					else if(kms.getState() instanceof Play){
-						BareBonesBrowserLaunch.openURL("http://localhost:8080/play");
-					}
-					else if(kms.getState() instanceof Evaluation){
-						BareBonesBrowserLaunch.openURL("http://localhost:8080/evaluate");
-					}
+				URI redirect = null;
+				
+				try {
+					redirect = new URI("http://localhost:8080/autoRedirect");
+				} catch (URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+
+				try {
+					Desktop.getDesktop().browse(redirect);
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 			}
 		});

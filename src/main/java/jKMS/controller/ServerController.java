@@ -2,6 +2,10 @@ package jKMS.controller;
 
 import jKMS.Amount;
 import jKMS.LogicHelper;
+import jKMS.states.Evaluation;
+import jKMS.states.Load;
+import jKMS.states.Play;
+import jKMS.states.Preparation;
 
 import java.io.IOException;
 import java.util.TreeMap;
@@ -53,5 +57,14 @@ public class ServerController extends AbstractServerController	{
 		kms.prepare();
 		System.out.println("Reseted all data.");
 		return "redirect:/index";
+	}
+	
+	@RequestMapping(value = "/autoRedirect", method = RequestMethod.GET)
+	public String autoRedirect(){
+		if(kms.getState() instanceof Preparation) return "redirect:/index";
+		else if(kms.getState() instanceof Load) return "redirect:/load1";
+		else if(kms.getState() instanceof Play) return "redirect:/play";
+		else if(kms.getState() instanceof Evaluation) return "redirect:/evaluate";
+		else return "redirect:/index";
 	}
 }

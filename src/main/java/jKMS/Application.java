@@ -1,5 +1,9 @@
 package jKMS;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Locale;
 
 import javax.servlet.MultipartConfigElement;
@@ -25,12 +29,19 @@ public class Application extends WebMvcConfigurerAdapter {
 		new AppGui();
 
 		SpringApplication.run(Application.class, args);
+		
+		URI index = null;
+		
 		try {
-			// Desktop.getDesktop().browse(new
-			// URL("http://localhost:4242/index").toURI());
-			BareBonesBrowserLaunch.openURL("http://localhost:8080/index");
-		} catch (Exception e) {
-			e.printStackTrace();
+			index = new URI("http://localhost:8080/index");
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+
+		try {
+			Desktop.getDesktop().browse(index);
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 	}
 	
