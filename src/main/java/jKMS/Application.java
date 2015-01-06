@@ -25,8 +25,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @EnableAutoConfiguration
 public class Application extends WebMvcConfigurerAdapter {
 	
+	public static AppGui gui;
+
 	public static void main(String[] args) {
-		new AppGui();
+		gui = new AppGui();
 
 		SpringApplication.run(Application.class, args);
 		
@@ -40,6 +42,7 @@ public class Application extends WebMvcConfigurerAdapter {
 
 		try {
 			Desktop.getDesktop().browse(index);
+			gui.setLoaded();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

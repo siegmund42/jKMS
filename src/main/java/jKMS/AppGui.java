@@ -6,11 +6,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import java.awt.GridBagLayout;
 
 import javax.swing.JCheckBox;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -29,6 +32,7 @@ public class AppGui extends JFrame{
 	static final long serialVersionUID = 1337;
 	
 	private JButton btnClose, btnOpenBrowser;
+	private JLabel lblStatus;
 	private JPanel logPanel;
 	private JCheckBox chckbxShowLog;
 	
@@ -61,8 +65,8 @@ public class AppGui extends JFrame{
 		});
 		
 		
-		btnOpenBrowser = new JButton("Open Game in Browser");
-		btnOpenBrowser.setBounds(50, 65, 200, 50);
+		btnOpenBrowser = new JButton(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
+		btnOpenBrowser.setBounds(50, 65, 175, 50);
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,8 +87,16 @@ public class AppGui extends JFrame{
 		});
 		getContentPane().add(btnOpenBrowser);
 		
-		btnClose = new JButton("Shut Down Server");
-		btnClose.setBounds(380, 65, 200, 50);
+		lblStatus = new JLabel(LogicHelper.getLocalizedMessage("GUI.lblLoading"));
+		lblStatus.setFont(new Font("Courier New", Font.PLAIN, 15));
+		lblStatus.setForeground(new Color(0x00FF0000));
+		lblStatus.setBounds(225, 65, 180, 50);
+		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
+		lblStatus.setVerticalAlignment(SwingConstants.CENTER);
+		getContentPane().add(lblStatus);
+		
+		btnClose = new JButton(LogicHelper.getLocalizedMessage("GUI.btnClose"));
+		btnClose.setBounds(405, 65, 175, 50);
 		btnClose.setActionCommand("Exit");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -105,7 +117,7 @@ public class AppGui extends JFrame{
 		gbl_panel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		logPanel.setLayout(gbl_panel);
 		
-		chckbxShowLog = new JCheckBox("Show Log");
+		chckbxShowLog = new JCheckBox(LogicHelper.getLocalizedMessage("GUI.showLog"));
 		GridBagConstraints gbc_chckbxShowLog = new GridBagConstraints();
 		gbc_chckbxShowLog.insets = new Insets(0, 0, 5, 0);
 		gbc_chckbxShowLog.gridx = 0;
@@ -115,6 +127,7 @@ public class AppGui extends JFrame{
 				if (chckbxShowLog.isSelected()){
 					setSize(640, 480);
 					btnOpenBrowser.setBounds(50, 390, 200, 50);
+					lblStatus.setBounds(225, 390, 180, 50);
 					btnClose.setBounds(380, 390, 200, 50);
 					scrollPane.setVisible(true);
 					validate();
@@ -123,6 +136,7 @@ public class AppGui extends JFrame{
 				else{
 					setSize(640, 180);
 					btnOpenBrowser.setBounds(50, 65, 200, 50);
+					lblStatus.setBounds(225, 65, 180, 50);
 					btnClose.setBounds(380, 65, 200, 50);
 					scrollPane.setVisible(false);
 				}
@@ -144,6 +158,7 @@ public class AppGui extends JFrame{
 		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);
+		
 		console.redirectErr();
 		console.redirectOut();
 		//console.setMessageLines(500);
@@ -158,5 +173,17 @@ public class AppGui extends JFrame{
 				"Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){
 			System.exit(0);
 		}
+	}
+	
+	public void setLoaded(){
+		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
+		lblStatus.setForeground(new Color(0x00009900));
+	}
+	
+	public void changeLanguage(){
+		btnOpenBrowser.setText(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
+		btnClose.setText(LogicHelper.getLocalizedMessage("GUI.btnClose"));
+		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
+		chckbxShowLog.setText(LogicHelper.getLocalizedMessage("GUI.showLog"));
 	}
 }

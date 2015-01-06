@@ -1,6 +1,7 @@
 package jKMS.controller;
 
 import jKMS.Amount;
+import jKMS.Application;
 import jKMS.LogicHelper;
 import jKMS.states.Evaluation;
 import jKMS.states.Load;
@@ -27,13 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import scala.collection.Set;
-
 @Controller
 public class ServerController extends AbstractServerController	{
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(Model model, ServletRequest request) {
+	public String index(Model model, ServletRequest request, @RequestParam(value = "lang", required = false) final String lang) {
+		if(lang != null) Application.gui.changeLanguage();
 		try {
 			ControllerHelper.checkFolders();
 		} catch (IOException e) {
@@ -115,8 +115,6 @@ public class ServerController extends AbstractServerController	{
 		fos.close();
 		LogicHelper.print("Wrote auth to config.txt");
 		
-		
-		
 		return "settings";
 	}
 	
@@ -137,7 +135,7 @@ public class ServerController extends AbstractServerController	{
 		return "redirect:/index";
 	}
 	
-	@RequestMapping(value = "/autoRedirect", method = RequestMethod.GET)
+	@RequestMapping("/autoRedirect")
 	public String autoRedirect(){
 		if(kms.getState() instanceof Preparation) return "redirect:/prepare1";
 		else if(kms.getState() instanceof Load) return "redirect:/load1";

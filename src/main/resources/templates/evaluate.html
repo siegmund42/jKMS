@@ -54,15 +54,19 @@
  		<div th:text="#{noscript}"></div>
  	</noscript>
  		
-	<div id="stats">
- 		<h3 th:text="#{evaluate.headline}"> </h3>
- 		<div th:text="#{evaluate.average} + ': ' + ${average} + '€'"> </div>
- 		<div th:text="#{evaluate.min} + ': ' + ${min} + '€'"> </div>
- 		<div th:text="#{evaluate.max} + ': ' + ${max} + '€'"> </div>
- 		<div th:text="#{evaluate.variance} + ': ' + ${variance}"> </div>
- 		<div th:text="#{evaluate.standardDeviation} + ': ' + ${standardDeviation}"> </div>
- 		<div th:text="#{evaluate.eqPrice} + ': ' + ${eqPrice}"> </div>
- 		<div th:text="#{evaluate.eqQuantity} + ': ' + ${eqQuantity}"> </div>
+	<div id="statsContainer">
+ 		<h4 th:text="#{evaluate.headline}"> </h4>
+ 		<div id="statsData">
+	 		<div th:text="#{evaluate.average} + ': ' + ${average} + '€'" > </div>
+	 		<div th:text="#{evaluate.size} + ': ' + ${size}" > </div>
+	 		<div th:text="#{evaluate.min} + ': ' + ${min} + '€'" > </div>
+	 		<div th:text="#{evaluate.max} + ': ' + ${max} + '€'"> </div>
+	 		<div th:text="#{evaluate.variance} + ': ' + ${variance}"> </div>
+	 		<div th:text="#{evaluate.standardDeviation} + ': ' + ${standardDeviation}"> </div>
+	 		<div th:text="#{evaluate.eqPrice} + ': ' + ${eqPrice}" > </div>
+	 		<div th:text="#{evaluate.eqQuantity} + ': ' + ${eqQuantity}" > </div>
+ 		</div>
+ 		<div id="dropdown"><img th:src="@{/images/dropdown_arrow.png}" alt="aufklappen"/></div>
  	</div>
 	
 	<div id="chartWrapper">
@@ -76,7 +80,14 @@
 	
 	
 	<script type="text/javascript">
-			$(document).ready(drawEvaluation());
+			$(document).ready(function(){
+					drawEvaluation();
+					
+					$("#dropdown").click(function(){
+						$("#statsData").slideToggle();
+						$(this).toggleClass("rotate");
+					});
+			});
 	</script>
  </body>
 </html>
