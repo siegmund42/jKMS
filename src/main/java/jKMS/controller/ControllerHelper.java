@@ -212,7 +212,7 @@ public class ControllerHelper extends AbstractController {
 		
 		if(!games.exists())	{
 			if(games.mkdir())	{
-				System.out.println("Created Folder: " + games.getAbsolutePath());
+				LogicHelper.print("Created Folder: " + games.getAbsolutePath());
 			}	else	{
 				throw new IOException("Failed to generate folder \"" + games.getAbsolutePath() + "\".");
 			}
@@ -220,7 +220,7 @@ public class ControllerHelper extends AbstractController {
 		
 		if(!exports.exists())	{
 			if(exports.mkdir())	{
-				System.out.println("Created Folder: " + exports.getAbsolutePath());
+				LogicHelper.print("Created Folder: " + exports.getAbsolutePath());
 			}	else	{
 				throw new IOException("Failed to generate folder \"" + exports.getAbsolutePath() + "\".");
 			}
@@ -240,14 +240,14 @@ public class ControllerHelper extends AbstractController {
 		
 		if(!games.exists() || !exports.exists())	{
 			if(createFolders())	{
-				System.out.println("Adding folders succeeded.");
+				LogicHelper.print("Adding folders succeeded.");
 				return true;
 			}	else	{
-				System.out.println("Adding folders failed. Please try again by re-installing KMS");
+				LogicHelper.print("Adding folders failed. Please try again by re-installing KMS", 2);
 				return false;
 			}
 		}	else	{
-			System.out.println("Folder structure ok.");
+			LogicHelper.print("Folder structure ok.");
 			return true;
 		}
 		

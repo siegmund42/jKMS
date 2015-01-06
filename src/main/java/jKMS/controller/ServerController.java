@@ -23,11 +23,7 @@ public class ServerController extends AbstractServerController	{
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Model model, ServletRequest request) {
 		try {
-			if(ControllerHelper.checkFolders())	{
-				System.out.println("Adding Folders Succeeded!");
-			}	else	{
-				System.out.println("All Folders already here.");
-			}
+			ControllerHelper.checkFolders();
 		} catch (IOException e) {
 			e.printStackTrace();
 			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.buildFolderStructure.message"));
