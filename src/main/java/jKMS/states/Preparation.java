@@ -164,21 +164,6 @@ public class Preparation extends State	{
             	 System.out.println("bDistribution:"+bDistributionLoad.toString());
     			 System.out.println("sDistribution:"+sDistributionLoad.toString());
             	 System.out.println("load bDistribution and sDistribution successful");
-            	 // TODO discuss wether loading Cards
-            	 //load Cards and set them in cardSet
-//            	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
-//            		 Card card;
-//            		 buf=buf.trim();
-//            		 String[] sa = buf.split(":|\\s");
-//            		 if((Integer.valueOf(sa[1])%2) == 1){
-//            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
-//            		 }else {
-//            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
-//            		 }
-//            		 cardSet.add(card);
-//            	 }
-//            	 System.out.println("Cards Number:"+cardSet.size());
-//            	 System.out.println("load cardSet successful");
 
     			 //set load information in Configuration
     	    	 kms.getConfiguration().setGroupCount(groupCount);

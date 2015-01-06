@@ -30,16 +30,16 @@ public class ExceptionController {
 		return mav;
 	}
 	
-	@ExceptionHandler
-	public ModelAndView handleExceptions(Exception e) {
-		e.printStackTrace();
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("standardException");
-		mav.addObject("error", LogicHelper.getLocalizedMessage("error"));
-		// RunTime Exceptions are already localized
-		mav.addObject("message", e.getMessage());
-		return mav;
-	}
+//	@ExceptionHandler
+//	public ModelAndView handleExceptions(Exception e) {
+//		e.printStackTrace();
+//		ModelAndView mav = new ModelAndView();
+//		mav.setViewName("standardException");
+//		mav.addObject("error", LogicHelper.getLocalizedMessage("error"));
+//		// RunTime Exceptions are already localized
+//		mav.addObject("message", e.getMessage());
+//		return mav;
+//	}
 	
 //	@ExceptionHandler
 //	public ModelAndView handleSomeOtherException(Exception e) {

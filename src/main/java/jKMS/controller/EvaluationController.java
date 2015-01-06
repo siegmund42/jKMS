@@ -85,36 +85,41 @@ public class EvaluationController extends AbstractServerController {
 	 * Evaluation Site
 	 */
 	@RequestMapping(value = "/evaluate")
-	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException	{
+	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException, IOException	{
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "evaluate"))	{
-			// Build path for storing the .csv automatically
-			String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.csv") + ControllerHelper.getNiceDate() + ".csv";
-	    	
-			try {
-				// Save the .csv automatically
-		    	CSVWriter writer = new CSVWriter(new FileWriter(path));
-				kms.getState().generateCSV(writer);
-				writer.close();
-				System.out.println("Saved the .csv in: " + path);
-			} catch (IOException e) {
-				// Error during CSV generation
-				e.printStackTrace();
-				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.csv.message"));
-				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.csv.error"));
-				return "error";
+			
+			if(ControllerHelper.checkFolders())	{
+				// Build path for storing the .csv automatically
+				String path = ControllerHelper.getExportFolderPath() + ControllerHelper.getFilename("filename.csv") + ".csv";
+		    	
+				try {
+					// Save the .csv automatically
+			    	CSVWriter writer = new CSVWriter(new FileWriter(path));
+					kms.getState().generateCSV(writer);
+					writer.close();
+					System.out.println("Saved the .csv in: " + path);
+				} catch (IOException e) {
+					// Error during CSV generation
+					e.printStackTrace();
+					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.csv.message"));
+					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.csv.error"));
+					return "error";
+				}
+				
 			}
 			// Get statistics
 			Map<String,Float> stats = kms.getState().getStatistics();
 			
-			model.addAttribute("average", stats.get("averagePrice"));
-			model.addAttribute("min", stats.get("minimum"));
-			model.addAttribute("max", stats.get("maximum"));
-			model.addAttribute("variance", stats.get("variance"));
-			model.addAttribute("standardDeviation", stats.get("standardDeviation"));
-			model.addAttribute("eqPrice", stats.get("eqPrice"));
-			model.addAttribute("eqQuantity", stats.get("eqQuantity"));
+			model.addAttribute("average", Math.round(stats.get("averagePrice")*100)/100.0);
+			model.addAttribute("size", Math.round(stats.get("contractsSize")));
+			model.addAttribute("min", Math.round(stats.get("minimum")));
+			model.addAttribute("max", Math.round(stats.get("maximum")));
+			model.addAttribute("variance", Math.round(stats.get("variance")*100)/100.0);
+			model.addAttribute("standardDeviation", Math.round(stats.get("standardDeviation")*100)/100.0);
+			model.addAttribute("eqPrice",Math.round(stats.get("eqPrice")));
+			model.addAttribute("eqQuantity", Math.round(stats.get("eqQuantity")));
 			
 			
 			return "evaluate";

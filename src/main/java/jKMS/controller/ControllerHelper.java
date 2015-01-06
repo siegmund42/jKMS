@@ -42,6 +42,26 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/*
+	 * gets the absolute Path of the Config Folder.
+	 * Example: /media/user/42/KMS/KMS_Configuration/
+	 */
+	public static String getConfigFolderPath()	{
+		return getApplicationFolder().concat(configFolder).concat("/");
+	}
+	
+	/*
+	 * gets the absolute Path of the Export Folder.
+	 * Example: /media/user/42/KMS/KMS_Exports/
+	 */
+	public static String getExportFolderPath()	{
+		return getApplicationFolder().concat(exportFolder).concat("/");
+	}
+	
+	public static String getFilename(String message)	{
+		return LogicHelper.getLocalizedMessage(message) + "_" + getNiceDate();
+	}
+	
+	/*
 	 * Responsible for state setting.
 	 * Returns true if state setting done or not necessary.
 	 * Returns false if requested changing of state requires deletion of Data.
@@ -180,6 +200,7 @@ public class ControllerHelper extends AbstractController {
 		}
 		// Go to parent Folder
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
+		System.out.println("Located the .jar in: " + folderPath);
 		return folderPath;
 	}
 	
@@ -191,7 +212,7 @@ public class ControllerHelper extends AbstractController {
 		
 		if(!games.exists())	{
 			if(games.mkdir())	{
-				System.out.println("Created Folder: " + games.getAbsolutePath());
+				LogicHelper.print("Created Folder: " + games.getAbsolutePath());
 			}	else	{
 				throw new IOException("Failed to generate folder \"" + games.getAbsolutePath() + "\".");
 			}
@@ -199,7 +220,7 @@ public class ControllerHelper extends AbstractController {
 		
 		if(!exports.exists())	{
 			if(exports.mkdir())	{
-				System.out.println("Created Folder: " + exports.getAbsolutePath());
+				LogicHelper.print("Created Folder: " + exports.getAbsolutePath());
 			}	else	{
 				throw new IOException("Failed to generate folder \"" + exports.getAbsolutePath() + "\".");
 			}
@@ -218,8 +239,15 @@ public class ControllerHelper extends AbstractController {
 		File exports = new File(path + exportFolder);
 		
 		if(!games.exists() || !exports.exists())	{
-			return createFolders();
+			if(createFolders())	{
+				LogicHelper.print("Adding folders succeeded.");
+				return true;
+			}	else	{
+				LogicHelper.print("Adding folders failed. Please try again by re-installing KMS", 2);
+				return false;
+			}
 		}	else	{
+			LogicHelper.print("Folder structure ok.");
 			return true;
 		}
 		

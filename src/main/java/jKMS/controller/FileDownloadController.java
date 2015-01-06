@@ -6,6 +6,7 @@ import jKMS.exceptionHelper.NoContractsException;
 import jKMS.exceptionHelper.NoIntersectionException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -76,10 +77,10 @@ public class FileDownloadController extends AbstractServerController {
 	    String filename;
 	    switch(type)	{
 	    case("customer"):
-	    	filename = LogicHelper.getLocalizedMessage("filename.PDF.buyer") + "_" + ControllerHelper.getNiceDate();
+	    	filename = ControllerHelper.getFilename("filename.PDF.buyer") + ".pdf";
 	    	break;
 	    default:
-	    	filename = LogicHelper.getLocalizedMessage("filename.PDF.seller") + "_" + ControllerHelper.getNiceDate();
+	    	filename = ControllerHelper.getFilename("filename.PDF.seller") + ".pdf";
 	    }
 	    
 	    headers.setContentDispositionFormData(filename, filename);
@@ -92,7 +93,7 @@ public class FileDownloadController extends AbstractServerController {
     //catch ajax-request when evaluate.html is ready, prepare export-pdf for download
     @RequestMapping(value = "/pdfExport",
     				method = RequestMethod.POST)
-    public void exportPDF(@RequestParam("image") MultipartFile image) throws IllegalStateException, NoIntersectionException	{
+    public void exportPDF(@RequestParam("image") MultipartFile image) throws IllegalStateException, NoIntersectionException, IOException	{
     	byte[] imageBytes = null;
 
     	if(!image.isEmpty()){
@@ -117,21 +118,30 @@ public class FileDownloadController extends AbstractServerController {
 			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.noContracts"));
 		}
 		
-    	// Save byteArray ########################################
+    	// Save to byteArray and File ########################################
     	Pdf pdf = new Pdf();
     	Document document = new Document(PageSize.A4.rotate());
 		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+		// to File
 		FileOutputStream fos;
-    	String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.PDF.export") + "_" + ControllerHelper.getNiceDate() + ".pdf";
+    	String path = ControllerHelper.getExportFolderPath() + ControllerHelper.getFilename("filename.PDF.export") + ".pdf";
 		
     	try {
+    		// Call Handwaving-Method twice to write into both streams [so glad it works...]
 			PdfWriter.getInstance(document, outstream);
-			fos = new FileOutputStream(path);
-			PdfWriter.getInstance(document, fos);
+			if(ControllerHelper.checkFolders())	{
+				fos = new FileOutputStream(path);
+				PdfWriter.getInstance(document, fos);
+			}
 			document.open();
 			document = pdf.createExportPdf(document, pdfImage, stats);
 			document.close();
-			System.out.println("Saved the Export-PDF in: " + path);
+			// Check if it was really saved
+			File file = new File(path);
+			if(file.exists())
+				System.out.println("Saved the Export-PDF in: " + path);
+			else 
+				System.out.println("Saving Export-PDF failed.");
 		} catch (FileNotFoundException | DocumentException e1) {
 			e1.printStackTrace();
 			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export"));
@@ -149,7 +159,7 @@ public class FileDownloadController extends AbstractServerController {
 	    	byte[] contents = pdfBytes;
 
 		    // Define filename for download
-		    String filename = LogicHelper.getLocalizedMessage("filename.PDF.export") + "_" + ControllerHelper.getNiceDate() + ".pdf";
+		    String filename = ControllerHelper.getFilename("filename.PDF.export") + ".pdf";
 		    
 		    HttpHeaders headers = new HttpHeaders();
 		    // Write headers
@@ -163,57 +173,6 @@ public class FileDownloadController extends AbstractServerController {
 	    }
     	
     }
-    
-    /*
-     * Gets the in (hopefully) "path" pre-saved Config File for download.
-     */
-   // TODO serve generated and no loaded File
-//    @RequestMapping(value = "/config", method = RequestMethod.GET)
-//    public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
-//   	    try {
-//   	      // get your file as InputStream
-//   	    	Resource resource = new FileSystemResource(fileName);
-//   	    	InputStream is = resource.getInputStream();
-//   	      // copy it to response's OutputStream
-//   	      IOUtils.copy(is, response.getOutputStream());
-//   	      response.setContentType("application/txt");
-//   	      String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
-//   	      response.setHeader("Content-Disposition", "attachment; filename=" + filename);
-//   	      response.flushBuffer();
-//   	    } catch (IOException ex) {
-//   	      ex.printStackTrace();
-//   	      throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
-//   	    }
-//    }
-//    @RequestMapping(value = "/config",method = RequestMethod.GET)
-//    public void saveConfig(@RequestParam("path") String fileName, HttpServletResponse response) {
-//    	response.setContentType("text/html;charset=UTF-8"); 
-//      //BufferedInputStream bis = null; 
-//    	BufferedOutputStream bos = null; 
-//    	String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
-//        response.setContentType("application/txt");
-//        response.setHeader("Content-disposition", "attachment; filename="  
-//                + filename);  
-//        try{
-//	      //bis = new BufferedInputStream(new FileInputStream(fileName));  
-//        	ByteArrayOutputStream bis = new ByteArrayOutputStream();
-//        	kms.getState().save(bis);
-//	        bos = new BufferedOutputStream(response.getOutputStream());  
-////	        byte[] buff = new byte[2048];  
-////	        int bytesRead;  
-////	        while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {  
-////	            bos.write(buff, 0, bytesRead);  
-////	        }  
-//        	
-//        	byte[] buff = bis.toByteArray();
-//        	bos.write(buff);
-//	        bis.close();  
-//	        bos.close();  
-//        }catch(IOException ex){
-//        	ex.printStackTrace();
-//        	throw new RuntimeException(LogicHelper.getLocalizedMessage("error.config.download"));
-//        }
-//    }
 
     /*
      * Serve the config.txt for download. 
@@ -237,7 +196,7 @@ public class FileDownloadController extends AbstractServerController {
 		// Get a byte Array of the csv
 	    byte[] contents = bos.toByteArray();
 	    // Define Filename for download
-	    String filename = LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt";
+	    String filename = ControllerHelper.getFilename("filename.config") + ".txt";
 	    // Write headers
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.parseMediaType("application/txt"));
@@ -271,7 +230,7 @@ public class FileDownloadController extends AbstractServerController {
 		// Get a byte Array of the csv
 	    byte[] contents = outstream.toByteArray();
 	    // Define Filename for download
-	    String filename = LogicHelper.getLocalizedMessage("filename.csv") + "_" + ControllerHelper.getNiceDate() + ".csv";
+	    String filename = ControllerHelper.getFilename("filename.csv") + ".csv";
 	    // Write headers
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.parseMediaType("text/csv"));
