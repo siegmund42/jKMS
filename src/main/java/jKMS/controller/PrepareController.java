@@ -150,7 +150,8 @@ public class PrepareController extends AbstractServerController {
 							@RequestParam(value = "cAbsoluteQuantity[]") String[] cAbsoluteQuantity,
 							@RequestParam(value = "sRelativeQuantity[]") String[] sRelativeQuantity,
 							@RequestParam(value = "sPrice[]") String[] sPrice,
-							@RequestParam(value = "sAbsoluteQuantity[]") String[] sAbsoluteQuantity)	{
+							@RequestParam(value = "sAbsoluteQuantity[]") String[] sAbsoluteQuantity)
+						throws IOException	{
 		
 		int i;
 		String error = "";
@@ -224,25 +225,27 @@ public class PrepareController extends AbstractServerController {
 				return "error";
 			}
 			
-			// Set File Path
-			String path = ControllerHelper.getApplicationFolder().concat(
-					ControllerHelper.getConfigFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.config") + "_" + ControllerHelper.getNiceDate() + ".txt");
-			
-			// Save Config File automatically
-			try	{
-				FileOutputStream fos = new FileOutputStream(path);
-				kms.getState().save(fos);
-				System.out.println("Saved Config File in: " + path);
-			} catch(IOException e){
-				e.printStackTrace();
-				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.config.save.error"));
-				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.config.save.message"));
-				return "error";	
+			if(ControllerHelper.checkFolders())	{
+				// Set File Path
+				String path = ControllerHelper.getConfigFolderPath() + ControllerHelper.getFilename("filename.config") + ".txt";
+				
+				// Save Config File automatically
+				try	{
+					FileOutputStream fos = new FileOutputStream(path);
+					kms.getState().save(fos);
+					System.out.println("Saved Config File in: " + path);
+				} catch(IOException e){
+					e.printStackTrace();
+					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.config.save.error"));
+					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.config.save.message"));
+					return "error";	
+				}
+				
+				// Add path to model
+				model.addAttribute("configSavePath", path);
+				
 			}
-			
-			// Add path to model
-			model.addAttribute("configSavePath", path);
-			
+				
 			return "save";
 			
 		}	else	{

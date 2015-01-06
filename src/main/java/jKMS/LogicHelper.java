@@ -2,6 +2,8 @@ package jKMS;
 
 //import java.io.IOException;
 //import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.MissingResourceException;
 //import java.util.Properties;
@@ -96,16 +98,42 @@ public class LogicHelper {// have static function to help implementation logic
         return propertie;
     }*/
     
+	/*
+	 * Gets the message from the messages_XX.properties to the key.
+	 */
     public static String getLocalizedMessage(String key)	{
 
     	try	{
+    		// get the right .properties File depending on current language [may throw MissingResourceException]
     		ResourceBundle messages = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
+    		// get the String from the .properties [may throw MissingResourceException]
     		String message = messages.getString(key);
         	return message;
     	}	catch(MissingResourceException e)	{
+    		// Resource/String not found
     		return "??" + key + "??";
     	}
     	
+    }
+    
+    /*
+     * Prints a well-formatted output to console [log] with message message and type
+     * 0 = INFO
+     * 1 = WARNING
+     * 2 = ERROR
+     */
+    public static void print(String message, int type)	{
+    	String[] types = {"INFO     ", "WARNING", "ERROR  "};
+		Date dNow = new Date( );
+	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss.SSS");
+    	System.out.println("jKMS: " + ft.format(dNow) + "  " + types[type] + " -- " + message);
+    }
+    
+    /*
+     * Simple print function for printing an INFO
+     */
+    public static void print(String message)	{
+    	print(message, 0);
     }
     
 }

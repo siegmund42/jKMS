@@ -23,11 +23,7 @@ public class ServerController extends AbstractServerController	{
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Model model, ServletRequest request) {
 		try {
-			if(ControllerHelper.checkFolders())	{
-				System.out.println("Adding Folders Succeeded!");
-			}	else	{
-				System.out.println("All Folders already here.");
-			}
+			ControllerHelper.checkFolders();
 		} catch (IOException e) {
 			e.printStackTrace();
 			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.buildFolderStructure.message"));
@@ -61,7 +57,7 @@ public class ServerController extends AbstractServerController	{
 	
 	@RequestMapping(value = "/autoRedirect", method = RequestMethod.GET)
 	public String autoRedirect(){
-		if(kms.getState() instanceof Preparation) return "redirect:/index";
+		if(kms.getState() instanceof Preparation) return "redirect:/prepare1";
 		else if(kms.getState() instanceof Load) return "redirect:/load1";
 		else if(kms.getState() instanceof Play) return "redirect:/play";
 		else if(kms.getState() instanceof Evaluation) return "redirect:/evaluate";

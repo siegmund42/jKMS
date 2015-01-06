@@ -39,8 +39,7 @@ function createExcludeFields(number)	{
 			var label = document.createElement("label");
 			label.setAttribute("for", "check" + i);
 			label.setAttribute("class", "small");
-			// TODO i18n
-			label.innerHTML = "Alle Karten ausgeteilt:";
+			label.innerHTML = allGiven;
 			
 			checkBoxRow.appendChild(label);
 			
