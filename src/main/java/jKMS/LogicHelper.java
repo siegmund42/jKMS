@@ -123,7 +123,7 @@ public class LogicHelper {// have static function to help implementation logic
      * 2 = ERROR
      */
     public static void print(String message, int type)	{
-    	String[] types = {"INFO     ", "WARNING", "ERROR  "};
+    	String[] types = {"INFO   ", "WARNING", "ERROR  "};
 		Date dNow = new Date( );
 	    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss.SSS");
     	System.out.println("jKMS: " + ft.format(dNow) + "  " + types[type] + " -- " + message);

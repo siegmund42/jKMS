@@ -55,6 +55,17 @@ noscript div	{
 	margin:				0;
 }
 
+select	{
+	display:			table-cell;
+ 	width:				100px;
+ 	margin:				5px 10px;
+	padding:			3px 4px;
+}
+
+select option	{
+	padding:			3px 4px;
+}
+
 .errorDiv	{
 	color:				red;
 	font-size:			120%;

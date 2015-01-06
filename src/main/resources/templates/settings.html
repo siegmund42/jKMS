@@ -12,6 +12,8 @@
     
 </head>
  <body>
+ 	<div th:replace="resources :: js">
+	</div>
  	<div id="toolBar">
  		<ul>
  			<li>
@@ -39,6 +41,45 @@
 	 	<h2 th:text="#{settings.language}"></h2>
 	 	<a href="settings.html?lang=de" th:text="#{settings.german}"></a>
 	 	<a href="settings.html?lang=en" th:text="#{settings.english}"></a>
+	 	<br /><br />
+	 	<h2 th:text="#{settings.users}"></h2>
+	 	<form method="POST" th:action="'settings.html'" id="userForm" name="userForm" onsubmit="return validateForm(this.id);">
+		 	<div id="form">
+		 		<div class="row">
+					<label for="users" th:text="#{settings.username}"></label>
+				 	<select name="users">
+				 		<option th:each="user : ${users}" th:text="${user}"></option>
+				 	</select>
+		 		</div>
+				<div class="row">
+					<label for="oldPass" th:text="#{settings.oldPass}"></label>
+					<input type="password" id="oldPass" name="oldPass"/>
+				</div>
+				<div class="row">
+					<div class="cell"></div>
+					<div class="error" id="erroroldPass"></div>
+				</div>
+				<div class="row">
+					<label for="pass1" th:text="#{settings.pass1}"></label>
+					<input type="password" id="pass1" name="pass1"/>
+				</div>
+				<div class="row">
+					<div class="cell"></div>
+					<div class="error" id="errorpass1"></div>
+				</div>
+				<div class="row">
+					<label for="pass2" th:text="#{settings.pass2}"></label>
+					<input type="password" id="pass2" name="pass2"/>
+				</div>
+				<div class="row">
+					<div class="cell"></div>
+					<div class="error" id="errorpass2"></div>
+				</div>
+			</div>
+			<br />
+			<input type="submit" th:value="#{buttons.submit}"/>
+	 	</form>
+	 	
 	</div>
  </body>
 </html>
