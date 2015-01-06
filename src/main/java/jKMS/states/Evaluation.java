@@ -28,9 +28,9 @@ public class Evaluation extends State{
 	public Map<String,Float> getStatistics() throws NoContractsException, NoIntersectionException{ 
 		Set<Contract> contracts = kms.getContracts();
 		Map<String,Float> statistics = new HashMap<String, Float>();
-		int sum = 0;
-		int max = 0;
-		int tempPrice = 0;
+		float sum = 0;
+		float max = 0;
+		float tempPrice = 0;
 		
 		if(contracts.size() == 0) throw new NoContractsException();
 		
@@ -48,10 +48,11 @@ public class Evaluation extends State{
 		}
 		
 		float averagePrice = sum/contracts.size();
-		statistics.put("maximum",(float)max);
-		statistics.put("averagePrice", averagePrice);
+		statistics.put("maximum", max);
+		statistics.put("averagePrice",averagePrice);
+		statistics.put("contractsSize", (float) contracts.size());
 		
-		int min = max;
+		float min = max;
 		float sumOfSquares = 0;
 		float variance = 0;
 		double standardDeviation = 0;
@@ -70,10 +71,8 @@ public class Evaluation extends State{
 		}
 		
 		variance = sumOfSquares/contracts.size();
-		variance = Math.round(variance*100)/100;
 		standardDeviation = Math.sqrt(variance);
-		standardDeviation = Math.round(standardDeviation*100)/100;
-		statistics.put("minimum", (float) min);
+		statistics.put("minimum", min);
 		statistics.put("variance", variance);
 		statistics.put("standardDeviation",(float) standardDeviation);
 		
