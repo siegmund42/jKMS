@@ -299,6 +299,7 @@ public class Preparation extends State	{
 
 		packid =0;//package index 0 for Pack A, 1 for Pack B ...	
 		//amount of cards in the first pack
+		// 0 cards of package A
 		packsize = 0;
 		id  = kms.getConfiguration().getFirstID();
 		
@@ -316,10 +317,11 @@ public class Preparation extends State	{
 					kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
 					packsize++;
 				}else {
-						packid++; //get amount of cards from the next package
-						packsize = 0; // reset packsize
+						packid++; //get amount of cards from the next packaga
 						kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+						packsize = 1; // reset packsize first card is in! --> 1
 				}
+				
 
 
 		
@@ -343,8 +345,8 @@ public class Preparation extends State	{
 				}else {
 				//a new package start
 						packid++;
-						packsize = 0;
 						kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+						packsize = 1;
 				}
 
 				sTemp.put(randomKey, new Amount(sTemp.get(randomKey).getRelative(), sTemp.get(randomKey).getAbsolute() - 1));
