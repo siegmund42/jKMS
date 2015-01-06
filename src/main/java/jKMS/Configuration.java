@@ -21,7 +21,6 @@ public class Configuration {
 		
 		setbDistribution(new TreeMap<Integer, Amount>());
 		setsDistribution(new TreeMap<Integer, Amount>());
-		// TODO Make FirstID editable for User
 		setFirstID(1001);
 	}
 
