@@ -87,8 +87,8 @@ public class AppGui extends JFrame{
 		});
 		getContentPane().add(btnOpenBrowser);
 		
-		lblStatus = new JLabel("Loading");
-		lblStatus.setFont(new Font("Courier New", Font.PLAIN, 12));
+		lblStatus = new JLabel("Loading...");
+		lblStatus.setFont(new Font("Courier New", Font.PLAIN, 15));
 		lblStatus.setForeground(new Color(0x00FF0000));
 		lblStatus.setBounds(225, 65, 180, 50);
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
@@ -177,6 +177,6 @@ public class AppGui extends JFrame{
 	
 	public void setLoaded(){
 		lblStatus.setText("Ready");
-		lblStatus.setForeground(new Color(0x0000FF00));
+		lblStatus.setForeground(new Color(0x00009900));
 	}
 }
