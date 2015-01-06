@@ -325,7 +325,7 @@ form#login	{
 	margin:				2% auto;
 }
 
-#stats			{
+#statsContainer			{
 	position:			relative;
 	float:				right;
 	margin:				2.5% 3%;
@@ -333,6 +333,17 @@ form#login	{
 	background:			rgba(110,205,0,0.3);
 	z-index:			1;
 }
+
+#statsData				{
+	display:			none;
+}
+
+#dropdown.rotate		{
+	-ms-transform: 		rotate(180deg); /* IE 9 */
+    -webkit-transform: 	rotate(180deg); /* Chrome, Safari, Opera */
+    transform:			rotate(180deg);
+}
+
 
 #card			{
 	background:			white;
