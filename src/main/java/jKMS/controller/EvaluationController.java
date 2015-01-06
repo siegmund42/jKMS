@@ -85,25 +85,29 @@ public class EvaluationController extends AbstractServerController {
 	 * Evaluation Site
 	 */
 	@RequestMapping(value = "/evaluate")
-	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException	{
+	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException, IOException	{
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "evaluate"))	{
-			// Build path for storing the .csv automatically
-			String path = ControllerHelper.getApplicationFolder() + ControllerHelper.getExportFolderName() + "/" + LogicHelper.getLocalizedMessage("filename.csv") + ControllerHelper.getNiceDate() + ".csv";
-	    	
-			try {
-				// Save the .csv automatically
-		    	CSVWriter writer = new CSVWriter(new FileWriter(path));
-				kms.getState().generateCSV(writer);
-				writer.close();
-				System.out.println("Saved the .csv in: " + path);
-			} catch (IOException e) {
-				// Error during CSV generation
-				e.printStackTrace();
-				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.csv.message"));
-				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.csv.error"));
-				return "error";
+			
+			if(ControllerHelper.checkFolders())	{
+				// Build path for storing the .csv automatically
+				String path = ControllerHelper.getExportFolderPath() + ControllerHelper.getFilename("filename.csv") + ".csv";
+		    	
+				try {
+					// Save the .csv automatically
+			    	CSVWriter writer = new CSVWriter(new FileWriter(path));
+					kms.getState().generateCSV(writer);
+					writer.close();
+					System.out.println("Saved the .csv in: " + path);
+				} catch (IOException e) {
+					// Error during CSV generation
+					e.printStackTrace();
+					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.csv.message"));
+					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.csv.error"));
+					return "error";
+				}
+				
 			}
 			// Get statistics
 			Map<String,Float> stats = kms.getState().getStatistics();

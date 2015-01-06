@@ -42,6 +42,26 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/*
+	 * gets the absolute Path of the Config Folder.
+	 * Example: /media/user/42/KMS/KMS_Configuration/
+	 */
+	public static String getConfigFolderPath()	{
+		return getApplicationFolder().concat(configFolder).concat("/");
+	}
+	
+	/*
+	 * gets the absolute Path of the Export Folder.
+	 * Example: /media/user/42/KMS/KMS_Exports/
+	 */
+	public static String getExportFolderPath()	{
+		return getApplicationFolder().concat(exportFolder).concat("/");
+	}
+	
+	public static String getFilename(String message)	{
+		return LogicHelper.getLocalizedMessage(message) + "_" + getNiceDate();
+	}
+	
+	/*
 	 * Responsible for state setting.
 	 * Returns true if state setting done or not necessary.
 	 * Returns false if requested changing of state requires deletion of Data.
@@ -180,6 +200,7 @@ public class ControllerHelper extends AbstractController {
 		}
 		// Go to parent Folder
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
+		System.out.println("Located the .jar in: " + folderPath);
 		return folderPath;
 	}
 	
@@ -218,8 +239,15 @@ public class ControllerHelper extends AbstractController {
 		File exports = new File(path + exportFolder);
 		
 		if(!games.exists() || !exports.exists())	{
-			return createFolders();
+			if(createFolders())	{
+				System.out.println("Adding folders succeeded.");
+				return true;
+			}	else	{
+				System.out.println("Adding folders failed. Please try again by re-installing KMS");
+				return false;
+			}
 		}	else	{
+			System.out.println("Folder structure ok.");
 			return true;
 		}
 		
