@@ -65,7 +65,7 @@ public class AppGui extends JFrame{
 		});
 		
 		
-		btnOpenBrowser = new JButton("Open Game in Browser");
+		btnOpenBrowser = new JButton(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
 		btnOpenBrowser.setBounds(50, 65, 175, 50);
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
@@ -87,7 +87,7 @@ public class AppGui extends JFrame{
 		});
 		getContentPane().add(btnOpenBrowser);
 		
-		lblStatus = new JLabel("Loading...");
+		lblStatus = new JLabel(LogicHelper.getLocalizedMessage("GUI.lblLoading"));
 		lblStatus.setFont(new Font("Courier New", Font.PLAIN, 15));
 		lblStatus.setForeground(new Color(0x00FF0000));
 		lblStatus.setBounds(225, 65, 180, 50);
@@ -95,7 +95,7 @@ public class AppGui extends JFrame{
 		lblStatus.setVerticalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblStatus);
 		
-		btnClose = new JButton("Shut Down Server");
+		btnClose = new JButton(LogicHelper.getLocalizedMessage("GUI.btnClose"));
 		btnClose.setBounds(405, 65, 175, 50);
 		btnClose.setActionCommand("Exit");
 		btnClose.addActionListener(new ActionListener() {
@@ -117,7 +117,7 @@ public class AppGui extends JFrame{
 		gbl_panel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		logPanel.setLayout(gbl_panel);
 		
-		chckbxShowLog = new JCheckBox("Show Log");
+		chckbxShowLog = new JCheckBox(LogicHelper.getLocalizedMessage("GUI.showLog"));
 		GridBagConstraints gbc_chckbxShowLog = new GridBagConstraints();
 		gbc_chckbxShowLog.insets = new Insets(0, 0, 5, 0);
 		gbc_chckbxShowLog.gridx = 0;
@@ -176,7 +176,14 @@ public class AppGui extends JFrame{
 	}
 	
 	public void setLoaded(){
-		lblStatus.setText("Ready");
+		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
 		lblStatus.setForeground(new Color(0x00009900));
+	}
+	
+	public void changeLanguage(){
+		btnOpenBrowser.setText(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
+		btnClose.setText(LogicHelper.getLocalizedMessage("GUI.btnClose"));
+		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
+		chckbxShowLog.setText(LogicHelper.getLocalizedMessage("GUI.showLog"));
 	}
 }

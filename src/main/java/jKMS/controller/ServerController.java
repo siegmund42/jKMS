@@ -1,6 +1,7 @@
 package jKMS.controller;
 
 import jKMS.Amount;
+import jKMS.Application;
 import jKMS.LogicHelper;
 import jKMS.states.Evaluation;
 import jKMS.states.Load;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ServerController extends AbstractServerController	{
@@ -33,8 +35,9 @@ public class ServerController extends AbstractServerController	{
 		return "index";
 	}
 	
-	@RequestMapping("/settings")
-	public String settigs()	{
+	@RequestMapping(value = "/settings", method = RequestMethod.GET)
+	public String settings(@RequestParam(value = "lang", required = false) final String lang) {
+		if(lang != null) Application.gui.changeLanguage();
 		return "settings";
 	}
 	
@@ -55,7 +58,7 @@ public class ServerController extends AbstractServerController	{
 		return "redirect:/index";
 	}
 	
-	@RequestMapping(value = "/autoRedirect", method = RequestMethod.GET)
+	@RequestMapping("/autoRedirect")
 	public String autoRedirect(){
 		if(kms.getState() instanceof Preparation) return "redirect:/prepare1";
 		else if(kms.getState() instanceof Load) return "redirect:/load1";
