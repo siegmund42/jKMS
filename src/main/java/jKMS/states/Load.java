@@ -105,7 +105,6 @@ public class Load extends State {
             	 System.out.println("bDistribution:"+bDistributionLoad.toString());
     			 System.out.println("sDistribution:"+sDistributionLoad.toString());
             	 System.out.println("load bDistribution and sDistribution successful");
-            	 // TODO discuss wether loading Cards
             	 //load Cards and set them in cardSet
             	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
             		 Card card;

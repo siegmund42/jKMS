@@ -512,6 +512,7 @@ public class Pdf {
         //get Strings
         String headline = LogicHelper.getLocalizedMessage("evaluate.headline");
 		String average = LogicHelper.getLocalizedMessage("evaluate.average") + ": ";
+		String size = LogicHelper.getLocalizedMessage("evaluate.size") + ": ";
         String min = LogicHelper.getLocalizedMessage("evaluate.min") + ": ";
 		String max = LogicHelper.getLocalizedMessage("evaluate.max") + ": ";
 		String variance = LogicHelper.getLocalizedMessage("evaluate.variance") + ": ";
@@ -529,19 +530,21 @@ public class Pdf {
     	
     	PdfPTable table = new PdfPTable(3);
     	
-    	PdfPCell cell11 = new PdfPCell(new Paragraph(average + stats.get("averagePrice") + "€"));
+    	PdfPCell cell11 = new PdfPCell(new Paragraph(average + Math.round(stats.get("averagePrice")*100)/100.0 + "€"));
     	cell11.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell21 = new PdfPCell(new Paragraph(min + stats.get("minimum") + "€"));
+    	PdfPCell cell21 = new PdfPCell(new Paragraph(min + Math.round(stats.get("minimum")) + "€"));
     	cell21.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell31 = new PdfPCell(new Paragraph(max + stats.get("maximum") + "€"));
+    	PdfPCell cell31 = new PdfPCell(new Paragraph(max + Math.round(stats.get("maximum")) + "€"));
     	cell31.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell12 = new PdfPCell(new Paragraph(variance + stats.get("variance")));
+    	PdfPCell cell12 = new PdfPCell(new Paragraph(size + Math.round(stats.get("contractsSize"))));
     	cell12.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell22 = new PdfPCell(new Paragraph(standDev + stats.get("standardDeviation")));
+    	PdfPCell cell22 = new PdfPCell(new Paragraph(variance + Math.round(stats.get("variance")*100)/100.0));
     	cell22.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell13 = new PdfPCell(new Paragraph(eqPrice + stats.get("eqPrice") + "€"));
+    	PdfPCell cell32 = new PdfPCell(new Paragraph(standDev + Math.round(stats.get("standardDeviation")*100)/100.0));
+    	cell32.setBorder(Rectangle.NO_BORDER);
+    	PdfPCell cell13 = new PdfPCell(new Paragraph(eqPrice + Math.round(stats.get("eqPrice")) + "€"));
     	cell13.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell23 = new PdfPCell(new Paragraph(eqQuantity + stats.get("eqQuantity")));
+    	PdfPCell cell23 = new PdfPCell(new Paragraph(eqQuantity + Math.round(stats.get("eqQuantity"))));
     	cell23.setBorder(Rectangle.NO_BORDER);
     	
     	//dummy cell to complete the the third row
@@ -556,7 +559,7 @@ public class Pdf {
     	table.addCell(cell22);
     	table.addCell(cell23);
     	table.addCell(cell31);
-    	table.addCell(cell3);
+    	table.addCell(cell32);
     	table.addCell(cell3);
     	
     	doc.add(table);
