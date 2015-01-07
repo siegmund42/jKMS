@@ -128,9 +128,9 @@ public class Load extends State {
             	 }
             	 int maxNumber = Collections.max(cardNumber);
             	 int minNumber = Collections.min(cardNumber);
-            	 if(maxNumber != 1000+playerCount || minNumber != 1001){
-            		 throw new FalseLoadFileException("cardId should beginn at 1001 and can not more than playerCount+1000!");
-            	 }
+//            	 if(maxNumber != 1000+playerCount || minNumber != 1001){
+//            		 throw new FalseLoadFileException("cardId should beginn at 1001 and can not more than playerCount+1000!");
+//            	 }
             	 if(cardNumber.size() != playerCount){
             		 throw new FalseLoadFileException("card can not more than once in cardSet!");
             	 }
