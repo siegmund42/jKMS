@@ -37,17 +37,19 @@ public class ControllerHelper extends AbstractController {
 //	private static String settingsFolder = "bin";
 	
 	public static void init()	{
-		folders.put("configFolder", "KMS_Konfigurationen");
-		folders.put("exportFolder", "KMS_Exports");
-		folders.put("settingsFolder", "settings");
+		folders.put("config", "KMS_Konfigurationen");
+		folders.put("export", "KMS_Exports");
+		folders.put("settings", "settings");
 	}
 	
 	public static String getFolderName(String folder)	{
-		return folders.get(folder + "Folder");
+		return folders.get(folder);
 	}
 	
 	public static String getFolderPath(String folder)	{
-		return getApplicationFolder().concat(folders.get(folder + "Folder")).concat(File.separator);
+		String appFolder = getApplicationFolder();
+		String folderName = folders.get(folder);
+		return appFolder.concat(folderName).concat(File.separator);
 	}
 	
 //	public static String getSettingsFolderName()	{

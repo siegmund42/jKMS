@@ -10,6 +10,7 @@ public class LoginController {
 
 	@RequestMapping("/login")
 	public String login() throws IOException	{
+		ControllerHelper.init();
 		ControllerHelper.checkFolders();
 		return "login";
 	}
