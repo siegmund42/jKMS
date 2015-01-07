@@ -17,8 +17,6 @@ import jKMS.controller.ControllerHelper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,13 +29,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebMvcSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-    @SuppressWarnings("deprecation")
-	static PasswordEncoder pe = new Md5PasswordEncoder();
+	static PasswordEncoder bpe = new BCryptPasswordEncoder();
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,7 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    @SuppressWarnings("deprecation")
     protected static class UDS implements UserDetailsService	{
 
 		@Override
@@ -90,8 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	             	String ln = System.getProperty("line.separator");
 	     			StringBuffer str = new StringBuffer();
 	     			// Write to String Buffer
-	     			str.append(defaults[0][0] + ":").append(pe.encodePassword(defaults[0][1], null)).append(":" + defaults[0][2]).append(ln)
-	     			   .append(defaults[1][0] + ":").append(pe.encodePassword(defaults[1][1], null)).append(":" + defaults[1][2]).append(ln);
+	     			str.append(defaults[0][0] + ":").append(bpe.encode(defaults[0][1])).append(":" + defaults[0][2]).append(ln)
+	     			   .append(defaults[1][0] + ":").append(bpe.encode(defaults[1][1])).append(":" + defaults[1][2]).append(ln);
 	     			// Write to OutputStream
 	     			fos.write(str.toString().getBytes());
 	     			fos.close();
@@ -181,7 +179,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         public void init(AuthenticationManagerBuilder auth) throws Exception {
         	
             DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-            authProvider.setPasswordEncoder(pe);
+            authProvider.setPasswordEncoder(bpe);
             UserDetailsService uds = new UDS();
             authProvider.setUserDetailsService(uds);
         	auth.authenticationProvider(authProvider);

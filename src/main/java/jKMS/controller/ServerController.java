@@ -18,10 +18,8 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,7 +81,8 @@ public class ServerController extends AbstractServerController	{
 		}
 		BufferedReader br = new BufferedReader(fr);
 		
-    	PasswordEncoder pe = new Md5PasswordEncoder();
+		PasswordEncoder bpe = new BCryptPasswordEncoder();
+		
 		LogicHelper.print("Reading Login data from file.");
 		StringBuffer str = new StringBuffer();
      	String ln = System.getProperty("line.separator");
@@ -92,13 +91,13 @@ public class ServerController extends AbstractServerController	{
 		while(line != null)	{
 			// Found the right User?
 			if(line.substring(0, line.indexOf(":")).equals(username))	{
-				if(pe.encodePassword(oldPass, null).equals(line.substring(line.indexOf(":") + 1, line.lastIndexOf(":"))))	{
+				if(bpe.encode(oldPass).equals(line.substring(line.indexOf(":") + 1, line.lastIndexOf(":"))))	{
 					if(pass1 .equals(pass2))	{
 						str.append(username).append(":")
-							.append(pe.encodePassword(pass1, null)).append(":")
+							.append(bpe.encode(pass1)).append(":")
 							.append(line.substring(line.lastIndexOf(":") + 1));
 		    			LogicHelper.print("Username: " + username);
-		    			LogicHelper.print("Password: " + pe.encodePassword(pass1, null));
+		    			LogicHelper.print("Password: " + bpe.encode(pass1));
 		    			LogicHelper.print("Role: " + line.substring(line.lastIndexOf(":") + 1));
 					}
 				}

@@ -32,6 +32,11 @@ public class ControllerHelper extends AbstractController {
 	
 	private static String configFolder = "KMS_Konfigurationen";
 	private static String exportFolder = "KMS_Exports";
+	private static String settingsFolder = "bin";
+	
+	public static String getSettingsFolderName()	{
+		return settingsFolder;
+	}
 	
 	public static String getConfigFolderName()	{
 		return configFolder;
@@ -39,6 +44,14 @@ public class ControllerHelper extends AbstractController {
 	
 	public static String getExportFolderName()	{
 		return exportFolder;
+	}
+	
+	/*
+	 * gets the absolute Path of the Settings Folder.
+	 * Example: /media/user/42/KMS/settings/
+	 */
+	public static String getSettingsFolderPath()	{
+		return getApplicationFolder().concat(settingsFolder).concat("/");
 	}
 	
 	/*
@@ -57,6 +70,9 @@ public class ControllerHelper extends AbstractController {
 		return getApplicationFolder().concat(exportFolder).concat("/");
 	}
 	
+	/*
+	 * Gets the name of a File (without Extension!) by concatenating the localized message to a timestamp
+	 */
 	public static String getFilename(String message)	{
 		return LogicHelper.getLocalizedMessage(message) + "_" + getNiceDate();
 	}
@@ -111,7 +127,6 @@ public class ControllerHelper extends AbstractController {
 				return false;
 			}
 			if(requestedState.equals("load"))	{
-				// TODO discuss validity of that
 				return false;
 			}
 			if(requestedState.equals("play"))	{
@@ -173,7 +188,7 @@ public class ControllerHelper extends AbstractController {
 					}
 				}
 			} catch (SocketException e) {
-				// TODO Auto-generated catch block
+				LogicHelper.print("Was unable to access Socket for getting the IP.");
 				e.printStackTrace();
 			}
 		}
@@ -193,6 +208,7 @@ public class ControllerHelper extends AbstractController {
 	 */
 	public static String getApplicationFolder()	{
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
+		LogicHelper.print("RAW url: " + url.toString());
 		String path = url.getPath();
 		// remove "file:" part of the URL if existing
 		if(path.substring(0, 5).equals("file:"))	{
