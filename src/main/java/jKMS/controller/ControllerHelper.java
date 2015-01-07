@@ -210,10 +210,13 @@ public class ControllerHelper extends AbstractController {
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
 		LogicHelper.print("RAW url: " + url.toString());
 		String path = url.getPath();
+		LogicHelper.print("PATH: " + path);
 		// remove "file:" part of the URL if existing
 		if(path.substring(0, 5).equals("file:"))	{
 			path = path.substring(path.indexOf(File.separator));
 		}
+		LogicHelper.print("PATH after removing: " + path);
+		
 		// Go to parent Folder
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
 		System.out.println("Located the .jar in: " + folderPath);
@@ -225,6 +228,7 @@ public class ControllerHelper extends AbstractController {
 		String path = getApplicationFolder();
 		File games = new File(path + configFolder);
 		File exports = new File(path + exportFolder);
+		File settings = new File(path + settingsFolder);
 		
 		if(!games.exists())	{
 			if(games.mkdir())	{
@@ -241,7 +245,15 @@ public class ControllerHelper extends AbstractController {
 				throw new IOException("Failed to generate folder \"" + exports.getAbsolutePath() + "\".");
 			}
 		}
-		return games.exists() && exports.exists();
+		
+		if(!settings.exists())	{
+			if(settings.mkdir())	{
+				LogicHelper.print("Created Folder: " + settings.getAbsolutePath());
+			}	else	{
+				throw new IOException("Failed to generate folder \"" + settings.getAbsolutePath() + "\".");
+			}
+		}
+		return games.exists() && exports.exists() && settings.exists();
 	}
 	
 	/*
@@ -253,8 +265,9 @@ public class ControllerHelper extends AbstractController {
 		String path = getApplicationFolder();
 		File games = new File(path + configFolder);
 		File exports = new File(path + exportFolder);
+		File settings = new File(path + settingsFolder);
 		
-		if(!games.exists() || !exports.exists())	{
+		if(!games.exists() || !exports.exists() || !settings.exists())	{
 			if(createFolders())	{
 				LogicHelper.print("Adding folders succeeded.");
 				return true;
