@@ -149,16 +149,18 @@ function validateForm(form)	{
 			// Check if we needed to round
 			if(document.getElementById('customerTotalAbsolute').innerHTML > numberOfPlayers/2 ||
 					document.getElementById('salesmanTotalAbsolute').innerHTML > numberOfPlayers/2)	{
+				
+				if(document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 > (10000 - firstID))	{
+					globalError = true;
+					window.alert(roundedUp + (document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 - numberOfPlayers) + "\n\n" + totalOV);
+				}
+					
 				// Ask User if it was OK to round
-				globalError = !window.confirm(roundedUp + (document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 - numberOfPlayers));
+				globalError =  globalError || !window.confirm(roundedUp + (document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 - numberOfPlayers));
 			}
 		}
 	}
-	
-	if(globalError)	{
-		return false;
-	}	else
-		return true;
+	return !globalError;
 	
 }
 

@@ -78,6 +78,7 @@ public class LoadController extends AbstractServerController {
 				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
 				return "error";
 			}
+			kms.getContracts().clear();
 			// Everything loaded - Load Data into GUI
 			return "redirect:/load1";
 		}	else	{

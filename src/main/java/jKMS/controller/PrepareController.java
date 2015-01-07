@@ -191,6 +191,7 @@ public class PrepareController extends AbstractServerController {
 						error = "save";
 						break;
 					}
+					
 				}	catch(NumberFormatException e)	{
 					e.printStackTrace();
 					error = "save.fraction";
@@ -201,6 +202,11 @@ public class PrepareController extends AbstractServerController {
 				error = "save.empty";
 				break;
 			}
+		}
+		
+		// Check if actual amount of players is exceeding 8999
+		if((LogicHelper.getAbsoluteSum(kms.getbDistribution()) + LogicHelper.getAbsoluteSum(kms.getsDistribution())) > 8999)	{
+			error = "config.playerCountOV";
 		}
 		
 		// Check if number of buyerGroups != number of sellerGroups
