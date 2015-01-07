@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/", "/css/**", "/js/**").permitAll()
-                .antMatchers("/contract").hasRole("USER")
+                .antMatchers("/contract**").hasRole("USER")
                 .anyRequest().hasRole("PROF");
         http
             .formLogin()

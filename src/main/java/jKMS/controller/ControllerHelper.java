@@ -208,9 +208,7 @@ public class ControllerHelper extends AbstractController {
 	 */
 	public static String getApplicationFolder()	{
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
-		LogicHelper.print("RAW url: " + url.toString());
 		String path = url.getPath();
-		LogicHelper.print("PATH: " + path);
 		// remove "file:" part of the URL if existing
 		if(path.substring(0, 5).equals("file:"))	{
 			path = path.substring(path.indexOf(File.separator));
@@ -218,6 +216,8 @@ public class ControllerHelper extends AbstractController {
 		LogicHelper.print("PATH after removing: " + path);
 		
 		// Go to parent Folder
+		LogicHelper.print("Last indexOf Seperator: " + Integer.toString(path.lastIndexOf(File.separator, path.length() - 2)));
+		LogicHelper.print("Seperator: " + File.separator);
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
 		System.out.println("Located the .jar in: " + folderPath);
 		return folderPath;
