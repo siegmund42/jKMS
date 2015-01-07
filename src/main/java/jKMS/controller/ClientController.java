@@ -53,8 +53,7 @@ public class ClientController extends AbstractController {
 				
 			    if(add == 0)	{
 			    	// Succeeded
-			    	model.addAttribute("success");
-			    	return "redirect:/contract";
+			    	return "redirect:/contract.html?success";
 			    }	else	{
 			    	// Failed - add Attributes to model
 			    	model.addAttribute("id1", id1);

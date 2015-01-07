@@ -92,7 +92,7 @@ public class EvaluationController extends AbstractServerController {
 			
 			if(ControllerHelper.checkFolders())	{
 				// Build path for storing the .csv automatically
-				String path = ControllerHelper.getExportFolderPath() + ControllerHelper.getFilename("filename.csv") + ".csv";
+				String path = ControllerHelper.getFolderPath("export") + ControllerHelper.getFilename("filename.csv") + ".csv";
 		    	
 				try {
 					// Save the .csv automatically

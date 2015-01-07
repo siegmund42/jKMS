@@ -124,7 +124,7 @@ public class FileDownloadController extends AbstractServerController {
 		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
 		// to File
 		FileOutputStream fos;
-    	String path = ControllerHelper.getExportFolderPath() + ControllerHelper.getFilename("filename.PDF.export") + ".pdf";
+    	String path = ControllerHelper.getFolderPath("export") + ControllerHelper.getFilename("filename.PDF.export") + ".pdf";
 		
     	try {
     		// Call Handwaving-Method twice to write into both streams [so glad it works...]

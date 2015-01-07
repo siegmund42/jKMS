@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	User user = null;
         	
 			// Path to password-config-file
-        	String path = ControllerHelper.getApplicationFolder() + "bin/config.txt";
+        	String path = ControllerHelper.getFolderPath("settings") + LogicHelper.getLocalizedMessage("filename.settings") + ".txt";
         	BufferedReader br = null;
         	
         	try	{
@@ -93,13 +93,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	     			// Write to OutputStream
 	     			fos.write(str.toString().getBytes());
 	     			fos.close();
-	     			LogicHelper.print("Wrote auth to config.txt");
+	     			LogicHelper.print("Wrote auth to config File");
 	     			// Instantiate Reader
 	    			br = new BufferedReader(new FileReader(path));
         		}	catch(IOException ioe)	{
         			// Something went wrong during writing to file
         			ioe.printStackTrace();
-        			LogicHelper.print("Unable to create config.txt", 2);
+        			LogicHelper.print("Unable to create config File", 2);
         			// File could not have been created
             		noFile = true;
         		}
@@ -131,7 +131,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	
             } catch(IOException e)	{
             	// Something went wrong during reading from file
-    			LogicHelper.print("Unable to read from config.txt", 2);
+    			LogicHelper.print("Unable to read from config File", 2);
     			found = false;
             } finally {
             	if(!noFile)	{
@@ -162,8 +162,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         	}
         	
         	if(user == null)	{
-        		LogicHelper.print("Wasn't able to find the username: " + username);
-        		throw new UsernameNotFoundException("Wasn't able to find the username: " + username);
+        		LogicHelper.print("Wasn't able to find the user: " + username);
+        		throw new UsernameNotFoundException("Wasn't able to find the user: " + username);
         	}
         	
 			return user;

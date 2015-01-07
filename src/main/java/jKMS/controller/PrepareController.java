@@ -233,7 +233,7 @@ public class PrepareController extends AbstractServerController {
 			
 			if(ControllerHelper.checkFolders())	{
 				// Set File Path
-				String path = ControllerHelper.getConfigFolderPath() + ControllerHelper.getFilename("filename.config") + ".txt";
+				String path = ControllerHelper.getFolderPath("config") + ControllerHelper.getFilename("filename.config") + ".txt";
 				
 				// Save Config File automatically
 				try	{

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ServerController extends AbstractServerController	{
-
+	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Model model, ServletRequest request, @RequestParam(value = "lang", required = false) final String lang) {
 		if(lang != null) Application.gui.changeLanguage();
@@ -46,7 +46,7 @@ public class ServerController extends AbstractServerController	{
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String settigs(Model model) throws IOException	{
 		// Path to password-config-file
-    	String path = ControllerHelper.getApplicationFolder() + "bin/config.txt";
+		String path = ControllerHelper.getFolderPath("settings") + LogicHelper.getLocalizedMessage("filename.settings") + ".txt";
     	BufferedReader br = null;
 		br = new BufferedReader(new FileReader(path));
 		
@@ -62,7 +62,6 @@ public class ServerController extends AbstractServerController	{
 		return "settings";
 	}
 	
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public String processSettings(Model model, 
 			@RequestParam(value = "users") String username,
@@ -71,7 +70,7 @@ public class ServerController extends AbstractServerController	{
 			@RequestParam(value = "pass2") String pass2) throws IOException	{
 		// TODO Error Handling
 		// Path to password-config-file
-    	String path = ControllerHelper.getApplicationFolder() + "bin/config.txt";
+		String path = ControllerHelper.getFolderPath("settings") + LogicHelper.getLocalizedMessage("filename.settings") + ".txt";
     	FileReader fr = null;
 		try {
 			fr = new FileReader(path);
@@ -108,6 +107,8 @@ public class ServerController extends AbstractServerController	{
 			line = br.readLine();
 		}
 		
+		br.close();
+		
 		FileOutputStream fos = new FileOutputStream(path);
 		// Write to OutputStream
 		fos.write(str.toString().getBytes());
@@ -130,7 +131,7 @@ public class ServerController extends AbstractServerController	{
 		kms.getConfiguration().setbDistribution(new TreeMap<Integer, Amount>());
 		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());
 		kms.prepare();
-		System.out.println("Reseted all data.");
+		LogicHelper.print("Reseted all data.");
 		return "redirect:/index";
 	}
 	
