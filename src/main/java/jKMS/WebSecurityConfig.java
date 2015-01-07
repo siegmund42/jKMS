@@ -62,11 +62,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 			// Array With first dimension for Users and second for their attributes.
 			String[][] defaults = new String[2][3];
-			defaults[0][0] = "professor";
-			defaults[0][1] = "prof";
+			defaults[0][0] = "Professor";
+			defaults[0][1] = "Prof";
 			defaults[0][2] = "ROLE_PROF";
-			defaults[1][0] = "assistant";
-			defaults[1][1] = "assi";
+			defaults[1][0] = "Assistant";
+			defaults[1][1] = "Assi";
 			defaults[1][2] = "ROLE_USER";
 			
         	boolean found = true, noFile = false;
@@ -120,9 +120,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         				user = new User(line.substring(0, line.indexOf(":")), 
         						line.substring(line.indexOf(":") + 1, line.lastIndexOf(":")), 
         						set);
-            			LogicHelper.print("Username: " + line.substring(0, line.indexOf(":")));
-            			LogicHelper.print("Password: " + line.substring(line.indexOf(":") + 1, line.lastIndexOf(":")));
-            			LogicHelper.print("Role: " + line.substring(line.lastIndexOf(":") + 1));
+            			LogicHelper.print("MATCH! Username: " + line.substring(0, line.indexOf(":")) + 
+            					" Password: " + line.substring(line.indexOf(":") + 1, line.lastIndexOf(":")) + 
+            					" Role: " + line.substring(line.lastIndexOf(":") + 1));
         				break;
         			}
         			// next line

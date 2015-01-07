@@ -95,8 +95,8 @@ public class PrepareController extends AbstractServerController {
 				configuration = "load";
 			}
 			
-			// Load values
-			if(configuration.equals("load") || configuration.equals("standard"))	{
+			// Load values if should be loaded/standard configuration or some values are already stored
+			if(configuration.equals("load") || configuration.equals("standard") || kms.getsDistribution().size() > 0)	{
 				if(configuration.equals("standard"))	{
 					// Load Standard Distribution
 					kms.getState().loadStandardDistribution();

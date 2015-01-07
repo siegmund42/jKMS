@@ -10,7 +10,10 @@ import jKMS.states.Load;
 import jKMS.states.Play;
 import jKMS.states.Preparation;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -20,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,61 +36,29 @@ import javax.servlet.ServletRequest;
 public class ControllerHelper extends AbstractController {
 	
 	private static Map<String, String> folders = new HashMap<>();
-//	private static String configFolder = "KMS_Konfigurationen";
-//	private static String exportFolder = "KMS_Exports";
-//	private static String settingsFolder = "bin";
 	
 	public static void init()	{
-		folders.put("config", "KMS_Konfigurationen");
-		folders.put("export", "KMS_Exports");
+		folders.put("config", "config");
+		folders.put("export", "data");
 		folders.put("settings", "settings");
 	}
 	
+	/*
+	 * gets the name of the Folder folder.
+	 */
 	public static String getFolderName(String folder)	{
 		return folders.get(folder);
 	}
 	
+	/*
+	 * gets the absolute Path of the Folder folder.
+	 * Example: /media/user/42/KMS/settings/
+	 */
 	public static String getFolderPath(String folder)	{
 		String appFolder = getApplicationFolder();
 		String folderName = folders.get(folder);
 		return appFolder.concat(folderName).concat(File.separator);
 	}
-	
-//	public static String getSettingsFolderName()	{
-//		return settingsFolder;
-//	}
-//	
-//	public static String getConfigFolderName()	{
-//		return configFolder;
-//	}
-//	
-//	public static String getExportFolderName()	{
-//		return exportFolder;
-//	}
-//	
-//	/*
-//	 * gets the absolute Path of the Settings Folder.
-//	 * Example: /media/user/42/KMS/settings/
-//	 */
-//	public static String getSettingsFolderPath()	{
-//		return getApplicationFolder().concat(settingsFolder).concat("/");
-//	}
-//	
-//	/*
-//	 * gets the absolute Path of the Config Folder.
-//	 * Example: /media/user/42/KMS/KMS_Configuration/
-//	 */
-//	public static String getConfigFolderPath()	{
-//		return getApplicationFolder().concat(configFolder).concat("/");
-//	}
-//	
-//	/*
-//	 * gets the absolute Path of the Export Folder.
-//	 * Example: /media/user/42/KMS/KMS_Exports/
-//	 */
-//	public static String getExportFolderPath()	{
-//		return getApplicationFolder().concat(exportFolder).concat("/");
-//	}
 	
 	/*
 	 * Gets the name of a File (without Extension!) by concatenating the localized message to a timestamp
@@ -229,22 +201,25 @@ public class ControllerHelper extends AbstractController {
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
 		// Get the path separated by "/"
 		String path = url.getPath();
-		
+		boolean isWin;
 		// Check if we have Windows OS
-		if(File.separator == "\\")	{
+		if(File.separator.equals("\\"))	{
 			// We need to replace every "/" with a "\"
-			path.replace("/", "\\");
+			path = path.replace("/", File.separator);
+			isWin = true;
+		}	else	{
+			isWin = false;
 		}
 		
 		// remove "file:" part of the URL if existing
 		if(path.substring(0, 5).equals("file:"))	{
 			path = path.substring(path.indexOf(File.separator));
 		}
-		LogicHelper.print("PATH after removing: " + path);
+		
+		if(isWin && path.substring(0, 1) == File.separator)
+			path = path.substring(1);
 		
 		// Go to parent Folder
-		LogicHelper.print("Last indexOf Seperator: " + Integer.toString(path.lastIndexOf(File.separator, path.length() - 2)));
-		LogicHelper.print("Seperator: " + File.separator);
 		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
 		LogicHelper.print("Located the .jar in: " + folderPath);
 		return folderPath;
@@ -267,37 +242,6 @@ public class ControllerHelper extends AbstractController {
 			}
 			fine = fine && tempFolder.exists();
 		}
-		
-		
-//		
-//		String path = getApplicationFolder();
-//		File games = new File(path + configFolder);
-//		File exports = new File(path + exportFolder);
-//		File settings = new File(path + settingsFolder);
-//		
-//		if(!games.exists())	{
-//			if(games.mkdir())	{
-//				LogicHelper.print("Created Folder: " + games.getAbsolutePath());
-//			}	else	{
-//				throw new IOException("Failed to generate folder \"" + games.getAbsolutePath() + "\".");
-//			}
-//		}
-//		
-//		if(!exports.exists())	{
-//			if(exports.mkdir())	{
-//				LogicHelper.print("Created Folder: " + exports.getAbsolutePath());
-//			}	else	{
-//				throw new IOException("Failed to generate folder \"" + exports.getAbsolutePath() + "\".");
-//			}
-//		}
-//		
-//		if(!settings.exists())	{
-//			if(settings.mkdir())	{
-//				LogicHelper.print("Created Folder: " + settings.getAbsolutePath());
-//			}	else	{
-//				throw new IOException("Failed to generate folder \"" + settings.getAbsolutePath() + "\".");
-//			}
-//		}
 		return fine;
 	}
 	
@@ -328,6 +272,23 @@ public class ControllerHelper extends AbstractController {
 			return true;
 		}
 		
+	}
+	
+	public static Set<String> getUsers() throws IOException	{
+		// Path to password-config-file
+		String path = ControllerHelper.getFolderPath("settings") + LogicHelper.getLocalizedMessage("filename.settings") + ".txt";
+		BufferedReader br = null;
+		br = new BufferedReader(new FileReader(path));
+				
+		String line = br.readLine();
+		// Every line is a User
+		HashSet<String> string = new HashSet<String>();
+		while(line != null)	{
+			string.add(line.substring(0, line.indexOf(":")));
+			line = br.readLine();
+		}
+		br.close();
+		return string;
 	}
 	
 	public static String getNiceDate()	{

@@ -48,20 +48,7 @@ public class ServerController extends AbstractServerController	{
 		// Check if language was changed
 		if(lang != null) Application.gui.changeLanguage();
 		
-		// Path to password-config-file
-		String path = ControllerHelper.getFolderPath("settings") + LogicHelper.getLocalizedMessage("filename.settings") + ".txt";
-    	BufferedReader br = null;
-		br = new BufferedReader(new FileReader(path));
-		
-		String line = br.readLine();
-        // Every line is a User
-		HashSet<String> string = new HashSet<String>();
- 		while(line != null)	{
-			string.add(line.substring(0, line.indexOf(":")));
-			line = br.readLine();
- 		}
- 		br.close();
-		model.addAttribute("users", string);
+		model.addAttribute("users", ControllerHelper.getUsers());
 		return "settings";
 	}
 	
@@ -71,14 +58,14 @@ public class ServerController extends AbstractServerController	{
 			@RequestParam(value = "oldPass") String oldPass,
 			@RequestParam(value = "pass1") String pass1,
 			@RequestParam(value = "pass2") String pass2) throws IOException	{
-		// TODO Error Handling
+
 		// Path to password-config-file
 		String path = ControllerHelper.getFolderPath("settings") + LogicHelper.getLocalizedMessage("filename.settings") + ".txt";
     	FileReader fr = null;
 		try {
 			fr = new FileReader(path);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			LogicHelper.print("Config file not found.", 2);
 			e.printStackTrace();
 		}
 		BufferedReader br = new BufferedReader(fr);
@@ -89,19 +76,23 @@ public class ServerController extends AbstractServerController	{
 		StringBuffer str = new StringBuffer();
      	String ln = System.getProperty("line.separator");
         String line = br.readLine();
+        String error = "";
+        
         // Every line is a User
 		while(line != null)	{
 			// Found the right User?
 			if(line.substring(0, line.indexOf(":")).equals(username))	{
-				if(bpe.encode(oldPass).equals(line.substring(line.indexOf(":") + 1, line.lastIndexOf(":"))))	{
-					if(pass1 .equals(pass2))	{
+				if(bpe.matches(oldPass, line.substring(line.indexOf(":") + 1, line.lastIndexOf(":"))))	{
+					if(pass1.equals(pass2))	{
 						str.append(username).append(":")
 							.append(bpe.encode(pass1)).append(":")
 							.append(line.substring(line.lastIndexOf(":") + 1));
-		    			LogicHelper.print("Username: " + username);
-		    			LogicHelper.print("Password: " + bpe.encode(pass1));
-		    			LogicHelper.print("Role: " + line.substring(line.lastIndexOf(":") + 1));
+		    			LogicHelper.print("EDIT: Username: " + username + " Password: " + bpe.encode(pass1) + " Role: " + line.substring(line.lastIndexOf(":") + 1));
+					}	else	{
+						error = "password.unequal";
 					}
+				}	else	{
+					error = "password.invalid";
 				}
 			}	else	{
 				str.append(line).append(ln); 
@@ -110,13 +101,23 @@ public class ServerController extends AbstractServerController	{
 			line = br.readLine();
 		}
 		
+		if(str.length() == 0)
+			error = "user.notFound";
+		
 		br.close();
 		
-		FileOutputStream fos = new FileOutputStream(path);
-		// Write to OutputStream
-		fos.write(str.toString().getBytes());
-		fos.close();
-		LogicHelper.print("Wrote auth to config.txt");
+		if(error == "")	{
+			// Write to OutputStream [File]
+			FileOutputStream fos = new FileOutputStream(path);
+			fos.write(str.toString().getBytes());
+			fos.close();
+			model.addAttribute("success", " ");
+			model.addAttribute("users", ControllerHelper.getUsers());
+			LogicHelper.print("Updated auth in config.txt");
+		}	else	{
+			model.addAttribute("error", error);
+			model.addAttribute("users", ControllerHelper.getUsers());
+		}
 		
 		return "settings";
 	}

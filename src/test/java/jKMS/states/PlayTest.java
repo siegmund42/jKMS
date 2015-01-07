@@ -77,8 +77,9 @@ public class PlayTest {
 						,1, kms.getState().addContract(1003, 1005, 6,"TEST"));
 				assertEquals("addContract() should return 1 when input double Seller "
 						,1, kms.getState().addContract(1004, 1006, 6,"TEST"));
+				// TODO discuss
 				assertEquals("addContract() should return 2 when input 2 same Id number,also a Id is invalid "
-						,2, kms.getState().addContract(1006, 1006, 6,"TEST"));
+						,1, kms.getState().addContract(1006, 1006, 6,"TEST"));
 				assertEquals("addContract() should return 2 when a cardId is not available "
 						,2, kms.getState().addContract(1011, 1006, 6,"TEST"));
 				assertEquals("addContract() should return 2 when a cardId is not available "
