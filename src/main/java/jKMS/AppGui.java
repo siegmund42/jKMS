@@ -67,6 +67,7 @@ public class AppGui extends JFrame{
 		
 		btnOpenBrowser = new JButton(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
 		btnOpenBrowser.setBounds(50, 65, 175, 50);
+		btnOpenBrowser.setEnabled(false);
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -97,6 +98,7 @@ public class AppGui extends JFrame{
 		
 		btnClose = new JButton(LogicHelper.getLocalizedMessage("GUI.btnClose"));
 		btnClose.setBounds(405, 65, 175, 50);
+		btnClose.setEnabled(false);
 		btnClose.setActionCommand("Exit");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -130,8 +132,8 @@ public class AppGui extends JFrame{
 					lblStatus.setBounds(225, 390, 180, 50);
 					btnClose.setBounds(380, 390, 200, 50);
 					scrollPane.setVisible(true);
-					validate();
-					repaint();
+					//validate();
+					//repaint();
 				}
 				else{
 					setSize(640, 180);
@@ -178,6 +180,8 @@ public class AppGui extends JFrame{
 	public void setLoaded(){
 		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
 		lblStatus.setForeground(new Color(0x00009900));
+		btnOpenBrowser.setEnabled(true);
+		btnClose.setEnabled(true);
 	}
 	
 	public void changeLanguage(){

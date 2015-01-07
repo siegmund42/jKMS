@@ -44,7 +44,10 @@ public class ServerController extends AbstractServerController	{
 	}
 	
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
-	public String settigs(Model model) throws IOException	{
+	public String settigs(Model model, @RequestParam(value = "lang", required = false) final String lang) throws IOException	{
+		// Check if language was changed
+		if(lang != null) Application.gui.changeLanguage();
+		
 		// Path to password-config-file
 		String path = ControllerHelper.getFolderPath("settings") + LogicHelper.getLocalizedMessage("filename.settings") + ".txt";
     	BufferedReader br = null;
