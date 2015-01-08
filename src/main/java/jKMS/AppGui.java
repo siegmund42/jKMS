@@ -67,7 +67,6 @@ public class AppGui extends JFrame{
 		
 		btnOpenBrowser = new JButton(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
 		btnOpenBrowser.setBounds(50, 65, 175, 50);
-		btnOpenBrowser.setEnabled(false);
 		btnOpenBrowser.setActionCommand("Browser");
 		btnOpenBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -90,7 +89,6 @@ public class AppGui extends JFrame{
 		
 		lblStatus = new JLabel(LogicHelper.getLocalizedMessage("GUI.lblLoading"));
 		lblStatus.setFont(new Font("Courier New", Font.PLAIN, 15));
-		lblStatus.setForeground(new Color(0x00FF0000));
 		lblStatus.setBounds(225, 65, 180, 50);
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatus.setVerticalAlignment(SwingConstants.CENTER);
@@ -98,7 +96,6 @@ public class AppGui extends JFrame{
 		
 		btnClose = new JButton(LogicHelper.getLocalizedMessage("GUI.btnClose"));
 		btnClose.setBounds(405, 65, 175, 50);
-		btnClose.setEnabled(false);
 		btnClose.setActionCommand("Exit");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -165,6 +162,7 @@ public class AppGui extends JFrame{
 		console.redirectOut();
 		//console.setMessageLines(500);
 		
+		setLoading();
 		setVisible(true);
 	}
 
@@ -177,11 +175,27 @@ public class AppGui extends JFrame{
 		}
 	}
 	
-	public void setLoaded(){
+	public void setReady(){
 		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
 		lblStatus.setForeground(new Color(0x00009900));
 		btnOpenBrowser.setEnabled(true);
 		btnClose.setEnabled(true);
+	}
+	
+	public void setReady(String state){
+		String str = LogicHelper.getLocalizedMessage("GUI.lblReady") + "\n" + state;
+		
+		lblStatus.setText(str);
+		lblStatus.setForeground(new Color(0x00009900));
+		btnOpenBrowser.setEnabled(true);
+		btnClose.setEnabled(true);
+	}
+	
+	public void setLoading(){
+		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblLoading"));
+		lblStatus.setForeground(new Color(0x00FF0000));
+		btnOpenBrowser.setEnabled(false);
+		btnClose.setEnabled(false);
 	}
 	
 	public void changeLanguage(){

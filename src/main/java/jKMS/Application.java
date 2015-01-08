@@ -42,7 +42,7 @@ public class Application extends WebMvcConfigurerAdapter {
 
 		try {
 			Desktop.getDesktop().browse(index);
-			gui.setLoaded();
+			gui.setReady();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
