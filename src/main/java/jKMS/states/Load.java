@@ -74,11 +74,10 @@ public class Load extends State {
             			 break;
             		 }
             	 }
-            	 System.out.println("PlayerCount:"+playerCount);
-    			 System.out.println("AssistantCount:"+assistantCount);
-            	 System.out.println("GroupCount:"+groupCount);
-    			 System.out.println("firstID:"+firstID);
-            	 System.out.println("load PlayerCount,AssistantCount,GroupCount and fistID successful");
+            	 LogicHelper.print("Loaded: PlayerCount = " + playerCount + 
+            			 "AssistantCount = " + assistantCount + 
+            			 "GroupCount = " + groupCount + 
+            			 "firstID = " + firstID);
             	//load bDistribution and sDistribution
             	 while ( count >=4 && count < groupCount+4){
             		 if( (buf=br.readLine()) != null){
@@ -102,9 +101,8 @@ public class Load extends State {
             			 throw new FalseLoadFileException("The GroupCount is not right,please do not change the load file!");
             		 }
             	 }
-            	 System.out.println("bDistribution:"+bDistributionLoad.toString());
-    			 System.out.println("sDistribution:"+sDistributionLoad.toString());
-            	 System.out.println("load bDistribution and sDistribution successful");
+            	 LogicHelper.print("Loaded: bDistribution = " + bDistributionLoad.toString());
+    			 LogicHelper.print("Loaded: sDistribution = " + sDistributionLoad.toString());
             	 //load Cards and set them in cardSet
             	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
             		 Card card;
@@ -134,8 +132,7 @@ public class Load extends State {
             	 if(cardNumber.size() != playerCount){
             		 throw new FalseLoadFileException("card can not more than once in cardSet!");
             	 }
-            	 System.out.println("Cards Number:"+cardSet.size());
-            	 System.out.println("load cardSet successful");
+            	 LogicHelper.print("Loaded CardsSet: Size = " + cardSet.size());
     			 
             	//set load information in Configuration
             	 kms.getConfiguration().setPlayerCount(playerCount);
@@ -148,7 +145,7 @@ public class Load extends State {
     			 
          }else 
              throw new EmptyFileException("load file can not be empty, please do not delete loadfile!");
-    	 System.out.println("load() successful");
+    	 LogicHelper.print("load() successful!");
     }
 
 	
@@ -184,7 +181,7 @@ public class Load extends State {
 				
 				kms.getCards().remove(iter);
 				
-				System.out.println("Excluded Card: " + iter.getId());
+				LogicHelper.print("Excluded Card: " + iter.getId());
 			}
 		}
 		

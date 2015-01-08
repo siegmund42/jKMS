@@ -139,9 +139,9 @@ public class FileDownloadController extends AbstractServerController {
 			// Check if it was really saved
 			File file = new File(path);
 			if(file.exists())
-				System.out.println("Saved the Export-PDF in: " + path);
+				LogicHelper.print("Saved the Export-PDF in: " + path);
 			else 
-				System.out.println("Saving Export-PDF failed.");
+				LogicHelper.print("Saving Export-PDF failed.", 2);
 		} catch (FileNotFoundException | DocumentException e1) {
 			e1.printStackTrace();
 			throw new RuntimeException(LogicHelper.getLocalizedMessage("error.PDF.export"));

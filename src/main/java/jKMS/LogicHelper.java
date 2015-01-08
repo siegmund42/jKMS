@@ -86,12 +86,12 @@ public class LogicHelper {// have static function to help implementation logic
         	propertie.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
         	}
         	catch (IOException ioe) {
-        		System.out.println(ioe);
+        		LogicHelper.print(ioe);
         		try {
         			propertie.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
         			}
         			catch (IOException ioe1) {
-        				System.out.println(ioe1);
+        				LogicHelper.print(ioe1);
         			}
         	}
     	

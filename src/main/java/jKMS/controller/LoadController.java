@@ -121,7 +121,7 @@ public class LoadController extends AbstractServerController {
 		for(int i = 0; i < exclude.length; i++)	{
 			// Check if not all cards where given out [Checkbox]
 			if(check == null || check.indexOf(Integer.toString(i)) == -1)	{
-				System.out.println("Excluding Cards from Package " + LogicHelper.IntToPackage(i));
+				LogicHelper.print("Excluding Cards from Package " + LogicHelper.IntToPackage(i));
 				try	{
 					if(exclude[i] != "")	{
 						int number = Integer.parseInt(exclude[i]);
@@ -156,7 +156,7 @@ public class LoadController extends AbstractServerController {
 				}
 			}	else	{
 				// Nothing to exclude
-				System.out.println("Nothing to exclude in Package " + LogicHelper.IntToPackage(i));
+				LogicHelper.print("Nothing to exclude in Package " + LogicHelper.IntToPackage(i));
 			}
 		}
 		// Finished all excluding -> Go to play

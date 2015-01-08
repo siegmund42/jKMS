@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.LogicHelper;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
@@ -155,7 +156,7 @@ public class LoadTest {
 			fw = new FileWriter(pathFile, false);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			LogicHelper.print(e.getMessage(), 2);
 		}
 		   str.append("PlayerCount:").append(String.valueOf(expectedPlayerCount)).append(line)
 		   .append("AssistantCount:").append(String.valueOf(expectedAssistantCount)).append(line)
@@ -182,13 +183,13 @@ public class LoadTest {
 			fw.write(str.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			LogicHelper.print(e.getMessage(), 2);
 		}
 		try {
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			LogicHelper.print(e.getMessage(), 2);
 		}
 		//convert File to MutipartFile as the parameter for load()
 	    Path path = Paths.get(pathFile);
@@ -200,7 +201,7 @@ public class LoadTest {
 	        content = Files.readAllBytes(path);
 	    } catch (final IOException e) {
 	    	e.printStackTrace();
-			System.out.println(e.getMessage());
+			LogicHelper.print(e.getMessage(), 2);
 	    }
 	  //create MultipartFile configTest as parameter for load()
 	    MultipartFile configTest = new MockMultipartFile(name,
@@ -211,7 +212,7 @@ public class LoadTest {
 //			String buf = "";
 //	   	    while ((buf=br.readLine()) !=null) {
 //			   buf=buf.trim();
-//			   System.out.println(buf);
+//			   LogicHelper.print(buf);
 //	   	    }
 //		} catch (IOException e1) {
 //			// TODO Auto-generated catch block
@@ -223,7 +224,7 @@ public class LoadTest {
 			kms.getState().load(configTest);
 		} catch (NumberFormatException | IOException | EmptyFileException | FalseLoadFileException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			LogicHelper.print(e.getMessage(), 2);
 		}
 	   
 	  //check PlayerCount,AssistantCount,FirstId and GroupCount

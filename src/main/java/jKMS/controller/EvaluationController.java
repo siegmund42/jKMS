@@ -99,7 +99,7 @@ public class EvaluationController extends AbstractServerController {
 			    	CSVWriter writer = new CSVWriter(new FileWriter(path));
 					kms.getState().generateCSV(writer);
 					writer.close();
-					System.out.println("Saved the .csv in: " + path);
+					LogicHelper.print("Saved the .csv in: " + path);
 				} catch (IOException e) {
 					// Error during CSV generation
 					e.printStackTrace();

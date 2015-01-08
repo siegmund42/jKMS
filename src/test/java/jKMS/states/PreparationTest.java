@@ -19,6 +19,7 @@ import java.util.TreeMap;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.LogicHelper;
 import jKMS.Pdf;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
@@ -114,7 +115,7 @@ public class PreparationTest {
 					fw = new FileWriter(pathFile, false);
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println(e.getMessage());
+					LogicHelper.print(e.getMessage(), 2);
 				}
 				   str.append("PlayerCount:").append(String.valueOf(unexpectedPlayerCount)).append(line)
 				   .append("AssistantCount:").append(String.valueOf(unexpectedAssistantCount)).append(line)
@@ -141,13 +142,13 @@ public class PreparationTest {
 					fw.write(str.toString());
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println(e.getMessage());
+					LogicHelper.print(e.getMessage(), 2);
 				}
 				try {
 					fw.close();
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println(e.getMessage());
+					LogicHelper.print(e.getMessage(), 2);
 				}
 				//convert File to MutipartFile as the parameter for load()
 			    Path path = Paths.get(pathFile);
@@ -159,7 +160,7 @@ public class PreparationTest {
 			        content = Files.readAllBytes(path);
 			    } catch (final IOException e) {
 			    	e.printStackTrace();
-					System.out.println(e.getMessage());
+					LogicHelper.print(e.getMessage(), 2);
 			    }
 			    //create MultipartFile configTest as parameter for load()
 			    MultipartFile configTest = new MockMultipartFile(name,
@@ -170,7 +171,7 @@ public class PreparationTest {
 //					String buf = "";
 //			   	    while ((buf=br.readLine()) !=null) {
 //					   buf=buf.trim();
-//					   System.out.println(buf);
+//					   LogicHelper.print(buf);
 //			   	    }
 //				} catch (IOException e1) {
 //					// TODO Auto-generated catch block
@@ -182,7 +183,7 @@ public class PreparationTest {
 					kms.getState().load(configTest);
 				} catch (NumberFormatException | IOException | EmptyFileException | FalseLoadFileException e) {
 					e.printStackTrace();
-					System.out.println(e.getMessage());
+					LogicHelper.print(e.getMessage(), 2);
 				}
 			   
 			    //check PlayerCount,AssistantCount,FirstId and GroupCount
@@ -240,7 +241,7 @@ public class PreparationTest {
 		kms.getState().generateCards();
 		}catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());		
+			LogicHelper.print(e.getMessage(), 2);		
 		}
 		
 		Pdf pdf = new Pdf();
@@ -259,7 +260,7 @@ public class PreparationTest {
 			
 		}catch (Exception e) {
 				e.printStackTrace();
-				System.out.println(e.getMessage());
+				LogicHelper.print(e.getMessage(), 2);
 			
 		}
 	}
@@ -282,7 +283,7 @@ public class PreparationTest {
 				| WrongPlayerCountException
 				| WrongRelativeDistributionException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			LogicHelper.print(e.getMessage(), 2);
 		}
 		
 		//save() execute and create saveTestFile 
@@ -292,7 +293,7 @@ public class PreparationTest {
 			kms.getState().save(fos);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			LogicHelper.print(e.getMessage(), 2);
 		}
 		
 		//read saveTestFile ,take out the information for test
@@ -351,7 +352,7 @@ public class PreparationTest {
 							throw new EmptyFileException("The GroupCount is not enough!");
 						} catch (EmptyFileException e) {
 							e.printStackTrace();
-							System.out.println(e.getMessage());
+							LogicHelper.print(e.getMessage(), 2);
 						}
 					 }
 			}
@@ -372,7 +373,7 @@ public class PreparationTest {
 			
 		} catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			LogicHelper.print(e.getMessage(), 2);
 		}
        	 //test save()
        	 //test PlayerCount,AssistantCount,GroupCount and FirstId
@@ -418,7 +419,7 @@ public class PreparationTest {
 				kms.getState().generateCards();
 				}catch (Exception e) {
 					e.printStackTrace();
-					System.out.println(e.getMessage());		
+					LogicHelper.print(e.getMessage(), 2);		
 				}
 			
 			s1.addAll(kms.getCards());
@@ -427,7 +428,7 @@ public class PreparationTest {
 				kms.getState().generateCards();
 				}catch (Exception e) {
 					e.printStackTrace();
-					System.out.println(e.getMessage());		
+					LogicHelper.print(e.getMessage(), 2);		
 				}
 			
 			s2.addAll(kms.getCards());

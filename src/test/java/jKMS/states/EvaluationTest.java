@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.LogicHelper;
 import jKMS.cards.*;
 
 import org.junit.Before;
@@ -67,7 +68,7 @@ public class EvaluationTest {
 		// Set Amount of Groups
 		kms.getConfiguration().setGroupCount(6);
 		
-		System.out.println("Loaded Standard Distribution.");
+		LogicHelper.print("Loaded Standard Distribution.");
 		
 		try{
 			kms.getState().generateCards();

@@ -56,7 +56,7 @@ public class Application extends WebMvcConfigurerAdapter {
 		System.out.println(" ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝");
 		System.out.println("01101010 01001011 01001101 01010011");
 		System.out.println();
-		System.out.println("By Quiryn, freeDom, jUSTUS, yangxinyu and siegmund42.");
+		System.out.println("Pit Market 2.0 by Quiryn, freeDom, jUSTUS, yangxinyu and siegmund42.");
 		System.out.println();
 		System.out.println();
 		

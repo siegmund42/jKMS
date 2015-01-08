@@ -71,7 +71,7 @@ public class Preparation extends State	{
 		// Set Amount of Groups
 		kms.getConfiguration().setGroupCount(6);
 		
-		System.out.println("Loaded Standard Distribution.");
+		LogicHelper.print("Loaded Standard Distribution.");
 		
 	}
 	
@@ -82,9 +82,7 @@ public class Preparation extends State	{
 	public void setBasicConfig(int playerCount, int assistantCount){
 		kms.getConfiguration().setPlayerCount(playerCount);
 		kms.getConfiguration().setAssistantCount(assistantCount);
-		System.out.println("SettingBasicConfiguration:");
-		System.out.println("PlayerCount = " + kms.getConfiguration().getPlayerCount());
-		System.out.println("AssistantCount = " + kms.getConfiguration().getAssistantCount());
+		LogicHelper.print("SettingBasicConfiguration: PlayerCount = " + kms.getConfiguration().getPlayerCount() + "; AssistantCount = " + kms.getConfiguration().getAssistantCount());
 	}
 	
 	
@@ -129,9 +127,7 @@ public class Preparation extends State	{
             			 break;
             		 }
             	 }
-            	 System.out.println("GroupCount:"+groupCount);
-    			 System.out.println("firstID:"+firstID);
-            	 System.out.println("load GroupCount and fistID successful");
+            	 LogicHelper.print("Loaded: GroupCount = " + groupCount + "; firstID = " + firstID);
             	 //load bDistribution and sDistribution
             	 while ( count >=4 && count < groupCount+4){
             		 if( (buf=br.readLine()) != null){
@@ -161,9 +157,8 @@ public class Preparation extends State	{
             	 if(sa[0].equals("bDistribution") && sa[4].equals("sDistribution")){
             		 throw new FalseLoadFileException("the nember of bDistribution should be equal to groupCount,the nember of sDistribution should be equal to groupCount");
             	 }
-            	 System.out.println("bDistribution:"+bDistributionLoad.toString());
-    			 System.out.println("sDistribution:"+sDistributionLoad.toString());
-            	 System.out.println("load bDistribution and sDistribution successful");
+            	 LogicHelper.print("bDistribution: " + bDistributionLoad.toString());
+    			 LogicHelper.print("sDistribution: " + sDistributionLoad.toString());
 
     			 //set load information in Configuration
     	    	 kms.getConfiguration().setGroupCount(groupCount);
@@ -175,7 +170,7 @@ public class Preparation extends State	{
          }else 
              throw new EmptyFileException("load file can not be empty, please do not delete loadfile!");
     	 
-    	 System.out.println("load() successful!");
+    	 LogicHelper.print("load() successful!");
     	 
     }
 
@@ -219,7 +214,7 @@ public class Preparation extends State	{
 					   Card card = (Card) cardIter.next();
 					   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
 				   }
-				   System.out.println("create outputstreamformat successful");
+				   LogicHelper.print("Create outputstreamformat successful.");
 				   o.write(str.toString().getBytes());
 				   
 				   //write information to file
@@ -238,7 +233,7 @@ public class Preparation extends State	{
 //				   }
 				 //fw.write(str.toString());
 				 //fw.close();
-				   System.out.println("save() successful");
+				   LogicHelper.print("save() successful!");
 			       return true;
 		 }
 	}
@@ -364,12 +359,11 @@ public class Preparation extends State	{
 			distrib.get(price).setRelative(distrib.get(price).getRelative() + relativeNumber);
 		}
 		
-		System.out.println("Registered the following Group:");
 		Amount registered = distrib.get(price);
 		if(isBuyer)	{
-			System.out.println("Buyer: " + price + "€ " + registered.getRelative() + "% " + registered.getAbsolute());
+			LogicHelper.print("Registered Group:  Buyer | " + price + "€ | " + registered.getRelative() + "% | " + registered.getAbsolute());
 		}	else	{
-			System.out.println("Seller: " + price + "€ " + registered.getRelative() + "% " + registered.getAbsolute());
+			LogicHelper.print("Registered Group: Seller | " + price + "€ | " + registered.getRelative() + "% | " + registered.getAbsolute());
 		}
 		
 	}
@@ -384,6 +378,6 @@ public class Preparation extends State	{
 			pdf.createPdfCardsSeller(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
 		}
 		
-		System.out.println("PDF Created!");
+		LogicHelper.print("PDF Created!");
 	}
 }

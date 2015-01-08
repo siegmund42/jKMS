@@ -38,22 +38,23 @@ public class Kartoffelmarktspiel {
 	// STATE SETTERS
 	public void prepare() {
 		state = new Preparation(instance);
-		System.out.println("Preparing..");
+		LogicHelper.print("Preparing..");
+		//gui.setReady(LogicHelper.getLocalizedMessage("preparation"));
 	}
 
 	public void load() {
 		state = new Load(instance);
-		System.out.println("Loading..");
+		LogicHelper.print("Loading..");
 	}
 	
 	public void play() {
 		state = new Play(instance);
-		System.out.println("Playing..");
+		LogicHelper.print("Playing..");
 	}
 
 	public void evaluate() {
 		state = new Evaluation(instance);
-		System.out.println("Evaluating..");
+		LogicHelper.print("Evaluating..");
 	}
 
 	// GETTERS AND SETTERS
