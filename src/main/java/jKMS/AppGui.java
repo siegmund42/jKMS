@@ -169,8 +169,8 @@ public class AppGui extends JFrame{
 	private void confirmExit() {
 		// CONFIRM AND EXIT
 		if (JOptionPane.showConfirmDialog(null,
-				"Are you sure? This will end any running Kartoffelmarktspiel",
-				"Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){
+				LogicHelper.getLocalizedMessage("GUI.exitMsg"),
+				LogicHelper.getLocalizedMessage("GUI.exitMsgTitle"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){
 			System.exit(0);
 		}
 	}
