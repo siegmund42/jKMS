@@ -65,9 +65,6 @@ public class EvaluationTest {
 		sDistribution.put(38, new Amount(18, 72));
 		kms.getConfiguration().setsDistribution(sDistribution);
 		
-		// Set Amount of Groups
-		kms.getConfiguration().setGroupCount(6);
-		
 		LogicHelper.print("Loaded Standard Distribution.");
 		
 		try{

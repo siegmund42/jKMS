@@ -37,7 +37,6 @@ public class Load extends State {
 		//set initial value for load
     	int playerCount=0;
     	int assistantCount=0;
-    	int groupCount=0;
     	int firstID=0;
     	Set<Card> cardSet = new LinkedHashSet<Card>();
     	Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
@@ -47,7 +46,7 @@ public class Load extends State {
             	 BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             	 String buf = "";
             	 int count = 0;
-            	 while ((buf=br.readLine()) != null && count < 4) {
+            	 while ((buf=br.readLine()) != null && count < 3) {
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
             		 if(count == 0){
@@ -61,11 +60,6 @@ public class Load extends State {
             			 continue;
             		 }
             		 else if(count == 2){
-            			 groupCount = Integer.valueOf(sa[1].trim());
-            			 count = count + 1;
-            			 continue;
-            		 }
-            		 else if(count == 3){
             			 firstID = Integer.valueOf(sa[1].trim());
             			// if(firstID != 1001){ //TODO
             			//	 throw new FalseLoadFileException("firsstID is not 1001,please do not change the load file!");
@@ -76,35 +70,36 @@ public class Load extends State {
             	 }
             	 LogicHelper.print("Loaded: PlayerCount = " + playerCount + 
             			 "AssistantCount = " + assistantCount + 
-            			 "GroupCount = " + groupCount + 
             			 "firstID = " + firstID);
             	//load bDistribution and sDistribution
-            	 while ( count >=4 && count < groupCount+4){
+            	 while ( count >=3){
             		 if( (buf=br.readLine()) != null){
 	            		 buf=buf.trim();
 	 		             String[] sa = buf.split(":|\\s");
-	 		             if(sa[0].equals("bDistribution") && sa[4].equals("sDistribution")){
+	 		             if(sa[0].equals("bDistribution")){
 		 		             int bpreis = Integer.valueOf(sa[1].trim());
 		 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
 		 		             // int banteil = Integer.valueOf(sa[1]);
-		 		             int spreis = Integer.valueOf(sa[5].trim());
-		 		             Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
-		 		             //int santeil = Integer.valueOf(sa[3]);
-		 		            
 		 		             bDistributionLoad.put(bpreis, bAmount);
-		 		             sDistributionLoad.put(spreis, sAmount);
-		 		             count = count + 1;
-	 		             }else{
-	 		            	throw new FalseLoadFileException("the nember of sDistribution should be equal to the number of bDistribution!");
 	 		             }
+	 		             else if(sa[0].equals("sDistribution")){
+		 		             int spreis = Integer.valueOf(sa[1].trim());
+		 		             Amount sAmount = new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
+		 		             //int santeil = Integer.valueOf(sa[3]);
+		 		             sDistributionLoad.put(spreis, sAmount);
+	 		             }else{
+	 		            	 // Time to load the cards
+	 		            	 break;
+	 		             }
+	 		         count = count + 1;
             		 }else {
-            			 throw new FalseLoadFileException("The GroupCount is not right,please do not change the load file!");
+            			 throw new FalseLoadFileException("No Cards found, please do not change the load file!");
             		 }
             	 }
             	 LogicHelper.print("Loaded: bDistribution = " + bDistributionLoad.toString());
     			 LogicHelper.print("Loaded: sDistribution = " + sDistributionLoad.toString());
             	 //load Cards and set them in cardSet
-            	 while (count >= groupCount +4 && (buf=br.readLine()) != null){
+            	 while (buf != null){
             		 Card card;
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
@@ -114,6 +109,7 @@ public class Load extends State {
             			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
             		 }
             		 cardSet.add(card);
+               		 buf=br.readLine();
             	 }
             	 if(cardSet.size() != playerCount){
             		 throw new FalseLoadFileException("playerCount is not equal to the number of card,please do not change the load file!");
@@ -137,7 +133,6 @@ public class Load extends State {
             	//set load information in Configuration
             	 kms.getConfiguration().setPlayerCount(playerCount);
     	    	 kms.getConfiguration().setAssistantCount(assistantCount);
-    	    	 kms.getConfiguration().setGroupCount(groupCount);
     	    	 kms.getConfiguration().setFirstID(firstID);
     	    	 kms.getConfiguration().setbDistribution(bDistributionLoad);
     			 kms.getConfiguration().setsDistribution(sDistributionLoad);

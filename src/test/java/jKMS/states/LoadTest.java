@@ -123,16 +123,17 @@ public class LoadTest {
 	
 	@Test
 	public void testLoad(){
+		System.out.println("testload##############");
 		//create initial information for testLoad
-		int expectedPlayerCount = 8;
+		int expectedPlayerCount = 9;
 		int expectedAssistantCount = 2;
-		int expectedGroupCount = 3;
     	int expectedFirstID = 1001;
     	Map<Integer, Amount> expectedbDistribution = new TreeMap<>();
 		Map<Integer, Amount> expectedsDistribution = new TreeMap<>();
 		Set<Card> expectedCardSet = new LinkedHashSet<Card>();
 		expectedbDistribution.put(56,new Amount(25,1));
-		expectedbDistribution.put(65,new Amount(25,1));
+		expectedbDistribution.put(65,new Amount(10,1));
+		expectedbDistribution.put(55,new Amount(15,1));
 		expectedbDistribution.put(66,new Amount(50,2));
 		expectedsDistribution.put(56,new Amount(25,1));
 		expectedsDistribution.put(65,new Amount(25,1));
@@ -145,6 +146,7 @@ public class LoadTest {
 		expectedCardSet.add(new SellerCard(1004,65,'A'));
 		expectedCardSet.add(new SellerCard(1006,66,'B'));
 		expectedCardSet.add(new SellerCard(1008,66,'B'));
+		expectedCardSet.add(new SellerCard(10010,67,'B'));
 		
 		//setup loadTestFile for load()
 		String pathFile = "src/test/java/jKMS/states/loadTestFile.txt";
@@ -158,23 +160,31 @@ public class LoadTest {
 			e.printStackTrace();
 			LogicHelper.print(e.getMessage(), 2);
 		}
-		   str.append("PlayerCount:").append(String.valueOf(expectedPlayerCount)).append(line)
-		   .append("AssistantCount:").append(String.valueOf(expectedAssistantCount)).append(line)
-		   .append("GroupCount:").append(String.valueOf(expectedGroupCount)).append(line)
-		   .append("FirstID:").append(String.valueOf(expectedFirstID)).append(line);
+		 str.append("PlayerCount:").append(expectedPlayerCount).append(line)
+		   .append("AssistantCount:").append(expectedAssistantCount).append(line)
+//		   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
+		   .append("FirstID:").append(expectedFirstID).append(line);
 		   
+		   // Save buyer
 		   Set<Entry<Integer, Amount>> bSet = expectedbDistribution.entrySet();
-		   Set<Entry<Integer, Amount>> sSet = expectedsDistribution.entrySet();
 		   Iterator<Entry<Integer, Amount>> bIter = bSet.iterator();
-		   Iterator<Entry<Integer, Amount>> sIter = sSet.iterator();
-		   while(bIter.hasNext() && sIter.hasNext()){
+		   while(bIter.hasNext()){
 			   Map.Entry bEntry = (Map.Entry)bIter.next(); 
+		    
+			   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()).append(line);
+		   }
+		   
+		   // Save seller
+		   Set<Entry<Integer, Amount>> sSet = expectedsDistribution.entrySet();
+		   Iterator<Entry<Integer, Amount>> sIter = sSet.iterator();
+		   while(sIter.hasNext()){ 
 			   Map.Entry sEntry = (Map.Entry)sIter.next(); 
 		    
-			   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
-					   " "+"sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
+			   str.append("sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
 		   }
-		   Iterator<Card> cardIter = expectedCardSet.iterator();
+		   
+		   Set<Card> cardSet = expectedCardSet;
+		   Iterator<Card> cardIter = cardSet.iterator();
 		   while(cardIter.hasNext()){
 			   Card card = (Card) cardIter.next();
 			   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
@@ -232,8 +242,10 @@ public class LoadTest {
 	    		, expectedPlayerCount, kms.getConfiguration().getPlayerCount());
 		assertEquals("the AssistantCount should be 2,system should load 2 in state Load"
 				, expectedAssistantCount, kms.getConfiguration().getAssistantCount());
-		assertEquals("system did not load the right GroupCount"
-				, 3, kms.getConfiguration().getGroupCount());
+		assertEquals("system did not load the right GroupCount [Buyer]"
+				, expectedbDistribution.size(), kms.getConfiguration().getGroupCount("b"));
+		assertEquals("system did not load the right GroupCount [Seller]"
+				, expectedsDistribution.size(), kms.getConfiguration().getGroupCount("s"));
 		assertEquals("system did not load the right FirstID", expectedFirstID, kms.getConfiguration().getFirstID());
 		assertEquals("system did not load the right bDistributionCount", expectedbDistribution.size(), kms.getConfiguration().getbDistribution().size());
 		assertEquals("system did not load the right sDistributionCount", expectedsDistribution.size(), kms.getConfiguration().getsDistribution().size());

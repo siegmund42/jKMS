@@ -107,14 +107,15 @@ public class PrepareController extends AbstractServerController {
 				// Add stored values to model
 				model.addAttribute("customerConfiguration", kms.getbDistribution());
 				model.addAttribute("salesmanConfiguration", kms.getsDistribution());
-				model.addAttribute("groupQuantity", kms.getGroupCount());
+				model.addAttribute("sGroupQuantity", kms.getGroupCount("s"));
+				model.addAttribute("cGroupQuantity", kms.getGroupCount("b"));
 			}	else	{
 				// Create own configuration - Fields are empty
 				kms.getbDistribution().clear();
 				kms.getsDistribution().clear();
-				kms.getConfiguration().setGroupCount(0);
 				model.addAttribute("addEmptyRows", 1);
-				model.addAttribute("groupQuantity", 0);
+				model.addAttribute("sGroupQuantity", 0);
+				model.addAttribute("cGroupQuantity", 0);
 			}
 			
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
@@ -142,6 +143,15 @@ public class PrepareController extends AbstractServerController {
 		return "redirect:/prepare2";
 	}
 
+	@RequestMapping(value = "save", method = RequestMethod.GET)
+	public String getSave(Model model)	{
+		String path = ControllerHelper.getFolderPath("config");
+
+		// Add path to model
+		model.addAttribute("configSavePath", path);
+		return "save";
+	}
+	
 	// Processes Posted Values from Distribution-Site
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public String save(	Model model,
@@ -209,15 +219,12 @@ public class PrepareController extends AbstractServerController {
 			error = "config.playerCountOV";
 		}
 		
-		// Check if number of buyerGroups != number of sellerGroups
-		if(kms.getbDistribution().size() != kms.getsDistribution().size())	{
-			error = "config.groupcount";
-		}
+//		// Check if number of buyerGroups != number of sellerGroups
+//		if(kms.getbDistribution().size() != kms.getsDistribution().size())	{
+//			error = "config.groupcount";
+//		}
 		
 		if(error == "")	{
-			// Set Group Count [From data!! Not from hidden field!!1einself!1].
-			kms.getConfiguration().setGroupCount((kms.getbDistribution().size() + kms.getsDistribution().size())/2);
-			
 			// Set new PlayerCount
 			kms.getConfiguration().setPlayerCount(LogicHelper.getAbsoluteSum(kms.getbDistribution()) + LogicHelper.getAbsoluteSum(kms.getsDistribution()));
 			
@@ -263,22 +270,24 @@ public class PrepareController extends AbstractServerController {
 					cConf.put(Integer.parseInt(cPrice[a]), new Amount(Integer.parseInt(cRelativeQuantity[a]), Integer.parseInt(cAbsoluteQuantity[a])));
 					sConf.put(Integer.parseInt(sPrice[a]), new Amount(Integer.parseInt(sRelativeQuantity[a]), Integer.parseInt(sAbsoluteQuantity[a])));
 				}
-				int diff = cConf.size() - sConf.size();
-				if(diff > 0)	{
-					for(int a = 0; a < diff; a++)	{
-						sConf.put(0, new Amount(0, 0));
-					}
-				}
-				if(diff < 0)	{
-					for(int a = 0; a > diff; a--)	{
-						cConf.put(0, new Amount(0, 0));
-					}
-				}
+//				int diff = cConf.size() - sConf.size();
+//				if(diff > 0)	{
+//					for(int a = 0; a < diff; a++)	{
+//						sConf.put(0, new Amount(0, 0));
+//					}
+//				}
+//				if(diff < 0)	{
+//					for(int a = 0; a > diff; a--)	{
+//						cConf.put(0, new Amount(0, 0));
+//					}
+//				}
 				model.addAttribute("customerConfiguration", cConf);
 				model.addAttribute("salesmanConfiguration", sConf);
-				model.addAttribute("groupQuantity", cConf.size());
+				model.addAttribute("cGroupQuantity", cConf.size());
+				model.addAttribute("sGroupQuantity", sConf.size());
 			}	else	{
-				model.addAttribute("groupQuantity", 0);
+				model.addAttribute("cGroupQuantity", 0);
+				model.addAttribute("sGroupQuantity", 0);
 			}
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 			model.addAttribute("error", error);

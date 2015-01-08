@@ -101,8 +101,8 @@ public class Kartoffelmarktspiel {
 		return configuration.getAssistantCount();
 	}
 
-	public int getGroupCount() {
-		return configuration.getGroupCount();
+	public int getGroupCount(String type) {
+		return configuration.getGroupCount(type);
 	}
 	
 	public Map<Integer, Amount> getbDistribution() {

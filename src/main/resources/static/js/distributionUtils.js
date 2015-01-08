@@ -1,37 +1,68 @@
 // Updates Fields in Arrangement Form
 function updateArrangement()	{
 	// Update Absolute Numbers
-	updateAbsolutes();
+	//updateAbsolutes();
 	// Update Sum of Relative/Absolute Numbers
 	updateSum();
 }
 
 // Updates the Absolute Amount depending on Number of Players and relative Amount
-function updateAbsolutes()	{
-	// For every Field
-	for(var i = 1; i <= document.getElementById('groupQuantity').value; i++)	{
-		// Only if Field is not null
-		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
-			// Update Absolute Fields for customer and salesman
-    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = absoluteRound((document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
-    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = absoluteRound((document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
-		}
-	}
-}
+//function updateAbsolutes()	{
+//	// For every Field
+//	for(var i = 1; i <= document.getElementById('cGroupQuantity').value; i++)	{
+//		// Only if Field is not null
+//		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
+//			// Update Absolute Fields for customer and salesman
+//    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = absoluteRound((document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
+//		}
+//	}
+//	// For every Field
+//	for(var i = 1; i <= document.getElementById('sGroupQuantity').value; i++)	{
+//		// Only if Field is not null
+//		if(document.getElementById('sRelativeQuantity[' + i + ']') != null)	{
+//			// Update Absolute Fields for customer and salesman
+//    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = absoluteRound((document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
+//		}
+//	}
+//}
 
 // Updates the sum of relative and absolute Amounts
 function updateSum()	{
-	var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0, i = 1;
-	// For every Field
-	for(var i = 1; i <= document.getElementById('groupQuantity').value; i++)	{
-		// Only if Field is not null
-		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
-			// Update Sums of Relative and absolute Amounts for Customer and Salesman
-    		customerTotalRelative += document.getElementById('cRelativeQuantity[' + i + ']').value*1;
-    		salesmanTotalRelative += document.getElementById('sRelativeQuantity[' + i + ']').value*1;
-    		customerTotalAbsolute += document.getElementById('cAbsoluteQuantity[' + i + ']').value*1;
-    		salesmanTotalAbsolute += document.getElementById('sAbsoluteQuantity[' + i + ']').value*1;
+
+	var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0;
+	
+	// Get Array of input fields
+	var coll = arrangement.elements;
+	
+	var inputs = new Array();
+	inputs[0] = new Array();
+	inputs[1] = new Array();
+	
+	for(var i = 0; i < coll.length; i++)	{
+		// Relevant Fields are: number, text, password
+		if(coll[i].type == "number" && coll[i].readOnly == false)	{
+			if(coll[i].id.indexOf("cRelative") != -1)
+				inputs[0][inputs[0].length] = coll[i];
+			if(coll[i].id.indexOf("sRelative") != -1)
+				inputs[1][inputs[1].length] = coll[i];
 		}
+	}
+	
+	// For every Field
+	for(var i = 0; i < inputs[0].length; i++)	{
+		// Update Sums of Relative and absolute Amounts for Customer and Salesman
+    	customerTotalRelative += inputs[0][i].value*1;
+    	// Update Absolute number
+    	inputs[0][i].parentNode.nextSibling.nextSibling.firstChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
+    	customerTotalAbsolute += inputs[0][i].parentNode.nextSibling.nextSibling.firstChild.value*1;
+	}
+	// For every Field
+	for(var i = 0; i < inputs[1].length; i++)	{
+		// Update Sums of Relative and absolute Amounts for Customer and Salesman
+    	salesmanTotalRelative += inputs[1][i].value*1;
+    	// Update Absolute number
+    	inputs[1][i].parentNode.nextSibling.nextSibling.firstChild.value = absoluteRound((inputs[1][i].value/200)*numberOfPlayers);
+    	salesmanTotalAbsolute += inputs[1][i].parentNode.nextSibling.nextSibling.firstChild.value*1;
 	}
 	
 	// Set the values
@@ -79,167 +110,201 @@ function isHundred()	{
 }
 
 // Add a new row (group)
-function addRow()	{
+function addRow(table)	{
 	
-	var rows = arrangement.groupQuantity.value;
+	if(table == 'c')	{
+		var rows = cGroupCount;
+		
+		// add Customer Group ----------------------------------
+		var row = document.createElement("div");
+		row.setAttribute("class", "row");
+		row.setAttribute("id", "cRow" + (rows*1));
+		
+		// Add field for relative Quantity
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
+		
+		var box = document.createElement('input');
+	    box.setAttribute('type', 'number');
+	    box.setAttribute('name', 'cRelativeQuantity[]');
+	    box.setAttribute('id', 'cRelativeQuantity[' + (rows*1 + 1) + ']');
+	    box.setAttribute('placeholder', percent);
+		cell.appendChild(box);
+		
+		row.appendChild(cell);
+		
+		// Add field for price
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
+		
+		var box = document.createElement('input');
+	    box.setAttribute('type', 'number');
+	    box.setAttribute('name', 'cPrice[]');
+	    box.setAttribute('id', 'cPrice[' + (rows*1 + 1) + ']');
+	    box.setAttribute('placeholder', currency);
+		cell.appendChild(box);
+		
+		row.appendChild(cell);
+		
+		// Add field for absolute Quantity
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
 	
-	// add Customer Group ----------------------------------
-	var row = document.createElement("div");
-	row.setAttribute("class", "row");
-	row.setAttribute("id", "row" + (rows*1));
+		var input = document.createElement('input');
+		input.setAttribute('type', 'number');
+		input.setAttribute('readonly', 'readonly');
+		input.setAttribute('name', 'cAbsoluteQuantity[]');
+		input.setAttribute('id', 'cAbsoluteQuantity[' + (rows*1 + 1) + ']');
+		
+		cell.appendChild(input);
 	
-	// Add field for relative Quantity
-	var cell = document.createElement('div');
-	cell.setAttribute('class', 'cell');
-	
-	var box = document.createElement('input');
-    box.setAttribute('type', 'number');
-    box.setAttribute('name', 'cRelativeQuantity[]');
-    box.setAttribute('id', 'cRelativeQuantity[' + (rows*1 + 1) + ']');
-    box.setAttribute('placeholder', percent);
-	cell.appendChild(box);
-	
-	row.appendChild(cell);
-	
-	// Add field for price
-	var cell = document.createElement('div');
-	cell.setAttribute('class', 'cell');
-	
-	var box = document.createElement('input');
-    box.setAttribute('type', 'number');
-    box.setAttribute('name', 'cPrice[]');
-    box.setAttribute('id', 'cPrice[' + (rows*1 + 1) + ']');
-    box.setAttribute('placeholder', currency);
-	cell.appendChild(box);
-	
-	row.appendChild(cell);
-	
-	// Add field for absolute Quantity
-	var cell = document.createElement('div');
-	cell.setAttribute('class', 'cell');
+		row.appendChild(cell);
+		
+		// Add remove Link
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
+		var div = document.createElement('div');
+		div.setAttribute('class', 'round');
+		div.setAttribute('onclick', 'javascript:removeRow(' + (rows*1) + ', \'c\');');
+		div.innerHTML = removeRowButton;
+		
+		cell.appendChild(div);
+		
+		row.appendChild(cell);
+		
+		// Adding 1 + first group - display the first remove-link
+		if(arrangement.cGroupQuantity.value == "1")	{
+			var table = document.getElementById("customerTable");
+			var firstLine = table.firstChild;
+			var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
+			firstGroup.lastChild.style.visibility = "visible";
+		}
+		
+		// add Row for Error displaying
+		var errorRow = document.createElement("div");
+		errorRow.setAttribute("id", "errorRow" + (rows*1));
+		errorRow.setAttribute("class", "errorRow");
+		
+		var error = document.createElement("div");
+		error.setAttribute("class", "error");
+		error.setAttribute("id", 'errorcRelativeQuantity[' + (rows*1 + 1) + ']');
+		
+		errorRow.appendChild(error);
+		
+		var error = document.createElement("div");
+		error.setAttribute("class", "error");
+		error.setAttribute("id", 'errorcPrice[' + (rows*1 + 1) + ']');
+		
+		errorRow.appendChild(error);
+		
+		document.getElementById('customerTable').insertBefore(row, document.getElementById('customerTable').lastChild.previousSibling.previousSibling.previousSibling);
+		document.getElementById('customerTable').insertBefore(errorRow, document.getElementById('customerTable').lastChild.previousSibling.previousSibling.previousSibling);
 
-	var input = document.createElement('input');
-	input.setAttribute('type', 'number');
-	input.setAttribute('readonly', 'readonly');
-	input.setAttribute('name', 'cAbsoluteQuantity[]');
-	input.setAttribute('id', 'cAbsoluteQuantity[' + (rows*1 + 1) + ']');
-	
-	cell.appendChild(input);
-
-	row.appendChild(cell);
-	
-	// add Row for Error displaying
-	var errorRow = document.createElement("div");
-	errorRow.setAttribute("id", "errorRow" + (rows*1));
-	errorRow.setAttribute("class", "errorRow");
-	
-	var error = document.createElement("div");
-	error.setAttribute("class", "error");
-	error.setAttribute("id", 'errorcRelativeQuantity[' + (rows*1 + 1) + ']');
-	
-	errorRow.appendChild(error);
-	
-	var error = document.createElement("div");
-	error.setAttribute("class", "error");
-	error.setAttribute("id", 'errorcPrice[' + (rows*1 + 1) + ']');
-	
-	errorRow.appendChild(error);
-	
-	document.getElementById('customerTable').insertBefore(row, document.getElementById('customerTable').lastChild.previousSibling);
-	document.getElementById('customerTable').insertBefore(errorRow, document.getElementById('customerTable').lastChild.previousSibling);
-    
-	// Verkäufer Gruppe hinzufügen ---------------------------------------
-	var row = document.createElement("div");
-	row.setAttribute("class", "row");
-	row.setAttribute("id", "row" + (rows*1));
-	
-	// Add remove Link
-	var cell = document.createElement('div');
-	cell.setAttribute('class', 'cell');
-	var div = document.createElement('div');
-	div.setAttribute('class', 'round');
-	div.setAttribute('onclick', 'javascript:removeRow(' + (rows*1) + ');');
-	div.innerHTML = removeRowButton;
-	
-	cell.appendChild(div);
-	
-	row.appendChild(cell);
-	
-	// Adding 1 + first group - display the first remove-link
-	if(rows == "1")	{
-		var table = document.getElementById("salesmanTable");
-		var firstLine = table.firstChild;
-		var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
-		firstGroup.firstChild.style.visibility = "visible";
+		// Increase number of groups
+		arrangement.cGroupQuantity.value++;
+		// Increase name counter
+		cGroupCount++;
+	   
 	}
+	if(table == 's')	{
+		
+		var rows = sGroupCount;
+		
+		// Verkäufer Gruppe hinzufügen ---------------------------------------
+		var row = document.createElement("div");
+		row.setAttribute("class", "row");
+		row.setAttribute("id", "sRow" + (rows*1));
+		
+		// Add remove Link
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
+		var div = document.createElement('div');
+		div.setAttribute('class', 'round');
+		div.setAttribute('onclick', 'javascript:removeRow(' + (rows*1) + ', \'s\');');
+		div.innerHTML = removeRowButton;
+		
+		cell.appendChild(div);
+		
+		row.appendChild(cell);
+		
+		// Adding 1 + first group - display the first remove-link
+		if(arrangement.sGroupQuantity.value == "1")	{
+			var table = document.getElementById("salesmanTable");
+			var firstLine = table.firstChild;
+			var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
+			firstGroup.firstChild.style.visibility = "visible";
+		}
+		// Add field for relative Quantity
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
+		
+		var box = document.createElement('input');
+	    box.setAttribute('type', 'number');
+	    box.setAttribute('name', 'sRelativeQuantity[]');
+	    box.setAttribute('id', 'sRelativeQuantity[' + (rows*1 + 1) + ']');
+	    box.setAttribute('placeholder', percent);
+		cell.appendChild(box);
+		
+		row.appendChild(cell);
+		
+		// Add field for price
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
+		
+		var box = document.createElement('input');
+	    box.setAttribute('type', 'number');
+	    box.setAttribute('name', 'sPrice[]');
+	    box.setAttribute('id', 'sPrice[' + (rows*1 + 1) + ']');
+	    box.setAttribute('placeholder', currency);
+		cell.appendChild(box);
+		
+		row.appendChild(cell);
+		
+		// Add field for absolute Quantity
+		var cell = document.createElement('div');
+		cell.setAttribute('class', 'cell');
 	
-	// Add field for relative Quantity
-	var cell = document.createElement('div');
-	cell.setAttribute('class', 'cell');
+		var input = document.createElement('input');
+		input.setAttribute('type', 'number');
+		input.setAttribute('readonly', 'readonly');
+	    input.setAttribute('name', 'sAbsoluteQuantity[]');
+	    input.setAttribute('id', 'sAbsoluteQuantity[' + (rows*1 + 1) + ']');
+		
+		cell.appendChild(input);
 	
-	var box = document.createElement('input');
-    box.setAttribute('type', 'number');
-    box.setAttribute('name', 'sRelativeQuantity[]');
-    box.setAttribute('id', 'sRelativeQuantity[' + (rows*1 + 1) + ']');
-    box.setAttribute('placeholder', percent);
-	cell.appendChild(box);
-	
-	row.appendChild(cell);
-	
-	// Add field for price
-	var cell = document.createElement('div');
-	cell.setAttribute('class', 'cell');
-	
-	var box = document.createElement('input');
-    box.setAttribute('type', 'number');
-    box.setAttribute('name', 'sPrice[]');
-    box.setAttribute('id', 'sPrice[' + (rows*1 + 1) + ']');
-    box.setAttribute('placeholder', currency);
-	cell.appendChild(box);
-	
-	row.appendChild(cell);
-	
-	// Add field for absolute Quantity
-	var cell = document.createElement('div');
-	cell.setAttribute('class', 'cell');
-
-	var input = document.createElement('input');
-	input.setAttribute('type', 'number');
-	input.setAttribute('readonly', 'readonly');
-    input.setAttribute('name', 'sAbsoluteQuantity[]');
-    input.setAttribute('id', 'sAbsoluteQuantity[' + (rows*1 + 1) + ']');
-	
-	cell.appendChild(input);
-
-	row.appendChild(cell);
-	
-	// add Row for Error displaying
-	var errorRow = document.createElement("div");
-	errorRow.setAttribute("id", "errorRow" + (rows*1));
-	errorRow.setAttribute("class", "errorRow");
-	
-	var error = document.createElement("div");
-	error.setAttribute("class", "cell");
-	
-	errorRow.appendChild(error);
-	
-	var error = document.createElement("div");
-	error.setAttribute("class", "error");
-	error.setAttribute("id", 'errorsRelativeQuantity[' + (rows*1 + 1) + ']');
-	
-	errorRow.appendChild(error);
-	
-	var error = document.createElement("div");
-	error.setAttribute("class", "error");
-	error.setAttribute("id", 'errorsPrice[' + (rows*1 + 1) + ']');
-	
-	errorRow.appendChild(error);
-	
-	document.getElementById('salesmanTable').insertBefore(row, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
-	document.getElementById('salesmanTable').insertBefore(errorRow, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
-	
-	// Increase number of groups
-	arrangement.groupQuantity.value++;
+		row.appendChild(cell);
+		
+		// add Row for Error displaying
+		var errorRow = document.createElement("div");
+		errorRow.setAttribute("id", "errorRow" + (rows*1));
+		errorRow.setAttribute("class", "errorRow");
+		
+		var error = document.createElement("div");
+		error.setAttribute("class", "cell");
+		
+		errorRow.appendChild(error);
+		
+		var error = document.createElement("div");
+		error.setAttribute("class", "error");
+		error.setAttribute("id", 'errorsRelativeQuantity[' + (rows*1 + 1) + ']');
+		
+		errorRow.appendChild(error);
+		
+		var error = document.createElement("div");
+		error.setAttribute("class", "error");
+		error.setAttribute("id", 'errorsPrice[' + (rows*1 + 1) + ']');
+		
+		errorRow.appendChild(error);
+		
+		document.getElementById('salesmanTable').insertBefore(row, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
+		document.getElementById('salesmanTable').insertBefore(errorRow, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
+		
+		// Increase number of groups
+		arrangement.sGroupQuantity.value++;
+		// Increase name counter
+		sGroupCount++;
+		
+	}
 	
 	// Update values -> write zeros
 	updateArrangement();
@@ -247,30 +312,30 @@ function addRow()	{
 }
 
 // Remove a row (group) with Number "number"
-function removeRow(number)	{
+function removeRow(number, type)	{
 	
 	// Get the row Element
-	var row = document.getElementById("row" + number);
-	// Remove ErrorRow too
-	row.parentNode.removeChild(row.nextSibling);
-	row.parentNode.removeChild(row);
-
-	// Get the row Element [salesman]
-	var row = document.getElementById("row" + number);
-	
+	var row = document.getElementById(type + "Row" + number);
 	// Remove ErrorRow too
 	row.parentNode.removeChild(row.nextSibling);
 	row.parentNode.removeChild(row);
 	
 	// Remove remove-link if last row
-	if(document.getElementById("groupQuantity").value == "2")	{
-		var table = document.getElementById("salesmanTable");
-		var firstLine = table.firstChild;
-		var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
-		firstGroup.firstChild.style.visibility = "hidden";
+	if(document.getElementById(type + "GroupQuantity").value == "2")	{
+		if(type == 'c')
+			var table = document.getElementById("customerTable");
+		if(type == 's')
+			var table = document.getElementById("salesmanTable");
+		
+		var firstGroup = table.firstChild.nextSibling.nextSibling.nextSibling;
+		
+		if(type == 'c')
+			firstGroup.lastChild.style.visibility = "hidden";
+		if(type == 's')
+			firstGroup.firstChild.style.visibility = "hidden";
 	}
 	
-	arrangement.groupQuantity.value--;
+	document.getElementById(type + "GroupQuantity").value--;
 	
 	// Update Absolutes and sums
 	updateArrangement();

@@ -68,9 +68,6 @@ public class Preparation extends State	{
 		sDistribution.put(38, new Amount(18, 0));
 		kms.getConfiguration().setsDistribution(sDistribution);
 		
-		// Set Amount of Groups
-		kms.getConfiguration().setGroupCount(6);
-		
 		LogicHelper.print("Loaded Standard Distribution.");
 		
 	}
@@ -90,7 +87,6 @@ public class Preparation extends State	{
 	@Override
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, FalseLoadFileException{
 	//set initial value for load
-    	int groupCount=0;
     	int firstID=0;
     	//Set<Card> cardSet = new LinkedHashSet<Card>();
     	Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
@@ -100,7 +96,7 @@ public class Preparation extends State	{
             	 BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             	 String buf = "";
             	 int count = 0;
-            	 while ((buf=br.readLine()) != null && count < 4) {
+            	 while ((buf=br.readLine()) != null && count < 3) {
             		 buf=buf.trim();
             		 String[] sa = buf.split(":|\\s");
             		 //in State Preparation did not load PlayerCount
@@ -114,54 +110,44 @@ public class Preparation extends State	{
             			 continue;
             		 }
             		 else if(count == 2){
-            			 groupCount = Integer.valueOf(sa[1].trim());
-            			 count = count + 1;
-            			 continue;
-            		 }
-            		 else if(count == 3){
             			 firstID = Integer.valueOf(sa[1].trim());
             			 if(firstID != 1001){
-            				 throw new FalseLoadFileException("firsstID is not 1001,please do not change the load file!");
+            				 throw new FalseLoadFileException("firstID is not 1001,please do not change the load file!");
             			 }
             			 count = count + 1;
             			 break;
             		 }
             	 }
-            	 LogicHelper.print("Loaded: GroupCount = " + groupCount + "; firstID = " + firstID);
+            	 LogicHelper.print("Loaded: firstID = " + firstID);
             	 //load bDistribution and sDistribution
-            	 while ( count >=4 && count < groupCount+4){
+            	 while ( count >=3){
             		 if( (buf=br.readLine()) != null){
 	            		 buf=buf.trim();
 	 		             String[] sa = buf.split(":|\\s");
-	 		             if(sa[0].equals("bDistribution") && sa[4].equals("sDistribution")){
+	 		             if(sa[0].equals("bDistribution")){
 		 		             int bpreis = Integer.valueOf(sa[1].trim());
 		 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
 		 		             // int banteil = Integer.valueOf(sa[1]);
-		 		             int spreis = Integer.valueOf(sa[5].trim());
-		 		             Amount sAmount = new Amount(Integer.valueOf(sa[6].trim()),Integer.valueOf(sa[7].trim()));
-		 		             //int santeil = Integer.valueOf(sa[3]);
-		 		            
 		 		             bDistributionLoad.put(bpreis, bAmount);
-		 		             sDistributionLoad.put(spreis, sAmount);
-		 		             count = count + 1;
-	 		             }else{
-	 		            	 throw new FalseLoadFileException("the nember of sDistribution should be equal to the number of bDistribution!");
 	 		             }
+	 		             else if(sa[0].equals("sDistribution")){
+		 		             int spreis = Integer.valueOf(sa[1].trim());
+		 		             Amount sAmount = new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
+		 		             //int santeil = Integer.valueOf(sa[3]);
+		 		             sDistributionLoad.put(spreis, sAmount);
+	 		             }else{
+	 		            	 // Normally time to load the cards but were in Preparation so we dont need to
+	 		            	 break;
+	 		             }
+	 		         count = count + 1;
             		 }else {
-            			 throw new FalseLoadFileException("The GroupCount is not right,please do not change the load file!");
+            			 break;
             		 }
-            	 }
-            	 buf = br.readLine();
-            	 buf = buf.trim();
-            	 String[] sa = buf.split(":|\\s");
-            	 if(sa[0].equals("bDistribution") && sa[4].equals("sDistribution")){
-            		 throw new FalseLoadFileException("the nember of bDistribution should be equal to groupCount,the nember of sDistribution should be equal to groupCount");
             	 }
             	 LogicHelper.print("bDistribution: " + bDistributionLoad.toString());
     			 LogicHelper.print("sDistribution: " + sDistributionLoad.toString());
 
     			 //set load information in Configuration
-    	    	 kms.getConfiguration().setGroupCount(groupCount);
     	    	 kms.getConfiguration().setFirstID(firstID);
     	    	 kms.getConfiguration().setbDistribution(bDistributionLoad);
     			 kms.getConfiguration().setsDistribution(sDistributionLoad);
@@ -194,20 +180,27 @@ public class Preparation extends State	{
 				// FileWriter fw = new FileWriter(path, false);
 				   str.append("PlayerCount:").append(kms.getConfiguration().getPlayerCount()).append(line)
 				   .append("AssistantCount:").append(kms.getConfiguration().getAssistantCount()).append(line)
-				   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
+//				   .append("GroupCount:").append(kms.getConfiguration().getGroupCount()).append(line)
 				   .append("FirstID:").append(kms.getConfiguration().getFirstID()).append(line);
 				   
+				   // Save buyer
 				   Set<Entry<Integer, Amount>> bSet = bDistributionSave.entrySet();
-				   Set<Entry<Integer, Amount>> sSet = sDistributionSave.entrySet();
 				   Iterator<Entry<Integer, Amount>> bIter = bSet.iterator();
-				   Iterator<Entry<Integer, Amount>> sIter = sSet.iterator();
-				   while(bIter.hasNext() && sIter.hasNext()){
+				   while(bIter.hasNext()){
 					   Map.Entry bEntry = (Map.Entry)bIter.next(); 
+				    
+					   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()).append(line);
+				   }
+				   
+				   // Save seller
+				   Set<Entry<Integer, Amount>> sSet = sDistributionSave.entrySet();
+				   Iterator<Entry<Integer, Amount>> sIter = sSet.iterator();
+				   while(sIter.hasNext()){ 
 					   Map.Entry sEntry = (Map.Entry)sIter.next(); 
 				    
-					   str.append("bDistribution:"+bEntry.getKey()+":"+((Amount) bEntry.getValue()).getRelative()+":"+((Amount) bEntry.getValue()).getAbsolute()+
-							   " "+"sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
+					   str.append("sDistribution:"+sEntry.getKey()+":"+((Amount)sEntry.getValue()).getRelative()+":"+((Amount)sEntry.getValue()).getAbsolute()).append(line);
 				   }
+				   
 				   Set<Card> cardSet = kms.getCards();
 				   Iterator<Card> cardIter = cardSet.iterator();
 				   while(cardIter.hasNext()){

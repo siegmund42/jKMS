@@ -31,7 +31,8 @@ public class LoadController extends AbstractServerController {
 			// Add some Attributes to display the Configuration of the game again
 			model.addAttribute("customerConfiguration", kms.getbDistribution());
 			model.addAttribute("salesmanConfiguration", kms.getsDistribution());
-			model.addAttribute("groupQuantity", kms.getGroupCount());
+			model.addAttribute("cGroupQuantity", kms.getGroupCount("b"));
+			model.addAttribute("sGroupQuantity", kms.getGroupCount("s"));
 			
 			// IP and Port for Client connection
 			List<String> IPs = ControllerHelper.getIP();

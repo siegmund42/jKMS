@@ -130,7 +130,6 @@ public class ServerController extends AbstractServerController	{
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
 	public String processReset()	{
 		kms.getConfiguration().setPlayerCount(0);
-		kms.getConfiguration().setGroupCount(0);
 		kms.getConfiguration().setAssistantCount(0);
 		kms.getConfiguration().setbDistribution(new TreeMap<Integer, Amount>());
 		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());

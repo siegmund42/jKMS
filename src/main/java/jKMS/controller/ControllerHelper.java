@@ -98,9 +98,8 @@ public class ControllerHelper extends AbstractController {
 				return true;
 			}
 			if(requestedState.equals("play"))	{
-				if(kms.getAssistantCount() > 0 && kms.getPlayerCount() > 0 && kms.getGroupCount() > 0 
-						&& kms.getbDistribution().size() == kms.getGroupCount() 
-						&& kms.getsDistribution().size() == kms.getGroupCount()
+				if(kms.getAssistantCount() > 0 && kms.getPlayerCount() > 0 
+						&& kms.getGroupCount("s") > 0 && kms.getGroupCount("b") > 0
 						&& kms.getCards().size() > 0)	{
 					kms.play();
 				}	else	{

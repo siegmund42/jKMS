@@ -12,7 +12,6 @@ public class Configuration {
 
 	private int playerCount;
 	private int assistantCount;
-	private int groupCount;
 	private int firstID;
 	private Map<Integer, Amount> bDistribution;
 	private Map<Integer, Amount> sDistribution;
@@ -47,12 +46,12 @@ public class Configuration {
 		this.assistantCount = assistantCount;
 	}
 
-	public int getGroupCount() {
-		return groupCount;
-	}
-
-	public void setGroupCount(int groupCount) {
-		this.groupCount = groupCount;
+	public int getGroupCount(String type) {
+		if(type.equals("s"))
+			return this.sDistribution.size();
+		if(type.equals("b"))
+			return this.bDistribution.size();
+		throw new IllegalArgumentException("Argument " + type + "is not allowed for getGroupCount!");
 	}
 
 	public Map<Integer, Amount> getbDistribution() {
