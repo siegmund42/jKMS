@@ -170,32 +170,23 @@ public class PrepareController extends AbstractServerController {
 		kms.getbDistribution().clear();
 		kms.getsDistribution().clear();
 		
-		// Iterate through lines and register 2 Groups (one for Buyer, one for Seller) per Line.
+		// Register all buyer
 		for(i = 0; i < cRelativeQuantity.length; i++)	{
-			
 			// Check some things to ensure that data are valid
-			if(cPrice[i] != "" && cRelativeQuantity[i] != "" && cAbsoluteQuantity[i] != "" &&
-					sPrice[i] != "" && sRelativeQuantity[i] != "" && sAbsoluteQuantity[i] != "")	{
+			if(cPrice[i] != "" && cRelativeQuantity[i] != "" && cAbsoluteQuantity[i] != "")	{
 			
 				try	{
 					int cP = Integer.parseInt(cPrice[i]);
 					int cR = Integer.parseInt(cRelativeQuantity[i]);
 					int cA = Integer.parseInt(cAbsoluteQuantity[i]);
-					int sP = Integer.parseInt(sPrice[i]);
-					int sR = Integer.parseInt(sRelativeQuantity[i]);
-					int sA = Integer.parseInt(sAbsoluteQuantity[i]);
 					
 					// Checking again....
 					if(	cP > 0 && cP % 1 == 0 && 
 							cR > 0 && cR <= 100 && cR % 1 == 0 &&
-							cA > 0 && cA <= kms.getPlayerCount() && cA % 1 == 0 &&
-							sP > 0 && sP % 1 == 0 && 
-							sR > 0 && sR <= 100 && sR % 1 == 0 &&
-							sA > 0 && sA <= kms.getPlayerCount() && sA % 1 == 0)	{
+							cA > 0 && cA <= kms.getPlayerCount() && cA % 1 == 0)	{
 						
 						// Data valid -> store in Logic
 						kms.getState().newGroup(true, cP, cR, cA);
-						kms.getState().newGroup(false, sP, sR, sA);
 					
 					}	else	{
 						error = "save";
@@ -212,6 +203,48 @@ public class PrepareController extends AbstractServerController {
 				error = "save.empty";
 				break;
 			}
+		}
+		
+		if(error != "")
+			error = "buyer." + error;
+		else	{	
+			// Register all Seller
+			for(i = 0; i < sRelativeQuantity.length; i++)	{
+				
+				// Check some things to ensure that data are valid
+				if(sPrice[i] != "" && sRelativeQuantity[i] != "" && sAbsoluteQuantity[i] != "")	{
+				
+					try	{
+						int sP = Integer.parseInt(sPrice[i]);
+						int sR = Integer.parseInt(sRelativeQuantity[i]);
+						int sA = Integer.parseInt(sAbsoluteQuantity[i]);
+						
+						// Checking again....
+						if(sP > 0 && sP % 1 == 0 && 
+								sR > 0 && sR <= 100 && sR % 1 == 0 &&
+								sA > 0 && sA <= kms.getPlayerCount() && sA % 1 == 0)	{
+							
+							// Data valid -> store in Logic
+							kms.getState().newGroup(false, sP, sR, sA);
+						
+						}	else	{
+							error = "save";
+							break;
+						}
+						
+					}	catch(NumberFormatException e)	{
+						e.printStackTrace();
+						error = "save.fraction";
+						break;
+					}
+					
+				}	else	{
+					error = "save.empty";
+					break;
+				}
+			}
+			if(error != "")
+				error = "seller." + error;
 		}
 		
 		// Check if actual amount of players is exceeding 8999

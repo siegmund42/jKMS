@@ -40,7 +40,7 @@ function updateSum()	{
 	
 	for(var i = 0; i < coll.length; i++)	{
 		// Relevant Fields are: number, text, password
-		if(coll[i].type == "number" && coll[i].readOnly == false)	{
+		if(coll[i].type == "number" && coll[i].id.indexOf("Absolute") == -1)	{
 			if(coll[i].id.indexOf("cRelative") != -1)
 				inputs[0][inputs[0].length] = coll[i];
 			if(coll[i].id.indexOf("sRelative") != -1)
@@ -53,16 +53,19 @@ function updateSum()	{
 		// Update Sums of Relative and absolute Amounts for Customer and Salesman
     	customerTotalRelative += inputs[0][i].value*1;
     	// Update Absolute number
-    	inputs[0][i].parentNode.nextSibling.nextSibling.firstChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
-    	customerTotalAbsolute += inputs[0][i].parentNode.nextSibling.nextSibling.firstChild.value*1;
+//    	if(isStandard)
+//    		inputs[0][i].parentNode.parentNode.lastChild.previousSibling.firstChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
+//    	else
+    	inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
+    	customerTotalAbsolute += inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
 	}
 	// For every Field
 	for(var i = 0; i < inputs[1].length; i++)	{
 		// Update Sums of Relative and absolute Amounts for Customer and Salesman
     	salesmanTotalRelative += inputs[1][i].value*1;
     	// Update Absolute number
-    	inputs[1][i].parentNode.nextSibling.nextSibling.firstChild.value = absoluteRound((inputs[1][i].value/200)*numberOfPlayers);
-    	salesmanTotalAbsolute += inputs[1][i].parentNode.nextSibling.nextSibling.firstChild.value*1;
+    	inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[1][i].value/200)*numberOfPlayers);
+    	salesmanTotalAbsolute += inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
 	}
 	
 	// Set the values
