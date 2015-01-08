@@ -159,10 +159,19 @@ function addRow()	{
 	var div = document.createElement('div');
 	div.setAttribute('class', 'round');
 	div.setAttribute('onclick', 'javascript:removeRow(' + (rows*1) + ');');
-	div.innerHTML = "-";
+	div.innerHTML = removeRowButton;
+	
 	cell.appendChild(div);
 	
 	row.appendChild(cell);
+	
+	// Adding 1 + first group - display the first remove-link
+	if(rows == "1")	{
+		var table = document.getElementById("salesmanTable");
+		var firstLine = table.firstChild;
+		var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
+		firstGroup.firstChild.style.visibility = "visible";
+	}
 	
 	// Add field for relative Quantity
 	var cell = document.createElement('div');
@@ -239,17 +248,29 @@ function addRow()	{
 
 // Remove a row (group) with Number "number"
 function removeRow(number)	{
+	
 	// Get the row Element
 	var row = document.getElementById("row" + number);
 	// Remove ErrorRow too
 	row.parentNode.removeChild(row.nextSibling);
 	row.parentNode.removeChild(row);
 
-	// Get the row Element
+	// Get the row Element [salesman]
 	var row = document.getElementById("row" + number);
+	
 	// Remove ErrorRow too
 	row.parentNode.removeChild(row.nextSibling);
 	row.parentNode.removeChild(row);
+	
+	// Remove remove-link if last row
+	if(document.getElementById("groupQuantity").value == "2")	{
+		var table = document.getElementById("salesmanTable");
+		var firstLine = table.firstChild;
+		var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
+		firstGroup.firstChild.style.visibility = "hidden";
+	}
+	
+	arrangement.groupQuantity.value--;
 	
 	// Update Absolutes and sums
 	updateArrangement();

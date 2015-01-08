@@ -39,12 +39,14 @@ public class Kartoffelmarktspiel {
 	public void prepare() {
 		state = new Preparation(instance);
 		LogicHelper.print("Preparing..");
+		//Application.gui.setReady(LogicHelper.getLocalizedMessage("preparation"));
 		//gui.setReady(LogicHelper.getLocalizedMessage("preparation"));
 	}
 
 	public void load() {
 		state = new Load(instance);
 		LogicHelper.print("Loading..");
+		//Application.gui.setReady(LogicHelper.getLocalizedMessage("loading"));
 	}
 	
 	public void play() {

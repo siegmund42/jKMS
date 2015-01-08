@@ -17,6 +17,7 @@
     	var percent = /*[[#{prepare.percent}]]*/ 'Anteil';
     	var currency = /*[[#{prepare.currency}]]*/ 'Preis';
     	var totalOV = /*[[#{error.config.playerCountOV}]]*/;
+    	var removeRowButton = /*[[#{prepare.removeRow.button}]]*/;
     /*]]>*/
     </script>
     <script th:src="@{/js/script.js}"></script>
@@ -84,14 +85,14 @@
 			</div>
 			<div id="salesmanTable" class="arrangementTable">
 				<div class="row">
-					<div th:if="!*{isStandard}" class="cell" th:text="#{prepare.removeRow}"></div>
+					<div th:if="!*{isStandard}" class="cell" th:text="#{prepare.removeRow.heading}"></div>
 					<div class="cell" th:text="#{prepare.relativeQuantity}"></div>
 					<div class="cell" th:text="#{prepare.price}"></div>
 					<div class="cell" th:text="#{prepare.absoluteQuantity}"></div>
 				</div>
 				<div class="row" th:id="'row' + ${iter.index}" th:each="salesman,iter : ${salesmanConfiguration}">
 					<div th:if="!*{isStandard}" class="cell">
-						<div class="round" th:onclick="'javascript:removeRow(' + ${iter.index} + ');'">-</div>
+						<div class="round" th:text="#{prepare.removeRow.button}" th:onclick="'javascript:removeRow(' + ${iter.index} + ');'"></div>
 					</div>
 					<div class="cell">
 						<input type="number" name="sRelativeQuantity[]" th:id="'sRelativeQuantity[' + ${iter.count} + ']'" th:placeholder="#{prepare.percent}" th:value="${salesman.value.relative}" th:readonly="*{isStandard}" />

@@ -248,6 +248,7 @@ input[readonly="readonly"], input[readonly]	{
     font-size:			100%;
     color:				black;
     text-align:			center;
+    cursor:				default;
 }
 
 input[readonly="readonly"]:focus, input[readonly]:focus	{
@@ -272,6 +273,7 @@ input[readonly]::-webkit-inner-spin-button {
 	border:				0px;
 	background:			rgba(110,210,0,1);
 	margin:				5px auto;
+	cursor:				pointer;
 }
 
 .round:hover, .round:active	{
@@ -289,6 +291,7 @@ input[type=submit], input[type=button], #inhalt a:link, #inhalt a:visited	{
 	border-radius:		2px;
 	background:			rgba(110,210,0,1);
 	margin:				5px;
+	cursor:				pointer;
 }
 
 #inhalt a:hover, #inhalt a:active, #inhalt a:focus, input[type=submit]:hover, input[type=button]:hover	{
