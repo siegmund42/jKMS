@@ -7,7 +7,7 @@ public class BuyerCard extends Card {
 
 	@Override
 	public String toString() {
-		return "BuyerCard [idNumber=" + idNumber + ", " + "wtp=" + value + "]";
+		return "BuyerCard " + this.pack + " [ID = " + idNumber + ", wtp = " + value + "]";
 	}
 	
 }

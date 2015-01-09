@@ -69,19 +69,26 @@ public class LoadController extends AbstractServerController {
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "load"))	{
-			// Load from File
-			try {
-				kms.getState().load(file);
-			} 	catch(NumberFormatException | IOException | EmptyFileException | FalseLoadFileException e)	{
-				// File empty/broken/something went wrong
-				e.printStackTrace();
-				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));
-				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
-				return "error";
+			LogicHelper.print(file.getContentType());
+			if(file.getContentType().equals("text/plain"))	{
+				
+				// Load from File
+				try {
+					kms.getState().load(file);
+				} 	catch(NumberFormatException | IOException | EmptyFileException | FalseLoadFileException e)	{
+					// File empty/broken/something went wrong
+					e.printStackTrace();
+					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));
+					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
+					return "error";
+				}
+				kms.getContracts().clear();
+				// Everything loaded - Load Data into GUI
+				return "redirect:/load1";
+			}	else	{
+				model.addAttribute("error", LogicHelper.getLocalizedMessage("load.falseContentType"));
+				return "index";
 			}
-			kms.getContracts().clear();
-			// Everything loaded - Load Data into GUI
-			return "redirect:/load1";
 		}	else	{
 			return "reset";
 		}

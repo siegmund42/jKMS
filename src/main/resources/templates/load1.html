@@ -85,7 +85,7 @@
 						<input type="number" name="cAbsoluteQuantity[]" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="border-top: 1px solid black;">
 					<div class="cell" id="customerTotalRelative"></div>
 					<div class="cell" th:text="#{prepare.total}"></div>
 					<div class="cell" id="customerTotalAbsolute"></div>
@@ -108,7 +108,7 @@
 						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="border-top: 1px solid black;">
 					<div class="cell" id="salesmanTotalRelative"></div>
 					<div class="cell" th:text="#{prepare.total}"></div>
 					<div class="cell" id="salesmanTotalAbsolute"></div>

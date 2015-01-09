@@ -15,10 +15,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -198,7 +202,6 @@ public class ControllerHelper extends AbstractController {
 	public static String getApplicationFolder()	{
 		
 		URL url = AbstractController.class.getProtectionDomain().getCodeSource().getLocation();
-		// Get the path separated by "/"
 		String path = url.getPath();
 		boolean isWin;
 		// Check if we have Windows OS
@@ -219,7 +222,13 @@ public class ControllerHelper extends AbstractController {
 			path = path.substring(1);
 		
 		// Go to parent Folder
-		String folderPath = path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1);
+		String folderPath = null;
+		try {
+			folderPath = URLDecoder.decode(path.substring(0, path.lastIndexOf(File.separator, path.length() - 2) + 1), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		LogicHelper.print("Located the .jar in: " + folderPath);
 		return folderPath;
 	}

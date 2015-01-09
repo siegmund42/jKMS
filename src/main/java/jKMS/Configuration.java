@@ -22,10 +22,19 @@ public class Configuration {
 		setsDistribution(new TreeMap<Integer, Amount>());
 		setFirstID(1001);
 	}
-
-	//TODO Boolean save in Configuration
-	public Boolean save(){
-		return false; 
+	
+	@Override
+	public String toString()	{
+		String str = ""; 
+		str += "Buyer: ";
+		for(Integer price : bDistribution.keySet())	{
+			str += price + " , " + this.bDistribution.get(price).getRelative() + " , " + this.bDistribution.get(price).getAbsolute() + " | ";
+		}
+		str += System.getProperty("line.separator") + "Seller: ";
+		for(Integer price : sDistribution.keySet())	{
+			str += price + " , " + this.sDistribution.get(price).getRelative() + " , " + this.sDistribution.get(price).getAbsolute() + " | ";
+		}
+		return str;
 	}
 	
 // getter and setter make the world better ;)

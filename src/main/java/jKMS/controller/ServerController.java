@@ -82,12 +82,15 @@ public class ServerController extends AbstractServerController	{
 		while(line != null)	{
 			// Found the right User?
 			if(line.substring(0, line.indexOf(":")).equals(username))	{
+				// Only if inserted the right password
 				if(bpe.matches(oldPass, line.substring(line.indexOf(":") + 1, line.lastIndexOf(":"))))	{
+					// Only if password and repeat of it are equal
 					if(pass1.equals(pass2))	{
 						str.append(username).append(":")
 							.append(bpe.encode(pass1)).append(":")
-							.append(line.substring(line.lastIndexOf(":") + 1));
-		    			LogicHelper.print("EDIT: Username: " + username + " Password: " + bpe.encode(pass1) + " Role: " + line.substring(line.lastIndexOf(":") + 1));
+							.append(line.substring(line.lastIndexOf(":") + 1))
+							.append(ln);
+		    			LogicHelper.print("EDIT: Username = " + username + " Password = " + bpe.encode(pass1) + " Role = " + line.substring(line.lastIndexOf(":") + 1));
 					}	else	{
 						error = "password.unequal";
 					}

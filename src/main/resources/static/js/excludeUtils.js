@@ -90,15 +90,16 @@ function createExcludeFields(number)	{
 // Disables a Textfield depending on its Checkbox was checked
 function allExcluded(id)	{
 	// Checkbox was checked
-//	if(document.getElementById("check" + id).checked)	{
-//		// Set readonly and invisible
-//		var element = document.getElementById(id);
-//		element.readOnly = true;
+	if(document.getElementById("check" + id).checked)	{
+		// Set readonly and invisible
+		var element = document.getElementById(id);
+		element.readOnly = true;
+		element.value = "";
 //		element.style.opacity = "0";
-//	}	else	{
-//		var element = document.getElementById(id);
-//		element.readOnly = false;
+	}	else	{
+		var element = document.getElementById(id);
+		element.readOnly = false;
 //		element.style.opacity = "1";
-//	}
+	}
 	document.getElementById(id).readOnly = document.getElementById("check" + id).checked
 }

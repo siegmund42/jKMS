@@ -40,8 +40,7 @@
 	 	<div th:text="#{save.configSavedIn}"></div>
 	 	<div class="successDiv" th:text="${configSavePath}"></div>
 	 	<br />
-	 	<div th:text="#{save.configSaveExtra}"></div>
-	 	<br />
+	 	<div th:text="#{save.configSaveExtra}" style="float: left;"></div>
 		<a th:href="'/config?path=' + ${configSavePath}" th:text="#{prepare.saveConfig}" target="_blank"></a>
 		<br /><br />
 		<a href="generate.html" th:text="#{prepare.generatePDF} + #{goOnSign}"></a>

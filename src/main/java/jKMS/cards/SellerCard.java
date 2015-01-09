@@ -7,6 +7,6 @@ public class SellerCard extends Card {
 
 	@Override
 	public String toString() {
-		return "SellerCard [idNumber=" + idNumber + ", " + "cost=" + value + "]";
+		return "SellerCard " + this.pack + " [ID = " + idNumber + ", cost = " + value + "]";
 	}
 }

@@ -36,10 +36,12 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (welcome)">
 	 	</div>	
+	 	<div class="errorDiv" th:if="${error}" th:text="#{error.__${error}__}"></div>
+	 	<br />
 		<p><a href="prepare1.html" th:text="#{index.prepare}">Vorbereitung</a></p>
 		<br />
 		<form name="loadGame" method="POST" th:action="load1.html" enctype="multipart/form-data" >
-			<input type="file" id="input-file" name="input-file" accept=".txt" onchange="document.loadGame.submit();"/>
+			<input type="file" id="input-file" name="input-file" accept="text/plain" onchange="document.loadGame.submit();"/>
 			<input type="button" th:value="#{index.loadGame}" onclick="$('#input-file').click();"/>
 		</form>
 		<br />
