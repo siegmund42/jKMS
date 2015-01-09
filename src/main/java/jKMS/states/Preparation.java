@@ -87,6 +87,7 @@ public class Preparation extends State	{
 	@Override
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, FalseLoadFileException{
 	//set initial value for load
+		LogicHelper.print("set initial value for load");
     	int firstID=0;
     	//Set<Card> cardSet = new LinkedHashSet<Card>();
     	Map<Integer, Amount> bDistributionLoad = new TreeMap<>();
@@ -166,6 +167,7 @@ public class Preparation extends State	{
 	@Override
 	public boolean save(OutputStream o) throws IOException{
 		//take out information aus Configuration and kms
+  	 	 LogicHelper.print("take out information from configuration and kms");
 		 Map<Integer, Amount> bDistributionSave = new TreeMap<>();
 		 Map<Integer, Amount> sDistributionSave = new TreeMap<>();
 		 bDistributionSave = kms.getConfiguration().getbDistribution();
@@ -209,7 +211,6 @@ public class Preparation extends State	{
 				   }
 				   LogicHelper.print("Create outputstreamformat successful.");
 				   o.write(str.toString().getBytes());
-				   
 				   //write information to file
 //				   if(o instanceof FileOutputStream){
 //					   FileOutputStream fo = (FileOutputStream)o;

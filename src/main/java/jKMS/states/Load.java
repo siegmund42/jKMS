@@ -35,6 +35,7 @@ public class Load extends State {
 	@Override
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, FalseLoadFileException{
 		//set initial value for load
+		LogicHelper.print("set initial value for load");
     	int playerCount=0;
     	int assistantCount=0;
     	int firstID=0;
