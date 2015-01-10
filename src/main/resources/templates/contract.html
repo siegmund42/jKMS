@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <script th:src="@{/js/script.js}"></script>
     <script th:src="@{/js/formValidation.js}"></script>
+    <script th:src="@{/js/contractUtils.js}"></script>
 
     <title th:text="#{titles.welcome}">jKMS - Kaufverträge eingeben</title>
     
@@ -38,10 +39,25 @@
 	 	</div>	
 	 	<div class="errorDiv" th:if="${error}" th:text="#{error.contract.__${error}__}">
         </div>
-        <div class="successDiv" th:if="${param.success}" th:text="#{contract.success}">
-           	Kaufvertrag erfolgreich übermittelt.
-        </div>
 		<form method="POST" id="contract" th:action="contract" style="margin: auto;" onsubmit="return validateForm(this.id);">
+	        <div class="successDiv" th:if="${param.success}">
+		        <div th:text="#{contract.success}"></div>
+	           	<div class="row" style="margin: auto;">
+		           	<label th:text="#{contract.id1}" style="float: left;" ></label>
+					<div class="cell">
+		           		<input type="text" id="a" name="a" th:value="${param.a[0]}" style="float: left;" readonly="readonly"/>
+		           	</div>
+		           	<label th:text="#{contract.id2}" style="float: left;" ></label>
+					<div class="cell">
+		           		<input type="text" id="b" name="b" th:value="${param.b[0]}" style="float: left;" readonly="readonly"/>
+		           	</div>
+		           	<label th:text="#{contract.price}" style="float: left;" ></label>
+					<div class="cell">
+		           		<input type="text" id="p" name="p" th:value="${param.p[0]}" style="float: left;" readonly="readonly"/>
+		           	</div>
+		        </div>
+		        <input type="button" id="correct" onclick="javascript:copyForCorrect();" th:value="#{contract.correct}" />
+	        </div>
 			<div class="form">
 				<div class="row">
 					<label for="id1" th:text="#{contract.id1}"></label>
@@ -74,7 +90,7 @@
 					<div class="error" id="errorprice"></div>
 				</div>
 			</div>
-			<input type="submit" th:value="#{buttons.submit}" value="Abschicken" />
+			<input type="submit" id="submit" th:value="#{buttons.submit}" value="Abschicken" />
 		</form>
 	</div>
  </body>

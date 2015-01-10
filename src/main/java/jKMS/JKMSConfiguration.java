@@ -14,12 +14,12 @@ public class JKMSConfiguration {
 //	@Bean
 //	public ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource()	{
 //		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-//		messageSource.setBasenames("classpath:main/resources/messages",
-//				"classpath:resources/messages",
-//				"main/resources/messages",
-//				"src/main/resources/messages",
-//				"resources/messages",
-//				"messages");
+////		messageSource.setBasenames("classpath:/resources/messages",
+////				"classpath:/resources/messages",
+////				"src/main/resources/messages",
+////				"resources/messages",
+////				"/messages");
+//		messageSource.setBasename("messages");
 //		messageSource.setDefaultEncoding("UTF-8");
 //		// # -1 : never reload, 0 always reload
 //		messageSource.setCacheSeconds(-1);

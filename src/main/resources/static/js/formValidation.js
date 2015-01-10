@@ -186,19 +186,26 @@ function createErrorFields(element, numberOfColumns)	{
 		if(document.getElementById('error' + inputs[i].name) == null)	{
 			
 			// No such row to contain error div for current field
-			if(document.getElementById('errorRow' + div(i, numberOfColumns)) == null)	{
+			if(document.getElementById('error' + inputs[i].parentNode.parentNode.id) == null)	{
 			
 				// create Error Row
 				var errorRow = document.createElement("div");
 				errorRow.setAttribute("class", "errorRow");
-				errorRow.setAttribute("id", "errorRow" + div(i, numberOfColumns));
+				errorRow.setAttribute("id", 'error' + inputs[i].parentNode.parentNode.id);
 				
 				// Append Error Row
-				inputs[i].parentNode.parentNode.parentNode.insertBefore(errorRow, inputs[i].parentNode.parentNode.nextSibling);
+				inputs[i].parentNode.parentNode.parentNode.insertBefore(errorRow, inputs[i].parentNode.parentNode.nextElementSibling);
 				
 			}	else	{
 				// Get Error Row
-				var errorRow = document.getElementById('errorRow' + div(i, numberOfColumns));
+				var errorRow = document.getElementById('error' + inputs[i].parentNode.parentNode.id);
+			}
+			
+			// Add empty div
+			if(errorRow.id.indexOf('s') != -1 && errorRow.firstElementChild == null)	{
+				var error = document.createElement("div");
+				error.setAttribute("class", "error");
+				errorRow.appendChild(error);
 			}
 			
 			// Create Error Div

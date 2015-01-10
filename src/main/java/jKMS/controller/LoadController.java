@@ -69,7 +69,6 @@ public class LoadController extends AbstractServerController {
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "load"))	{
-			LogicHelper.print(file.getContentType());
 			if(file.getContentType().equals("text/plain"))	{
 				
 				// Load from File

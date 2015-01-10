@@ -95,5 +95,23 @@ public class PlayTest {
 
 	}
 	
+	@Test
+	public void testRemoveContract()	{
+		kms.getState().addContract(1001, 1002, 42, "STATION 1");
+		kms.getState().addContract(1004, 1003, 43, "STATION 1");
+		kms.getState().addContract(1005, 1006, 43, "STATION 1");
+		kms.getState().addContract(1008, 1007, 44, "STATION 1");
+		
+		assertEquals("removeContract should return true if contract is available and removed"
+				, true, kms.getState().removeContract(1001, 1002, 42));
+		assertEquals("removeContract should return false if contract is not available"
+				, false, kms.getState().removeContract(1001, 1002, 42));
+		assertEquals("removeContract should return true if contract is available and removed"
+				, true, kms.getState().removeContract(1004, 1003, 43));
+		assertEquals("removeContract should return false because this contract is already removed"
+				, false, kms.getState().removeContract(1004, 1003, 43));
+
+	}
+	
 
 }
