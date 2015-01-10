@@ -12,6 +12,10 @@ import javax.swing.SwingConstants;
 import java.awt.GridBagLayout;
 
 import javax.swing.JCheckBox;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultCaret;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -154,13 +158,26 @@ public class AppGui extends JFrame{
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
+		//textArea.setLineWrap(true);
+		//textArea.setWrapStyleWord(true);
+		
+		//Prevent horizontal autoscroll
+		textArea.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				try {
+					textArea.setCaretPosition(textArea.getLineStartOffset(textArea.getLineCount() - 1));
+				} catch (BadLocationException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);
 		
 		console.redirectErr();
 		console.redirectOut();
-		//console.setMessageLines(500);
 		
 		setLoading();
 		setVisible(true);
