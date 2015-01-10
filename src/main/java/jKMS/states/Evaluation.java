@@ -23,7 +23,7 @@ public class Evaluation extends State{
 	}
 	private Contract winner = null;
 	
-	//returns statistic data of all contracts - min, max, average, variance, standard deviation
+	//returns statistic data of all contracts - min, max, average, standard deviation, quantity of contracts
 	@Override
 	public Map<String,Float> getStatistics() throws NoContractsException, NoIntersectionException{ 
 		Set<Contract> contracts = kms.getContracts();
@@ -73,7 +73,7 @@ public class Evaluation extends State{
 		variance = sumOfSquares/contracts.size();
 		standardDeviation = Math.sqrt(variance);
 		statistics.put("minimum", min);
-		statistics.put("variance", variance);
+		//statistics.put("variance", variance);
 		statistics.put("standardDeviation",(float) standardDeviation);
 		
 		float[] equilibrium = getEquilibrium();

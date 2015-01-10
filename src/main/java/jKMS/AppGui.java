@@ -53,7 +53,7 @@ public class AppGui extends JFrame{
 	private void initialize() {
 		//CREATE AND ADD COMPONENTS
 		setResizable(false);
-		setTitle("jKMS");
+		setTitle("Pit Market 2.0");
 		setBounds(100, 100, 640, 480);
 		setSize(640, 180);
 		getContentPane().setLayout(null);
