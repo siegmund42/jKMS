@@ -71,4 +71,32 @@ public class Play extends State {
 	    //return 0 when everything fine	
 	    }  
 	}
+	
+	/*
+	 * Remove a contract identified by id1, id2 and price.
+	 * @see jKMS.states.State#removeContract(int, int, int)
+	 */
+	@Override
+	public boolean removeContract(int id1, int id2, int price)	{
+		
+		// Go through all contracts
+		for(Contract contract : kms.getContracts())	{
+			// Price of actual contract must be equal to given price
+			if(contract.getPrice() == price)	{
+				// If id1 -> Buyer, id2 -> Seller
+				if(contract.getBuyer().getId() == id1 && contract.getSeller().getId() == id2)	{
+					LogicHelper.print("Removing Contract: " + contract.toString());
+					return kms.getContracts().remove(contract);
+				}
+				// If id2 -> Buyer, id1 -> Seller
+				else if(contract.getSeller().getId() == id1 && contract.getBuyer().getId() == id2)	{
+					LogicHelper.print("Removing Contract: " + contract.toString());
+					return kms.getContracts().remove(contract);
+				}
+			}
+		}
+		
+		return false;
+		
+	}
 }

@@ -1,5 +1,6 @@
 package jKMS.controller;
 
+import jKMS.LogicHelper;
 import jKMS.states.Evaluation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,9 +40,28 @@ public class ClientController extends AbstractController {
 		 	@RequestParam(value = "id1", required = false) String id1, 
 	        @RequestParam(value = "id2", required = false) String id2,
 	        @RequestParam(value = "price", required = false) String price,
+		 	@RequestParam(value = "c", required = false) String c, 
+		 	@RequestParam(value = "a", required = false) String a, 
+	        @RequestParam(value = "b", required = false) String b,
+	        @RequestParam(value = "p", required = false) String p,
 	        HttpServletRequest request)	{
 		
 		try	{
+			// Check if we need to correct [remove a contract]
+			if(c != null)	{
+				// Remove the Contract
+				if(!kms.getState().removeContract(Integer.parseInt(a), Integer.parseInt(b), Integer.parseInt(p)))	{
+					// It didnt work
+			    	model.addAttribute("id1", id1);
+			    	model.addAttribute("id2", id2);
+			    	model.addAttribute("price", price);
+			    	model.addAttribute("error", "Something went wrong during correction, please try again...");
+					model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+					model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
+			    	return "contract";
+				}
+			}
+			
 			// Check if Fields empty
 			if(id1 != "" && id2 != "" && price != "")	{
 				// Convert Strings to Integer
@@ -53,7 +73,7 @@ public class ClientController extends AbstractController {
 				
 			    if(add == 0)	{
 			    	// Succeeded
-			    	return "redirect:/contract.html?success";
+			    	return "redirect:/contract.html?success&a=" + idOne + "&b=" + idTwo + "&p=" + cost;
 			    }	else	{
 			    	// Failed - add Attributes to model
 			    	model.addAttribute("id1", id1);

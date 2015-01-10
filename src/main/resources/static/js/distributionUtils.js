@@ -185,7 +185,7 @@ function addRow(table)	{
 		
 		// add Row for Error displaying
 		var errorRow = document.createElement("div");
-		errorRow.setAttribute("id", "errorRow" + (rows*1));
+		errorRow.setAttribute("id", "errorcRow" + (rows*1));
 		errorRow.setAttribute("class", "errorRow");
 		
 		var error = document.createElement("div");
@@ -279,7 +279,7 @@ function addRow(table)	{
 		
 		// add Row for Error displaying
 		var errorRow = document.createElement("div");
-		errorRow.setAttribute("id", "errorRow" + (rows*1));
+		errorRow.setAttribute("id", "errorsRow" + (rows*1));
 		errorRow.setAttribute("class", "errorRow");
 		
 		var error = document.createElement("div");
@@ -320,7 +320,7 @@ function removeRow(number, type)	{
 	// Get the row Element
 	var row = document.getElementById(type + "Row" + number);
 	// Remove ErrorRow too
-	row.parentNode.removeChild(row.nextSibling);
+	row.parentNode.removeChild(row.nextElementSibling);
 	row.parentNode.removeChild(row);
 	
 	// Remove remove-link if last row

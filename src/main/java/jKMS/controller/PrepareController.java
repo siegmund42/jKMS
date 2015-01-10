@@ -129,18 +129,26 @@ public class PrepareController extends AbstractServerController {
 	
 	// POST Request on Distribution-Site -> Loading values from File, Display them by redirecting to "prepare2"
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
-	public String loadConfig(Model model, @RequestParam("input-file") MultipartFile file)	{
-		//String fileurl = "/Users/yangxinyu/Desktop/"+filename;
-		try {
-			kms.getState().load(file);
-		} 	catch(NumberFormatException | IOException | EmptyFileException|FalseLoadFileException e)	{
-			// File empty/broken/something went wrong
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
-			return "error";
+	public String loadConfig(Model model, @RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
+		if(ControllerHelper.stateHelper(kms, "prepare"))	{
+			if(file.getContentType().equals("text/plain"))	{
+				try {
+					kms.getState().load(file);
+				} 	catch(NumberFormatException | IOException | EmptyFileException|FalseLoadFileException e)	{
+					// File empty/broken/something went wrong
+					e.printStackTrace();
+					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));
+					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
+					return "error";
+				}
+				return "redirect:/prepare2";
+			}	else	{
+				model.addAttribute("error", LogicHelper.getLocalizedMessage("load.falseContentType"));
+				return "index";
+			}
+		}	else	{
+			return "reset";
 		}
-		return "redirect:/prepare2";
 	}
 
 	@RequestMapping(value = "save", method = RequestMethod.GET)

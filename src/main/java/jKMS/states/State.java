@@ -40,11 +40,15 @@ public abstract class State {
 	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException,IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // JUSTUS
-	public boolean removeCard(char pack, int lastId) throws WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{ return false; } //DOMNINIK DONE
+	public boolean removeCard(char pack, int lastId) throws WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} //DOMNINIK DONE
+	public boolean removeContract(int id1, int id2, int price)	{
+		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
+	} //LUKAS
 	public int addContract(int id1, int id2, int price, String uri) throws IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
-	} // XINYU
-																			
+	} // XINYU																
 	public float[] getEquilibrium() throws NoIntersectionException, IllegalStateException	{
 		throw new IllegalStateException("It seems you did not follow the workflow correctly. Please try again from the beginning!");
 	} // DONE
