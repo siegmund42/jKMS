@@ -21,11 +21,16 @@
  			</li>
  		</ul>
  	</div>
+ 	<noscript>
+ 		<div th:text="#{noscript}"></div>
+ 	</noscript>
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (reset)">
 	 	</div>
 	 	<div th:text="#{reset.hint}"></div>
+	 	<br />
 		<a href="javascript:history.go(-1);" th:text="#{reset.back}"></a>
+		<br /><br />
 		<form name="reset" method="POST" th:action="reset.html">
 			<input type="submit" th:value="#{reset.proceed}" />
 		</form>
