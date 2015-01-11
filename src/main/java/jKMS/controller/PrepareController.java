@@ -91,12 +91,12 @@ public class PrepareController extends AbstractServerController {
 		if(ControllerHelper.stateHelper(kms, "prepare"))	{
 			
 			// Only show the already stored values
-			if(configuration == null)	{
+			if(configuration == null || configuration.equals("null"))	{
 				configuration = "load";
 			}
 			
 			// Load values if should be loaded/standard configuration or some values are already stored
-			if(configuration.equals("load") || configuration.equals("standard") || kms.getsDistribution().size() > 0)	{
+			if(configuration.equals("load") || configuration.equals("standard"))	{
 				if(configuration.equals("standard"))	{
 					// Load Standard Distribution
 					kms.getState().loadStandardDistribution();
@@ -119,6 +119,7 @@ public class PrepareController extends AbstractServerController {
 			}
 			
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
+			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
 			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
 	
 			return "prepare2";
@@ -143,8 +144,16 @@ public class PrepareController extends AbstractServerController {
 				}
 				return "redirect:/prepare2";
 			}	else	{
-				model.addAttribute("error", LogicHelper.getLocalizedMessage("load.falseContentType"));
-				return "index";
+				model.addAttribute("error", "load.falseContentType");
+				// Add stored values to model
+				model.addAttribute("customerConfiguration", kms.getbDistribution());
+				model.addAttribute("salesmanConfiguration", kms.getsDistribution());
+				model.addAttribute("sGroupQuantity", kms.getGroupCount("s"));
+				model.addAttribute("cGroupQuantity", kms.getGroupCount("b"));
+				model.addAttribute("numberOfPlayers", kms.getPlayerCount());
+				model.addAttribute("numberOfAssistants", kms.getAssistantCount());
+				model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+				return "prepare2";
 			}
 		}	else	{
 			return "reset";

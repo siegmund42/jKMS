@@ -6,13 +6,9 @@
  <body>
  	<div id="header" th:fragment="heading (site)">
 		<h1 th:text="#{messages.__${site}__}"></h1>
-		<!-- <div id="logout">
-			<form th:action="@{/logout}" method="post">
-			    <input type="submit" th:value="#{buttons.logout}" value="Ausloggen"/>
-			</form>
-		</div>
-		 -->
 	</div>
+ 	<div th:fragment="globalHeading" th:text="#{messages.heading}" id="heading"></div>
+ 	<div th:fragment="footer" id="footer" th:text="#{footer.contributors}"></div>
 	<div id="js" th:fragment="js">
 		 <script th:inline="javascript">
 	    /*<![CDATA[*/

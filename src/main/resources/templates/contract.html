@@ -11,6 +11,14 @@
     <script th:src="@{/js/contractUtils.js}"></script>
 
     <title th:text="#{titles.welcome}">jKMS - Kaufverträge eingeben</title>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    	var correctText = /*[[#{contract.correctText}]]*/;
+    	var abort = /*[[#{contract.abort}]]*/;
+    	var transmittedText = /*[[#{contract.success}]]*/;
+    	var submit = /*[[#{buttons.submit}]]*/;
+    /*]]>*/
+    </script>
     
 </head>
  <body>
@@ -34,29 +42,33 @@
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>
+	<div th:replace="resources :: globalHeading">
+ 	</div>
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (contract)">
-	 	</div>	
+	 	</div>
 	 	<div class="errorDiv" th:if="${error}" th:text="#{error.contract.__${error}__}">
         </div>
 		<form method="POST" id="contract" th:action="contract" style="margin: auto;" onsubmit="return validateForm(this.id);">
-	        <div class="successDiv" th:if="${param.success}">
-		        <div th:text="#{contract.success}"></div>
+	        <div class="successDiv" style="text-align: left;" th:if="${param.success}">
+		        <div id="schriftzug" th:text="#{contract.success}"></div>
 	           	<div class="row" style="margin: auto;">
-		           	<label th:text="#{contract.id1}" style="float: left;" ></label>
+		           	<label th:text="#{contract.id1}" style="padding-left: 0; float: left;" ></label>
 					<div class="cell">
-		           		<input type="text" id="a" name="a" th:value="${param.a[0]}" style="float: left;" readonly="readonly"/>
+		           		<input type="text" id="a" name="a" th:value="${param.a[0]}" readonly="readonly"/>
 		           	</div>
 		           	<label th:text="#{contract.id2}" style="float: left;" ></label>
 					<div class="cell">
-		           		<input type="text" id="b" name="b" th:value="${param.b[0]}" style="float: left;" readonly="readonly"/>
+		           		<input type="text" id="b" name="b" th:value="${param.b[0]}" readonly="readonly"/>
 		           	</div>
 		           	<label th:text="#{contract.price}" style="float: left;" ></label>
 					<div class="cell">
-		           		<input type="text" id="p" name="p" th:value="${param.p[0]}" style="float: left;" readonly="readonly"/>
+		           		<input type="text" id="p" name="p" th:value="${param.p[0]}" readonly="readonly"/>
 		           	</div>
+		        	<input type="button" id="correct" onclick="javascript:copyForCorrect();" style="float: right;" th:value="#{contract.correct}" />
 		        </div>
-		        <input type="button" id="correct" onclick="javascript:copyForCorrect();" th:value="#{contract.correct}" />
+		        <br />
+		        <hr />
 	        </div>
 			<div class="form">
 				<div class="row">
@@ -93,5 +105,7 @@
 			<input type="submit" id="submit" th:value="#{buttons.submit}" value="Abschicken" />
 		</form>
 	</div>
+	<div th:replace="resources :: footer">
+ 	</div>
  </body>
 </html>

@@ -21,7 +21,7 @@
     <script th:src="@{/js/distributionUtils.js}"></script>
     
 </head>
- <body onload="javascript:updateArrangement();">
+ <body onload="javascript:updateInputs(); javascript:updateArrangement();">
  	<div id="toolBar">
  		<div id="path">
  			<div th:class="step" id="step_active" th:text="#{path.load.step1}"></div>

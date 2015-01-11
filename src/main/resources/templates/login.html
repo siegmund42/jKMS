@@ -15,6 +15,11 @@
     <body>
 	 	<div th:replace="resources :: js">
 		</div>
+	 	<noscript>
+	 		<div th:text="#{noscript}"></div>
+	 	</noscript>
+		<div th:replace="resources :: globalHeading">
+ 		</div>
 		<div id="inhalt">
 			<div th:replace="resources :: heading (login)">
  			</div>
@@ -42,5 +47,7 @@
             	<input type="submit" value="Anmelden" th:value="#{buttons.login}" />
         	</form>
 		</div>
+		<div th:replace="resources :: footer">
+ 		</div>
     </body>
 </html>

@@ -17,10 +17,12 @@
     	var percent = /*[[#{prepare.percent}]]*/ 'Anteil';
     	var currency = /*[[#{prepare.currency}]]*/ 'Preis';
     	var totalOV = /*[[#{error.config.playerCountOV}]]*/;
+    	var moreAsThanPl = /*[[#{error.config.moreAssiThanPlay}]]*/;
     	var removeRowButton = /*[[#{prepare.removeRow.button}]]*/;
     	var cGroupCount = /*[[${cGroupQuantity}]]*/;
     	var sGroupCount = /*[[${sGroupQuantity}]]*/;
     	var isStandard = /*[[${isStandard}]]*/;
+    	var numberOfAssistants = /*[[${numberOfAssistants}]]*/;
     /*]]>*/
     </script>
     <script th:src="@{/js/script.js}"></script>
@@ -28,7 +30,7 @@
     <script th:src="@{/js/distributionUtils.js}"></script>
     
 </head>
- <body th:onload="${addEmptyRows}? 'addRow(\'c\'); addRow(\'c\'); addRow(\'s\'); addRow(\'s\');' : 'createErrorFields(\'arrangement\', 2); updateArrangement();'">
+ <body th:onload="'updateInputs(); ' + (${sGroupQuantity == 0}? 'addRow(\'c\'); addRow(\'c\'); addRow(\'s\'); addRow(\'s\');' : 'createErrorFields(\'arrangement\', 2); updateArrangement();')">
  	<div th:replace="resources :: js">
 	</div>
  	<div id="toolBar">
@@ -60,9 +62,12 @@
         </div>
 	 	<div th:text="#{prepare.numberOfPlayers} + ': ' + ${numberOfPlayers}"></div>
 		<form name="arrangement" id="arrangement" method="POST" enctype="multipart/form-data" th:action="save.html" onChange="updateArrangement();" onsubmit="return validateForm(this.id);">
-			<h2 th:text="#{prepare.customerGroups}" style="float: left;">Käufergruppen</h2>
-			<h2 th:text="#{prepare.salesmanGroups}" style="float: right;">Verkäufergruppen</h2>
+			<h2 th:text="#{prepare.customerGroups}" style="float: left;"></h2>
+			<h2 th:text="#{prepare.salesmanGroups}" style="float: right;"></h2>
 			<p style="clear: both;"></p>
+			<div style="position: relative; margin: -40px auto 20px auto;">
+				<a href="prepare2.html?c=own" th:text="#{prepare.reset}" ></a>
+			</div>
 			<div id="customerTable" class="arrangementTable">
 				<div class="row">
 					<div class="cell" th:text="#{prepare.relativeQuantity}"></div>

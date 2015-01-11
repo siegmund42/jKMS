@@ -42,7 +42,6 @@
 	 	<div th:replace="resources :: heading (prepare1)">
 	 	</div>
 	 	<div class="errorDiv" th:if="${error}" th:text="#{error.__${error}__}"></div>
-	 	<br />
 		<form method="POST" th:action="'prepare2.html?c=load'" id="config" name="config" onsubmit="return validateForm(this.id);">
 			<div id="form">
 				<div class="row">
@@ -62,9 +61,10 @@
 					<div class="error" id="errorassistants"></div>
 				</div>
 			</div>
+			<br />
 			<div th:text="#{prepare.continueWith}"></div>
 			<input type="submit" value="Standardkonfiguration" th:value="#{prepare.standardConfig}" th:formaction="'prepare1.html?c=standard'"/>
-			<input type="submit" value="Eigene Konfiguration" th:value="#{prepare.ownConfig}" th:formaction="'prepare1.html?c=own'"/>
+			<input type="submit" value="Eigene Konfiguration" th:value="#{prepare.ownConfig}" formaction="prepare1.html"/>
 		</form>
 	</div>
  </body>

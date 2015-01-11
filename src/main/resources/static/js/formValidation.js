@@ -145,12 +145,14 @@ function validateForm(form)	{
 			alert(totalOOB);
 			globalError = true;
 		}	else	{
+			
 			// relative = 100
 			// Check if we needed to round
 			if(document.getElementById('customerTotalAbsolute').innerHTML > numberOfPlayers/2 ||
 					document.getElementById('salesmanTotalAbsolute').innerHTML > numberOfPlayers/2)	{
 				
 				if(document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 > (10000 - firstID))	{
+					// Actual number of players exceede the Limit of 8999
 					globalError = true;
 					window.alert(roundedUp + (document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 - numberOfPlayers) + "\n\n" + totalOV);
 				}
@@ -158,6 +160,12 @@ function validateForm(form)	{
 				// Ask User if it was OK to round
 				globalError =  globalError || !window.confirm(roundedUp + (document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1 - numberOfPlayers));
 			}
+			
+			if(globalError == false && numberOfAssistants > document.getElementById('customerTotalAbsolute').innerHTML*1 + document.getElementById('salesmanTotalAbsolute').innerHTML*1)	{
+				globalError = true;
+				window.alert(moreAsThanPl);
+			}
+			
 		}
 	}
 	return !globalError;
@@ -235,5 +243,5 @@ function removeError(element)	{
 	// Clear Text
 	document.getElementById('error' + element.id).innerHTML = "";
 	// Paint Border white
-	element.style.border = "1px solid #AAA";
+	element.style.border = "";
 }

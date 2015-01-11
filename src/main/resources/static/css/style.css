@@ -66,17 +66,21 @@ select option	{
 	padding:			3px 4px;
 }
 
+/*
+################## Classes #######################
+*/
+
 .errorDiv	{
 	color:				red;
 	font-size:			120%;
-	width:				800px;
-	margin:				auto;
+	width:				700px;
+	margin:				10px auto 20px auto;
 }
 
 .successDiv	{
 	color:				green;
 	font-size:			100%;
-	width:				800px;
+	width:				700px;
 	margin:				auto;
 }
 
@@ -103,6 +107,7 @@ select option	{
 }
 
 .cell	{
+	padding:			1px;
 	display:			table-cell;
 	text-align:			center;
 }
@@ -115,7 +120,6 @@ select option	{
 .arrangementTable	{
 	border-collapse:	collapse; 
 	margin:				5px;
-	/*display:			table;*/
 }
 
 .row	{
@@ -127,146 +131,18 @@ select option	{
 	display:			table-row;
 }
 
-#form input[type=number]	{
-	display:			table-cell;
-	float:				none;
-	margin:				10px;
-}
-
-#toolBar	{
-	width:				100%;
-	background:			rgba(80,80,80,0.9);
-	color:				white;
-	font-size:			95%;
-	/*position:			absolute;
-	z-index:			2;*/
-}
-
-input[type=checkbox]	{
-	vertical-align:		middle;
-	margin:				15px 0 0 10px;
-}
-
 .step	{
 	float:				left;
 	padding:			2px 7px;
 }
 
-#step_active	{
-	height:				100%;
-	float:				left;
-	background:			rgba(110,205,0,0.5);
-}
-
-#toolBar ul:after {
-    clear:				both;
-    content:			" ";
-    display:			block;
-    font-size:			0;
-    height:				0;
-    visibility:			hidden;
-}
-
-#toolBar ul li {
-    list-style:			none;
-    float:				right;
-    text-align:			left;
-}
-
-#toolBar ul li a {
-    text-decoration: 	none;
-    display: 			block;
-    color: 				rgba(110,210,0,1);
-    height:				100%;
-    padding:			2px 7px;
-    border-left:		1px solid white/*rgba(110,205,0,0.5)*/;
-}
-
-#toolBar ul li a:hover {
-    background: 		rgba(110,210,0,1);
-    color:				rgba(50,50,50,1);
-}
-
-#toolBar ul li:hover > ul {
-    visibility: 		visible;
-    z-index: 			2;
-}
-#toolBar ul li ul	{
-    display: 			inline;
-    visibility: 		hidden;
-    position: 			absolute;
-    padding:			0px;
-}
-#toolBar ul li ul li	{
-    float: 				none;
-    border: 			0;
-    text-align:			center;
-    color: 				rgba(110,210,0,1);
-	background:			rgba(80,80,80,0.9);
-}
-#toolBar ul li ul li a:hover	{
-    color: 				#333;
-    border: 			0;
-}
-
-#inhalt {
-	height: 			auto;
-	width:				auto;
-	display:			inline-block;
-	border-radius:		4px;
+.error	{
+	font-size:			70%;
+	display:			table-cell;
+	color:				red;
 	vertical-align:		middle;
-	margin:				90px auto;
-	padding:			0px 50px 30px 50px;
-    /*box-shadow: 		2px 5px 5px rgba(80,80,80,0.3);*/
-	/*background-image: linear-gradient(-45deg, rgba(150,150,150,1) 0%, rgba(230,230,230,1) 100%);*/
-	background:			rgb(200,200,200);
-}
-
-#header	{
-	font-size:			130%;
-	margin:				-55px 0 30px -25px;
-	position:			relative;
-	text-align:			left;
-}
-
-input[type="text"], input[type="password"],
- input[type="email"], input[type="number"], textarea	{
- 	width:				60px;
- 	margin:				5px 10px;
-	border-radius:		5px;
-	height:				25px;
-	padding:			5px 15px;
-	border:				1px solid #AAA;
-	box-shadow:			0px 1px 2px rgba(0, 0, 0, 0.2) inset;
-}
-
-input[type="text"]:focus, input[type="password"]:focus,
- input[type="email"]:focus, input[type="number"]:focus, textarea:focus	{
-	box-shadow:			0px 0px 5px #999;
-}
-
-input[readonly="readonly"], input[readonly]	{
- 	margin:				5px 10px;
-	border:				0;
-	box-shadow:			none;
-	background:			none;
-    -moz-appearance:	textfield;
-    font-size:			100%;
-    color:				black;
-    text-align:			center;
-    cursor:				default;
-}
-
-input[readonly="readonly"]:focus, input[readonly]:focus	{
-	box-shadow:			none;
-}
-
-input[readonly="readonly"]::-webkit-outer-spin-button,
-input[readonly]::-webkit-outer-spin-button,
-input[readonly="readonly"]::-webkit-inner-spin-button,
-input[readonly]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 			0;
+	text-align:			center;
+	margin:				auto;
 }
 
 .round	{
@@ -305,6 +181,10 @@ input[readonly]::-webkit-inner-spin-button {
 	background:			rgba(50,50,50,1);	
 }
 
+/*
+###################### input types ####################
+*/
+
 input[type=submit], input[type=button], #inhalt a:link, #inhalt a:visited	{
 	font-size:			100%;
 	color:				rgba(50,50,50,1);
@@ -316,6 +196,184 @@ input[type=submit], input[type=button], #inhalt a:link, #inhalt a:visited	{
 	background:			rgba(110,210,0,1);
 	margin:				5px;
 	cursor:				pointer;
+}
+
+input[type="text"], input[type="password"],
+ input[type="email"], input[type="number"], textarea	{
+ 	width:				60px;
+ 	margin:				5px 10px;
+	border-radius:		5px;
+	height:				25px;
+	padding:			5px 15px;
+	border:				1px solid white;
+	/*box-shadow:			0px 1px 2px rgba(0, 0, 0, 0.2) inset;*/
+}
+
+input[type="text"]:focus, input[type="password"]:focus,
+ input[type="email"]:focus, input[type="number"]:focus, textarea:focus	{
+	/*box-shadow:			0px 0px 5px #999;*/
+	border:				1px solid rgba(110,210,0,1) !important;
+}
+
+input[readonly="readonly"], input[readonly]	{
+ 	margin:				5px 10px;
+	border:				0;
+	box-shadow:			none;
+	background:			none;
+    -moz-appearance:	textfield;
+    font-size:			100%;
+    color:				black;
+    text-align:			center;
+    cursor:				default;
+}
+
+input[readonly="readonly"]:focus, input[readonly]:focus	{
+	box-shadow:			none;
+	border:				0 !important;
+}
+
+input[readonly="readonly"]::-webkit-outer-spin-button,
+input[readonly]::-webkit-outer-spin-button,
+input[readonly="readonly"]::-webkit-inner-spin-button,
+input[readonly]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 			0;
+}
+
+#form input[type=number]	{
+	display:			table-cell;
+	float:				none;
+	margin:				10px;
+}
+
+input[type=checkbox]	{
+	vertical-align:		middle;
+	margin:				15px 0 0 10px;
+}
+
+.successDiv input[readonly="readonly"], .successDiv input[readonly]	{
+	text-align:			left;
+	float:				left;
+	color:				green;
+	padding:			0;
+	margin:				10px 0;
+	vertical-align:		middle;
+}
+
+/*
+################################# ToolBar ##############################
+*/
+
+#toolBar	{
+	width:				100%;
+	background:			rgba(80,80,80,0.9);
+	color:				white;
+	font-size:			95%;
+	/*position:			absolute;
+	z-index:			2;*/
+}
+
+#toolBar ul:after {
+    clear:				both;
+    content:			" ";
+    display:			block;
+    font-size:			0;
+    height:				0;
+    visibility:			hidden;
+}
+
+#toolBar ul li {
+    list-style:			none;
+    float:				right;
+    text-align:			left;
+}
+
+#toolBar ul li a {
+    text-decoration: 	none;
+    display: 			block;
+    color: 				rgba(110,210,0,1);
+    height:				100%;
+    padding:			2px 7px;
+    border-left:		1px solid white/*rgba(110,205,0,0.5)*/;
+}
+
+#toolBar ul li a:hover {
+    background: 		rgba(110,210,0,1);
+    color:				rgba(50,50,50,1);
+}
+
+#toolBar ul li:hover > ul {
+    visibility: 		visible;
+    z-index: 			2;
+}
+
+#toolBar ul li ul	{
+    display: 			inline;
+    visibility: 		hidden;
+    position: 			absolute;
+    padding:			0px;
+}
+
+#toolBar ul li ul li	{
+    float: 				none;
+    border: 			0;
+    text-align:			center;
+    color: 				rgba(110,210,0,1);
+	background:			rgba(80,80,80,0.9);
+}
+
+#toolBar ul li ul li a:hover	{
+    color: 				#333;
+    border: 			0;
+}
+
+/*
+############################### Footer #################################
+*/
+
+#footer	{
+	vertical-align:		bottom;
+	position:			fixed;
+	bottom:				0;
+	width:				100%;
+	background:			rgba(80,80,80,0.9);
+	color:				white;
+}
+
+/*
+############################### General #################################
+*/
+
+#heading	{
+	font-weight:		bold;
+	font-size:			210%;
+	padding:			20px;
+}
+
+#step_active	{
+	height:				100%;
+	float:				left;
+	background:			rgba(110,205,0,0.5);
+}
+
+#inhalt {
+	height: 			auto;
+	width:				auto;
+	display:			inline-block;
+	border-radius:		4px;
+	vertical-align:		middle;
+	margin:				90px auto;
+	padding:			0px 50px 30px 50px;
+    /*box-shadow: 		2px 5px 5px rgba(80,80,80,0.3);*/
+	/*background-image: linear-gradient(-45deg, rgba(150,150,150,1) 0%, rgba(230,230,230,1) 100%);*/
+	background:			rgb(200,200,200);
+}
+
+#header	{
+	font-size:			130%;
+	margin:				-55px 0 30px -25px;
+	position:			relative;
+	text-align:			left;
 }
 
 #inhalt a:hover, #inhalt a:active, #inhalt a:focus, input[type=submit]:hover, input[type=button]:hover	{
@@ -342,12 +400,6 @@ input[type=submit], input[type=button], #inhalt a:link, #inhalt a:visited	{
 form#login	{
 	display:			inline-block;
 	margin:				0 auto;
-}
-
-#logout	{
-	position:			relative;
-	float:				right;
-	margin:				1%;
 }
 
 #chartWrapper	{
@@ -382,7 +434,6 @@ form#login	{
     transform:			rotate(180deg);
 }
 
-
 #card			{
 	background:			white;
 	position:			relative;
@@ -390,15 +441,6 @@ form#login	{
 	width:				400px;
 	height:				20%;
 	font-family:		Helvetica;	
-}
-
-.error	{
-	font-size:			70%;
-	display:			table-cell;
-	color:				red;
-	vertical-align:		middle;
-	text-align:			center;
-	margin:				auto;
 }
 
 #customerTable	{

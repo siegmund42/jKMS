@@ -33,9 +33,11 @@
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>
+	<div th:replace="resources :: globalHeading">
+ 	</div>
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (welcome)">
-	 	</div>	
+	 	</div>
 	 	<div class="errorDiv" th:if="${error}" th:text="#{error.__${error}__}"></div>
 	 	<br />
 		<p><a href="prepare1.html" th:text="#{index.prepare}">Vorbereitung</a></p>
@@ -47,5 +49,7 @@
 		<br />
 	 	<p><a href="settings.html" th:text="#{messages.settings}">Einstellungen</a></p>
 	</div>
+	<div th:replace="resources :: footer">
+ 	</div>
  </body>
 </html>

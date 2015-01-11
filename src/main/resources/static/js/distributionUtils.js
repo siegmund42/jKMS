@@ -1,3 +1,7 @@
+var inputs = new Array();
+inputs[0] = new Array();
+inputs[1] = new Array();
+	
 // Updates Fields in Arrangement Form
 function updateArrangement()	{
 	// Update Absolute Numbers
@@ -6,40 +10,16 @@ function updateArrangement()	{
 	updateSum();
 }
 
-// Updates the Absolute Amount depending on Number of Players and relative Amount
-//function updateAbsolutes()	{
-//	// For every Field
-//	for(var i = 1; i <= document.getElementById('cGroupQuantity').value; i++)	{
-//		// Only if Field is not null
-//		if(document.getElementById('cRelativeQuantity[' + i + ']') != null)	{
-//			// Update Absolute Fields for customer and salesman
-//    		document.getElementById('cAbsoluteQuantity[' + i + ']').value = absoluteRound((document.getElementById('cRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
-//		}
-//	}
-//	// For every Field
-//	for(var i = 1; i <= document.getElementById('sGroupQuantity').value; i++)	{
-//		// Only if Field is not null
-//		if(document.getElementById('sRelativeQuantity[' + i + ']') != null)	{
-//			// Update Absolute Fields for customer and salesman
-//    		document.getElementById('sAbsoluteQuantity[' + i + ']').value = absoluteRound((document.getElementById('sRelativeQuantity[' + i + ']').value/200)*numberOfPlayers);
-//		}
-//	}
-//}
-
-// Updates the sum of relative and absolute Amounts
-function updateSum()	{
-
-	var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0;
+function updateInputs()	{
+	
+	inputs[0] = [];
+	inputs[1] = [];
 	
 	// Get Array of input fields
 	var coll = arrangement.elements;
 	
-	var inputs = new Array();
-	inputs[0] = new Array();
-	inputs[1] = new Array();
-	
+	// Get relevant fields
 	for(var i = 0; i < coll.length; i++)	{
-		// Relevant Fields are: number, text, password
 		if(coll[i].type == "number" && coll[i].id.indexOf("Absolute") == -1)	{
 			if(coll[i].id.indexOf("cRelative") != -1)
 				inputs[0][inputs[0].length] = coll[i];
@@ -47,15 +27,18 @@ function updateSum()	{
 				inputs[1][inputs[1].length] = coll[i];
 		}
 	}
+}
+
+// Updates the sum of relative and absolute Amounts
+function updateSum()	{
+
+	var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0;
 	
 	// For every Field
 	for(var i = 0; i < inputs[0].length; i++)	{
 		// Update Sums of Relative and absolute Amounts for Customer and Salesman
     	customerTotalRelative += inputs[0][i].value*1;
     	// Update Absolute number
-//    	if(isStandard)
-//    		inputs[0][i].parentNode.parentNode.lastChild.previousSibling.firstChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
-//    	else
     	inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
     	customerTotalAbsolute += inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
 	}
@@ -309,6 +292,8 @@ function addRow(table)	{
 		
 	}
 	
+	updateInputs();
+	
 	// Update values -> write zeros
 	updateArrangement();
 	
@@ -339,6 +324,8 @@ function removeRow(number, type)	{
 	}
 	
 	document.getElementById(type + "GroupQuantity").value--;
+
+	updateInputs();
 	
 	// Update Absolutes and sums
 	updateArrangement();
