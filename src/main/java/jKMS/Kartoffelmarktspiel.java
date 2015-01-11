@@ -3,14 +3,14 @@ package jKMS;
 
 import jKMS.cards.Card;
 import jKMS.states.Evaluation;
-import jKMS.states.Play;
 import jKMS.states.Load;
+import jKMS.states.Play;
 import jKMS.states.Preparation;
 import jKMS.states.State;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.LinkedHashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

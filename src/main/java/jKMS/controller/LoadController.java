@@ -1,8 +1,5 @@
 package jKMS.controller;
 
-import java.io.IOException;
-import java.util.List;
-
 import jKMS.LogicHelper;
 import jKMS.exceptionHelper.EmptyFileException;
 import jKMS.exceptionHelper.FalseLoadFileException;
@@ -11,6 +8,9 @@ import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
 import jKMS.exceptionHelper.WrongRelativeDistributionException;
+
+import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletRequest;
 

@@ -1,8 +1,8 @@
 package jKMS;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class AmountTest {
 	private Amount amount = new Amount(10, 5);

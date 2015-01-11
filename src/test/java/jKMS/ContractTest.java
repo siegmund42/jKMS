@@ -1,12 +1,11 @@
 package jKMS;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import static org.junit.Assert.assertEquals;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.SellerCard;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ContractTest {
 	private BuyerCard buyer;

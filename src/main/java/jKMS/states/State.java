@@ -1,16 +1,5 @@
 package jKMS.states;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Map;
-
-import org.springframework.web.multipart.MultipartFile;
-
-import au.com.bytecode.opencsv.CSVWriter;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-
 import jKMS.Contract;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.exceptionHelper.EmptyFileException;
@@ -21,6 +10,17 @@ import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
 import jKMS.exceptionHelper.WrongRelativeDistributionException;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import au.com.bytecode.opencsv.CSVWriter;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 
 public abstract class State {
 	protected Kartoffelmarktspiel kms;

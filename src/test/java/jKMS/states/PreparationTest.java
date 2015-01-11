@@ -1,5 +1,23 @@
 package jKMS.states;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import jKMS.Amount;
+import jKMS.Application;
+import jKMS.Kartoffelmarktspiel;
+import jKMS.LogicHelper;
+import jKMS.Pdf;
+import jKMS.cards.BuyerCard;
+import jKMS.cards.Card;
+import jKMS.cards.SellerCard;
+import jKMS.exceptionHelper.EmptyFileException;
+import jKMS.exceptionHelper.FalseLoadFileException;
+import jKMS.exceptionHelper.WrongAssistantCountException;
+import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPlayerCountException;
+import jKMS.exceptionHelper.WrongRelativeDistributionException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,21 +34,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import jKMS.Amount;
-import jKMS.Application;
-import jKMS.Kartoffelmarktspiel;
-import jKMS.LogicHelper;
-import jKMS.Pdf;
-import jKMS.cards.BuyerCard;
-import jKMS.cards.Card;
-import jKMS.cards.SellerCard;
-import jKMS.exceptionHelper.EmptyFileException;
-import jKMS.exceptionHelper.FalseLoadFileException;
-import jKMS.exceptionHelper.WrongAssistantCountException;
-import jKMS.exceptionHelper.WrongFirstIDException;
-import jKMS.exceptionHelper.WrongPlayerCountException;
-import jKMS.exceptionHelper.WrongRelativeDistributionException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,8 +46,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
-
-import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

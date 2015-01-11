@@ -1,5 +1,12 @@
 package jKMS.states;
 
+import jKMS.Amount;
+import jKMS.Contract;
+import jKMS.Csv;
+import jKMS.Kartoffelmarktspiel;
+import jKMS.exceptionHelper.NoContractsException;
+import jKMS.exceptionHelper.NoIntersectionException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,14 +14,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
-import jKMS.Amount;
-
 import au.com.bytecode.opencsv.CSVWriter;
-import jKMS.Contract;
-import jKMS.Csv;
-import jKMS.Kartoffelmarktspiel;
-import jKMS.exceptionHelper.NoContractsException;
-import jKMS.exceptionHelper.NoIntersectionException;
 
 public class Evaluation extends State{
 	
