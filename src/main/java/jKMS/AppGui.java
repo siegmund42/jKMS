@@ -75,13 +75,13 @@ public class AppGui extends JFrame{
 				
 				try {
 					redirect = new URI("http://localhost:8080/autoRedirect");
+					
+					try {
+						Desktop.getDesktop().browse(redirect);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				} catch (URISyntaxException e1) {
-					e1.printStackTrace();
-				}
-
-				try {
-					Desktop.getDesktop().browse(redirect);
-				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -159,7 +159,7 @@ public class AppGui extends JFrame{
 		//textArea.setWrapStyleWord(true);
 		
 		//Prevent horizontal autoscroll
-		textArea.addCaretListener(new CaretListener() {
+		/*textArea.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e) {
 				try {
@@ -168,7 +168,7 @@ public class AppGui extends JFrame{
 					e1.printStackTrace();
 				}
 			}
-		});
+		});*/
 		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);

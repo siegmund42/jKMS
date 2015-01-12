@@ -2,6 +2,8 @@ package jKMS;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.ServerSocket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
@@ -29,36 +31,39 @@ public class Application extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {
 		gui = new AppGui();
-
-		SpringApplication.run(Application.class, args);
 		
-		URI index = null;
-		
-		try {
-			index = new URI("http://localhost:8080/index");
-		} catch (URISyntaxException e1) {
-			e1.printStackTrace();
+		if(portAvailable()) {
+			SpringApplication.run(Application.class, args);
+			
+				
+			URI index = null;
+			
+			try {
+				index = new URI("http://localhost:8080/index");
+			} catch (URISyntaxException e1) {
+				e1.printStackTrace();
+			}
+	
+			try {
+				Desktop.getDesktop().browse(index);
+				gui.setReady();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			System.out.println();
+			System.out.println("     ██╗██╗  ██╗███╗   ███╗███████╗");
+			System.out.println("     ██║██║ ██╔╝████╗ ████║██╔════╝");
+			System.out.println("     ██║█████╔╝ ██╔████╔██║███████╗");
+			System.out.println("██   ██║██╔═██╗ ██║╚██╔╝██║╚════██║");
+			System.out.println("╚█████╔╝██║  ██╗██║ ╚═╝ ██║███████║");
+			System.out.println(" ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝");
+			System.out.println("01101010 01001011 01001101 01010011");
+			System.out.println();
+			System.out.println("Pit Market 2.0 by Quiryn, freeDom, jUSTUS, yangxinyu and siegmund42.");
+			System.out.println();
+			System.out.println();
 		}
-
-		try {
-			Desktop.getDesktop().browse(index);
-			gui.setReady();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-		System.out.println();
-		System.out.println("     ██╗██╗  ██╗███╗   ███╗███████╗");
-		System.out.println("     ██║██║ ██╔╝████╗ ████║██╔════╝");
-		System.out.println("     ██║█████╔╝ ██╔████╔██║███████╗");
-		System.out.println("██   ██║██╔═██╗ ██║╚██╔╝██║╚════██║");
-		System.out.println("╚█████╔╝██║  ██╗██║ ╚═╝ ██║███████║");
-		System.out.println(" ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝");
-		System.out.println("01101010 01001011 01001101 01010011");
-		System.out.println();
-		System.out.println("Pit Market 2.0 by Quiryn, freeDom, jUSTUS, yangxinyu and siegmund42.");
-		System.out.println();
-		System.out.println();
 		
 	}
 	
@@ -87,6 +92,33 @@ public class Application extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+    }
+    
+    public static boolean portAvailable(){
+    	ServerSocket ss = null;
+	    DatagramSocket ds = null;
+	    try {
+	        ss = new ServerSocket(8080);
+	        ss.setReuseAddress(true);
+	        ds = new DatagramSocket(8080);
+	        ds.setReuseAddress(true);
+	        return true;
+	    } catch (IOException e) {
+	    } finally {
+	        if (ds != null) {
+	            ds.close();
+	        }
+
+	        if (ss != null) {
+	            try {
+	                ss.close();
+	            } catch (IOException e) {
+	                /* should not be thrown */
+	            }
+	        }
+	    }
+
+	    return false;
     }
     
 }
