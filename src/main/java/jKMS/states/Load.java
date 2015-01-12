@@ -160,29 +160,33 @@ public class Load extends State {
 		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
 		if((LogicHelper.getRelativeSum(kms.getbDistribution()) +  LogicHelper.getRelativeSum(kms.getsDistribution())) != 200) throw new WrongRelativeDistributionException();
 		
-		for(Card iter : oldSet){
-			//Check if card must be removed (Id is higher than lasdId)
-			if(iter.getPackage() == pack && iter.getId() >= lastId){
-				//Update player count
-				kms.getConfiguration().setPlayerCount(kms.getConfiguration().getPlayerCount()-1);
-				
-				//Update distribution-map
-				if(iter instanceof BuyerCard) distrib = kms.getConfiguration().getbDistribution();
-				else distrib = kms.getConfiguration().getsDistribution();
-				
-				key = iter.getValue();
-				
-				distrib.get(key).setAbsolute(distrib.get(key).getAbsolute()-1);
-				if(distrib.get(key).getAbsolute() == 0) distrib.remove(key);
-				
-				kms.getCards().remove(iter);
-				
-				LogicHelper.print("Excluded Card: " + iter.getId());
-			}
-		}
+		//TODO do some checks first
 		
-		if(kms.getCards() == oldSet) return false;
-		else return true;
+		return kms.getConfiguration().getPackage(pack).removeCards(lastId);
+		
+//		for(Card iter : oldSet){
+//			//Check if card must be removed (Id is higher than lasdId)
+//			if(iter.getPackage() == pack && iter.getId() >= lastId){
+//				//Update player count
+//				kms.getConfiguration().setPlayerCount(kms.getConfiguration().getPlayerCount()-1);
+//				
+//				//Update distribution-map
+//				if(iter instanceof BuyerCard) distrib = kms.getConfiguration().getbDistribution();
+//				else distrib = kms.getConfiguration().getsDistribution();
+//				
+//				key = iter.getValue();
+//				
+//				distrib.get(key).setAbsolute(distrib.get(key).getAbsolute()-1);
+//				if(distrib.get(key).getAbsolute() == 0) distrib.remove(key);
+//				
+//				kms.getCards().remove(iter);
+//				
+//				LogicHelper.print("Excluded Card: " + iter.getId());
+//			}
+//		}
+//		
+//		if(kms.getCards() == oldSet) return false;
+//		else return true;
 	}
 	
 	

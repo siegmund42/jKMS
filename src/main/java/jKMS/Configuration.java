@@ -2,6 +2,7 @@ package jKMS;
 
 
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ public class Configuration {
 	private int firstID;
 	private Map<Integer, Amount> bDistribution;
 	private Map<Integer, Amount> sDistribution;
+	private Set<Package> packages;
 	
 	public Configuration(){
 		
@@ -38,6 +40,14 @@ public class Configuration {
 	}
 	
 // getter and setter make the world better ;)
+	
+	public Package getPackage(char name)	{
+		for(Package pack : packages)	{
+			if(pack.getName() == name)
+				return pack;
+		}
+		return null;
+	}
 	
 	public int getPlayerCount() {
 		return playerCount;
