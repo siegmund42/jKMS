@@ -197,7 +197,7 @@ public class AppGui extends JFrame{
 	}
 	
 	public void setReady(String state){
-		String str = LogicHelper.getLocalizedMessage("GUI.lblReady") + "\n" + state;
+		String str = "<html>" + LogicHelper.getLocalizedMessage("GUI.lblReady") + "<br>" + state;
 		
 		lblStatus.setText(str);
 		lblStatus.setForeground(new Color(0x00009900));
@@ -210,6 +210,24 @@ public class AppGui extends JFrame{
 		lblStatus.setForeground(new Color(0x00FF0000));
 		btnOpenBrowser.setEnabled(false);
 		btnClose.setEnabled(false);
+	}
+	
+	public void setError(){
+		String str = LogicHelper.getLocalizedMessage("GUI.lblError");
+		
+		lblStatus.setText(str);
+		lblStatus.setForeground(new Color(0x00FF0000));
+		btnOpenBrowser.setEnabled(false);
+		btnClose.setEnabled(true);
+	}
+	
+	public void setError(String state){
+		String str = "<html>" + LogicHelper.getLocalizedMessage("GUI.lblError") + "<br>" + state;
+		
+		lblStatus.setText(str);
+		lblStatus.setForeground(new Color(0x00FF0000));
+		btnOpenBrowser.setEnabled(false);
+		btnClose.setEnabled(true);
 	}
 	
 	public void changeLanguage(){
