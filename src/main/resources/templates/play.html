@@ -23,15 +23,6 @@
 </head>
  <body>
  	<div id="toolBar">
- 		<div id="path">
- 			<div class="step" th:text="#{path.load.step1}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step2}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" id="step_active" th:text="#{path.load.step3}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step4}"></div>
- 		</div>
  		<ul>
  			<li>
 				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}"></a>

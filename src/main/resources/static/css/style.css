@@ -70,22 +70,27 @@ select option	{
 ################## Classes #######################
 */
 
+.textarea	{
+	max-width:			800px;
+	
+}
+
 .errorDiv	{
 	color:				red;
-	font-size:			120%;
-	width:				700px;
+	font-size:			110%;
+	max-width:			700px;
 	margin:				10px auto 20px auto;
 }
 
 .successDiv	{
 	color:				green;
-	font-size:			100%;
-	width:				700px;
+	font-size:			110%;
+	max-width:			700px;
 	margin:				auto;
 }
 
 .textBlock	{
-	width:				650px;
+	max-width:			650px;
 	margin:				20px auto;
 }
 
@@ -150,7 +155,7 @@ select option	{
 	width:				30px;
 	height:				30px;
 	font-size:			100%;
-	color:				red /*rgba(50,50,50,1)*/;
+	color:				rgba(50,50,50,1);
 	vertical-align:		middle;
 	border:				0px;
 	background:			rgba(110,210,0,1);

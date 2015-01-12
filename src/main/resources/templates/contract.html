@@ -50,27 +50,7 @@
 	 	<div class="errorDiv" th:if="${error}" th:text="#{error.contract.__${error}__}">
         </div>
 		<form method="POST" id="contract" th:action="contract" style="margin: auto;" onsubmit="return validateForm(this.id);">
-	        <div class="successDiv" style="text-align: left;" th:if="${param.success}">
-		        <div id="schriftzug" th:text="#{contract.success}"></div>
-	           	<div class="row" style="margin: auto;">
-		           	<label th:text="#{contract.id1}" style="padding-left: 0; float: left;" ></label>
-					<div class="cell">
-		           		<input type="text" id="a" name="a" th:value="${param.a[0]}" readonly="readonly"/>
-		           	</div>
-		           	<label th:text="#{contract.id2}" style="float: left;" ></label>
-					<div class="cell">
-		           		<input type="text" id="b" name="b" th:value="${param.b[0]}" readonly="readonly"/>
-		           	</div>
-		           	<label th:text="#{contract.price}" style="float: left;" ></label>
-					<div class="cell">
-		           		<input type="text" id="p" name="p" th:value="${param.p[0]}" readonly="readonly"/>
-		           	</div>
-		        	<input type="button" id="correct" onclick="javascript:copyForCorrect();" style="float: right;" th:value="#{contract.correct}" />
-		        </div>
-		        <br />
-		        <hr />
-	        </div>
-			<div class="form">
+	        <div class="form">
 				<div class="row">
 					<label for="id1" th:text="#{contract.id1}"></label>
 					<div class="cell">
@@ -103,6 +83,27 @@
 				</div>
 			</div>
 			<input type="submit" id="submit" th:value="#{buttons.submit}" value="Abschicken" />
+			<div class="successDiv" style="text-align: left;" th:if="${success}">
+		        <br />
+		        <hr />
+		        <br />
+		        <div id="schriftzug" th:text="#{contract.success}"></div>
+	           	<div class="row" style="margin: auto;">
+		           	<label th:text="#{contract.id1}" style="padding-left: 0; float: left;" ></label>
+					<div class="cell">
+		           		<input type="text" id="a" name="a" th:value="${a}" readonly="readonly"/>
+		           	</div>
+		           	<label th:text="#{contract.id2}" style="float: left;" ></label>
+					<div class="cell">
+		           		<input type="text" id="b" name="b" th:value="${b}" readonly="readonly"/>
+		           	</div>
+		           	<label th:text="#{contract.price}" style="float: left;" ></label>
+					<div class="cell">
+		           		<input type="text" id="p" name="p" th:value="${p}" readonly="readonly"/>
+		           	</div>
+		        	<input type="button" id="correct" onclick="javascript:copyForCorrect();" style="float: right;" th:value="#{contract.correct}" />
+		        </div>
+	        </div>
 		</form>
 	</div>
 	<div th:replace="resources :: footer">

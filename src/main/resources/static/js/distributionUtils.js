@@ -266,7 +266,7 @@ function addRow(table)	{
 		errorRow.setAttribute("class", "errorRow");
 		
 		var error = document.createElement("div");
-		error.setAttribute("class", "cell");
+		error.setAttribute("class", "error");
 		
 		errorRow.appendChild(error);
 		

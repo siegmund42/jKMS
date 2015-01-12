@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ClientController extends AbstractController {
@@ -35,7 +36,7 @@ public class ClientController extends AbstractController {
 	 * Process the contract Request
 	 */
 	@RequestMapping(value = "/contract", method = RequestMethod.POST)
-	public String contract(Model model,
+	public String contract(Model model, RedirectAttributes ra,
 		 	@RequestParam(value = "id1", required = false) String id1, 
 	        @RequestParam(value = "id2", required = false) String id2,
 	        @RequestParam(value = "price", required = false) String price,
@@ -51,12 +52,12 @@ public class ClientController extends AbstractController {
 				// Remove the Contract
 				if(!kms.getState().removeContract(Integer.parseInt(a), Integer.parseInt(b), Integer.parseInt(p)))	{
 					// It didnt work
-			    	model.addAttribute("id1", id1);
-			    	model.addAttribute("id2", id2);
-			    	model.addAttribute("price", price);
-			    	model.addAttribute("error", "Something went wrong during correction, please try again...");
-					model.addAttribute("firstID", kms.getConfiguration().getFirstID());
-					model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
+			    	ra.addFlashAttribute("id1", id1);
+			    	ra.addFlashAttribute("id2", id2);
+			    	ra.addFlashAttribute("price", price);
+			    	ra.addFlashAttribute("error", "correct");
+					ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
+					ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 			    	return "contract";
 				}
 			}
@@ -72,45 +73,50 @@ public class ClientController extends AbstractController {
 				
 			    if(add == 0)	{
 			    	// Succeeded
-			    	return "redirect:/contract.html?success&a=" + idOne + "&b=" + idTwo + "&p=" + cost;
+			    	ra.addFlashAttribute("success", 42);
+			    	ra.addFlashAttribute("a", idOne);
+			    	ra.addFlashAttribute("b", idTwo);
+			    	ra.addFlashAttribute("p", cost);
+			    	return "redirect:/contract.html";
+			    	//return "redirect:/contract.html?success&a=" + idOne + "&b=" + idTwo + "&p=" + cost;
 			    }	else	{
 			    	// Failed - add Attributes to model
-			    	model.addAttribute("id1", id1);
-			    	model.addAttribute("id2", id2);
-			    	model.addAttribute("price", price);
-			    	model.addAttribute("error", add);
+			    	ra.addFlashAttribute("id1", id1);
+			    	ra.addFlashAttribute("id2", id2);
+			    	ra.addFlashAttribute("price", price);
+			    	ra.addFlashAttribute("error", add);
 			    }
 			}	else	{
 				// Fields where empty - add Attributes to model
-		    	model.addAttribute("id1", id1);
-		    	model.addAttribute("id2", id2);
-		    	model.addAttribute("price", price);
-		    	model.addAttribute("error", "empty");
+		    	ra.addFlashAttribute("id1", id1);
+		    	ra.addFlashAttribute("id2", id2);
+		    	ra.addFlashAttribute("price", price);
+		    	ra.addFlashAttribute("error", "empty");
 			}
-			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
-			model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
-	    	return "contract";
+			ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
+			ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
+	    	return "redirect:/contract";
 			
 		}	catch(NumberFormatException e)	{
 			// Number seems to be fractional
 			e.printStackTrace();
-			model.addAttribute("error", "fraction");
-			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
-			model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
-			return "contract";
+			ra.addFlashAttribute("error", "fraction");
+			ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
+			ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
+			return "redirect:/contract";
 		}	catch(IllegalStateException e)	{
 			// Game not running
 			e.printStackTrace();
 			if(kms.getState() instanceof Evaluation)	{
 				// Guess Game stopped
-				model.addAttribute("error", "stopped");
+				ra.addFlashAttribute("error", "stopped");
 			}	else	{
 				// Guess Game not running
-				model.addAttribute("error", "notRunning");
+				ra.addFlashAttribute("error", "notRunning");
 			}
-			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
-			model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
-			return "contract";
+			ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
+			ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
+			return "redirect:/contract";
 		}
 	}
 

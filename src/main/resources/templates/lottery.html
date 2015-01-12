@@ -13,15 +13,6 @@
 </head>
  <body>
  	<div id="toolBar">
- 		<div id="path">
- 			<div class="step" th:text="#{path.load.step1}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step2}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step3}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" id="step_active" th:text="#{path.load.step4}"></div>
- 		</div>
  		<ul>
 	 		<li>
 	 			<a href="index.html" th:text="#{backSign} + #{messages.welcome}" ></a>
@@ -54,7 +45,7 @@
 	 		<div th:text="#{PDFSeller.value} + ': ' + ${cost} + '€'"></div>
 	 		<div th:text="'ID:' + ${sellerID}"></div> 		
 	 	</div>
-	 	
+	 	<p style="clear: both;"></p>
 	 	<div id="winner">
 		 	<div th:text="#{lottery.contract} + ': ' + ${price} + '€'" style="margin-bottom:25px;"></div>
 		 	<div th:class="((${bprofit} >= '0')? 'successDiv' : 'errorDiv')" th:text="((${bprofit} >= '0')? #{lottery.bprofit} : #{lottery.bLoss}) + ': ' + ${bprofit} + '€'"></div>

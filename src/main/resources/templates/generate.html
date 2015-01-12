@@ -37,7 +37,7 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (generate)">
 	 	</div>
-	 	<div th:text="#{generate.hint}"></div>
+	 	<div class="textarea" th:text="#{generate.hint}"></div>
 	 	<br />
 	 	<a href="/pdf/cards/customer" th:text="#{prepare.savePDF.customer}" target="_blank"></a>
 	 	<a href="/pdf/cards/salesman" th:text="#{prepare.savePDF.salesman}" target="_blank"></a>

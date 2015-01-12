@@ -65,7 +65,7 @@
 			<h2 th:text="#{prepare.customerGroups}" style="float: left;"></h2>
 			<h2 th:text="#{prepare.salesmanGroups}" style="float: right;"></h2>
 			<p style="clear: both;"></p>
-			<div style="position: relative; margin: -40px auto 20px auto;">
+			<div th:if="!*{isStandard}" style="position: relative; z-index: 4; margin: -40px auto 20px auto;">
 				<a href="prepare2.html?c=own" th:text="#{prepare.reset}" ></a>
 			</div>
 			<div id="customerTable" class="arrangementTable">
