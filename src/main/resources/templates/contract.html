@@ -88,21 +88,27 @@
 		        <hr />
 		        <br />
 		        <div id="schriftzug" th:text="#{contract.success}"></div>
-	           	<div class="row" style="margin: auto;">
-		           	<label th:text="#{contract.id1}" style="padding-left: 0; float: left;" ></label>
-					<div class="cell">
-		           		<input type="text" id="a" name="a" th:value="${a}" readonly="readonly"/>
-		           	</div>
-		           	<label th:text="#{contract.id2}" style="float: left;" ></label>
-					<div class="cell">
-		           		<input type="text" id="b" name="b" th:value="${b}" readonly="readonly"/>
-		           	</div>
-		           	<label th:text="#{contract.price}" style="float: left;" ></label>
-					<div class="cell">
-		           		<input type="text" id="p" name="p" th:value="${p}" readonly="readonly"/>
-		           	</div>
-		        	<input type="button" id="correct" onclick="javascript:copyForCorrect();" style="float: right;" th:value="#{contract.correct}" />
+		        <div class="table" style="float: left;">
+		           	<div class="row">
+			           	<label th:text="#{contract.id1}" ></label>
+						<div class="cell">
+			           		<input type="text" id="a" name="a" th:value="${a}" readonly="readonly"/>
+			           	</div>
+			        </div>
+			        <div class="row">
+			           	<label th:text="#{contract.id2}" ></label>
+						<div class="cell">
+			           		<input type="text" id="b" name="b" th:value="${b}" readonly="readonly"/>
+			           	</div>
+			        </div>
+			        <div class="row">
+			           	<label th:text="#{contract.price}" ></label>
+						<div class="cell">
+			           		<input type="text" id="p" name="p" th:value="${p}" readonly="readonly"/>
+			           	</div>
+			        </div>
 		        </div>
+			    <input type="button" id="correct" onclick="javascript:copyForCorrect();" style="float: right; margin: 20px;" th:value="#{contract.correct}" />
 	        </div>
 		</form>
 	</div>
