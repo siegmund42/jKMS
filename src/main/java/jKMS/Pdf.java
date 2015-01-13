@@ -16,9 +16,11 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
@@ -26,13 +28,9 @@ import com.itextpdf.text.pdf.PdfPTable;
 public class Pdf {
 	
 	 //define Fonts
-	private static Font titleFont = new Font(Font.FontFamily.HELVETICA, 25,
-		      Font.BOLD);
-	private static Font valueFont = new Font(Font.FontFamily.HELVETICA, 18,
-		      Font.NORMAL);
-	
-	private static Font packFont = new Font(Font.FontFamily.HELVETICA, 12,
-		      Font.NORMAL);
+	private  Font titleFont;
+	private  Font valueFont;	
+	private  Font packFont;
 	
 	private String cardtitle;
 	private String value;
@@ -44,6 +42,14 @@ public class Pdf {
 	
 	
 	public Pdf(){// to catch crashes
+		FontFactory.defaultEmbedding = true;
+		FontFactory.register("fonts/LiberationSans-Bold.ttf", "my_font_Bold");
+		FontFactory.register("fonts/LiberationSans-Regular.ttf", "my_font_regular");
+		//FontFactory.getFont("my_font", BaseFont.WINANSI, BaseFont.EMBEDDED, 12, Font.ITALIC); 
+		titleFont =FontFactory.getFont("my_font_Bold", BaseFont.WINANSI, BaseFont.EMBEDDED, 25);
+		valueFont = FontFactory.getFont("my_font_regular", BaseFont.WINANSI, BaseFont.EMBEDDED, 18);
+		packFont = FontFactory.getFont("my_font_regular", BaseFont.WINANSI, BaseFont.EMBEDDED, 12); 
+		
 		this.cardtitle = "Default";
 		this.value = "Default";
 		this.id = "Default";
@@ -53,7 +59,7 @@ public class Pdf {
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
     	//PRINT
-		
+
 		
 		//get language
 		//Properties propertie;
@@ -520,8 +526,8 @@ public class Pdf {
 		String eqQuantity = LogicHelper.getLocalizedMessage("evaluate.eqQuantity") + ": ";
 		
     	//insert stats
-		Font font = new Font(Font.FontFamily.HELVETICA  , 25, Font.BOLD);
-		Paragraph head = new Paragraph(headline, font);
+		Paragraph head = new Paragraph(headline, titleFont);
+		this.valueFont.setSize(16);
     	head.setAlignment(Element.ALIGN_CENTER);
     	head.setSpacingAfter(20);
     	
@@ -529,19 +535,19 @@ public class Pdf {
     	
     	PdfPTable table = new PdfPTable(3);
     	
-    	PdfPCell cell11 = new PdfPCell(new Paragraph(average + Math.round(stats.get("averagePrice")*100)/100.0 + "€"));
+    	PdfPCell cell11 = new PdfPCell(new Paragraph(average + Math.round(stats.get("averagePrice")*100)/100.0 + "€",valueFont));
     	cell11.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell21 = new PdfPCell(new Paragraph(min + Math.round(stats.get("minimum")) + "€"));
+    	PdfPCell cell21 = new PdfPCell(new Paragraph(min + Math.round(stats.get("minimum")) + "€",valueFont));
     	cell21.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell31 = new PdfPCell(new Paragraph(max + Math.round(stats.get("maximum")) + "€"));
+    	PdfPCell cell31 = new PdfPCell(new Paragraph(max + Math.round(stats.get("maximum")) + "€",valueFont));
     	cell31.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell12 = new PdfPCell(new Paragraph(standDev + Math.round(stats.get("standardDeviation")*100)/100.0));
+    	PdfPCell cell12 = new PdfPCell(new Paragraph(standDev + Math.round(stats.get("standardDeviation")*100)/100.0,valueFont));
     	cell12.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell22 = new PdfPCell(new Paragraph(size + Math.round(stats.get("contractsSize"))));
+    	PdfPCell cell22 = new PdfPCell(new Paragraph(size + Math.round(stats.get("contractsSize")),valueFont));
     	cell22.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell13 = new PdfPCell(new Paragraph(eqPrice + Math.round(stats.get("eqPrice")) + "€"));
+    	PdfPCell cell13 = new PdfPCell(new Paragraph(eqPrice + Math.round(stats.get("eqPrice")) + "€",valueFont));
     	cell13.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell23 = new PdfPCell(new Paragraph(eqQuantity + Math.round(stats.get("eqQuantity"))));
+    	PdfPCell cell23 = new PdfPCell(new Paragraph(eqQuantity + Math.round(stats.get("eqQuantity")),valueFont));
     	cell23.setBorder(Rectangle.NO_BORDER);
     	
     	//dummy cell to complete the the third row
