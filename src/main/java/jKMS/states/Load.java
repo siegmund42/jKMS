@@ -10,6 +10,7 @@ import jKMS.exceptionHelper.EmptyFileException;
 import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPackageException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
 import jKMS.exceptionHelper.WrongRelativeDistributionException;
 
@@ -143,12 +144,15 @@ public class Load extends State {
     	 LogicHelper.print("load() successful!");
     }
 
-	
-	//removeCard
-	//removes all cards from the given package (pack)
-	//beginning with lastId up to its size
+	/*
+	 * Removes all cards from the given package
+	 * beginning with lastId up to its size
+	 * 
+	 * @param pack the id of the package (A-Z)
+	 * @param lastId the id of the first not distributed card
+	 * */
 	@Override
-	public boolean removeCard(char pack, int lastId) throws WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{
+	public boolean removeCard(char pack, int lastId) throws WrongPackageException, WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{
 		Set<Card> oldSet = new LinkedHashSet<Card>(kms.getCards());
 		Map<Integer, Amount> distrib;
 		Integer key;
@@ -158,6 +162,9 @@ public class Load extends State {
 		if(kms.getAssistantCount() <= 0)throw new WrongAssistantCountException();
 		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
 		if((LogicHelper.getRelativeSum(kms.getbDistribution()) +  LogicHelper.getRelativeSum(kms.getsDistribution())) != 200) throw new WrongRelativeDistributionException();
+		for(Card iter : kms.getCards()){
+			if(iter.getId() == lastId && iter.getPackage() != pack) throw new WrongPackageException();
+		}
 		
 		for(Card iter : oldSet){
 			//Check if card must be removed (Id is higher than lasdId)
@@ -183,7 +190,5 @@ public class Load extends State {
 		if(kms.getCards() == oldSet) return false;
 		else return true;
 	}
-	
-	
 	
 }

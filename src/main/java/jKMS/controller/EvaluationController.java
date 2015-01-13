@@ -52,7 +52,6 @@ public class EvaluationController extends AbstractServerController {
 		
 	}
 	
-	
 	/*
 	 * gets all attributes of "winner contract" and adds them to the model
 	 */

@@ -6,6 +6,7 @@ import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPackageException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
 import jKMS.exceptionHelper.WrongRelativeDistributionException;
 
@@ -148,7 +149,7 @@ public class LoadController extends AbstractServerController {
 						return "forward:/load2";
 					}
 				// Catch Exceptions from removeCard() 
-				}	catch (WrongPlayerCountException | WrongAssistantCountException
+				}	catch (WrongPackageException | WrongPlayerCountException | WrongAssistantCountException
 						| WrongFirstIDException
 						| WrongRelativeDistributionException e) {
 					e.printStackTrace();

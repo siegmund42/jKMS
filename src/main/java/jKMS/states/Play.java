@@ -17,6 +17,10 @@ public class Play extends State {
 		this.kms = kms;
 	}
 	
+	/*
+	 * Add a contract identified by id1, id2 and price.
+	 * @see jKMS.states.State#addContract(int, int, int)
+	 */
 	@Override
 	public int addContract(int id1,int id2,int price, String uri){ 
 		// returns errorCode: 0 -> everything fine 1 -> double buyer/seller 2 -> Card not available 3 -> already dealt

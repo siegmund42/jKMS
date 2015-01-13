@@ -82,6 +82,7 @@ public class LimitLinesDocumentListener implements DocumentListener
         }
 
         public void removeUpdate(DocumentEvent e) {}
+        
         public void changedUpdate(DocumentEvent e) {}
 
         /*

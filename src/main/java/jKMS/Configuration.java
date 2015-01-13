@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class Configuration {
 	
-
 	private int playerCount;
 	private int assistantCount;
 	private int firstID;

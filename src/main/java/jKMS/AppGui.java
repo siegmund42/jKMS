@@ -182,6 +182,9 @@ public class AppGui extends JFrame{
 		setVisible(true);
 	}
 
+	/*
+	 * Shows an exit message for confirmation
+	 */
 	private void confirmExit() {
 		// CONFIRM AND EXIT
 		if (JOptionPane.showConfirmDialog(null,
@@ -191,6 +194,9 @@ public class AppGui extends JFrame{
 		}
 	}
 	
+	/*
+	 * Shows the ready label in the GUI
+	 */
 	public void setReady(){
 		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
 		lblStatus.setForeground(new Color(0x00009900));
@@ -198,6 +204,12 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(true);
 	}
 	
+	/*
+	 * Shows the ready label in the GUI
+	 * and an additional status message.
+	 * 
+	 * @param state a message which is displayed under the state
+	 */
 	public void setReady(String state){
 		String str = "<html>" + LogicHelper.getLocalizedMessage("GUI.lblReady") + "<br>" + state;
 		
@@ -207,6 +219,9 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(true);
 	}
 	
+	/*
+	 * Show the loading label in the GUI
+	 */
 	public void setLoading(){
 		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblLoading"));
 		lblStatus.setForeground(new Color(0x00FF0000));
@@ -214,6 +229,9 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(false);
 	}
 	
+	/*
+	 * Show the error label in the GUI
+	 */
 	public void setError(){
 		String str = LogicHelper.getLocalizedMessage("GUI.lblError");
 		
@@ -223,6 +241,12 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(true);
 	}
 	
+	/*
+	 * Show the error label in the GUI
+	 * and an additional status message.
+	 * 
+	 * @param state a message which is displayed under the state
+	 */
 	public void setError(String state){
 		String str = "<html>" + LogicHelper.getLocalizedMessage("GUI.lblError") + "<br>" + state;
 		
@@ -232,6 +256,10 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(true);
 	}
 	
+	/*
+	 * Update GUI components
+	 * which are internationalized for updating their messages
+	 */
 	public void changeLanguage(){
 		btnOpenBrowser.setText(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
 		btnClose.setText(LogicHelper.getLocalizedMessage("GUI.btnClose"));

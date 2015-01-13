@@ -40,7 +40,6 @@ public class Pdf {
 	private String from;
 	private String to;
 	
-	
 	public Pdf(){// to catch crashes
 		FontFactory.defaultEmbedding = true;
 		FontFactory.register("fonts/LiberationSans-Bold.ttf", "my_font_Bold");
@@ -180,8 +179,6 @@ public class Pdf {
         } 
   
     }
-    
-
     
 	public void createPdfCardsBuyer(Document cardsBuyer,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
@@ -353,7 +350,6 @@ public class Pdf {
     	return content;
     }
    
-
     private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
     	byte isbuyer = 0;
     	

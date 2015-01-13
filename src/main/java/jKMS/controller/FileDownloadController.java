@@ -206,8 +206,6 @@ public class FileDownloadController extends AbstractServerController {
 	    return new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
     }
     
-    
-    
     @RequestMapping(value = "/csv")
     public ResponseEntity<byte[]> downloadCsv() throws Exception{ 
     	

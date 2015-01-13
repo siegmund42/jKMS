@@ -36,15 +36,17 @@ public class Preparation extends State	{
 
 	private Pdf pdf;
 
-	
 	public Preparation(Kartoffelmarktspiel kms){
 		this.kms = kms;
 		this.pdf = new Pdf();
 	}
 	
-	//	Loads StandardConfiguration into kms.
-	//	This method only loads the relative values for displaying in Web Interface.
-	//	Absolute Values are calculated by Javascript and stored using the newGroup-Method.
+	/*
+	 * Loads StandardConfiguration into kms.
+	 * This method only loads the relative values for displaying in Web Interface.
+	 * Absolute Values are calculated by Javascript and stored using the newGroup-Method.
+	 * @see jKMS.states.State#loadStandardDistribution()
+	 */
 	@Override
 	public void loadStandardDistribution(){
 
@@ -72,9 +74,9 @@ public class Preparation extends State	{
 		
 	}
 	
-	
-	//setBasicConfig
-	//setter method for the number of players and assistants
+	/*
+	 * setter method for the number of players and assistants
+	 */
 	@Override
 	public void setBasicConfig(int playerCount, int assistantCount){
 		kms.getConfiguration().setPlayerCount(playerCount);
@@ -82,8 +84,6 @@ public class Preparation extends State	{
 		LogicHelper.print("SettingBasicConfiguration: PlayerCount = " + kms.getConfiguration().getPlayerCount() + "; AssistantCount = " + kms.getConfiguration().getAssistantCount());
 	}
 	
-	
-	//load Implementieren
 	@Override
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, FalseLoadFileException{
 	//set initial value for load
@@ -161,9 +161,6 @@ public class Preparation extends State	{
     	 
     }
 
-	
-		
-		//defalt path:Users/yangxinyu/git/jKMS
 	@Override
 	public boolean save(OutputStream o) throws IOException{
 		//take out information aus Configuration and kms
@@ -232,12 +229,11 @@ public class Preparation extends State	{
 		 }
 	}
 
-
-
-	
-	// generateCardSet
-	// Generate an ordered, random Set of Cards using
-	// bDistribution and sDistribution
+	/*
+	 *  Generate an ordered, random Set of Cards
+	 *  using bDistribution and sDistribution
+	 * @see jKMS.states.State#generateCards()
+	 */
 	@Override
 	public void generateCards() throws WrongRelativeDistributionException, WrongAssistantCountException, WrongFirstIDException, WrongPlayerCountException {
 		// DECLARATION
@@ -336,9 +332,12 @@ public class Preparation extends State	{
 		}
 	}			
 
-	// newGroup
-	// Creates a new entry for the bDistribution or sDistribution Map,
-	// depending if isBuyer is true or false.
+	/*
+	 * Creates a new entry for the bDistribution or sDistribution Map
+	 * depending if isBuyer is true or false.
+	 * 
+	 * @param isBuyer indicates if a new entry must be created for bDistribution or sDistribution
+	 */
 	@Override
 	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber) {
 		Map<Integer, Amount> distrib;
@@ -362,7 +361,6 @@ public class Preparation extends State	{
 		
 	}
 	
-	// createPDF - Delegates to PDF-Class
 	@Override
 	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException	{
 		

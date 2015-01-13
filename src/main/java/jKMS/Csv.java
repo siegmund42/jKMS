@@ -16,10 +16,6 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 public class Csv {
 	
-	public Csv(){
-		
-	}
-	
 	//Überschriften tabelle contracts
 	private String contracts;
 	private String idB;
@@ -39,6 +35,11 @@ public class Csv {
 	private String cardval;
 	private String buyerCard;
 	private String sellerCard;
+	
+	public Csv(){
+		
+	}
+
 	
 	public void generateCSV(CSVWriter writer, Set<Card> cards,Set<Contract> contracts){
 		

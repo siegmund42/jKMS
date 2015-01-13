@@ -12,9 +12,6 @@ import java.util.Set;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
-
-
-
 public class LogicHelper {// have static function to help implementation logic
 	
 	public static int PackageToInt(char pack){ // package to int A = 0  Z = 25 
