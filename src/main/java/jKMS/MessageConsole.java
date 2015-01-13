@@ -228,7 +228,8 @@ public class MessageConsole
 				{
 					int offset = document.getLength();
 					document.insertString(offset, line, attributes);
-					textComponent.setCaretPosition( document.getLength() );
+					//setting caret position for append is handled in AppGui now
+					//textComponent.setCaretPosition( document.getLength() );
 				}
 				else
 				{
