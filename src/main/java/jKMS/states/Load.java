@@ -144,7 +144,7 @@ public class Load extends State {
     	 LogicHelper.print("load() successful!");
     }
 
-	/*
+	/**
 	 * Removes all cards from the given package
 	 * beginning with lastId up to its size
 	 * 

@@ -182,7 +182,7 @@ public class AppGui extends JFrame{
 		setVisible(true);
 	}
 
-	/*
+	/**
 	 * Shows an exit message for confirmation
 	 */
 	private void confirmExit() {
@@ -194,7 +194,7 @@ public class AppGui extends JFrame{
 		}
 	}
 	
-	/*
+	/**
 	 * Shows the ready label in the GUI
 	 */
 	public void setReady(){
@@ -204,7 +204,7 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(true);
 	}
 	
-	/*
+	/**
 	 * Shows the ready label in the GUI
 	 * and an additional status message.
 	 * 
@@ -219,7 +219,7 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(true);
 	}
 	
-	/*
+	/**
 	 * Show the loading label in the GUI
 	 */
 	public void setLoading(){
@@ -229,7 +229,7 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(false);
 	}
 	
-	/*
+	/**
 	 * Show the error label in the GUI
 	 */
 	public void setError(){
@@ -241,7 +241,7 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(true);
 	}
 	
-	/*
+	/**
 	 * Show the error label in the GUI
 	 * and an additional status message.
 	 * 
@@ -256,7 +256,7 @@ public class AppGui extends JFrame{
 		btnClose.setEnabled(true);
 	}
 	
-	/*
+	/**
 	 * Update GUI components
 	 * which are internationalized for updating their messages
 	 */

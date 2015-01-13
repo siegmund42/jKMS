@@ -62,7 +62,7 @@ public class LoadController extends AbstractServerController {
 		
 	}
 	
-	/*
+	/**
 	 * For loading an existing Config.txt File
 	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.POST)
@@ -95,7 +95,7 @@ public class LoadController extends AbstractServerController {
 		
 	}
 	
-	/*
+	/**
 	 * Page for excluding Cards
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.GET)
@@ -118,7 +118,7 @@ public class LoadController extends AbstractServerController {
 		
 	}
 	
-	/*
+	/**
 	 * Exclude Cards POST Request
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.POST)

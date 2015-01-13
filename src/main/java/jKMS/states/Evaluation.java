@@ -24,7 +24,7 @@ public class Evaluation extends State{
 		this.kms = kms;
 	}
 	
-	/*
+	/**
 	 * Returns statistic data of all contracts
 	 * min, max, average, standard deviation, quantity of contracts
 	 */
@@ -87,7 +87,7 @@ public class Evaluation extends State{
 		return statistics; 
 	}
 	
-	/*
+	/**
  	 * Calculate equilibrium price and equilibrium quantity
 	 * return null or throws NoIntersectionException, if there is no intersection between supply and demand function
  	 */
@@ -134,7 +134,7 @@ public class Evaluation extends State{
 					return result;
 				}
 			}
-			/*
+			/**
 			 * For that case we have to keep on searching
 			 * We search the next point, where one of the functions does the next "step".
 			 * We move both counters to that point(quantity) and repeat the loop.
@@ -187,7 +187,7 @@ public class Evaluation extends State{
 		return null;
 	}
 	
-	/*
+	/**
 	 * Chooses a random winner-contract
 	 */
 	@Override

@@ -18,7 +18,7 @@ public class PlayController extends AbstractServerController {
 	
 	@RequestMapping("/getData")
 	@ResponseBody
-	/*
+	/**
 	 * Catches Ajax-Request, converts the set of contracts into a String with the help of the ControllerHelper
 	 */
 	public String insertData(){

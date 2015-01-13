@@ -41,7 +41,7 @@ public class Preparation extends State	{
 		this.pdf = new Pdf();
 	}
 	
-	/*
+	/**
 	 * Loads StandardConfiguration into kms.
 	 * This method only loads the relative values for displaying in Web Interface.
 	 * Absolute Values are calculated by Javascript and stored using the newGroup-Method.
@@ -74,7 +74,7 @@ public class Preparation extends State	{
 		
 	}
 	
-	/*
+	/**
 	 * setter method for the number of players and assistants
 	 */
 	@Override
@@ -229,7 +229,7 @@ public class Preparation extends State	{
 		 }
 	}
 
-	/*
+	/**
 	 *  Generate an ordered, random Set of Cards
 	 *  using bDistribution and sDistribution
 	 * @see jKMS.states.State#generateCards()
@@ -332,7 +332,7 @@ public class Preparation extends State	{
 		}
 	}			
 
-	/*
+	/**
 	 * Creates a new entry for the bDistribution or sDistribution Map
 	 * depending if isBuyer is true or false.
 	 * 

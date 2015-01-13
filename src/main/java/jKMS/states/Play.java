@@ -17,7 +17,7 @@ public class Play extends State {
 		this.kms = kms;
 	}
 	
-	/*
+	/**
 	 * Add a contract identified by id1, id2 and price.
 	 * @see jKMS.states.State#addContract(int, int, int)
 	 */
@@ -76,7 +76,7 @@ public class Play extends State {
 	    }  
 	}
 	
-	/*
+	/**
 	 * Remove a contract identified by id1, id2 and price.
 	 * @see jKMS.states.State#removeContract(int, int, int)
 	 */

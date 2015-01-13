@@ -95,7 +95,7 @@ public class LogicHelper {// have static function to help implementation logic
         return propertie;
     }*/
     
-	/*
+	/**
 	 * Gets the message from the messages_XX.properties to the key.
 	 */
     public static String getLocalizedMessage(String key)	{
@@ -113,7 +113,7 @@ public class LogicHelper {// have static function to help implementation logic
     	
     }
     
-    /*
+    /**
      * Prints a well-formatted output to console [log] with message message and type
      * 0 = INFO
      * 1 = WARNING
@@ -126,7 +126,7 @@ public class LogicHelper {// have static function to help implementation logic
     	System.out.println("jKMS: " + ft.format(dNow) + "  " + types[type] + " -- " + message);
     }
     
-    /*
+    /**
      * Simple print function for printing an INFO
      */
     public static void print(String message)	{
