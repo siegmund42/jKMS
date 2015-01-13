@@ -125,13 +125,12 @@ select option	{
 }
 
 .arrangementTable	{
-	border-collapse:	collapse; 
 	margin:				5px;
+	border-collapse:	collapse; 
 }
 
 .row	{
 	display:			table-row;
-	border-collapse:	collapse; 
 }
 
 .errorRow	{

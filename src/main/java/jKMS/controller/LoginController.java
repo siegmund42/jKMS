@@ -1,6 +1,6 @@
 package jKMS.controller;
 
-import java.io.IOException;
+import jKMS.exceptionHelper.CreateFolderFailedException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LoginController {
 
+	/*
+	 * Show login page, init
+	 */
 	@RequestMapping("/login")
-	public String login() throws IOException	{
+	public String login() throws CreateFolderFailedException	{
 		ControllerHelper.init();
-		ControllerHelper.checkFolders();
 		return "login";
 	}
 }

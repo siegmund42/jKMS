@@ -183,8 +183,8 @@ function addRow(table)	{
 		
 		errorRow.appendChild(error);
 		
-		document.getElementById('customerTable').insertBefore(row, document.getElementById('customerTable').lastChild.previousSibling.previousSibling.previousSibling);
-		document.getElementById('customerTable').insertBefore(errorRow, document.getElementById('customerTable').lastChild.previousSibling.previousSibling.previousSibling);
+		document.getElementById('customerTable').insertBefore(row, document.getElementById('customerTable').lastElementChild.previousElementSibling.previousElementSibling);
+		document.getElementById('customerTable').insertBefore(errorRow, document.getElementById('customerTable').lastElementChild.previousElementSibling.previousElementSibling);
 
 		// Increase number of groups
 		arrangement.cGroupQuantity.value++;
@@ -282,8 +282,8 @@ function addRow(table)	{
 		
 		errorRow.appendChild(error);
 		
-		document.getElementById('salesmanTable').insertBefore(row, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
-		document.getElementById('salesmanTable').insertBefore(errorRow, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
+		document.getElementById('salesmanTable').insertBefore(row, document.getElementById('salesmanTable').lastElementChild.previousElementSibling.previousElementSibling);
+		document.getElementById('salesmanTable').insertBefore(errorRow, document.getElementById('salesmanTable').lastElementChild.previousElementSibling.previousElementSibling);
 		
 		// Increase number of groups
 		arrangement.sGroupQuantity.value++;

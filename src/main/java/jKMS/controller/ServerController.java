@@ -3,6 +3,7 @@ package jKMS.controller;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.LogicHelper;
+import jKMS.exceptionHelper.CreateFolderFailedException;
 import jKMS.states.Evaluation;
 import jKMS.states.Load;
 import jKMS.states.Play;
@@ -24,24 +25,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ServerController extends AbstractServerController	{
 	
+	/*
+	 * Display main menu
+	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(Model model, ServletRequest request, @RequestParam(value = "lang", required = false) final String lang) {
+	public String index(Model model, ServletRequest request, 
+			@RequestParam(value = "lang", required = false) final String lang) throws CreateFolderFailedException	{
+		
 		if(lang != null) Application.gui.changeLanguage();
-		try {
-			ControllerHelper.checkFolders();
-		} catch (IOException e) {
-			e.printStackTrace();
-			model.addAttribute("message", LogicHelper.getLocalizedMessage("error.buildFolderStructure.message"));
-			model.addAttribute("error", LogicHelper.getLocalizedMessage("error.buildFolderStructure.error"));
-			return "error";
-		}
+		ControllerHelper.checkFolders();
 		return "index";
 	}
 	
+	/*
+	 * Display options page
+	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String settigs(Model model, @RequestParam(value = "lang", required = false) final String lang) throws IOException	{
 		// Check if language was changed
@@ -51,8 +54,11 @@ public class ServerController extends AbstractServerController	{
 		return "settings";
 	}
 	
+	/*
+	 * Process values from options page
+	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
-	public String processSettings(Model model, 
+	public String processSettings(Model model, RedirectAttributes ra, 
 			@RequestParam(value = "users") String username,
 			@RequestParam(value = "oldPass") String oldPass,
 			@RequestParam(value = "pass1") String pass1,
@@ -113,22 +119,27 @@ public class ServerController extends AbstractServerController	{
 			FileOutputStream fos = new FileOutputStream(path);
 			fos.write(str.toString().getBytes());
 			fos.close();
-			model.addAttribute("success", " ");
-			model.addAttribute("users", ControllerHelper.getUsers());
+			ra.addFlashAttribute("success", 42);
 			LogicHelper.print("Updated auth in config.txt");
 		}	else	{
-			model.addAttribute("error", error);
-			model.addAttribute("users", ControllerHelper.getUsers());
+			ra.addFlashAttribute("error", error);
 		}
+		ra.addFlashAttribute("users", ControllerHelper.getUsers());
 		
-		return "settings";
+		return "redirect:/settings";
 	}
 	
+	/*
+	 * Display a reset page [e.g. State change Evaluate -> Prepare]
+	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.GET)
 	public String reset()	{
 		return "reset";
 	}
 	
+	/*
+	 * Do the reset
+	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
 	public String processReset()	{
 		kms.getConfiguration().setPlayerCount(0);
@@ -137,9 +148,12 @@ public class ServerController extends AbstractServerController	{
 		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());
 		kms.prepare();
 		LogicHelper.print("Reseted all data.");
-		return "redirect:/index";
+		return "redirect:/prepare1";
 	}
 	
+	/*
+	 * Auto redirect method when coming from GUI by pressing opne browser button
+	 */
 	@RequestMapping("/autoRedirect")
 	public String autoRedirect(){
 		if(kms.getState() instanceof Preparation) return "redirect:/prepare1";

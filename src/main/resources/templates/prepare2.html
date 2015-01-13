@@ -89,6 +89,7 @@
 						<div class="round" th:text="#{prepare.removeRow.button}" th:onclick="'javascript:removeRow(' + ${iter.index} + ', \'c\');'"></div>
 					</div>
 				</div>
+				<div class="row" style="height: 1px;"></div>
 				<div class="row" style="border-top: 1px solid black;">
 					<div class="cell" id="customerTotalRelative"></div>
 					<div class="cell" th:text="#{prepare.total}"></div>
@@ -119,6 +120,7 @@
 						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
 					</div>
 				</div>
+				<div class="row" style="height: 1px;"></div>
 				<div class="row" style="border-top: 1px solid black;">
 					<div th:if="!*{isStandard}" class="cell"></div>
 					<div class="cell" id="salesmanTotalRelative"></div>

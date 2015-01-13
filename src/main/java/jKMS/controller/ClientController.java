@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/*
+ * Client Controller for all pages of the client side [contract].
+ */
 @Controller
 public class ClientController extends AbstractController {
 	

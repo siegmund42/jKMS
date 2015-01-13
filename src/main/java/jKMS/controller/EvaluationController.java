@@ -3,6 +3,7 @@ package jKMS.controller;
 import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.LogicHelper;
+import jKMS.exceptionHelper.CreateFolderFailedException;
 import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.NoContractsException;
 import jKMS.exceptionHelper.NoIntersectionException;
@@ -76,7 +77,7 @@ public class EvaluationController extends AbstractServerController {
 			
 			return "lottery";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 		
 	}
@@ -85,7 +86,7 @@ public class EvaluationController extends AbstractServerController {
 	 * Evaluation Site
 	 */
 	@RequestMapping(value = "/evaluate")
-	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException, IOException	{
+	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "evaluate"))	{
@@ -123,7 +124,7 @@ public class EvaluationController extends AbstractServerController {
 			
 			return "evaluate";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 	}
 }

@@ -2,6 +2,7 @@ package jKMS.controller;
 
 import jKMS.Amount;
 import jKMS.LogicHelper;
+import jKMS.exceptionHelper.CreateFolderFailedException;
 import jKMS.exceptionHelper.EmptyFileException;
 import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.InvalidStateChangeException;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PrepareController extends AbstractServerController {
@@ -31,7 +33,9 @@ public class PrepareController extends AbstractServerController {
 	@Autowired
 	ServletContext servletContext;
 	
-	// Get Requests to first Site of Preparation - Metadata-Input
+	/*
+	 *  Get Requests to first Site of Preparation - Metadata-Input
+	 */
 	@RequestMapping(value = "/prepare1", method = RequestMethod.GET)
 	public String prepare1(Model model) throws InvalidStateChangeException	{
 		
@@ -43,14 +47,16 @@ public class PrepareController extends AbstractServerController {
 			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
 			return "prepare1";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 
 	}
 	
-	// Handling of Metadata - POST Requests on first Site of Preparation
+	/*
+	 *  Handling of Metadata - POST Requests on first Site of Preparation
+	 */
 	@RequestMapping(value = "/prepare1", method = RequestMethod.POST)
-	public String processPrepare1(Model model,
+	public String processPrepare1(Model model, RedirectAttributes ra,
 		 	@RequestParam(value="players", required = true) String numberOfPlayers, 
 	        @RequestParam(value="assistants", required = true) String numberOfAssistants,
 	        @RequestParam(value="c", required = false) String configuration)	{
@@ -63,27 +69,30 @@ public class PrepareController extends AbstractServerController {
 				assistants = Integer.parseInt(numberOfAssistants);
 			}	catch(NumberFormatException e)	{
 				e.printStackTrace();
-				model.addAttribute("error", "fraction");
-				return "prepare1";
+				ra.addFlashAttribute("error", "fraction");
+				return "redirect:/prepare1";
 			}
 			
 			if(players > 0 && players <= 8999 && players % 2 == 0 && 
 					assistants > 0 && assistants <= 26 && assistants % 1 == 0)	{
 				// Store Metadata in Logic
 				kms.getState().setBasicConfig(players, assistants);
-				return "redirect:/prepare2?c=" + configuration;
+				ra.addFlashAttribute("c", configuration);
+				return "redirect:/prepare2";
 			}
 			
 		}
 		
 		// Add given Values to model if something was wrong
-		model.addAttribute("numberOfPlayers", numberOfPlayers);
-		model.addAttribute("numberOfAssistants", numberOfAssistants);
-		model.addAttribute("error", "config");
-		return "prepare1";
+		ra.addFlashAttribute("numberOfPlayers", numberOfPlayers);
+		ra.addFlashAttribute("numberOfAssistants", numberOfAssistants);
+		ra.addFlashAttribute("error", "config");
+		return "redirect:/prepare1";
 	}
 
-	// GET Requests on Site for Distribution
+	/*
+	 *  GET Requests on Site for Distribution
+	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
 	public String prepare2(Model model, @RequestParam(value="c", required = false) String configuration) throws IllegalStateException, InvalidStateChangeException	{
 		
@@ -124,13 +133,16 @@ public class PrepareController extends AbstractServerController {
 	
 			return "prepare2";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 	}
 	
-	// POST Request on Distribution-Site -> Loading values from File, Display them by redirecting to "prepare2"
+	/*
+	 *  POST Request on Distribution-Site -> Loading values from File, Display them by redirecting to "prepare2"
+	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
-	public String loadConfig(Model model, @RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
+	public String loadConfig(Model model, RedirectAttributes ra,
+			@RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
 		if(ControllerHelper.stateHelper(kms, "prepare"))	{
 			if(file.getContentType().equals("text/plain"))	{
 				try {
@@ -144,19 +156,19 @@ public class PrepareController extends AbstractServerController {
 				}
 				return "redirect:/prepare2";
 			}	else	{
-				model.addAttribute("error", "load.falseContentType");
+				ra.addFlashAttribute("error", "load.falseContentType");
 				// Add stored values to model
-				model.addAttribute("customerConfiguration", kms.getbDistribution());
-				model.addAttribute("salesmanConfiguration", kms.getsDistribution());
-				model.addAttribute("sGroupQuantity", kms.getGroupCount("s"));
-				model.addAttribute("cGroupQuantity", kms.getGroupCount("b"));
-				model.addAttribute("numberOfPlayers", kms.getPlayerCount());
-				model.addAttribute("numberOfAssistants", kms.getAssistantCount());
-				model.addAttribute("firstID", kms.getConfiguration().getFirstID());
-				return "prepare2";
+				ra.addFlashAttribute("customerConfiguration", kms.getbDistribution());
+				ra.addFlashAttribute("salesmanConfiguration", kms.getsDistribution());
+				ra.addFlashAttribute("sGroupQuantity", kms.getGroupCount("s"));
+				ra.addFlashAttribute("cGroupQuantity", kms.getGroupCount("b"));
+				ra.addFlashAttribute("numberOfPlayers", kms.getPlayerCount());
+				ra.addFlashAttribute("numberOfAssistants", kms.getAssistantCount());
+				ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
+				return "redirect:/prepare2";
 			}
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 	}
 
@@ -171,14 +183,14 @@ public class PrepareController extends AbstractServerController {
 	
 	// Processes Posted Values from Distribution-Site
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public String save(	Model model,
+	public String save(	Model model, RedirectAttributes ra,
 							@RequestParam(value = "cRelativeQuantity[]") String[] cRelativeQuantity,
 							@RequestParam(value = "cPrice[]") String[] cPrice,
 							@RequestParam(value = "cAbsoluteQuantity[]") String[] cAbsoluteQuantity,
 							@RequestParam(value = "sRelativeQuantity[]") String[] sRelativeQuantity,
 							@RequestParam(value = "sPrice[]") String[] sPrice,
 							@RequestParam(value = "sAbsoluteQuantity[]") String[] sAbsoluteQuantity)
-						throws IOException	{
+						throws CreateFolderFailedException	{
 		
 		int i;
 		String error = "";
@@ -269,11 +281,6 @@ public class PrepareController extends AbstractServerController {
 			error = "config.playerCountOV";
 		}
 		
-//		// Check if number of buyerGroups != number of sellerGroups
-//		if(kms.getbDistribution().size() != kms.getsDistribution().size())	{
-//			error = "config.groupcount";
-//		}
-		
 		if(error == "")	{
 			// Set new PlayerCount
 			kms.getConfiguration().setPlayerCount(LogicHelper.getAbsoluteSum(kms.getbDistribution()) + LogicHelper.getAbsoluteSum(kms.getsDistribution()));
@@ -305,11 +312,11 @@ public class PrepareController extends AbstractServerController {
 				}
 				
 				// Add path to model
-				model.addAttribute("configSavePath", path);
+				ra.addFlashAttribute("configSavePath", path);
 				
 			}
 				
-			return "save";
+			return "redirect:/save";
 			
 		}	else	{
 			// Build a new Map for giving it to the model to display the mistakes stupid deactivated-javascript-User made.
@@ -320,29 +327,18 @@ public class PrepareController extends AbstractServerController {
 					cConf.put(Integer.parseInt(cPrice[a]), new Amount(Integer.parseInt(cRelativeQuantity[a]), Integer.parseInt(cAbsoluteQuantity[a])));
 					sConf.put(Integer.parseInt(sPrice[a]), new Amount(Integer.parseInt(sRelativeQuantity[a]), Integer.parseInt(sAbsoluteQuantity[a])));
 				}
-//				int diff = cConf.size() - sConf.size();
-//				if(diff > 0)	{
-//					for(int a = 0; a < diff; a++)	{
-//						sConf.put(0, new Amount(0, 0));
-//					}
-//				}
-//				if(diff < 0)	{
-//					for(int a = 0; a > diff; a--)	{
-//						cConf.put(0, new Amount(0, 0));
-//					}
-//				}
-				model.addAttribute("customerConfiguration", cConf);
-				model.addAttribute("salesmanConfiguration", sConf);
-				model.addAttribute("cGroupQuantity", cConf.size());
-				model.addAttribute("sGroupQuantity", sConf.size());
+				ra.addFlashAttribute("customerConfiguration", cConf);
+				ra.addFlashAttribute("salesmanConfiguration", sConf);
+				ra.addFlashAttribute("cGroupQuantity", cConf.size());
+				ra.addFlashAttribute("sGroupQuantity", sConf.size());
 			}	else	{
-				model.addAttribute("cGroupQuantity", 0);
-				model.addAttribute("sGroupQuantity", 0);
+				ra.addFlashAttribute("cGroupQuantity", 0);
+				ra.addFlashAttribute("sGroupQuantity", 0);
 			}
-			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
-			model.addAttribute("error", error);
-			model.addAttribute("isStandard", false);
-			return "prepare2";
+			ra.addFlashAttribute("numberOfPlayers", kms.getPlayerCount());
+			ra.addFlashAttribute("error", error);
+			ra.addFlashAttribute("isStandard", false);
+			return "redirect:/prepare2";
 		}
 	}
 	
@@ -353,7 +349,7 @@ public class PrepareController extends AbstractServerController {
 		if(ControllerHelper.stateHelper(kms, "prepare"))	{
 			return "generate";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 	}
 	

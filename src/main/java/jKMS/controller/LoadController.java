@@ -20,10 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LoadController extends AbstractServerController {
 	
+	/*
+	 * Displaying the IP/loadConfirm site
+	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.GET)
 	public String load1(Model model, ServletRequest request) throws InvalidStateChangeException	{
 		
@@ -56,7 +60,7 @@ public class LoadController extends AbstractServerController {
 			
 			return "load1";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 		
 	}
@@ -65,7 +69,7 @@ public class LoadController extends AbstractServerController {
 	 * For loading an existing Config.txt File
 	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.POST)
-	public String processIndex(Model model, @RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
+	public String processIndex(Model model, RedirectAttributes ra, @RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "load"))	{
@@ -85,11 +89,11 @@ public class LoadController extends AbstractServerController {
 				// Everything loaded - Load Data into GUI
 				return "redirect:/load1";
 			}	else	{
-				model.addAttribute("error", LogicHelper.getLocalizedMessage("load.falseContentType"));
-				return "index";
+				ra.addFlashAttribute("error", LogicHelper.getLocalizedMessage("load.falseContentType"));
+				return "redirect:/index";
 			}
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 		
 	}
@@ -112,7 +116,7 @@ public class LoadController extends AbstractServerController {
 			
 			return "load2";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 		
 	}
@@ -121,8 +125,9 @@ public class LoadController extends AbstractServerController {
 	 * Exclude Cards POST Request
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.POST)
-	public String start(Model model, @RequestParam(value = "exclude[]") String exclude[], 
-										@RequestParam(value = "check[]", required = false) List<String> check)	{
+	public String start(Model model, RedirectAttributes ra, 
+			@RequestParam(value = "exclude[]", required = true) String exclude[], 
+			@RequestParam(value = "check[]", required = false) List<String> check)	{
 		
 		int playerCount = kms.getPlayerCount();
 		for(int i = 0; i < exclude.length; i++)	{
@@ -139,13 +144,13 @@ public class LoadController extends AbstractServerController {
 							kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
 						}	else	{
 							// Checking Failed - number invalid
-							model.addAttribute("error", "exclude.oob");
-							return "forward:/load2";
+							ra.addFlashAttribute("error", "exclude.oob");
+							return "redirect:/load2";
 						}
 					}	else	{
 						// Field Empty
-						model.addAttribute("error", "exclude.empty");
-						return "forward:/load2";
+						ra.addFlashAttribute("error", "exclude.empty");
+						return "redirect:/load2";
 					}
 				// Catch Exceptions from removeCard() 
 				}	catch (WrongPlayerCountException | WrongAssistantCountException
@@ -158,8 +163,8 @@ public class LoadController extends AbstractServerController {
 				// Got a fractional Number?
 				}	catch(NumberFormatException e)	{
 					e.printStackTrace();
-					model.addAttribute("error", "exclude.fraction");
-					return "forward:/load2";
+					ra.addFlashAttribute("error", "exclude.fraction");
+					return "redirect:/load2";
 				}
 			}	else	{
 				// Nothing to exclude

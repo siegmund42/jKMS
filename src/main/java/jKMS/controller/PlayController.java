@@ -36,6 +36,9 @@ public class PlayController extends AbstractServerController {
 		return str;
 	}
 	
+	/*
+	 * Just displaying chart -> Everything javascript (;
+	 */
 	@RequestMapping(value = "/play")
 	public String play(Model model, @RequestParam(value= "s", required = false) String s) throws InvalidStateChangeException	{
 
@@ -49,7 +52,7 @@ public class PlayController extends AbstractServerController {
 		if(stateChangeSuccessful)	{
 			return "play";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 	}
 }

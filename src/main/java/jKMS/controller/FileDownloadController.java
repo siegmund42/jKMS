@@ -2,6 +2,7 @@ package jKMS.controller;
  
 import jKMS.LogicHelper;
 import jKMS.Pdf;
+import jKMS.exceptionHelper.CreateFolderFailedException;
 import jKMS.exceptionHelper.NoContractsException;
 import jKMS.exceptionHelper.NoIntersectionException;
 
@@ -93,7 +94,7 @@ public class FileDownloadController extends AbstractServerController {
     //catch ajax-request when evaluate.html is ready, prepare export-pdf for download
     @RequestMapping(value = "/pdfExport",
     				method = RequestMethod.POST)
-    public void exportPDF(@RequestParam("image") MultipartFile image) throws IllegalStateException, NoIntersectionException, IOException	{
+    public void exportPDF(@RequestParam("image") MultipartFile image) throws IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
     	byte[] imageBytes = null;
 
     	if(!image.isEmpty()){
