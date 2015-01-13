@@ -16,7 +16,6 @@ import jKMS.exceptionHelper.WrongRelativeDistributionException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -121,8 +120,8 @@ public class Load extends State {
             		 Card card = citer.next();
             		 cardNumber.add(card.getId());
             	 }
-            	 int maxNumber = Collections.max(cardNumber);
-            	 int minNumber = Collections.min(cardNumber);
+            	 //int maxNumber = Collections.max(cardNumber);
+            	 //int minNumber = Collections.min(cardNumber);
 //            	 if(maxNumber != 1000+playerCount || minNumber != 1001){
 //            		 throw new FalseLoadFileException("cardId should beginn at 1001 and can not more than playerCount+1000!");
 //            	 }

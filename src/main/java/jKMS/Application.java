@@ -64,6 +64,10 @@ public class Application extends WebMvcConfigurerAdapter {
 			System.out.println();
 			System.out.println();
 		}
+		else {
+			LogicHelper.print("Port 8080 is already in use!", 2);
+			gui.setError(LogicHelper.getLocalizedMessage("GUI.lblErrorSeeLog"));
+		}
 		
 	}
 	
@@ -97,6 +101,7 @@ public class Application extends WebMvcConfigurerAdapter {
     public static boolean portAvailable(){
     	ServerSocket ss = null;
 	    DatagramSocket ds = null;
+	    
 	    try {
 	        ss = new ServerSocket(8080);
 	        ss.setReuseAddress(true);
@@ -113,7 +118,7 @@ public class Application extends WebMvcConfigurerAdapter {
 	            try {
 	                ss.close();
 	            } catch (IOException e) {
-	                /* should not be thrown */
+	                //s should not be thrown here
 	            }
 	        }
 	    }
