@@ -84,7 +84,7 @@ public class LoadController extends AbstractServerController {
 					e.printStackTrace();
 					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));
 					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
-					return "error";
+					return "standardException";
 				}
 				kms.getContracts().clear();
 				// Everything loaded - Load Data into GUI
@@ -114,6 +114,7 @@ public class LoadController extends AbstractServerController {
 			
 			// JavaScript - For Quick-checking the given IDs
 			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+			model.addAttribute("lastID", kms.getLastId());
 			
 			return "load2";
 		}	else	{
@@ -130,7 +131,6 @@ public class LoadController extends AbstractServerController {
 			@RequestParam(value = "exclude[]", required = true) String exclude[], 
 			@RequestParam(value = "check[]", required = false) List<String> check)	{
 		
-		int playerCount = kms.getPlayerCount();
 		for(int i = 0; i < exclude.length; i++)	{
 			// Check if not all cards where given out [Checkbox]
 			if(check == null || check.indexOf(Integer.toString(i)) == -1)	{
@@ -140,9 +140,16 @@ public class LoadController extends AbstractServerController {
 						int number = Integer.parseInt(exclude[i]);
 						// Check some things..
 						if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
-								number <= (kms.getConfiguration().getFirstID() + playerCount))	{
+								number <= kms.getLastId())	{
 							// Exclude Card from Package
-							kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
+							try {
+								kms.getState().removeCard(LogicHelper.IntToPackage(i), number);
+							} catch (WrongPackageException e) {
+								e.printStackTrace();
+								// Failed - ID not in assigned package 
+								ra.addFlashAttribute("error", "exclude.package");
+								return "redirect:/load2";
+							}
 						}	else	{
 							// Checking Failed - number invalid
 							ra.addFlashAttribute("error", "exclude.oob");
@@ -154,7 +161,7 @@ public class LoadController extends AbstractServerController {
 						return "redirect:/load2";
 					}
 				// Catch Exceptions from removeCard() 
-				}	catch (WrongPackageException | WrongPlayerCountException | WrongAssistantCountException
+				}	catch (WrongPlayerCountException | WrongAssistantCountException
 						| WrongFirstIDException
 						| WrongRelativeDistributionException e) {
 					e.printStackTrace();

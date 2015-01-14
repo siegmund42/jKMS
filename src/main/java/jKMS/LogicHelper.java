@@ -4,6 +4,7 @@ package jKMS;
 //import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 //import java.util.Properties;
@@ -78,7 +79,8 @@ public class LogicHelper {// have static function to help implementation logic
 	 * Gets the message from the messages_XX.properties to the key.
 	 * 
 	 * @param key the key from the messages_XX.properties file
-	 * @return localized message
+	 * @return 	localized message if a .properties file is existing for the actual locale, 
+	 * 			if not trying Locale.english
 	 */
     public static String getLocalizedMessage(String key)	{
 
@@ -89,8 +91,16 @@ public class LogicHelper {// have static function to help implementation logic
     		String message = messages.getString(key);
         	return message;
     	}	catch(MissingResourceException e)	{
-    		// Resource/String not found
-    		return "??" + key + "??";
+    		try {
+				// get the right .properties File depending on current language [may throw MissingResourceException]
+				ResourceBundle messages = ResourceBundle.getBundle("messages", Locale.ENGLISH);
+				// get the String from the .properties [may throw MissingResourceException]
+				String message = messages.getString(key);
+				return message;
+			} catch (MissingResourceException e1) {
+	    		// Resource/String not found
+	    		return "Language resource not found.";
+			}
     	}
     	
     }

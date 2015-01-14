@@ -85,7 +85,7 @@ public class EvaluationController extends AbstractServerController {
 	 * Evaluation Site
 	 */
 	@RequestMapping(value = "/evaluate")
-	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
+	public String evaluate(Model model) throws InvalidStateChangeException, IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "evaluate"))	{
@@ -105,12 +105,20 @@ public class EvaluationController extends AbstractServerController {
 					e.printStackTrace();
 					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.csv.message"));
 					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.csv.error"));
-					return "error";
+					return "standardException";
 				}
 				
 			}
 			// Get statistics
-			Map<String,Float> stats = kms.getState().getStatistics();
+			Map<String, Float> stats = null;
+			try {
+				stats = kms.getState().getStatistics();
+			} catch (NoContractsException e) {
+				e.printStackTrace();
+				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.noContracts.message"));
+				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.noContracts.error"));
+				return "standardException";
+			}
 			
 			model.addAttribute("average", Math.round(stats.get("averagePrice")*100)/100.0);
 			model.addAttribute("size", Math.round(stats.get("contractsSize")));

@@ -121,7 +121,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         						line.substring(line.indexOf(":") + 1, line.lastIndexOf(":")), 
         						set);
             			LogicHelper.print("MATCH! Username: " + line.substring(0, line.indexOf(":")) + 
-            					" Password: " + line.substring(line.indexOf(":") + 1, line.lastIndexOf(":")) + 
             					" Role: " + line.substring(line.lastIndexOf(":") + 1));
         				break;
         			}

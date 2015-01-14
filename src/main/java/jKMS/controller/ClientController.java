@@ -32,6 +32,7 @@ public class ClientController extends AbstractController {
 	public String contract(Model model)	{
 		model.addAttribute("firstID", kms.getConfiguration().getFirstID());
 		model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
+		model.addAttribute("lastID", kms.getLastId());
 		return "contract";
 	}
 	
@@ -59,8 +60,6 @@ public class ClientController extends AbstractController {
 			    	ra.addFlashAttribute("id2", id2);
 			    	ra.addFlashAttribute("price", price);
 			    	ra.addFlashAttribute("error", "correct");
-					ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
-					ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 			    	return "redirect:/contract";
 				}
 			}
@@ -96,16 +95,12 @@ public class ClientController extends AbstractController {
 		    	ra.addFlashAttribute("price", price);
 		    	ra.addFlashAttribute("error", "empty");
 			}
-			ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
-			ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 	    	return "redirect:/contract";
 			
 		}	catch(NumberFormatException e)	{
 			// Number seems to be fractional
 			e.printStackTrace();
 			ra.addFlashAttribute("error", "fraction");
-			ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
-			ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 			return "redirect:/contract";
 		}	catch(IllegalStateException e)	{
 			// Game not running
@@ -117,8 +112,6 @@ public class ClientController extends AbstractController {
 				// Guess Game not running
 				ra.addFlashAttribute("error", "notRunning");
 			}
-			ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
-			ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 			return "redirect:/contract";
 		}
 	}

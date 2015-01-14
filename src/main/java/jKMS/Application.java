@@ -34,10 +34,10 @@ public class Application extends WebMvcConfigurerAdapter {
 		gui = new AppGui();
 		
 		if(portAvailable()) {
-			SpringApplication.run(Application.class, args);
-			
 				
 			URI index = null;
+
+			SpringApplication.run(Application.class, args);
 			
 			try {
 				index = new URI("http://localhost:8080/index");
@@ -52,14 +52,22 @@ public class Application extends WebMvcConfigurerAdapter {
 				e1.printStackTrace();
 			}
 			
+//			System.out.println("     ██╗██╗  ██╗███╗   ███╗███████╗");
+//			System.out.println("     ██║██║ ██╔╝████╗ ████║██╔════╝");
+//			System.out.println("     ██║█████╔╝ ██╔████╔██║███████╗");
+//			System.out.println("██   ██║██╔═██╗ ██║╚██╔╝██║╚════██║");
+//			System.out.println("╚█████╔╝██║  ██╗██║ ╚═╝ ██║███████║");
+//			System.out.println(" ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝");
+
 			System.out.println();
-			System.out.println("     ██╗██╗  ██╗███╗   ███╗███████╗");
-			System.out.println("     ██║██║ ██╔╝████╗ ████║██╔════╝");
-			System.out.println("     ██║█████╔╝ ██╔████╔██║███████╗");
-			System.out.println("██   ██║██╔═██╗ ██║╚██╔╝██║╚════██║");
-			System.out.println("╚█████╔╝██║  ██╗██║ ╚═╝ ██║███████║");
-			System.out.println(" ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝");
-			System.out.println("01101010 01001011 01001101 01010011");
+			System.out.println("     _  ___  ____   ____    ____   ______   ");
+			System.out.println("    (_)|_  ||_  _| |_   \\  /   _|.' ____ \\ ");
+			System.out.println("    __   | |_/ /     |   \\/   |  | (___ \\_|");
+			System.out.println("   [  |  |  __'.     | |\\  /| |  `_.____`. ");
+			System.out.println(" _  | | _| |  \\ \\_  _| | \\/_| |_ | \\____) |");
+			System.out.println("[ \\_| ||____||____||_____||_____| \\______.'");
+		    System.out.println(" \\____/ 01101010 01001011 01001101 01010011");
+
 			System.out.println();
 			System.out.println("Pit Market 2.0 by Quiryn, freeDom, jUSTUS, yangxinyu and siegmund42.");
 			System.out.println();
@@ -75,7 +83,7 @@ public class Application extends WebMvcConfigurerAdapter {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.GERMAN);
+        slr.setDefaultLocale(Locale.ENGLISH);
         return slr;
     }
  

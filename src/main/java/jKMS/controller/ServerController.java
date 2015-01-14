@@ -124,7 +124,6 @@ public class ServerController extends AbstractServerController	{
 		}	else	{
 			ra.addFlashAttribute("error", error);
 		}
-		ra.addFlashAttribute("users", ControllerHelper.getUsers());
 		
 		return "redirect:/settings";
 	}

@@ -43,6 +43,7 @@ public class PrepareController extends AbstractServerController {
 		if(ControllerHelper.stateHelper(kms, "prepare"))	{
 			// Add Metadata if already set
 			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+			model.addAttribute("lastID", kms.getLastId());
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
 			return "prepare1";
@@ -94,9 +95,15 @@ public class PrepareController extends AbstractServerController {
 	 *  GET Requests on Site for Distribution
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
-	public String prepare2(Model model) throws IllegalStateException, InvalidStateChangeException	{
+	public String prepare2(Model model,
+			@RequestParam(value = "c", required = false) String c) throws IllegalStateException, InvalidStateChangeException	{
 		
-		String configuration = (String) model.asMap().get("c");
+		String configuration;
+		
+		if(c == null)
+			configuration = (String) model.asMap().get("c");
+		else
+			configuration = c;
 		
 		// STATE-CHANGE
 		if(ControllerHelper.stateHelper(kms, "prepare"))	{
@@ -132,6 +139,7 @@ public class PrepareController extends AbstractServerController {
 			model.addAttribute("numberOfPlayers", kms.getPlayerCount());
 			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
 			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
+			model.addAttribute("lastID", kms.getLastId());
 	
 			return "prepare2";
 		}	else	{
@@ -149,26 +157,15 @@ public class PrepareController extends AbstractServerController {
 			if(file.getContentType().equals("text/plain"))	{
 				try {
 					kms.getState().load(file);
-				} 	catch(NumberFormatException | IOException | EmptyFileException|FalseLoadFileException e)	{
+				} 	catch(NumberFormatException | IOException | EmptyFileException | FalseLoadFileException e)	{
 					// File empty/broken/something went wrong
 					e.printStackTrace();
-					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.load.message"));
-					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.load.error"));
-					return "error";
+					ra.addFlashAttribute("error", "load.message");
 				}
-				return "redirect:/prepare2";
 			}	else	{
 				ra.addFlashAttribute("error", "load.falseContentType");
-				// Add stored values to model
-				ra.addFlashAttribute("customerConfiguration", kms.getbDistribution());
-				ra.addFlashAttribute("salesmanConfiguration", kms.getsDistribution());
-				ra.addFlashAttribute("sGroupQuantity", kms.getGroupCount("s"));
-				ra.addFlashAttribute("cGroupQuantity", kms.getGroupCount("b"));
-				ra.addFlashAttribute("numberOfPlayers", kms.getPlayerCount());
-				ra.addFlashAttribute("numberOfAssistants", kms.getAssistantCount());
-				ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
-				return "redirect:/prepare2";
 			}
+			return "redirect:/prepare2";
 		}	else	{
 			return "redirect:/reset";
 		}
@@ -294,7 +291,7 @@ public class PrepareController extends AbstractServerController {
 				e.printStackTrace();
 				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.PDF.error"));
 				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.PDF.message"));
-				return "error";
+				return "standardException";
 			}
 			
 			if(ControllerHelper.checkFolders())	{
@@ -310,7 +307,7 @@ public class PrepareController extends AbstractServerController {
 					e.printStackTrace();
 					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.config.save.error"));
 					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.config.save.message"));
-					return "error";	
+					return "standardException";	
 				}
 				
 				// Add path to model
@@ -337,7 +334,6 @@ public class PrepareController extends AbstractServerController {
 				ra.addFlashAttribute("cGroupQuantity", 0);
 				ra.addFlashAttribute("sGroupQuantity", 0);
 			}
-			ra.addFlashAttribute("numberOfPlayers", kms.getPlayerCount());
 			ra.addFlashAttribute("error", error);
 			ra.addFlashAttribute("isStandard", false);
 			return "redirect:/prepare2";

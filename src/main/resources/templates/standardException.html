@@ -25,9 +25,11 @@
 	 	<div th:replace="resources :: heading (error)">
 	 	</div>
 		<div id='created' th:text="${timestamp}"></div>
-		<div th:text="#{error.hint} + ' ' + #{error.type} + ': ' + ${error}">
+		<div class="textarea" th:text="#{error.hint}">
 		</div>
-		<div th:text="#{error.message} + ': ' + ${message}"></div>
+		<div class="textarea" th:text="#{error.type} + ': ' + ${error}">
+		</div>
+		<div class="textarea" th:text="#{error.message} + ': ' + ${message}"></div>
 	</div>
  </body>
 </html>

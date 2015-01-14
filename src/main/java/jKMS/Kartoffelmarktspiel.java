@@ -86,6 +86,15 @@ public class Kartoffelmarktspiel {
 	public int getPlayerCount() {
 		return configuration.getPlayerCount();
 	}
+	
+	public int getLastId()	{
+		int last = 0;
+		for(Card card : cards)	{
+			if(card.getId() > last)
+				last = card.getId();
+		}
+		return last;
+	}
 
 	public int getAssistantCount() {
 		return configuration.getAssistantCount();
