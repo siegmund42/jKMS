@@ -52,17 +52,19 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * Gets the name of the Folder @param folder.
-	 * @param folder a string contained in the folders Map
+	 * gets the name of the Folder folder.
+	 * 
+	 * @param folder internally handled names
+	 * @return name of the actual folder
 	 */
 	public static String getFolderName(String folder)	{
 		return folders.get(folder);
 	}
 	
 	/**
-	 * Gets the absolute Path of the Folder @param folder.
+	 * Gets the absolute Path of the Folder Folder folder.
 	 * @param  folder a string contained in the folders Map
-	 * @return an absolute path to the @param folder, e.g: /media/user/42/KMS/settings/
+	 * @return an absolute path to the folder, e.g: /media/user/42/KMS/settings/
 	 */
 	public static String getFolderPath(String folder)	{
 		String appFolder = getApplicationFolder();
@@ -232,8 +234,8 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * Gets Application folder
-	 * @return 		the path to the folder, that holds the jar, e.g. /media/user/jKMS/
+	 * Returns the path to the Application Folder, which holds the jar
+	 * @return 		the path to Application folder, e.g. /media/user/jKMS/
 	 */
 	public static String getApplicationFolder()	{
 		
@@ -269,8 +271,8 @@ public class ControllerHelper extends AbstractController {
 	
 	/**
 	 * Creates folders from folders Map if they aren't existing.
-	 * @return true  if all folders exist
-	 * @return false if something went wrong
+	 * @return true  if all folders exist/where created 
+	 * 		   false if something went wrong
 	 * @throws CreateFolderFailedException
 	 */
 	public static boolean createFolders() throws CreateFolderFailedException	{
@@ -298,8 +300,9 @@ public class ControllerHelper extends AbstractController {
 	
 	/**
 	 * Checks and, if not yet existing, creates the folder structure
-	 * @return true if everything created/here now, false if not
-	 * @throws CreateFolderFailedException
+	 * @return 	true if everything created/here now
+	 * 			false if not
+	 * @throws	CreateFolderFailedException
 	 */
 	public static boolean checkFolders() throws CreateFolderFailedException	{
 		
@@ -363,6 +366,9 @@ public class ControllerHelper extends AbstractController {
 	
 	/**
 	 * Gets the set of contracts and converts it to a string for the javascript flot library
+	 * 
+	 * @param contracts Set of contracts as part of the Kartoffelmarktspiel class
+	 * @return string holding the contract information
 	 */
 	public static String setToString(Set<Contract> contracts){
 		if(contracts.isEmpty()) return "[]";
@@ -386,6 +392,9 @@ public class ControllerHelper extends AbstractController {
 	
 	/**
 	 * Gets a map of distribution and converts it to a string for the javascript flot library
+	 * 
+	 * @param distribution one of the distribution Map as part of the Configuration class
+	 * @return string holding the distribution information
 	 */
 	public static String mapToString(Map<Integer,Amount>  distribution){
 		String str = "[";
@@ -408,6 +417,11 @@ public class ControllerHelper extends AbstractController {
 	/**
 	 * gets the minimum and maximum values of the distributions and compares it to the min and max of the contracts set. 
 	 * With these values we can limit the chart on 20% difference to the highest and lowest possible value, if a contract price is much to high or much to low .
+	 * 
+	 * @param contracts Set of contracts as part of the Kartoffelmarktspiel class
+	 * @param sDistribution sDistribution Map as part of the Configuration class
+	 * @param bDistribution bDistribution Map as part of the Configuration class
+	 * @return Array holding the min [0] and max [1] price
 	 */
 	public static int[] getMinMax(Set<Contract> contracts, TreeMap<Integer,Amount> sDistribution, TreeMap<Integer,Amount> bDistribution) {
 		int smin = sDistribution.firstKey();

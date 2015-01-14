@@ -73,30 +73,12 @@ public class LogicHelper {// have static function to help implementation logic
 				}
 		return sum;
 		}
-	/*
-	//get the right propertie with the international strings
-    public static Properties getProperetie(){
-    	Properties propertie = new Properties();
-    	
-        Locale locale = LocaleContextHolder.getLocale(); // get lang.
-        try {
-        	propertie.load(ClassLoader.getSystemResourceAsStream("messages_"+locale.getLanguage()+".properties"));//get rigth propertie
-        	}
-        	catch (IOException ioe) {
-        		LogicHelper.print(ioe);
-        		try {
-        			propertie.load(ClassLoader.getSystemResourceAsStream("messages_en.properties"));
-        			}
-        			catch (IOException ioe1) {
-        				LogicHelper.print(ioe1);
-        			}
-        	}
-    	
-        return propertie;
-    }*/
     
 	/**
 	 * Gets the message from the messages_XX.properties to the key.
+	 * 
+	 * @param key the key from the messages_XX.properties file
+	 * @return localized message
 	 */
     public static String getLocalizedMessage(String key)	{
 
@@ -115,9 +97,12 @@ public class LogicHelper {// have static function to help implementation logic
     
     /**
      * Prints a well-formatted output to console [log] with message message and type
-     * 0 = INFO
-     * 1 = WARNING
-     * 2 = ERROR
+     * 
+     * @param message message to be printed
+     * @param type 
+     *		  0 = INFO<br>
+     * 		  1 = WARNING<br>
+     * 		  2 = ERROR
      */
     public static void print(String message, int type)	{
     	String[] types = {"INFO   ", "WARNING", "ERROR  "};
@@ -128,6 +113,8 @@ public class LogicHelper {// have static function to help implementation logic
     
     /**
      * Simple print function for printing an INFO
+     * 
+     * @param message message to be printed
      */
     public static void print(String message)	{
     	print(message, 0);
