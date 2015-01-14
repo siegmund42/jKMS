@@ -250,7 +250,6 @@ public class ControllerHelper extends AbstractController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		LogicHelper.print("Located the .jar in: " + folderPath);
 		return folderPath;
 	}
 	

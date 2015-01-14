@@ -61,7 +61,7 @@ public class ClientController extends AbstractController {
 			    	ra.addFlashAttribute("error", "correct");
 					ra.addFlashAttribute("firstID", kms.getConfiguration().getFirstID());
 					ra.addFlashAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
-			    	return "contract";
+			    	return "redirect:/contract";
 				}
 			}
 			

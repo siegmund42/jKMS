@@ -94,7 +94,9 @@ public class PrepareController extends AbstractServerController {
 	 *  GET Requests on Site for Distribution
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
-	public String prepare2(Model model, @RequestParam(value="c", required = false) String configuration) throws IllegalStateException, InvalidStateChangeException	{
+	public String prepare2(Model model) throws IllegalStateException, InvalidStateChangeException	{
+		
+		String configuration = (String) model.asMap().get("c");
 		
 		// STATE-CHANGE
 		if(ControllerHelper.stateHelper(kms, "prepare"))	{

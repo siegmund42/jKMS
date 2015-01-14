@@ -1,6 +1,7 @@
 package jKMS;
 
 import jKMS.controller.ControllerHelper;
+import jKMS.exceptionHelper.CreateFolderFailedException;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -61,6 +62,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			defaults[1][0] = "Assistant";
 			defaults[1][1] = "Assi";
 			defaults[1][2] = "ROLE_USER";
+			
+			try {
+				ControllerHelper.createFolders();
+			} catch (CreateFolderFailedException e1) {
+				e1.printStackTrace();
+			}
 			
         	boolean found = true, noFile = false;
         	
