@@ -21,7 +21,7 @@ public class ExceptionController {
 		return mav;
 	}
 	
-	/*
+	/**
 	 * If user jumped through sites not by clicking our links
 	 */
 	@ExceptionHandler
@@ -34,7 +34,7 @@ public class ExceptionController {
 		return mav;
 	}
 	
-	/*
+	/**
 	 * Handles error when creating folders
 	 */
 	@ExceptionHandler

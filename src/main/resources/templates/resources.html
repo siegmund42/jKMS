@@ -8,7 +8,14 @@
 		<h1 th:text="#{messages.__${site}__}"></h1>
 	</div>
  	<div th:fragment="globalHeading" th:text="#{messages.heading}" id="heading"></div>
- 	<div th:fragment="footer" id="footer" th:text="#{footer.contributors}"></div>
+ 	<div th:fragment="footer" id="footer">
+	 	<h3>Credits</h3>
+		Game design: G. Markwardt, A. Seidel, M. Thum, TU-Dresden, 2015.
+		<br />
+		Game idea from C.A. Holt, “Classroom Games Trading in a Pit Market”, 1996.
+		<br />
+		Game implementation: Timon, Dominik, Justus, Xinyu, Lukas; TU Dresden, 2015.
+	</div>
 	<div id="js" th:fragment="js">
 		 <script th:inline="javascript">
 	    /*<![CDATA[*/

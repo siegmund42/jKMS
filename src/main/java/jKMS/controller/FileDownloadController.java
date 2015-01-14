@@ -39,7 +39,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class FileDownloadController extends AbstractServerController {
 	byte[] pdfBytes = null;
 	
-	/*
+	/**
 	 *  Downloading Seller-/BuyerCardsPDF
 	 */
     @RequestMapping(value = "/pdf/cards/{type}")
@@ -91,7 +91,14 @@ public class FileDownloadController extends AbstractServerController {
 	    return response;
     }
     
-    //catch ajax-request when evaluate.html is ready, prepare export-pdf for download
+    /**
+     * catch ajax-request when evaluate.html is ready
+     * prepare export-pdf for download
+     * @param image
+     * @throws IllegalStateException
+     * @throws NoIntersectionException
+     * @throws IOException
+     */
     @RequestMapping(value = "/pdfExport",
     				method = RequestMethod.POST)
     public void exportPDF(@RequestParam("image") MultipartFile image) throws IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
@@ -175,7 +182,7 @@ public class FileDownloadController extends AbstractServerController {
     	
     }
 
-    /*
+    /**
      * Serve the config.txt for download. 
      * Note that it is processed again [save(bos)] to avoid deletion of the file between saving and loading.
      */
@@ -206,8 +213,6 @@ public class FileDownloadController extends AbstractServerController {
 	    
 	    return new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
     }
-    
-    
     
     @RequestMapping(value = "/csv")
     public ResponseEntity<byte[]> downloadCsv() throws Exception{ 

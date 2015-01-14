@@ -6,6 +6,7 @@ import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
+import jKMS.exceptionHelper.WrongPackageException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
 import jKMS.exceptionHelper.WrongRelativeDistributionException;
 
@@ -65,7 +66,7 @@ public class LoadController extends AbstractServerController {
 		
 	}
 	
-	/*
+	/**
 	 * For loading an existing Config.txt File
 	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.POST)
@@ -98,7 +99,7 @@ public class LoadController extends AbstractServerController {
 		
 	}
 	
-	/*
+	/**
 	 * Page for excluding Cards
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.GET)
@@ -121,7 +122,7 @@ public class LoadController extends AbstractServerController {
 		
 	}
 	
-	/*
+	/**
 	 * Exclude Cards POST Request
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.POST)
@@ -153,7 +154,7 @@ public class LoadController extends AbstractServerController {
 						return "redirect:/load2";
 					}
 				// Catch Exceptions from removeCard() 
-				}	catch (WrongPlayerCountException | WrongAssistantCountException
+				}	catch (WrongPackageException | WrongPlayerCountException | WrongAssistantCountException
 						| WrongFirstIDException
 						| WrongRelativeDistributionException e) {
 					e.printStackTrace();

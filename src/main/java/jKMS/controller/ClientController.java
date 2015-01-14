@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ClientController extends AbstractController {
 	
-	/*
+	/**
 	 * Redirect to /contract Site
 	 */
 	@RequestMapping("/")
@@ -25,7 +25,7 @@ public class ClientController extends AbstractController {
 		return "redirect:/contract";
 	}
 	
-	/*
+	/**
 	 * Display the contract Form
 	 */
 	@RequestMapping(value = "/contract", method = RequestMethod.GET)
@@ -35,7 +35,7 @@ public class ClientController extends AbstractController {
 		return "contract";
 	}
 	
-	/*
+	/**
 	 * Process the contract Request
 	 */
 	@RequestMapping(value = "/contract", method = RequestMethod.POST)
@@ -122,6 +122,5 @@ public class ClientController extends AbstractController {
 			return "redirect:/contract";
 		}
 	}
-
 
 }

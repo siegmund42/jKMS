@@ -27,7 +27,7 @@ public class EvaluationController extends AbstractServerController {
 	
 	@RequestMapping("/getEvaluation")
 	@ResponseBody
-	/*
+	/**
 	 * catches AjaxRequest, concatenates data list with standardDistribution
 	 */
 	public String evaluationChart(){
@@ -53,8 +53,7 @@ public class EvaluationController extends AbstractServerController {
 		
 	}
 	
-	
-	/*
+	/**
 	 * gets all attributes of "winner contract" and adds them to the model
 	 */
 	@RequestMapping(value = "/lottery")
@@ -82,7 +81,7 @@ public class EvaluationController extends AbstractServerController {
 		
 	}
 	
-	/*
+	/**
 	 * Evaluation Site
 	 */
 	@RequestMapping(value = "/evaluate")

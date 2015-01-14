@@ -61,23 +61,13 @@ public class Kartoffelmarktspiel {
 
 	// GETTERS AND SETTERS
 
-//	public Kartoffelmarktspiel getInstance() {
-//		return instance;
-//	}
-
 	public Configuration getConfiguration() {
 		return configuration;
 	}
 
-//	USELESS ??
-//	public void setConfiguration(Configuration configuration) {
-//		this.configuration = configuration;
-//	}
-
 	public Set<Card> getCards() {
 		return cards;
 	}
-	
 	
 	public Set<Contract> getContracts(){
 		return contracts;

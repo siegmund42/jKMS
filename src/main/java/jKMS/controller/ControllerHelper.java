@@ -49,14 +49,14 @@ public class ControllerHelper extends AbstractController {
 		checkFolders();
 	}
 	
-	/*
+	/**
 	 * gets the name of the Folder folder.
 	 */
 	public static String getFolderName(String folder)	{
 		return folders.get(folder);
 	}
 	
-	/*
+	/**
 	 * gets the absolute Path of the Folder folder.
 	 * Example: /media/user/42/KMS/settings/
 	 */
@@ -66,14 +66,14 @@ public class ControllerHelper extends AbstractController {
 		return appFolder.concat(folderName).concat(File.separator);
 	}
 	
-	/*
+	/**
 	 * Gets the name of a File (without Extension!) by concatenating the localized message to a timestamp
 	 */
 	public static String getFilename(String message)	{
 		return LogicHelper.getLocalizedMessage(message) + "_" + getNiceDate();
 	}
 	
-	/*
+	/**
 	 * Responsible for state setting.
 	 * Returns true if state setting done or not necessary.
 	 * Returns false if requested changing of state requires deletion of Data.
@@ -172,7 +172,7 @@ public class ControllerHelper extends AbstractController {
 		
 	}
 	
-	/*
+	/**
 	 * Returns IPs of the User in a List of Strings.
 	 */
 	public static List<String> getIP()	{
@@ -210,14 +210,14 @@ public class ControllerHelper extends AbstractController {
 		return IPs;
 	}
 	
-	/*
+	/**
 	 * Returns Port of the given request.
 	 */
 	public static int getPort(ServletRequest request)	{
 		return request.getServerPort();
 	}
 	
-	/*
+	/**
 	 * Returns the path to the Application Folder, which holds the jar
 	 * Example: /media/user/jKMS/
 	 */
@@ -253,7 +253,7 @@ public class ControllerHelper extends AbstractController {
 		return folderPath;
 	}
 	
-	/*
+	/**
 	 * Creates folders from folders Map if they aren't existing.
 	 */
 	public static boolean createFolders() throws CreateFolderFailedException	{
@@ -279,7 +279,7 @@ public class ControllerHelper extends AbstractController {
 		return fine;
 	}
 	
-	/*
+	/**
 	 * Checks and, if not yet existing, creates the Folder Structure
 	 * Returns true if something was created, false if not.
 	 */
@@ -313,7 +313,7 @@ public class ControllerHelper extends AbstractController {
 		
 	}
 	
-	/*
+	/**
 	 * Returns all the users written in settings file.
 	 */
 	public static Set<String> getUsers() throws IOException	{
@@ -333,7 +333,7 @@ public class ControllerHelper extends AbstractController {
 		return string;
 	}
 	
-	/*
+	/**
 	 * Returns a well-formatted timestamp for adding it to filenames.
 	 */
 	public static String getNiceDate()	{
@@ -342,7 +342,7 @@ public class ControllerHelper extends AbstractController {
 	    return ft.format(dNow);
 	}
 	
-	/*
+	/**
 	 * Gets the set of contracts and converts it to a string for the javascript flot library
 	 */
 	public static String setToString(Set<Contract> contracts){
@@ -365,7 +365,7 @@ public class ControllerHelper extends AbstractController {
 		return str;		
 	}
 	
-	/*
+	/**
 	 * Gets a map of distribution and converts it to a string for the javascript flot library
 	 */
 	public static String mapToString(Map<Integer,Amount>  distribution){
@@ -386,7 +386,7 @@ public class ControllerHelper extends AbstractController {
 		return str;
 	}
 	
-	/*
+	/**
 	 * gets the minimum and maximum values of the distributions and compares it to the min and max of the contracts set. 
 	 * With these values we can limit the chart on 20% difference to the highest and lowest possible value, if a contract price is much to high or much to low .
 	 */
