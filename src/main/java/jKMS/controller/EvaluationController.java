@@ -120,11 +120,11 @@ public class EvaluationController extends AbstractServerController {
 				return "standardException";
 			}
 			
-			model.addAttribute("average", Math.round(stats.get("averagePrice")*100)/100.0);
+			model.addAttribute("average", String.format("%.2f", Math.round(stats.get("averagePrice")*100)/100.0));
 			model.addAttribute("size", Math.round(stats.get("contractsSize")));
 			model.addAttribute("min", Math.round(stats.get("minimum")));
 			model.addAttribute("max", Math.round(stats.get("maximum")));
-			model.addAttribute("standardDeviation", Math.round(stats.get("standardDeviation")*100)/100.0);
+			model.addAttribute("standardDeviation", String.format("%.2f",Math.round(stats.get("standardDeviation")*100)/100.0));
 			model.addAttribute("eqPrice",Math.round(stats.get("eqPrice")));
 			model.addAttribute("eqQuantity", Math.round(stats.get("eqQuantity")));
 			

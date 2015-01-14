@@ -6,6 +6,7 @@ import jKMS.exceptionHelper.CreateFolderFailedException;
 import jKMS.exceptionHelper.EmptyFileException;
 import jKMS.exceptionHelper.FalseLoadFileException;
 import jKMS.exceptionHelper.InvalidStateChangeException;
+import jKMS.exceptionHelper.NoIntersectionException;
 import jKMS.exceptionHelper.WrongAssistantCountException;
 import jKMS.exceptionHelper.WrongFirstIDException;
 import jKMS.exceptionHelper.WrongPlayerCountException;
@@ -15,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 
@@ -279,6 +281,79 @@ public class PrepareController extends AbstractServerController {
 		if((LogicHelper.getAbsoluteSum(kms.getbDistribution()) + LogicHelper.getAbsoluteSum(kms.getsDistribution())) > 8999)	{
 			error = "config.playerCountOV";
 		}
+	
+		
+		// Check if there is an intersection of supply and demand function, if not -> user is requested to correct his distributions
+		TreeMap<Integer,Amount> sDistr = (TreeMap<Integer, Amount>) kms.getsDistribution();
+ 		TreeMap<Integer, Amount> bDistr = (TreeMap<Integer, Amount>) kms.getbDistribution();
+ 		
+ 		int bCount = 0, sCount = 0, bTemp = 0, sTemp = 0;	
+ 		int bStaticCount = 0, sStaticCount = 0;
+ 			
+ 		Map.Entry<Integer, Amount> sEntry = sDistr.firstEntry();
+ 		Map.Entry<Integer, Amount> bEntry = bDistr.lastEntry();
+ 		int sellerPrice = sEntry.getKey();
+ 		int buyerPrice = bEntry.getKey();
+ 		
+ 		bStaticCount += bEntry.getValue().getAbsolute();
+ 		sStaticCount += sEntry.getValue().getAbsolute();
+ 		
+ 		for(int k = 0; k < (sDistr.size() + bDistr.size()); k++){ 			
+ 		 	if(buyerPrice <= sellerPrice){
+ 		 		//yippee...for that case, we've found an intersection - all is fine :)
+ 		 		break;		
+			}
+ 		 	
+						
+			else if(buyerPrice > sellerPrice) {			
+			/*
+			 * For that case we have to keep on searching
+			 * We search the next point, where one of the functions does the next "step".
+			 * We move both counters to that point(quantity) and repeat the loop.
+			 * xTemp = difference between current point and next step
+			 * xCount = current point
+			 * xStaticCount = next "step"
+			 */	
+				bTemp = bStaticCount  -  bCount;
+				sTemp = sStaticCount  -  sCount;
+				
+				if(bTemp < sTemp){
+					bEntry = bDistr.lowerEntry(buyerPrice);
+					if(bEntry == null) //  <-- Lukas! der Fehler will behandelt werden. :) --> 
+					buyerPrice = bEntry.getKey();
+					bCount += bTemp;
+					bStaticCount += bEntry.getValue().getAbsolute();
+					
+					sCount = bCount;
+				}else if(bTemp > sTemp){
+					sEntry = sDistr.higherEntry(sellerPrice);
+					if(sEntry == null) //  <-- Lukas! der Fehler will behandelt werden. :) -->
+					sellerPrice = sEntry.getKey();
+					sCount += sTemp;
+					sStaticCount += sEntry.getValue().getAbsolute();
+
+					bCount = sCount;
+				}else if(bTemp == sTemp){
+					bEntry = bDistr.lowerEntry(buyerPrice);
+					if(bEntry == null) //  <-- Lukas! der Fehler will behandelt werden. :) -->
+					buyerPrice = bEntry.getKey();
+					bCount += bTemp;
+					bStaticCount += bEntry.getValue().getAbsolute();
+					
+					sEntry = sDistr.higherEntry(sellerPrice);
+					if(sEntry == null) //  <-- Lukas! der Fehler will behandelt werden. :) -->
+					sellerPrice = sEntry.getKey();
+					sCount += sTemp;
+					sStaticCount += sEntry.getValue().getAbsolute();
+					
+					//This increment is needed, because the maximum of the for-loop is the sum of the sizes 
+					//of both distributions and here we iterate both distributions.
+					k++;
+				}
+			}
+ 		}
+				
+		
 		
 		if(error == "")	{
 			// Set new PlayerCount

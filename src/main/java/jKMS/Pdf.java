@@ -531,13 +531,13 @@ public class Pdf {
     	
     	PdfPTable table = new PdfPTable(3);
     	
-    	PdfPCell cell11 = new PdfPCell(new Paragraph(average + Math.round(stats.get("averagePrice")*100)/100.0 + "€",valueFont));
+    	PdfPCell cell11 = new PdfPCell(new Paragraph(average + String.format("%.2f",Math.round(stats.get("averagePrice")*100)/100.0 + "€",valueFont)));
     	cell11.setBorder(Rectangle.NO_BORDER);
     	PdfPCell cell21 = new PdfPCell(new Paragraph(min + Math.round(stats.get("minimum")) + "€",valueFont));
     	cell21.setBorder(Rectangle.NO_BORDER);
     	PdfPCell cell31 = new PdfPCell(new Paragraph(max + Math.round(stats.get("maximum")) + "€",valueFont));
     	cell31.setBorder(Rectangle.NO_BORDER);
-    	PdfPCell cell12 = new PdfPCell(new Paragraph(standDev + Math.round(stats.get("standardDeviation")*100)/100.0,valueFont));
+    	PdfPCell cell12 = new PdfPCell(new Paragraph(standDev + String.format("%.2f", Math.round(stats.get("standardDeviation")*100)/100.0,valueFont)));
     	cell12.setBorder(Rectangle.NO_BORDER);
     	PdfPCell cell22 = new PdfPCell(new Paragraph(size + Math.round(stats.get("contractsSize")),valueFont));
     	cell22.setBorder(Rectangle.NO_BORDER);
