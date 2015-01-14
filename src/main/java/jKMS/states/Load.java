@@ -47,70 +47,74 @@ public class Load extends State {
             	 BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             	 String buf = "";
             	 int count = 0;
-            	 while ((buf=br.readLine()) != null && count < 3) {
-            		 buf=buf.trim();
-            		 String[] sa = buf.split(":|\\s");
-            		 if(count == 0){
-            			 playerCount = Integer.valueOf(sa[1].trim());
-            			 count = count + 1;
-            			 continue;
-            		 }
-            		 else if(count == 1){
-            			 assistantCount = Integer.valueOf(sa[1].trim());
-            			 count = count + 1;
-            			 continue;
-            		 }
-            		 else if(count == 2){
-            			 firstID = Integer.valueOf(sa[1].trim());
-            			// if(firstID != 1001){ //TODO
-            			//	 throw new FalseLoadFileException("firsstID is not 1001,please do not change the load file!");
-            			// }
-            			 count = count + 1;
-            			 break;
-            		 }
-            	 }
-            	 LogicHelper.print("Loaded: PlayerCount = " + playerCount + 
-            			 "AssistantCount = " + assistantCount + 
-            			 "firstID = " + firstID);
-            	//load bDistribution and sDistribution
-            	 while ( count >=3){
-            		 if( (buf=br.readLine()) != null){
+            	 try{
+	            	 while ((buf=br.readLine()) != null && count < 3) {
 	            		 buf=buf.trim();
-	 		             String[] sa = buf.split(":|\\s");
-	 		             if(sa[0].equals("bDistribution")){
-		 		             int bpreis = Integer.valueOf(sa[1].trim());
-		 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
-		 		             // int banteil = Integer.valueOf(sa[1]);
-		 		             bDistributionLoad.put(bpreis, bAmount);
-	 		             }
-	 		             else if(sa[0].equals("sDistribution")){
-		 		             int spreis = Integer.valueOf(sa[1].trim());
-		 		             Amount sAmount = new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
-		 		             //int santeil = Integer.valueOf(sa[3]);
-		 		             sDistributionLoad.put(spreis, sAmount);
-	 		             }else{
-	 		            	 // Time to load the cards
-	 		            	 break;
-	 		             }
-	 		         count = count + 1;
-            		 }else {
-            			 throw new FalseLoadFileException("No Cards found, please do not change the load file!");
-            		 }
-            	 }
-            	 LogicHelper.print("Loaded: bDistribution = " + bDistributionLoad.toString());
-    			 LogicHelper.print("Loaded: sDistribution = " + sDistributionLoad.toString());
-            	 //load Cards and set them in cardSet
-            	 while (buf != null){
-            		 Card card;
-            		 buf=buf.trim();
-            		 String[] sa = buf.split(":|\\s");
-            		 if((Integer.valueOf(sa[1])%2) == 0){
-            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
-            		 }else {
-            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
-            		 }
-            		 cardSet.add(card);
-               		 buf=br.readLine();
+	            		 String[] sa = buf.split(":|\\s");
+	            		 if(count == 0){
+	            			 playerCount = Integer.valueOf(sa[1].trim());
+	            			 count = count + 1;
+	            			 continue;
+	            		 }
+	            		 else if(count == 1){
+	            			 assistantCount = Integer.valueOf(sa[1].trim());
+	            			 count = count + 1;
+	            			 continue;
+	            		 }
+	            		 else if(count == 2){
+	            			 firstID = Integer.valueOf(sa[1].trim());
+	            			// if(firstID != 1001){ //TODO
+	            			//	 throw new FalseLoadFileException("firsstID is not 1001,please do not change the load file!");
+	            			// }
+	            			 count = count + 1;
+	            			 break;
+	            		 }
+	            	 }
+	            	 LogicHelper.print("Loaded: PlayerCount = " + playerCount + 
+	            			 "AssistantCount = " + assistantCount + 
+	            			 "firstID = " + firstID);
+	            	//load bDistribution and sDistribution
+	            	 while ( count >=3){
+	            		 if( (buf=br.readLine()) != null){
+		            		 buf=buf.trim();
+		 		             String[] sa = buf.split(":|\\s");
+		 		             if(sa[0].equals("bDistribution")){
+			 		             int bpreis = Integer.valueOf(sa[1].trim());
+			 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
+			 		             // int banteil = Integer.valueOf(sa[1]);
+			 		             bDistributionLoad.put(bpreis, bAmount);
+		 		             }
+		 		             else if(sa[0].equals("sDistribution")){
+			 		             int spreis = Integer.valueOf(sa[1].trim());
+			 		             Amount sAmount = new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
+			 		             //int santeil = Integer.valueOf(sa[3]);
+			 		             sDistributionLoad.put(spreis, sAmount);
+		 		             }else{
+		 		            	 // Time to load the cards
+		 		            	 break;
+		 		             }
+		 		         count = count + 1;
+	            		 }else {
+	            			 throw new FalseLoadFileException("No Cards found, please do not change the load file!");
+	            		 }
+	            	 }
+	            	 LogicHelper.print("Loaded: bDistribution = " + bDistributionLoad.toString());
+	    			 LogicHelper.print("Loaded: sDistribution = " + sDistributionLoad.toString());
+	            	 //load Cards and set them in cardSet
+	            	 while (buf != null){
+	            		 Card card;
+	            		 buf=buf.trim();
+	            		 String[] sa = buf.split(":|\\s");
+	            		 if((Integer.valueOf(sa[1])%2) == 0){
+	            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+	            		 }else {
+	            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+	            		 }
+	            		 cardSet.add(card);
+	               		 buf=br.readLine();
+	            	 }
+            	 }catch(ArrayIndexOutOfBoundsException e){
+            		 throw new FalseLoadFileException("there is a syntax error in load file,someting is missing,please check the load file!");
             	 }
             	 if(cardSet.size() != playerCount){
             		 throw new FalseLoadFileException("playerCount is not equal to the number of card,please do not change the load file!");
