@@ -101,7 +101,7 @@ public class FileDownloadController extends AbstractServerController {
      */
     @RequestMapping(value = "/pdfExport",
     				method = RequestMethod.POST)
-    public void exportPDF(@RequestParam("image") MultipartFile image) throws IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
+    public void exportPDF(@RequestParam("image") MultipartFile image) throws IOException, IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
     	byte[] imageBytes = null;
 
     	if(!image.isEmpty()){
