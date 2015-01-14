@@ -35,8 +35,10 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
-/*
+/**
  * Some static help functions
+ * @author siegmund
+ * @author Quiryn
  */
 public class ControllerHelper extends AbstractController {
 	
@@ -50,15 +52,17 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * gets the name of the Folder folder.
+	 * Gets the name of the Folder @param folder.
+	 * @param folder a string contained in the folders Map
 	 */
 	public static String getFolderName(String folder)	{
 		return folders.get(folder);
 	}
 	
 	/**
-	 * gets the absolute Path of the Folder folder.
-	 * Example: /media/user/42/KMS/settings/
+	 * Gets the absolute Path of the Folder @param folder.
+	 * @param  folder a string contained in the folders Map
+	 * @return an absolute path to the @param folder, e.g: /media/user/42/KMS/settings/
 	 */
 	public static String getFolderPath(String folder)	{
 		String appFolder = getApplicationFolder();
@@ -67,17 +71,24 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * Gets the name of a File (without Extension!) by concatenating the localized message to a timestamp
+	 * Gets the name of a File (without Extension!)
+	 * by concatenating the localized message to a formatted timestamp.
+	 * @param  message message key out of .properties file for i18n
+	 * @return localized @param message + well formatted timestamp 
 	 */
 	public static String getFilename(String message)	{
 		return LogicHelper.getLocalizedMessage(message) + "_" + getNiceDate();
 	}
 	
 	/**
-	 * Responsible for state setting.
-	 * Returns true if state setting done or not necessary.
-	 * Returns false if requested changing of state requires deletion of Data.
-	 * Throws Exception if State-changing is invalid or if State is undefined.
+	 * Responsible for state setting. Checks if a state change from actual state of @param kms 
+	 * to @param requestedState is valid.
+	 * @param  kms				giving the running Kartoffelmarktspiel because were in a static class here
+	 * @param  requestedState 	the state we want to switch to
+	 * @return true 			if state setting done or not necessary.
+	 * @return false			if requested changing of state requires deletion of data, 
+	 * 							note that this would be a valid state change though
+	 * @throws InvalidStateChangeException if State-changing is invalid or State is undefined
 	 */
 	public static boolean stateHelper(Kartoffelmarktspiel kms, String requestedState) throws InvalidStateChangeException	{
 		// We are actual in Preparation
@@ -173,7 +184,8 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * Returns IPs of the User in a List of Strings.
+	 * Gets the IPs of the users active network adapters
+	 * @return IPs of the User in a List of Strings.
 	 */
 	public static List<String> getIP()	{
 		
@@ -211,15 +223,17 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * Returns Port of the given request.
+	 * Gets the port of the given @param request
+	 * @param 	request	the request through the port
+	 * @return 			Port of the given request
 	 */
 	public static int getPort(ServletRequest request)	{
 		return request.getServerPort();
 	}
 	
 	/**
-	 * Returns the path to the Application Folder, which holds the jar
-	 * Example: /media/user/jKMS/
+	 * Gets Application folder
+	 * @return 		the path to the folder, that holds the jar, e.g. /media/user/jKMS/
 	 */
 	public static String getApplicationFolder()	{
 		
@@ -255,6 +269,9 @@ public class ControllerHelper extends AbstractController {
 	
 	/**
 	 * Creates folders from folders Map if they aren't existing.
+	 * @return true  if all folders exist
+	 * @return false if something went wrong
+	 * @throws CreateFolderFailedException
 	 */
 	public static boolean createFolders() throws CreateFolderFailedException	{
 
@@ -280,8 +297,9 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * Checks and, if not yet existing, creates the Folder Structure
-	 * Returns true if something was created, false if not.
+	 * Checks and, if not yet existing, creates the folder structure
+	 * @return true if everything created/here now, false if not
+	 * @throws CreateFolderFailedException
 	 */
 	public static boolean checkFolders() throws CreateFolderFailedException	{
 		
@@ -306,15 +324,15 @@ public class ControllerHelper extends AbstractController {
 				return false;
 			}
 		}	else	{
-			// Everything was already fine
-			LogicHelper.print("Folder structure ok.");
 			return true;
 		}
 		
 	}
 	
 	/**
-	 * Returns all the users written in settings file.
+	 * Gets all the users written in settings file.
+	 * @return users from settings file in a Set<String>
+	 * @throws IOException
 	 */
 	public static Set<String> getUsers() throws IOException	{
 		// Path to password-config-file
@@ -334,7 +352,8 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * Returns a well-formatted timestamp for adding it to filenames.
+	 * Get a well formatted timestamp for adding it to auto saved files
+	 * @return well formatted timestamp as String
 	 */
 	public static String getNiceDate()	{
 		Date dNow = new Date( );
