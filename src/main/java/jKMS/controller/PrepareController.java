@@ -35,7 +35,7 @@ public class PrepareController extends AbstractServerController {
 	@Autowired
 	ServletContext servletContext;
 	
-	/*
+	/**
 	 *  Get Requests to first Site of Preparation - Metadata-Input
 	 */
 	@RequestMapping(value = "/prepare1", method = RequestMethod.GET)
@@ -55,7 +55,7 @@ public class PrepareController extends AbstractServerController {
 
 	}
 	
-	/*
+	/**
 	 *  Handling of Metadata - POST Requests on first Site of Preparation
 	 */
 	@RequestMapping(value = "/prepare1", method = RequestMethod.POST)
@@ -93,7 +93,7 @@ public class PrepareController extends AbstractServerController {
 		return "redirect:/prepare1";
 	}
 
-	/*
+	/**
 	 *  GET Requests on Site for Distribution
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
@@ -149,7 +149,7 @@ public class PrepareController extends AbstractServerController {
 		}
 	}
 	
-	/*
+	/**
 	 *  POST Request on Distribution-Site -> Loading values from File, Display them by redirecting to "prepare2"
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
@@ -173,6 +173,9 @@ public class PrepareController extends AbstractServerController {
 		}
 	}
 
+	/**
+	 * Get Requests on save site
+	 */
 	@RequestMapping(value = "save", method = RequestMethod.GET)
 	public String getSave(Model model)	{
 		String path = ControllerHelper.getFolderPath("config");
@@ -282,77 +285,86 @@ public class PrepareController extends AbstractServerController {
 			error = "config.playerCountOV";
 		}
 	
-		
+		// ######################################### Intersection-check BEGIN ############################################
 		// Check if there is an intersection of supply and demand function, if not -> user is requested to correct his distributions
-		TreeMap<Integer,Amount> sDistr = (TreeMap<Integer, Amount>) kms.getsDistribution();
- 		TreeMap<Integer, Amount> bDistr = (TreeMap<Integer, Amount>) kms.getbDistribution();
- 		
- 		int bCount = 0, sCount = 0, bTemp = 0, sTemp = 0;	
- 		int bStaticCount = 0, sStaticCount = 0;
- 			
- 		Map.Entry<Integer, Amount> sEntry = sDistr.firstEntry();
- 		Map.Entry<Integer, Amount> bEntry = bDistr.lastEntry();
- 		int sellerPrice = sEntry.getKey();
- 		int buyerPrice = bEntry.getKey();
- 		
- 		bStaticCount += bEntry.getValue().getAbsolute();
- 		sStaticCount += sEntry.getValue().getAbsolute();
- 		
- 		for(int k = 0; k < (sDistr.size() + bDistr.size()); k++){ 			
- 		 	if(buyerPrice <= sellerPrice){
- 		 		//yippee...for that case, we've found an intersection - all is fine :)
- 		 		break;		
-			}
- 		 	
-						
-			else if(buyerPrice > sellerPrice) {			
-			/*
-			 * For that case we have to keep on searching
-			 * We search the next point, where one of the functions does the next "step".
-			 * We move both counters to that point(quantity) and repeat the loop.
-			 * xTemp = difference between current point and next step
-			 * xCount = current point
-			 * xStaticCount = next "step"
-			 */	
-				bTemp = bStaticCount  -  bCount;
-				sTemp = sStaticCount  -  sCount;
+		try {
+			TreeMap<Integer,Amount> sDistr = (TreeMap<Integer, Amount>) kms.getsDistribution();
+			TreeMap<Integer, Amount> bDistr = (TreeMap<Integer, Amount>) kms.getbDistribution();
+			
+			int bCount = 0, sCount = 0, bTemp = 0, sTemp = 0;	
+			int bStaticCount = 0, sStaticCount = 0;
 				
-				if(bTemp < sTemp){
-					bEntry = bDistr.lowerEntry(buyerPrice);
-					if(bEntry == null) //  <-- Lukas! der Fehler will behandelt werden. :) --> 
-					buyerPrice = bEntry.getKey();
-					bCount += bTemp;
-					bStaticCount += bEntry.getValue().getAbsolute();
+			Map.Entry<Integer, Amount> sEntry = sDistr.firstEntry();
+			Map.Entry<Integer, Amount> bEntry = bDistr.lastEntry();
+			int sellerPrice = sEntry.getKey();
+			int buyerPrice = bEntry.getKey();
+			
+			bStaticCount += bEntry.getValue().getAbsolute();
+			sStaticCount += sEntry.getValue().getAbsolute();
+			
+			for(int k = 0; k < (sDistr.size() + bDistr.size()); k++){ 			
+			 	if(buyerPrice <= sellerPrice){
+			 		//yippee...for that case, we've found an intersection - all is fine :)
+			 		break;		
+				}
+			 	
+							
+				else if(buyerPrice > sellerPrice) {			
+				/*
+				 * For that case we have to keep on searching
+				 * We search the next point, where one of the functions does the next "step".
+				 * We move both counters to that point(quantity) and repeat the loop.
+				 * xTemp = difference between current point and next step
+				 * xCount = current point
+				 * xStaticCount = next "step"
+				 */	
+					bTemp = bStaticCount  -  bCount;
+					sTemp = sStaticCount  -  sCount;
 					
-					sCount = bCount;
-				}else if(bTemp > sTemp){
-					sEntry = sDistr.higherEntry(sellerPrice);
-					if(sEntry == null) //  <-- Lukas! der Fehler will behandelt werden. :) -->
-					sellerPrice = sEntry.getKey();
-					sCount += sTemp;
-					sStaticCount += sEntry.getValue().getAbsolute();
+					if(bTemp < sTemp){
+						bEntry = bDistr.lowerEntry(buyerPrice);
+						if(bEntry == null)
+							throw new NoIntersectionException(); 
+						buyerPrice = bEntry.getKey();
+						bCount += bTemp;
+						bStaticCount += bEntry.getValue().getAbsolute();
+						
+						sCount = bCount;
+					}else if(bTemp > sTemp){
+						sEntry = sDistr.higherEntry(sellerPrice);
+						if(sEntry == null)
+							throw new NoIntersectionException();
+						sellerPrice = sEntry.getKey();
+						sCount += sTemp;
+						sStaticCount += sEntry.getValue().getAbsolute();
 
-					bCount = sCount;
-				}else if(bTemp == sTemp){
-					bEntry = bDistr.lowerEntry(buyerPrice);
-					if(bEntry == null) //  <-- Lukas! der Fehler will behandelt werden. :) -->
-					buyerPrice = bEntry.getKey();
-					bCount += bTemp;
-					bStaticCount += bEntry.getValue().getAbsolute();
-					
-					sEntry = sDistr.higherEntry(sellerPrice);
-					if(sEntry == null) //  <-- Lukas! der Fehler will behandelt werden. :) -->
-					sellerPrice = sEntry.getKey();
-					sCount += sTemp;
-					sStaticCount += sEntry.getValue().getAbsolute();
-					
-					//This increment is needed, because the maximum of the for-loop is the sum of the sizes 
-					//of both distributions and here we iterate both distributions.
-					k++;
+						bCount = sCount;
+					}else if(bTemp == sTemp){
+						bEntry = bDistr.lowerEntry(buyerPrice);
+						if(bEntry == null)
+							throw new NoIntersectionException();
+						buyerPrice = bEntry.getKey();
+						bCount += bTemp;
+						bStaticCount += bEntry.getValue().getAbsolute();
+						
+						sEntry = sDistr.higherEntry(sellerPrice);
+						if(sEntry == null)
+							throw new NoIntersectionException();
+						sellerPrice = sEntry.getKey();
+						sCount += sTemp;
+						sStaticCount += sEntry.getValue().getAbsolute();
+						
+						//This increment is needed, because the maximum of the for-loop is the sum of the sizes 
+						//of both distributions and here we iterate both distributions.
+						k++;
+					}
 				}
 			}
- 		}
-				
+		} catch (NoIntersectionException e1) {
+			e1.printStackTrace();
+			error = "save.noIntersection";
+		}
+		// ######################################### Intersection-check END ############################################		
 		
 		
 		if(error == "")	{
@@ -389,7 +401,6 @@ public class PrepareController extends AbstractServerController {
 				ra.addFlashAttribute("configSavePath", path);
 				
 			}
-				
 			return "redirect:/save";
 			
 		}	else	{

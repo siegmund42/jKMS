@@ -16,8 +16,8 @@ public class ExceptionController {
 		e.printStackTrace();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("standardException");
-		mav.addObject("error", LogicHelper.getLocalizedMessage("error.load.error"));
-		mav.addObject("message", LogicHelper.getLocalizedMessage("error.load.message"));
+		mav.addObject("error", LogicHelper.getLocalizedMessage("error.state.error"));
+		mav.addObject("message", LogicHelper.getLocalizedMessage("error.state.message"));
 		return mav;
 	}
 	
