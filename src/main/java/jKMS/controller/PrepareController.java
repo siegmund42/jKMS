@@ -37,6 +37,10 @@ public class PrepareController extends AbstractServerController {
 	
 	/**
 	 *  Get Requests to first Site of Preparation - Metadata-Input
+	 *  
+	 *  @param model Model of Springs MVC
+	 *  @return view name to be handled by Spring
+	 *  @throws InvalidStateChangeException thrown by invalid change of State
 	 */
 	@RequestMapping(value = "/prepare1", method = RequestMethod.GET)
 	public String prepare1(Model model) throws InvalidStateChangeException	{
@@ -57,6 +61,9 @@ public class PrepareController extends AbstractServerController {
 	
 	/**
 	 *  Handling of Metadata - POST Requests on first Site of Preparation
+	 *  
+	 *  @param model Model of Springs MVC
+	 *  @return view name to be handled by Spring
 	 */
 	@RequestMapping(value = "/prepare1", method = RequestMethod.POST)
 	public String processPrepare1(Model model, RedirectAttributes ra,
@@ -150,7 +157,7 @@ public class PrepareController extends AbstractServerController {
 	}
 	
 	/**
-	 *  POST Request on Distribution-Site -> Loading values from File, Display them by redirecting to "prepare2"
+	 *  POST Request on Distribution-Site -&gt; Loading values from File, Display them by redirecting to "prepare2"
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
 	public String loadConfig(Model model, RedirectAttributes ra,

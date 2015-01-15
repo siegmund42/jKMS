@@ -51,13 +51,6 @@ public class Application extends WebMvcConfigurerAdapter {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			
-//			System.out.println("     ██╗██╗  ██╗███╗   ███╗███████╗");
-//			System.out.println("     ██║██║ ██╔╝████╗ ████║██╔════╝");
-//			System.out.println("     ██║█████╔╝ ██╔████╔██║███████╗");
-//			System.out.println("██   ██║██╔═██╗ ██║╚██╔╝██║╚════██║");
-//			System.out.println("╚█████╔╝██║  ██╗██║ ╚═╝ ██║███████║");
-//			System.out.println(" ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝");
 
 			System.out.println();
 			System.out.println("     _  ___  ____   ____    ____   ______   ");
