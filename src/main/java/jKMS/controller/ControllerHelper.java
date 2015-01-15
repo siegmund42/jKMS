@@ -29,11 +29,19 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Some static help functions
@@ -42,13 +50,15 @@ import javax.servlet.ServletRequest;
  */
 public class ControllerHelper extends AbstractController {
 	
+	private static ReloadableResourceBundleMessageSource messageSource;
 	private static Map<String, String> folders = new HashMap<>();
 	
-	public static void init() throws CreateFolderFailedException	{
+	public static void init(ReloadableResourceBundleMessageSource ms) throws CreateFolderFailedException	{
 		folders.put("config", "config");
 		folders.put("export", "data");
 		folders.put("settings", "settings");
 		checkFolders();
+		messageSource = ms;
 	}
 	
 	/**
@@ -362,6 +372,25 @@ public class ControllerHelper extends AbstractController {
 		Date dNow = new Date( );
 	    SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd_HHmmss");
 	    return ft.format(dNow);
+	}
+	
+	/**
+	 * @return 	Map<String, String> where keys are the locales [de, en, ...]
+	 * 			and values the written name of the locale in its own language
+	 * 			Note that .properties files must define a currentLocale=__ for that.
+	 */
+	public static Map<String, String> getLanguages()	{
+		
+		HashMap<String, String> languages = new HashMap<>();
+	    
+	    for (Locale locale : Locale.getAvailableLocales()) {
+	        String msg = messageSource.getMessage("currentLanguage", null, locale);  
+	        if (locale.getDisplayLanguage(locale).equals(msg) && !languages.containsKey(locale.getLanguage())){  
+	        	languages.put(locale.getLanguage(), locale.getDisplayLanguage(locale));
+	        }  
+	    }
+		
+		return languages;
 	}
 	
 	/**

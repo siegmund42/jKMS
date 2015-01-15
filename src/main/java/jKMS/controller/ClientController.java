@@ -33,6 +33,7 @@ public class ClientController extends AbstractController {
 		model.addAttribute("firstID", kms.getConfiguration().getFirstID());
 		model.addAttribute("numberOfPlayers", kms.getConfiguration().getPlayerCount());
 		model.addAttribute("lastID", kms.getLastId());
+		model.addAttribute("languages", ControllerHelper.getLanguages());
 		return "contract";
 	}
 	

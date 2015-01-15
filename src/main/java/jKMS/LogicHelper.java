@@ -2,6 +2,8 @@ package jKMS;
 
 //import java.io.IOException;
 //import java.util.Locale;
+import jKMS.exceptionHelper.CreateFolderFailedException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -11,9 +13,19 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.stereotype.Controller;
 
 public class LogicHelper {// have static function to help implementation logic
+
+	private static ReloadableResourceBundleMessageSource messageSource;
+	
+	public static void init(ReloadableResourceBundleMessageSource ms)	{
+		messageSource = ms;
+	}
 	
 	public static int PackageToInt(char pack){ // package to int A = 0  Z = 25 
 		 int iPack;
@@ -76,33 +88,36 @@ public class LogicHelper {// have static function to help implementation logic
 		}
     
 	/**
-	 * Gets the message from the messages_XX.properties to the key.
+	 * Gets the message from the .properties to the key using Spring methods.
+	 * If Spring is not set up properly yet -> messageSource = null [would be set by init()] fallback to old function
 	 * 
-	 * @param key the key from the messages_XX.properties file
-	 * @return 	localized message if a .properties file is existing for the actual locale, 
-	 * 			if not trying Locale.english
+	 * @param key the key from the .properties file
+	 * @return 	localized message if a .properties file is existing for the actual locale
 	 */
     public static String getLocalizedMessage(String key)	{
-
-    	try	{
-    		// get the right .properties File depending on current language [may throw MissingResourceException]
-    		ResourceBundle messages = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
-    		// get the String from the .properties [may throw MissingResourceException]
-    		String message = messages.getString(key);
-        	return message;
-    	}	catch(MissingResourceException e)	{
-    		try {
-				// get the right .properties File depending on current language [may throw MissingResourceException]
-				ResourceBundle messages = ResourceBundle.getBundle("messages", Locale.ENGLISH);
-				// get the String from the .properties [may throw MissingResourceException]
-				String message = messages.getString(key);
-				return message;
-			} catch (MissingResourceException e1) {
-	    		// Resource/String not found
-	    		return "Language resource not found.";
-			}
+    	if(messageSource != null)
+    		return messageSource.getMessage(key, new Object[]{}, LocaleContextHolder.getLocale());
+    	else	{
+        	try	{
+        		// get the right .properties File depending on current language [may throw MissingResourceException]
+        		ResourceBundle messages = ResourceBundle.getBundle("lang/messages", LocaleContextHolder.getLocale());
+        		// get the String from the .properties [may throw MissingResourceException]
+        		String message = messages.getString(key);
+            	return message;
+        	}	catch(MissingResourceException e)	{
+        		try {
+    				// get the right .properties File depending on current language [may throw MissingResourceException]
+    				ResourceBundle messages = ResourceBundle.getBundle("messages", Locale.ENGLISH);
+    				// get the String from the .properties [may throw MissingResourceException]
+    				String message = messages.getString(key);
+    				return message;
+    			} catch (MissingResourceException e1) {
+    	    		// Resource/String not found
+    	    		return "Language resource not found.";
+    			}
+        	}
+    		
     	}
-    	
     }
     
     /**

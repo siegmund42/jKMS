@@ -25,11 +25,8 @@
  			<li>
  				<a href="#" th:text="#{settings.language}"></a>
  				<ul>
- 					<li>
- 						<a href="settings.html?lang=de" th:text="#{settings.german}"></a>
- 					</li>
- 					<li>
- 						<a href="settings.html?lang=en" th:text="#{settings.english}"></a>
+ 					<li th:each="lang : ${languages}" >
+ 						<a th:href="'index.html?lang=' + ${lang.key}" th:text="${lang.value}"></a>
  					</li>
  				</ul>
  			</li>
@@ -43,8 +40,7 @@
         <div class="successDiv" th:if="${success}" th:text="#{settings.success}">
         </div>
 	 	<h2 th:text="#{settings.language}"></h2>
-	 	<a href="settings.html?lang=de" th:text="#{settings.german}"></a>
-	 	<a href="settings.html?lang=en" th:text="#{settings.english}"></a>
+	 	<a th:each="lang : ${languages}" th:href="'index.html?lang=' + ${lang.key}" th:text="${lang.value}"></a>
 	 	<br /><br />
 	 	<h2 th:text="#{settings.users}"></h2>
 	 	<form method="POST" th:action="'settings.html'" id="userForm" name="userForm" onsubmit="return validateForm(this.id);">

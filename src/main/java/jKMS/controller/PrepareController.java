@@ -188,7 +188,8 @@ public class PrepareController extends AbstractServerController {
 		String path = ControllerHelper.getFolderPath("config");
 
 		// Add path to model
-		model.addAttribute("configSavePath", path);
+		if(!model.containsAttribute("configSavePath"))
+			model.addAttribute("configSavePath", path);
 		return "save";
 	}
 	

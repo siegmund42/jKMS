@@ -48,7 +48,6 @@ public class Application extends WebMvcConfigurerAdapter {
 	
 			try {
 				Desktop.getDesktop().browse(index);
-				gui.setReady();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -65,7 +64,7 @@ public class Application extends WebMvcConfigurerAdapter {
 			System.out.println();
 			System.out.println("Pit Market 2.0 by Quiryn, freeDom, jUSTUS, yangxinyu and siegmund42.");
 			System.out.println();
-			System.out.println();
+
 		}
 		else {
 			LogicHelper.print("Port 8080 is already in use!", 2);
@@ -80,12 +79,6 @@ public class Application extends WebMvcConfigurerAdapter {
         slr.setDefaultLocale(Locale.GERMAN);
         return slr;
     }
-    
-//    @Bean
-//    public LocaleResolver localeResolver() {
-//       AcceptHeaderLocaleResolver slr = new AcceptHeaderLocaleResolver();
-//       return slr;
-//    }
  
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {

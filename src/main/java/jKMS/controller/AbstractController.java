@@ -4,6 +4,7 @@ import jKMS.Kartoffelmarktspiel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 
 /*
@@ -15,5 +16,7 @@ public abstract class AbstractController {
 
 	@Autowired
 	protected Kartoffelmarktspiel kms;
+	@Autowired
+	protected ReloadableResourceBundleMessageSource messageSource;
 
 }

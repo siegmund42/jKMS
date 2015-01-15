@@ -39,6 +39,7 @@ public class ServerController extends AbstractServerController	{
 		
 		if(lang != null) Application.gui.changeLanguage();
 		ControllerHelper.checkFolders();
+		model.addAttribute("languages", ControllerHelper.getLanguages());
 		return "index";
 	}
 	
@@ -51,6 +52,7 @@ public class ServerController extends AbstractServerController	{
 		if(lang != null) Application.gui.changeLanguage();
 		
 		model.addAttribute("users", ControllerHelper.getUsers());
+		model.addAttribute("languages", ControllerHelper.getLanguages());
 		return "settings";
 	}
 	
