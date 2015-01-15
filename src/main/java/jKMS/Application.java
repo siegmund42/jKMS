@@ -74,18 +74,18 @@ public class Application extends WebMvcConfigurerAdapter {
 		
 	}
 	
-//    @Bean
-//    public LocaleResolver localeResolver() {
-//        SessionLocaleResolver slr = new SessionLocaleResolver();
-//        slr.setDefaultLocale(Locale.ENGLISH);
-//        return slr;
-//    }
-    
     @Bean
     public LocaleResolver localeResolver() {
-       AcceptHeaderLocaleResolver slr = new AcceptHeaderLocaleResolver();
-       return slr;
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.GERMAN);
+        return slr;
     }
+    
+//    @Bean
+//    public LocaleResolver localeResolver() {
+//       AcceptHeaderLocaleResolver slr = new AcceptHeaderLocaleResolver();
+//       return slr;
+//    }
  
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
