@@ -43,8 +43,9 @@ public class Csv {
 	private String playingtime;
 	private String starttime;
 	private String endtime;
+	private String headline;
 	
-	public void generateCSV(CSVWriter writer, Set<Card> cards,Set<Contract> contracts){
+	public void generateCSV(CSVWriter writer, Set<Card> cards,Set<Contract> contracts,Date begin,Date end){
 		
 		Set<Card> playedCards = new LinkedHashSet<Card>();
 		List<String[]> data = new ArrayList<String[]>();
@@ -60,7 +61,8 @@ public class Csv {
 		char    packs = ' ';
 		String station = "";
 		Date time = new Date();
-		SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss.SSS");
+		SimpleDateFormat play = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat beginEnd =new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
 		Integer cid = 0;
 		Integer cvalue = 0;
 		char cpack = ' ';
@@ -88,16 +90,22 @@ public class Csv {
 		this.buyerCard = LogicHelper.getLocalizedMessage("CSV.buyerCard");
 		this.cardpack = LogicHelper.getLocalizedMessage("CSV.unplayedCardPackage");
 		this.playingtime = LogicHelper.getLocalizedMessage("CSV.playingtime");
-		this.starttime = LogicHelper.getLocalizedMessage("CSV.startime");
+		this.starttime = LogicHelper.getLocalizedMessage("CSV.starttime");
 		this.endtime = LogicHelper.getLocalizedMessage("CSV.endtime");
+		this.headline = LogicHelper.getLocalizedMessage("CSV.headline");
 		
 		
 	
 		
 		//Create table for Contracts
-		data.add(new String[] {this.playingtime});//Leerzeile 
-		data.add(new String[] {this.starttime});//TODO
-		data.add(new String[] {this.endtime});//TODO
+		data.add(new String[] {this.headline});
+		data.add(new String[] {});//Leerzeile 
+		data.add(new String[] {this.starttime,this.endtime,this.playingtime});
+		//calculate playingtime
+		time.setHours(end.getHours()-begin.getHours());
+		time.setMinutes(end.getMinutes()-begin.getMinutes());
+		time.setSeconds(end.getSeconds()-begin.getSeconds());
+		data.add(new String[] { beginEnd.format(begin),beginEnd.format(end),play.format(time)});
 		
 		data.add(new String[] {});//Leerzeile 
 		data.add(new String[] {this.contracts});
@@ -123,7 +131,7 @@ public class Csv {
 		
 			
 			// add to CSV
-			data.add(new String[] {idb.toString(),bvalue.toString(),String.valueOf(packb),ids.toString(),svalue.toString(),String.valueOf(packs),price.toString(),ft.format(time),station});
+			data.add(new String[] {idb.toString(),bvalue.toString(),String.valueOf(packb),ids.toString(),svalue.toString(),String.valueOf(packs),price.toString(),play.format(time),station});
 			
 			//add to playedbuyer and playedseller to get unplayed player later
 			playedCards.add(iter.getBuyer());
