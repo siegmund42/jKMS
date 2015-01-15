@@ -97,7 +97,6 @@ public class FileDownloadController extends AbstractServerController {
      * @param image
      * @throws IllegalStateException
      * @throws NoIntersectionException
-     * @throws IOException
      */
     @RequestMapping(value = "/pdfExport",
     				method = RequestMethod.POST)

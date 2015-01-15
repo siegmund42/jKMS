@@ -273,7 +273,7 @@ public class ControllerHelper extends AbstractController {
 	 * Creates folders from folders Map if they aren't existing.
 	 * @return true  if all folders exist/where created 
 	 * 		   false if something went wrong
-	 * @throws CreateFolderFailedException
+	 * @throws CreateFolderFailedException thrown when the folder could not be created (e.g. no write-rights)
 	 */
 	public static boolean createFolders() throws CreateFolderFailedException	{
 
@@ -302,7 +302,7 @@ public class ControllerHelper extends AbstractController {
 	 * Checks and, if not yet existing, creates the folder structure
 	 * @return 	true if everything created/here now
 	 * 			false if not
-	 * @throws	CreateFolderFailedException
+	 * @throws	CreateFolderFailedException thrown when the folder could not be created (e.g. no write-rights)
 	 */
 	public static boolean checkFolders() throws CreateFolderFailedException	{
 		
@@ -334,8 +334,8 @@ public class ControllerHelper extends AbstractController {
 	
 	/**
 	 * Gets all the users written in settings file.
-	 * @return users from settings file in a Set<String>
-	 * @throws IOException
+	 * @return users from settings file in a Set&lt;String&gt;
+	 * @throws IOException thrown if file does not exist
 	 */
 	public static Set<String> getUsers() throws IOException	{
 		// Path to password-config-file
