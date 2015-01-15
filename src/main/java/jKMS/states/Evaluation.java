@@ -230,7 +230,7 @@ public class Evaluation extends State{
 	public void generateCSV(CSVWriter writer){
 		Csv csv = new Csv();
 		
-		csv.generateCSV(writer, kms.getCards(), kms.getContracts());
+		csv.generateCSV(writer, kms.getCards(), kms.getContracts(), kms.getBegin(),kms.getEnd());
 		
 	}
 	

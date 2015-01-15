@@ -40,6 +40,11 @@ public class Pdf {
 	private String from;
 	private String to;
 	
+	/**
+	 *Defines Fonts
+	 * 
+	 * 		
+	 */		
 	public Pdf(){// to catch crashes
 		FontFactory.defaultEmbedding = true;
 		FontFactory.register("fonts/LiberationSans-Bold.ttf", "my_font_Bold");
@@ -53,6 +58,15 @@ public class Pdf {
 		this.value = "Default";
 		this.id = "Default";
 	}
+	
+	/**
+	 *generate the sellercard PDF with all sellercards in their packages
+	 * 
+	 * @param  need some configuration data like cards, assistantcount first ID 
+	 * @param  cardsbuyer document for export
+	 * @return 	nothing
+	 * 		
+	 */	
 
 	public void createPdfCardsSeller(Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
@@ -179,6 +193,15 @@ public class Pdf {
         } 
   
     }
+	
+	/**
+	 *generate the sellerbuyer PDF with all buyercards  in their packages
+	 * 
+	 * @param  need some configuration data like cards, assistantcount first ID 
+	 * @param  cardsbuyer document for export
+	 * @return 	nothing
+	 * 		
+	 */	
     
 	public void createPdfCardsBuyer(Document cardsBuyer,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
@@ -349,7 +372,13 @@ public class Pdf {
         	
     	return content;
     }
-   
+	/**
+	 *generate the titlepage for seller or buyer pdf it contains a table with the packageinformation
+	 * 
+	 * @param  if isbuyer then it generate the buyer titlepage, need some configuration data like cards, assistantcount first ID 
+	 * @return 	a paragraph (itext) with the titlepage
+	 * 		
+	 */	
     private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
     	byte isbuyer = 0;
     	
@@ -506,6 +535,16 @@ public class Pdf {
     	return titlep;
     }
     
+	/**
+	 *generate the export pdf with the statistics and the chart as image
+	 * 
+	 * @param doc 	document for export
+	 * @param Image  image of the chart
+	 * @param stats  Map of the statistics 
+	 * @return 	the document (pdf export)
+	 * 		
+	 */	
+    
     public Document createExportPdf(Document doc, Image pdfImage, Map<String, Float> stats) throws DocumentException{
     	//get language
 		//Properties property;
@@ -524,6 +563,7 @@ public class Pdf {
     	//insert stats
 		Paragraph head = new Paragraph(headline, titleFont);
 		this.valueFont.setSize(16);
+		//9GAG rocks!!!
     	head.setAlignment(Element.ALIGN_CENTER);
     	head.setSpacingAfter(20);
     	
