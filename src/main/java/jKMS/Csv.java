@@ -5,6 +5,7 @@ import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -39,6 +40,9 @@ public class Csv {
 	private String cardval;
 	private String buyerCard;
 	private String sellerCard;
+	private String playingtime;
+	private String starttime;
+	private String endtime;
 	
 	public void generateCSV(CSVWriter writer, Set<Card> cards,Set<Contract> contracts){
 		
@@ -56,10 +60,13 @@ public class Csv {
 		char    packs = ' ';
 		String station = "";
 		Date time = new Date();
+		SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss.SSS");
 		Integer cid = 0;
 		Integer cvalue = 0;
 		char cpack = ' ';
 		String ctyp = "";
+		
+		
 		
 		// get Überschriften
 		
@@ -80,11 +87,19 @@ public class Csv {
 		this.sellerCard =LogicHelper.getLocalizedMessage("CSV.sellerCard");
 		this.buyerCard = LogicHelper.getLocalizedMessage("CSV.buyerCard");
 		this.cardpack = LogicHelper.getLocalizedMessage("CSV.unplayedCardPackage");
+		this.playingtime = LogicHelper.getLocalizedMessage("CSV.playingtime");
+		this.starttime = LogicHelper.getLocalizedMessage("CSV.startime");
+		this.endtime = LogicHelper.getLocalizedMessage("CSV.endtime");
+		
 		
 	
 		
 		//Create table for Contracts
+		data.add(new String[] {this.playingtime});//Leerzeile 
+		data.add(new String[] {this.starttime});//TODO
+		data.add(new String[] {this.endtime});//TODO
 		
+		data.add(new String[] {});//Leerzeile 
 		data.add(new String[] {this.contracts});
 		
 		data.add(new String[] {});//Leerzeile 
@@ -108,7 +123,7 @@ public class Csv {
 		
 			
 			// add to CSV
-			data.add(new String[] {idb.toString(),bvalue.toString(),String.valueOf(packb),ids.toString(),svalue.toString(),String.valueOf(packs),price.toString(),time.toString(),station});
+			data.add(new String[] {idb.toString(),bvalue.toString(),String.valueOf(packb),ids.toString(),svalue.toString(),String.valueOf(packs),price.toString(),ft.format(time),station});
 			
 			//add to playedbuyer and playedseller to get unplayed player later
 			playedCards.add(iter.getBuyer());
