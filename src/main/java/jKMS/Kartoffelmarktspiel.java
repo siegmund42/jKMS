@@ -8,6 +8,8 @@ import jKMS.states.Play;
 import jKMS.states.Preparation;
 import jKMS.states.State;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +26,8 @@ public class Kartoffelmarktspiel {
 	private Configuration configuration;
 	private Set<Card> cards;
 	private Kartoffelmarktspiel instance;
+	private Date begin;
+	private Date end;
     
 	// DEFAULT CONSTRUCTOR
 	private Kartoffelmarktspiel() {
@@ -50,12 +54,19 @@ public class Kartoffelmarktspiel {
 	}
 	
 	public void play() {
+		// Start game
+		begin = new Date();
 		state = new Play(instance);
-		LogicHelper.print("Playing..");
+		SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss");
+		LogicHelper.print("Playing since: " + ft.format(begin));
 	}
 
 	public void evaluate() {
+		// Stop game
+		end = new Date();
 		state = new Evaluation(instance);
+		SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss");
+		LogicHelper.print("Game stopped at: " + ft.format(end));
 		LogicHelper.print("Evaluating..");
 	}
 
@@ -111,5 +122,14 @@ public class Kartoffelmarktspiel {
 	public Map<Integer, Amount> getsDistribution() {
 		return configuration.getsDistribution();
 	}
+	
+	public Date getBegin() {
+		return begin;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
 	
 }
