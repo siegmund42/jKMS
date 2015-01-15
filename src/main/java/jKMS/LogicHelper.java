@@ -15,6 +15,13 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 public class LogicHelper {// have static function to help implementation logic
 	
+	/**
+	 *get an Char into int depending on the package it represent
+	 * 
+	 * @param the package
+	 * @return 	0 for "A",1 for "B" ....
+	 * 		
+	 */	
 	public static int PackageToInt(char pack){ // package to int A = 0  Z = 25 
 		 int iPack;
 		 iPack = (int)pack-65;
@@ -32,6 +39,14 @@ public class LogicHelper {// have static function to help implementation logic
 		 else return '#';
 	}
 	
+	/**
+	 *calculate field with all Packages and there sizes index 0 is for the first package...
+	 * 
+	 * @param  assistantcount for number of package = fieldsize 
+	 * playercount to distribute the players over the packages
+	 * @return 	a field with all Packages and there sizes
+	 * 		
+	 */	
 	public static int[] getPackageDistribution(int playerCount,int assistantCount){ //from 0 to assitentCount-1
 		int[] packd = new int[assistantCount];
 		int rest,normalSize;
@@ -54,8 +69,13 @@ public class LogicHelper {// have static function to help implementation logic
 		
 		return packd;
 	}
-	
-	//sum up all absolute players in one distribution
+	/**
+	 *sum up all absolute players in one distribution
+	 * 
+	 * @param  need a distribution to count
+	 * @return 	sum of all  absolute players
+	 * 		
+	 */
 	public static int getAbsoluteSum(Map<Integer, Amount> distribution){
 		int sum=0;
 			Set<Integer> d = distribution.keySet();
@@ -64,8 +84,13 @@ public class LogicHelper {// have static function to help implementation logic
 				}
 		return sum;
 		}
-	
-	//sum up all relative players in one distribution
+	/**
+	 *sum up all relative players in one distribution
+	 * 
+	 * @param  need a distribution to count
+	 * @return 	sum of all relative players
+	 * 		
+	 */
 	public static int getRelativeSum(Map<Integer, Amount> distribution){
 		int sum=0;
 			Set<Integer> d = distribution.keySet();

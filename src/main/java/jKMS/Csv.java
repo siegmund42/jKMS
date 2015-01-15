@@ -45,6 +45,14 @@ public class Csv {
 	private String endtime;
 	private String headline;
 	
+	/**
+	 *generate the CSV with the game summary. For that it uses opencsv
+	 * 
+	 * @param  writer this is the CSVWriter for the export
+	 * @param  some important playing data from kms like cards, contracts start and end time
+	 * @return 	nothing
+	 * 		
+	 */		
 	public void generateCSV(CSVWriter writer, Set<Card> cards,Set<Contract> contracts,Date begin,Date end){
 		
 		Set<Card> playedCards = new LinkedHashSet<Card>();
