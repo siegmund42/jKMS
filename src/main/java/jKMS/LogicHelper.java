@@ -40,7 +40,13 @@ public class LogicHelper {// have static function to help implementation logic
 		 if(iPack >= 0 && iPack <= 25) return iPack;
 		 else return 42;
 	}
-	
+	/**
+	 *get an int into char depending on the package it represent
+	 * 
+	 * @param pack 	the package you want to chance
+	 * @return 	"A" for 0,"B" for 0 ....
+	 * 		
+	 */	
 	public static char IntToPackage(int pack){ // package to int A = 0  Z = 25 
 		 char iPack;
 		 pack = pack +65;
@@ -81,13 +87,14 @@ public class LogicHelper {// have static function to help implementation logic
 		return packd;
 	}
 	
+
 	/**
-	  *sum up all absolute players in one distribution
-	  *
-	  * @param need a distribution to count
-	  * @return sum of all absolute players
-	  *
-	*/
+	 *sum up all absolute players in one distribution
+	 * 
+	 * @param distribution	 need a distribution to count
+	 * @return 	sum of all  absolute players
+	 */
+
 	public static int getAbsoluteSum(Map<Integer, Amount> distribution){
 		int sum=0;
 			Set<Integer> d = distribution.keySet();
@@ -97,13 +104,15 @@ public class LogicHelper {// have static function to help implementation logic
 		return sum;
 		}
 	
+
 	/**
-	  *sum up all relative players in one distribution
-	  *
-	  * @param need a distribution to count
-	  * @return sum of all relative players
-	  *
-	*/
+	 *sum up all relative players in one distribution
+	 * 
+
+	 * @param distribution need a distribution to count
+	 * @return sum of all relative players
+	 */
+
 	public static int getRelativeSum(Map<Integer, Amount> distribution){
 		int sum=0;
 			Set<Integer> d = distribution.keySet();
