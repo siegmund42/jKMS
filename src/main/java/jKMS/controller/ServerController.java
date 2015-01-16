@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 /**
  * 
  * Class for non categorizable server side requests
+ * @author freeDom
  * @author siegmund42
  *
  */
@@ -39,7 +40,6 @@ public class ServerController extends AbstractServerController	{
 	 * @param	lang	language param if set
 	 * @return	Name of template
 	 * @throws	CreateFolderFailedException
-	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Model model,
@@ -57,7 +57,6 @@ public class ServerController extends AbstractServerController	{
 	 * @param	lang	language param if set
 	 * @return	Name of template
 	 * @throws	IOException
-	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String settigs(Model model, @RequestParam(value = "lang", required = false) final String lang) throws IOException	{
@@ -75,7 +74,6 @@ public class ServerController extends AbstractServerController	{
 	 * @param	ra		RedirectAttributes injection for redirecting if error
 	 * @return	Name of template
 	 * @throws	IOException
-	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public String processSettings(Model model, RedirectAttributes ra, 
@@ -151,7 +149,6 @@ public class ServerController extends AbstractServerController	{
 	/**
 	 * Display a reset page [e.g. State change Evaluate -> Prepare]
 	 * @return	Name of template
-	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.GET)
 	public String reset()	{
@@ -161,7 +158,6 @@ public class ServerController extends AbstractServerController	{
 	/**
 	 * Do the reset
 	 * @return	Name of template
-	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
 	public String processReset()	{
@@ -177,7 +173,6 @@ public class ServerController extends AbstractServerController	{
 	/**
 	 * Auto redirect method when coming from GUI by pressing opne browser button
 	 * @return	the correct template redirect
-	 * @author	freeDom
 	 */
 	@RequestMapping("/autoRedirect")
 	public String autoRedirect(){

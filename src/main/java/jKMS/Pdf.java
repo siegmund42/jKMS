@@ -24,7 +24,11 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
-
+/**
+ * 
+ * Class for pdf functions
+ *
+ */
 public class Pdf {
 	/**
 	 * A class for handling the PDF-Export
@@ -68,7 +72,7 @@ public class Pdf {
 	 * @param  cards			Set of cards filled in generateCards() (preparetion)
 	 * @param  assistancount	assistantcount number of assistants saved in jkms.configuration
 	 * @param  firstID			firstID default 1001 possible to chance with jkms.configuration.setFirstID 
-	 * @param  cardSeller 	document for export	
+	 * @param  cardsSeller 	document for export	
 	*/
 
 	public void createPdfCardsSeller(Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
@@ -203,7 +207,7 @@ public class Pdf {
 	 * @param  cards			Set of cards filled in generateCards() (preparetion)
 	 * @param  assistancount	assistantcount number of assistants saved in jkms.configuration
 	 * @param  firstID			firstID default 1001 possible to chance with jkms.configuration.setFirstID 
-	 * @param  cardBuyer	 	document for export
+	 * @param  cardsBuyer	 	document for export
 	 */
 
 
@@ -345,7 +349,6 @@ public class Pdf {
 	/**
 	 *generate right card: seller,buyer,package
 	 * 
-	 * @param  cards	Set of cards filled in generateCards() (preparetion)
 	 * @param  card		card to generate
 	 * @param  istop    different formations of top an bottomcards	
 	 * @return paragraph with the generated cards	
@@ -555,9 +558,9 @@ public class Pdf {
 	/**
 	 *generate the export pdf with the statistics and the chart as image
 	 * 
-	 * @param doc 	document for export
-	 * @param Image  image of the chart
-	 * @param stats  Map of the statistics 
+	 * @param doc 		document for export
+	 * @param pdfImage 	image of the chart
+	 * @param stats  	Map of the statistics 
 	 * @return 	the document (pdf export)
 	 * 		
 	 */	

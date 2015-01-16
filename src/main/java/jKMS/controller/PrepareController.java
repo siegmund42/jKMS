@@ -29,6 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Class for all preparing game functions
+ * @author siegmund42
+ *
+ */
 @Controller
 public class PrepareController extends AbstractServerController {
 	
@@ -68,7 +73,6 @@ public class PrepareController extends AbstractServerController {
 	 *  @param	numberOfAssistants
 	 *  @param	configuration	determines if user wanted to use standardconfig/create empty only redirect
 	 *  @return 		view name to be handled by Spring
-	 *  @author siegmund42
 	 */
 	@RequestMapping(value = "/prepare1", method = RequestMethod.POST)
 	public String processPrepare1(Model model, RedirectAttributes ra,
@@ -112,7 +116,6 @@ public class PrepareController extends AbstractServerController {
 	 *  				Values: load, standard, own
 	 *  @throws			IllegalStateException
 	 *  @throws			InvalidStateChangeException
-	 *  @author siegmund42
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
 	public String prepare2(Model model,
@@ -174,7 +177,6 @@ public class PrepareController extends AbstractServerController {
 	 *  @param	file	config file to load in preparation
 	 *  @throws			IllegalStateException
 	 *  @throws			InvalidStateChangeException
-	 *  @author siegmund42
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
 	public String loadConfig(RedirectAttributes ra,
@@ -201,7 +203,6 @@ public class PrepareController extends AbstractServerController {
 	 * Get Requests on save site
 	 *  @param	model	Model injection
 	 *  @return	Template name
-	 *  @author siegmund42
 	 * 
 	 */
 	@RequestMapping(value = "save", method = RequestMethod.GET)
@@ -224,8 +225,7 @@ public class PrepareController extends AbstractServerController {
 	 *  @param	sRelativeQuantity	Array for all relative Quantities of Salesman
 	 *  @param	sPrice				Array for all relative Quantities of Salesman
 	 *  @param	sAbsoluteQuantity	Array for all relative Quantities of Salesman
-	 *  @throws			CreateFolderFailedException
-	 *  @author siegmund42
+	 *  @throws	CreateFolderFailedException
 	*/
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public String save(	Model model, RedirectAttributes ra,

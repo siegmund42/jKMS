@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,7 +36,8 @@ import com.itextpdf.text.pdf.PdfWriter;
  
 /**
  * Controller for downloading any files.
- * @author Quiryn, siegmund42
+ * @author Quiryn
+ * @author siegmund42
  *
  */
 @Controller
@@ -46,10 +46,8 @@ public class FileDownloadController extends AbstractServerController {
 	
 	/**
 	 *  Downloading Seller-/BuyerCardsPDF
-	 *  @param	model	Model injection for displaying page
 	 *  @param	type	determines the type of pdf ["customer"/"salesman"]
 	 *  @return ResponseEntity directly serves the file for download for the browser
-	 *  @author	siegmund42
 	 */
     @RequestMapping(value = "/pdf/cards/{type}")
     public ResponseEntity<byte[]> downloadPDF(@PathVariable String type) throws Exception	{
@@ -174,7 +172,6 @@ public class FileDownloadController extends AbstractServerController {
 	/**
 	 *  Downloading Exported PDF
 	 *  @return ResponseEntity directly serves the file for download for the browser
-	 *  @author	siegmund42
 	 */
     @RequestMapping(value = "/pdfDownload")
     public ResponseEntity<byte[]> downloadPdf(){
@@ -204,7 +201,6 @@ public class FileDownloadController extends AbstractServerController {
      *  deletion of the file between saving and loading.
 	 *  @return ResponseEntity directly serves the file for download for the browser
 	 *  @throws Exception of type
-	 *  @author	siegmund42
 	 */
     @RequestMapping(value = "/config", method = RequestMethod.GET)
     public ResponseEntity<byte[]> downloadConfig()	{ 
@@ -233,6 +229,11 @@ public class FileDownloadController extends AbstractServerController {
 	    return new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
     }
     
+    /**
+     * Downloads the export csv file
+     * @return ResponseEntity
+     * @throws Exception
+     */
     @RequestMapping(value = "/csv")
     public ResponseEntity<byte[]> downloadCsv() throws Exception{ 
     	

@@ -1,6 +1,5 @@
 package jKMS.controller;
 
-import jKMS.AppGui;
 import jKMS.Application;
 import jKMS.LogicHelper;
 import jKMS.exceptionHelper.CreateFolderFailedException;
@@ -8,6 +7,11 @@ import jKMS.exceptionHelper.CreateFolderFailedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Only one page to handle...
+ * @author siegmund42
+ *
+ */
 @Controller
 public class LoginController extends AbstractController	{
 

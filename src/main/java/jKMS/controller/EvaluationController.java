@@ -22,6 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
+/**
+ * Everything round about Evaluation
+ * @author Quiryn
+ * @author siegmund42
+ */
 @Controller
 public class EvaluationController extends AbstractServerController {
 	
@@ -58,7 +63,6 @@ public class EvaluationController extends AbstractServerController {
 	 * @param 	repeat 	define if the lottery should be repeated
 	 * @param 	model	Model injection for building the page
 	 * @return			Template name
-	 * @author 	Quiryn
 	 */
 	@RequestMapping(value = "/lottery")
 	public String lottery(@RequestParam(value="repeat", defaultValue = "false") boolean repeat,
@@ -89,7 +93,6 @@ public class EvaluationController extends AbstractServerController {
 	 * Evaluation Site - also stores the .csv automatically
 	 * @param 	model	Model injection for building the page
 	 * @return			Template name
-	 * @author 	Quiryn, siegmund42
 	 */
 	@RequestMapping(value = "/evaluate")
 	public String evaluate(Model model) throws InvalidStateChangeException, IllegalStateException, NoIntersectionException, CreateFolderFailedException	{

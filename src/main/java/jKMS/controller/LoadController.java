@@ -22,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+/**
+ * Class for game load/exclude/start
+ * @author siegmund42
+ *
+ */
 @Controller
 public class LoadController extends AbstractServerController {
 	
@@ -31,7 +35,6 @@ public class LoadController extends AbstractServerController {
 	 * @param	model	Model injection for displaying page
 	 * @param	request	Request for determining Client's IP(s)
 	 * @throws	InvalidStateChangeException
-	 * @author	siemgund42
 	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.GET)
 	public String load1(Model model, ServletRequest request) throws InvalidStateChangeException	{
@@ -77,7 +80,6 @@ public class LoadController extends AbstractServerController {
 	 * @param	file	config file to load
 	 * @throws	IllegalStateException
 	 * @throws	InvalidStateChangeException
-	 * @author	siemgund42
 	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.POST)
 	public String processIndex(Model model, RedirectAttributes ra, 
@@ -114,7 +116,6 @@ public class LoadController extends AbstractServerController {
 	 * Page for excluding Cards
 	 * @param	model	Model injection for displaying page
 	 * @throws	InvalidStateChangeException
-	 * @author	siemgund42
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.GET)
 	public String load(Model model) throws InvalidStateChangeException	{
@@ -143,7 +144,6 @@ public class LoadController extends AbstractServerController {
 	 * @param	ra		RedirectAttributes injection for redirecting page
 	 * @param	exclude	Array of all IDs to exclude
 	 * @param	check	List of all checkboxes
-	 * @author	siemgund42
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.POST)
 	public String start(Model model, RedirectAttributes ra, 
