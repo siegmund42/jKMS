@@ -8,9 +8,20 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Controller for handling uncaught Exceptions
+ * @author siegmund42
+ *
+ */
 @ControllerAdvice
 public class ExceptionController {
 	
+	/**
+	 * Catch Excpetions that are thrown from the Logic functions 
+	 * if the user is not in the right state
+	 * @param 	e	InvalidStateChangeException
+	 * @return		ModelAndView with standardException Template
+	 */
 	@ExceptionHandler
 	public ModelAndView handleIllegalStateException(IllegalStateException e) {
 		e.printStackTrace();
@@ -23,6 +34,8 @@ public class ExceptionController {
 	
 	/**
 	 * If user jumped through sites not by clicking our links
+	 * @param 	e	InvalidStateChangeException
+	 * @return		ModelAndView with standardException Template
 	 */
 	@ExceptionHandler
 	public ModelAndView handleInavlidStateChangeException(InvalidStateChangeException e) {
@@ -36,6 +49,8 @@ public class ExceptionController {
 	
 	/**
 	 * Handles error when creating folders
+	 * @param 	e	CreateFolderFailedException
+	 * @return		ModelAndView with standardException Template
 	 */
 	@ExceptionHandler
 	public ModelAndView handleCreateFolderFailedException(CreateFolderFailedException e) {

@@ -36,17 +36,12 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Some static help functions
- * @author siegmund
  * @author Quiryn
+ * @author siegmund42
  */
 public class ControllerHelper extends AbstractController {
 	
@@ -64,8 +59,9 @@ public class ControllerHelper extends AbstractController {
 	/**
 	 * gets the name of the Folder folder.
 	 * 
-	 * @param folder internally handled names
-	 * @return name of the actual folder
+	 * @param 	folder internally handled names
+	 * @return 	name of the actual folder
+	 * @author 	siegmund42
 	 */
 	public static String getFolderName(String folder)	{
 		return folders.get(folder);
@@ -75,6 +71,7 @@ public class ControllerHelper extends AbstractController {
 	 * Gets the absolute Path of the Folder Folder folder.
 	 * @param  folder a string contained in the folders Map
 	 * @return an absolute path to the folder, e.g: /media/user/42/KMS/settings/
+	 * @author siegmund42
 	 */
 	public static String getFolderPath(String folder)	{
 		String appFolder = getApplicationFolder();
@@ -87,6 +84,7 @@ public class ControllerHelper extends AbstractController {
 	 * by concatenating the localized message to a formatted timestamp.
 	 * @param  message message key out of .properties file for i18n
 	 * @return localized @param message + well formatted timestamp 
+	 * @author siegmund42
 	 */
 	public static String getFilename(String message)	{
 		return LogicHelper.getLocalizedMessage(message) + "_" + getNiceDate();
@@ -101,6 +99,7 @@ public class ControllerHelper extends AbstractController {
 	 * @return false			if requested changing of state requires deletion of data, 
 	 * 							note that this would be a valid state change though
 	 * @throws InvalidStateChangeException if State-changing is invalid or State is undefined
+	 * @author siegmund42
 	 */
 	public static boolean stateHelper(Kartoffelmarktspiel kms, String requestedState) throws InvalidStateChangeException	{
 		// We are actual in Preparation
@@ -198,6 +197,7 @@ public class ControllerHelper extends AbstractController {
 	/**
 	 * Gets the IPs of the users active network adapters
 	 * @return IPs of the User in a List of Strings.
+	 * @author siegmund42
 	 */
 	public static List<String> getIP()	{
 		
@@ -238,6 +238,7 @@ public class ControllerHelper extends AbstractController {
 	 * Gets the port of the given @param request
 	 * @param 	request	the request through the port
 	 * @return 			Port of the given request
+	 * @author 	siegmund42
 	 */
 	public static int getPort(ServletRequest request)	{
 		return request.getServerPort();
@@ -245,7 +246,8 @@ public class ControllerHelper extends AbstractController {
 	
 	/**
 	 * Returns the path to the Application Folder, which holds the jar
-	 * @return 		the path to Application folder, e.g. /media/user/jKMS/
+	 * @return 	the path to Application folder, e.g. /media/user/jKMS/
+	 * @author 	siegmund42
 	 */
 	public static String getApplicationFolder()	{
 		
@@ -284,6 +286,7 @@ public class ControllerHelper extends AbstractController {
 	 * @return true  if all folders exist/where created 
 	 * 		   false if something went wrong
 	 * @throws CreateFolderFailedException thrown when the folder could not be created (e.g. no write-rights)
+	 * @author siegmund42
 	 */
 	public static boolean createFolders() throws CreateFolderFailedException	{
 
@@ -313,6 +316,7 @@ public class ControllerHelper extends AbstractController {
 	 * @return 	true if everything created/here now
 	 * 			false if not
 	 * @throws	CreateFolderFailedException thrown when the folder could not be created (e.g. no write-rights)
+	 * @author 	siegmund42
 	 */
 	public static boolean checkFolders() throws CreateFolderFailedException	{
 		
@@ -346,6 +350,7 @@ public class ControllerHelper extends AbstractController {
 	 * Gets all the users written in settings file.
 	 * @return users from settings file in a Set&lt;String&gt;
 	 * @throws IOException thrown if file does not exist
+	 * @author siegmund42
 	 */
 	public static Set<String> getUsers() throws IOException	{
 		// Path to password-config-file
@@ -367,6 +372,7 @@ public class ControllerHelper extends AbstractController {
 	/**
 	 * Get a well formatted timestamp for adding it to auto saved files
 	 * @return well formatted timestamp as String
+	 * @author siegmund42
 	 */
 	public static String getNiceDate()	{
 		Date dNow = new Date( );
@@ -375,9 +381,13 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * @return 	Map<String, String> where keys are the locales [de, en, ...]
-	 * 			and values the written name of the locale in its own language
+	 * Gets all available .properties Files,
+	 * each of them must define a currentLanguage property,
+	 * which must be equal to the output of the Locale.getDisplayLanguage() method.
+	 * @return 	Map&lt;String, String&gt; where keys are the locales [de, en, ...]<br>
+	 * 			and values the written name of the locale in its own language<br>
 	 * 			Note that .properties files must define a currentLocale=__ for that.
+	 * @author 	siegmund42
 	 */
 	public static Map<String, String> getLanguages()	{
 		
@@ -396,8 +406,9 @@ public class ControllerHelper extends AbstractController {
 	/**
 	 * Gets the set of contracts and converts it to a string for the javascript flot library
 	 * 
-	 * @param contracts Set of contracts as part of the Kartoffelmarktspiel class
-	 * @return string holding the contract information
+	 * @param 	contracts Set of contracts as part of the Kartoffelmarktspiel class
+	 * @return 	string holding the contract information
+	 * @author 	Quiryn
 	 */
 	public static String setToString(Set<Contract> contracts){
 		if(contracts.isEmpty()) return "[]";
@@ -422,8 +433,9 @@ public class ControllerHelper extends AbstractController {
 	/**
 	 * Gets a map of distribution and converts it to a string for the javascript flot library
 	 * 
-	 * @param distribution one of the distribution Map as part of the Configuration class
-	 * @return string holding the distribution information
+	 * @param 	distribution one of the distribution Map as part of the Configuration class
+	 * @return 	string holding the distribution information
+	 * @author 	Quiryn
 	 */
 	public static String mapToString(Map<Integer,Amount>  distribution){
 		String str = "[";
@@ -447,10 +459,11 @@ public class ControllerHelper extends AbstractController {
 	 * gets the minimum and maximum values of the distributions and compares it to the min and max of the contracts set. 
 	 * With these values we can limit the chart on 20% difference to the highest and lowest possible value, if a contract price is much to high or much to low .
 	 * 
-	 * @param contracts Set of contracts as part of the Kartoffelmarktspiel class
-	 * @param sDistribution sDistribution Map as part of the Configuration class
-	 * @param bDistribution bDistribution Map as part of the Configuration class
-	 * @return Array holding the min [0] and max [1] price
+	 * @param 	contracts Set of contracts as part of the Kartoffelmarktspiel class
+	 * @param 	sDistribution sDistribution Map as part of the Configuration class
+	 * @param 	bDistribution bDistribution Map as part of the Configuration class
+	 * @return 	Array holding the min [0] and max [1] price
+	 * @author 	Quiryn
 	 */
 	public static int[] getMinMax(Set<Contract> contracts, TreeMap<Integer,Amount> sDistribution, TreeMap<Integer,Amount> bDistribution) {
 		int smin = sDistribution.firstKey();

@@ -55,6 +55,10 @@ public class EvaluationController extends AbstractServerController {
 	
 	/**
 	 * gets all attributes of "winner contract" and adds them to the model
+	 * @param 	repeat 	define if the lottery should be repeated
+	 * @param 	model	Model injection for building the page
+	 * @return			Template name
+	 * @author 	Quiryn
 	 */
 	@RequestMapping(value = "/lottery")
 	public String lottery(@RequestParam(value="repeat", defaultValue = "false") boolean repeat,
@@ -82,7 +86,10 @@ public class EvaluationController extends AbstractServerController {
 	}
 	
 	/**
-	 * Evaluation Site
+	 * Evaluation Site - also stores the .csv automatically
+	 * @param 	model	Model injection for building the page
+	 * @return			Template name
+	 * @author 	Quiryn, siegmund42
 	 */
 	@RequestMapping(value = "/evaluate")
 	public String evaluate(Model model) throws InvalidStateChangeException, IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
