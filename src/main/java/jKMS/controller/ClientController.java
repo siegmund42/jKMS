@@ -11,16 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/**
- * Client Controller for all pages on the client side [contract].
+/*
+ * Client Controller for all pages of the client side [contract].
  */
 @Controller
 public class ClientController extends AbstractController {
 	
 	/**
 	 * Redirect to /contract Site
-	 * @return Template name
-	 * @author siegmund42
 	 */
 	@RequestMapping("/")
 	public String redirect() {
@@ -29,9 +27,6 @@ public class ClientController extends AbstractController {
 	
 	/**
 	 * Display the contract Form
-	 * @param	model 	The given Model
-	 * @return 			Template name
-	 * @author siegmund42
 	 */
 	@RequestMapping(value = "/contract", method = RequestMethod.GET)
 	public String contract(Model model)	{
@@ -44,24 +39,12 @@ public class ClientController extends AbstractController {
 	
 	/**
 	 * Process the contract Request
-	 * @param	model 	The given Model
-	 * @param	ra		RedirectAttributes injection for next page
-	 * @param	id1		ID of first trade partner
-	 * @param	id2		ID of second trade partner
-	 * @param	price	of the contract
-	 * @param	c		indicates if we want to correct a contract
-	 * @param	a		[correct candidate] ID of first trade partner
-	 * @param	b		[correct candidate] ID of second trade partner
-	 * @param	p		[correct candidate] of the contract
-	 * @param	request	Request object for setting IP address
-	 * @return 			Template name
-	 * @author siegmund42
 	 */
 	@RequestMapping(value = "/contract", method = RequestMethod.POST)
 	public String contract(Model model, RedirectAttributes ra,
-		 	@RequestParam(value = "id1", required = true) String id1, 
-	        @RequestParam(value = "id2", required = true) String id2,
-	        @RequestParam(value = "price", required = true) String price,
+		 	@RequestParam(value = "id1", required = false) String id1, 
+	        @RequestParam(value = "id2", required = false) String id2,
+	        @RequestParam(value = "price", required = false) String price,
 		 	@RequestParam(value = "c", required = false) String c, 
 		 	@RequestParam(value = "a", required = false) String a, 
 	        @RequestParam(value = "b", required = false) String b,
@@ -98,6 +81,7 @@ public class ClientController extends AbstractController {
 			    	ra.addFlashAttribute("b", idTwo);
 			    	ra.addFlashAttribute("p", cost);
 			    	return "redirect:/contract.html";
+			    	//return "redirect:/contract.html?success&a=" + idOne + "&b=" + idTwo + "&p=" + cost;
 			    }	else	{
 			    	// Failed - add Attributes to model
 			    	ra.addFlashAttribute("id1", id1);

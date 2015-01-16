@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 
-/**
+/*
  * Abstract for all controllers so that they all get a kms attribute.
  */
 @Controller
