@@ -36,12 +36,7 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Some static help functions
@@ -375,8 +370,8 @@ public class ControllerHelper extends AbstractController {
 	}
 	
 	/**
-	 * @return 	Map<String, String> where keys are the locales [de, en, ...]
-	 * 			and values the written name of the locale in its own language
+	 * @return 	Map&lt;String, String&gt; where keys are the locales [de, en, ...]<br>
+	 * 			and values the written name of the locale in its own language<br>
 	 * 			Note that .properties files must define a currentLocale=__ for that.
 	 */
 	public static Map<String, String> getLanguages()	{

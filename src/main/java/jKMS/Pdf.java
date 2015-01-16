@@ -24,7 +24,9 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
-
+/**
+ * A class for handling the PDF-Export
+ */
 public class Pdf {
 	
 	 //define Fonts
@@ -62,12 +64,12 @@ public class Pdf {
 	/**
 	 *generate the sellercard PDF with all sellercards in their packages
 	 * 
-	 * @param  need some configuration data like cards, assistantcount first ID 
-	 * @param  cardsbuyer document for export
-	 * @return 	nothing
+	 * @param cardsSeller document for export
+	 * @param cards playing cards from KartoffelMarktSpiel
+	 * @param assistancount number of assistants from Configuration
+	 * @param firstID ID number of the first card from Configuration
 	 * 		
 	 */	
-
 	public void createPdfCardsSeller(Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
@@ -195,14 +197,14 @@ public class Pdf {
     }
 	
 	/**
-	 *generate the sellerbuyer PDF with all buyercards  in their packages
+	 *generate the buyercard PDF with all buyercards in their packages
 	 * 
-	 * @param  need some configuration data like cards, assistantcount first ID 
-	 * @param  cardsbuyer document for export
-	 * @return 	nothing
+	 * @param cardsBuyer document for export
+	 * @param cards playing cards from KartoffelMarktSpiel
+	 * @param assistancount number of assistants from Configuration
+	 * @param firstID ID number of the first card from Configuration
 	 * 		
 	 */	
-    
 	public void createPdfCardsBuyer(Document cardsBuyer,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
@@ -372,11 +374,16 @@ public class Pdf {
         	
     	return content;
     }
-	/**
+	
+    /**
 	 *generate the titlepage for seller or buyer pdf it contains a table with the packageinformation
+	 *if isbuyer then it generate the buyer titlepage, need some configuration data like cards, assistantcount first ID 
 	 * 
-	 * @param  if isbuyer then it generate the buyer titlepage, need some configuration data like cards, assistantcount first ID 
-	 * @return 	a paragraph (itext) with the titlepage
+	 * @param packdis packagedistribution containing sizes of the different packages
+	 * @param firstID ID number of the first card from Configuration
+	 * @param isBuyer boolean value - true if the card is a buyer, false if the card is a seller
+	 * @param cards playing cards from KartoffelMarktSpiel
+	 * @return a paragraph (itext) with the titlepage
 	 * 		
 	 */	
     private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
@@ -538,13 +545,12 @@ public class Pdf {
 	/**
 	 *generate the export pdf with the statistics and the chart as image
 	 * 
-	 * @param doc 	document for export
-	 * @param Image  image of the chart
-	 * @param stats  Map of the statistics 
-	 * @return 	the document (pdf export)
+	 * @param doc document for export
+	 * @param pdfImage image of the chart
+	 * @param stats Map of the statistics 
+	 * @return the document (pdf export)
 	 * 		
 	 */	
-    
     public Document createExportPdf(Document doc, Image pdfImage, Map<String, Float> stats) throws DocumentException{
     	//get language
 		//Properties property;

@@ -1,25 +1,21 @@
 package jKMS;
 
-//import java.io.IOException;
-//import java.util.Locale;
-import jKMS.exceptionHelper.CreateFolderFailedException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
-//import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.stereotype.Controller;
 
-public class LogicHelper {// have static function to help implementation logic
+/**
+ * has static functions to help implementing the logic
+ *
+ */
+public class LogicHelper {
 
 	private static ReloadableResourceBundleMessageSource messageSource;
 	
@@ -30,7 +26,7 @@ public class LogicHelper {// have static function to help implementation logic
 	/**
 	 *get an Char into int depending on the package it represent
 	 * 
-	 * @param the package
+	 * @param pack the package to be converted
 	 * @return 	0 for "A",1 for "B" ....
 	 * 		
 	 */	
@@ -52,11 +48,11 @@ public class LogicHelper {// have static function to help implementation logic
 	}
 	
 	/**
-	 *calculate field with all Packages and there sizes index 0 is for the first package...
+	 *calculate field with all Packages and their sizes index 0 is for the first package...
 	 * 
-	 * @param  assistantcount for number of package = fieldsize 
-	 * playercount to distribute the players over the packages
-	 * @return 	a field with all Packages and there sizes
+	 * @param assistantCount for number of package = fieldsize 
+	 * @param playerCount to distribute the players over the packages
+	 * @return a field with all Packages and their sizes
 	 * 		
 	 */	
 	public static int[] getPackageDistribution(int playerCount,int assistantCount){ //from 0 to assitentCount-1
@@ -81,11 +77,12 @@ public class LogicHelper {// have static function to help implementation logic
 		
 		return packd;
 	}
+	
 	/**
 	 *sum up all absolute players in one distribution
 	 * 
-	 * @param  need a distribution to count
-	 * @return 	sum of all  absolute players
+	 * @param distribution need a distribution to count
+	 * @return sum of all absolute players
 	 * 		
 	 */
 	public static int getAbsoluteSum(Map<Integer, Amount> distribution){
@@ -96,11 +93,12 @@ public class LogicHelper {// have static function to help implementation logic
 				}
 		return sum;
 		}
+	
 	/**
 	 *sum up all relative players in one distribution
 	 * 
-	 * @param  need a distribution to count
-	 * @return 	sum of all relative players
+	 * @param distribution need a distribution to count
+	 * @return sum of all relative players
 	 * 		
 	 */
 	public static int getRelativeSum(Map<Integer, Amount> distribution){
@@ -114,10 +112,10 @@ public class LogicHelper {// have static function to help implementation logic
     
 	/**
 	 * Gets the message from the .properties to the key using Spring methods.
-	 * If Spring is not set up properly yet -> messageSource = null [would be set by init()] fallback to old function
+	 * If Spring is not set up properly yet -&gt; messageSource = null [would be set by init()] fallback to old function
 	 * 
 	 * @param key the key from the .properties file
-	 * @return 	localized message if a .properties file is existing for the actual locale
+	 * @return localized message if a .properties file is existing for the actual locale
 	 */
     public static String getLocalizedMessage(String key)	{
     	if(messageSource != null)

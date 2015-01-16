@@ -25,9 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.text.BadLocationException;
 
 public class AppGui extends JFrame{
 	static final long serialVersionUID = 1337;
@@ -155,24 +152,9 @@ public class AppGui extends JFrame{
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
-		//textArea.setLineWrap(true);
-		//textArea.setWrapStyleWord(true);
-		
-		//Prevent horizontal autoscroll
-		/*textArea.addCaretListener(new CaretListener() {
-			@Override
-			public void caretUpdate(CaretEvent e) {
-				try {
-					textArea.setCaretPosition(textArea.getLineStartOffset(textArea.getLineCount() - 1));
-				} catch (BadLocationException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});*/
 		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);
-		
 		console.redirectErr();
 		console.redirectOut();
 		
