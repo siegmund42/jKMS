@@ -134,7 +134,7 @@ public class Evaluation extends State{
 					return result;
 				}
 			}
-			/**
+			/*
 			 * For that case we have to keep on searching
 			 * We search the next point, where one of the functions does the next "step".
 			 * We move both counters to that point(quantity) and repeat the loop.
@@ -189,6 +189,8 @@ public class Evaluation extends State{
 	
 	/**
 	 * Chooses a random winner-contract
+	 * 
+	 * @return 	object of contract
 	 */
 	@Override
 	public Contract pickWinner(boolean repeat) throws NoContractsException{ 

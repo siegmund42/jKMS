@@ -33,7 +33,9 @@ public class EvaluationController extends AbstractServerController {
 	@RequestMapping("/getEvaluation")
 	@ResponseBody
 	/**
-	 * catches AjaxRequest, concatenates data list with standardDistribution
+	 * catches AjaxRequest, concatenates data of contracts, data of supply and demand function and min/max values for y-axis
+	 * 
+	 * @return		string in json-like format, this string is needed for flot-library to plot the chart
 	 */
 	public String evaluationChart(){
 		//String of current play data

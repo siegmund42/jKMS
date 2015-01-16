@@ -43,6 +43,7 @@ public class PlayController extends AbstractServerController {
 	
 	/**
 	 * Just displaying chart -> Everything javascript (;
+	 * @param 	s	 if game is stopped this parameter is 'stop', else false
 	 */
 	@RequestMapping(value = "/play")
 	public String play(Model model, @RequestParam(value= "s", required = false) String s) throws InvalidStateChangeException	{
