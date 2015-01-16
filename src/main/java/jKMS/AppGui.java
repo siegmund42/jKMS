@@ -41,6 +41,9 @@ public class AppGui extends JFrame{
 	private JTextArea textArea;
 	private MessageConsole console;
 	
+	private String exitMsg;
+	private String exitMsgTitle;
+	
 	/**
 	 * Create the application.
 	 */
@@ -186,9 +189,12 @@ public class AppGui extends JFrame{
 
 	private void confirmExit() {
 		// CONFIRM AND EXIT
+		LogicHelper.print(LogicHelper.getLocalizedMessage("GUI.exitMsg"));
+		LogicHelper.print(LogicHelper.getLocalizedMessage("GUI.exitMsgTitle"));
+		LogicHelper.print(LogicHelper.getLocalizedMessage("GUI.showLog"));
 		if (JOptionPane.showConfirmDialog(null,
-				LogicHelper.getLocalizedMessage("GUI.exitMsg"),
-				LogicHelper.getLocalizedMessage("GUI.exitMsgTitle"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){
+				exitMsg,
+				exitMsgTitle, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){
 			System.exit(0);
 		}
 	}
@@ -239,5 +245,7 @@ public class AppGui extends JFrame{
 		btnClose.setText(LogicHelper.getLocalizedMessage("GUI.btnClose"));
 		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
 		chckbxShowLog.setText(LogicHelper.getLocalizedMessage("GUI.showLog"));
+		exitMsg = LogicHelper.getLocalizedMessage("GUI.exitMsg");
+		exitMsgTitle = LogicHelper.getLocalizedMessage("GUI.exitMsgTitle");
 	}
 }

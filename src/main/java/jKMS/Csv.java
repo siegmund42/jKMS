@@ -116,7 +116,7 @@ public class Csv {
 		time.set(Calendar.HOUR_OF_DAY, end.get(Calendar.HOUR_OF_DAY)-begin.get(Calendar.HOUR_OF_DAY));
 		time.set(Calendar.MINUTE, end.get(Calendar.MINUTE)-begin.get(Calendar.MINUTE));
 		time.set(Calendar.SECOND, end.get(Calendar.SECOND)-begin.get(Calendar.SECOND));
-		data.add(new String[] { beginEnd.format(begin),beginEnd.format(end),play.format(time)});
+		data.add(new String[] { beginEnd.format(begin.getTime()), beginEnd.format(end.getTime()), play.format(time.getTime())});
 		
 		data.add(new String[] {});//Leerzeile 
 		data.add(new String[] {this.contracts});
@@ -142,7 +142,7 @@ public class Csv {
 		
 			
 			// add to CSV
-			data.add(new String[] {idb.toString(),bvalue.toString(),String.valueOf(packb),ids.toString(),svalue.toString(),String.valueOf(packs),price.toString(),play.format(time),station});
+			data.add(new String[] {idb.toString(),bvalue.toString(),String.valueOf(packb),ids.toString(),svalue.toString(),String.valueOf(packs),price.toString(),play.format(time.getTime()),station});
 			
 			//add to playedbuyer and playedseller to get unplayed player later
 			playedCards.add(iter.getBuyer());

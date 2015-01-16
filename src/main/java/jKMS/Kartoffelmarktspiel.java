@@ -58,16 +58,12 @@ public class Kartoffelmarktspiel {
 		// Start game
 		begin = Calendar.getInstance();
 		state = new Play(instance);
-		SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss");
-		LogicHelper.print("Playing since: " + ft.format(begin));
 	}
 
 	public void evaluate() {
 		// Stop game
 		end = Calendar.getInstance();
 		state = new Evaluation(instance);
-		SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss");
-		LogicHelper.print("Game stopped at: " + ft.format(end));
 		LogicHelper.print("Evaluating..");
 	}
 

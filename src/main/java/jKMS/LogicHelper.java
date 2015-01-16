@@ -125,9 +125,9 @@ public class LogicHelper {// have static function to help implementation logic
 	 * @return 	localized message if a .properties file is existing for the actual locale
 	 */
     public static String getLocalizedMessage(String key)	{
-    	if(messageSource != null)
+    	if(messageSource != null)	{
     		return messageSource.getMessage(key, new Object[]{}, LocaleContextHolder.getLocale());
-    	else	{
+    	}	else	{
     		key = "begin." + key;
         	try	{
         		// get the right .properties File depending on current language [may throw MissingResourceException]
