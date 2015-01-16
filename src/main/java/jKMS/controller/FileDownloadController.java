@@ -46,9 +46,13 @@ public class FileDownloadController extends AbstractServerController {
 	
 	/**
 	 *  Downloading Seller-/BuyerCardsPDF
+	 *  @param	model	Model injection for displaying page
+	 *  @param	type	determines the type of pdf ["customer"/"salesman"]
+	 *  @return ResponseEntity directly serves the file for download for the browser
+	 *  @author	siegmund42
 	 */
     @RequestMapping(value = "/pdf/cards/{type}")
-    public ResponseEntity<byte[]> downloadPDF(Model model, @PathVariable String type) throws Exception	{
+    public ResponseEntity<byte[]> downloadPDF(@PathVariable String type) throws Exception	{
 		
     	// Create new Document
 		Document document = new Document();
@@ -80,14 +84,18 @@ public class FileDownloadController extends AbstractServerController {
 	    headers.setContentType(MediaType.parseMediaType("application/pdf"));
 	    
 	    // Set the download-Filename
-	    String filename;
+	    String filename = null;
 	    switch(type)	{
 	    case("customer"):
 	    	filename = ControllerHelper.getFilename("filename.PDF.buyer") + ".pdf";
 	    	break;
-	    default:
+	    case("salesman"):
 	    	filename = ControllerHelper.getFilename("filename.PDF.seller") + ".pdf";
+	    	break;
 	    }
+	    
+	    if(filename == null)
+	    	throw new RuntimeException("False path parameter!");
 	    
 	    headers.setContentDispositionFormData(filename, filename);
 	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");

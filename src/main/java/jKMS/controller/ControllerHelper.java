@@ -36,6 +36,7 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletRequest;
 
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 /**
@@ -393,12 +394,24 @@ public class ControllerHelper extends AbstractController {
 		
 		HashMap<String, String> languages = new HashMap<>();
 	    
-	    for (Locale locale : Locale.getAvailableLocales()) {
-	        String msg = messageSource.getMessage("currentLanguage", null, locale);  
-	        if (locale.getDisplayLanguage(locale).equals(msg) && !languages.containsKey(locale.getLanguage())){  
-	        	languages.put(locale.getLanguage(), locale.getDisplayLanguage(locale));
-	        }  
-	    }
+
+		String msg = messageSource.getMessage("currentLanguage", null, Locale.ENGLISH);
+		
+		System.out.println(msg);
+		
+//	    for (Locale locale : Locale.getAvailableLocales()) {
+//	    	if(locale.equals(Locale.GERMAN))
+//	    		System.out.println();
+//	    	String msg = null;
+//	    	try	{
+//	    		msg = messageSource.getMessage("currentLanguage", null, locale);
+//	    	}	catch(NoSuchMessageException e){
+//	    		System.out.println();
+//	    	}
+//	        if (msg != null && locale.getDisplayLanguage(locale).equals(msg) && !languages.containsKey(locale.getLanguage())){  
+//	        	languages.put(locale.getLanguage(), locale.getDisplayLanguage(locale));
+//	        }  
+//	    }
 		
 		return languages;
 	}
