@@ -35,6 +35,11 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
  
+/**
+ * Controller for downloading any files.
+ * @author Quiryn, siegmund42
+ *
+ */
 @Controller
 public class FileDownloadController extends AbstractServerController {
 	byte[] pdfBytes = null;
