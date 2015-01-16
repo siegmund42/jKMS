@@ -108,6 +108,10 @@ public class PrepareController extends AbstractServerController {
 	/**
 	 *  GET Requests on Site for Distribution
 	 *  @param	model	Model injection
+	 *  @param	c		determines if user wanted to use standardconfig/create empty
+	 *  				Values: load, standard, own
+	 *  @throws			IllegalStateException
+	 *  @throws			InvalidStateChangeException
 	 *  @author siegmund42
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
@@ -164,10 +168,16 @@ public class PrepareController extends AbstractServerController {
 	}
 	
 	/**
-	 *  POST Request on Distribution-Site -&gt; Loading values from File, Display them by redirecting to "prepare2"
+	 *  POST Request on Distribution-Site -&gt; Loading values from File, 
+	 *  display them by redirecting to "prepare2"
+	 *  @param	ra		RedirectAttributes injection for redirecting
+	 *  @param	file	config file to load in preparation
+	 *  @throws			IllegalStateException
+	 *  @throws			InvalidStateChangeException
+	 *  @author siegmund42
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.POST)
-	public String loadConfig(Model model, RedirectAttributes ra,
+	public String loadConfig(RedirectAttributes ra,
 			@RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
 		if(ControllerHelper.stateHelper(kms, "prepare"))	{
 			if(file.getContentType().equals("text/plain"))	{
@@ -189,6 +199,10 @@ public class PrepareController extends AbstractServerController {
 
 	/**
 	 * Get Requests on save site
+	 *  @param	model	Model injection
+	 *  @return	Template name
+	 *  @author siegmund42
+	 * 
 	 */
 	@RequestMapping(value = "save", method = RequestMethod.GET)
 	public String getSave(Model model)	{
@@ -200,7 +214,19 @@ public class PrepareController extends AbstractServerController {
 		return "save";
 	}
 	
-	// Processes Posted Values from Distribution-Site
+	/**
+	 *  Processes Posted Values from Distribution-Site
+	 *  @param	model	Model injection
+	 *  @param	ra		RedirectAttributes injection for redirecting
+	 *  @param	cRelativeQuantity	Array for all relative Quantities of Customers
+	 *  @param	cPrice				Array for all relative Quantities of Customers
+	 *  @param	cAbsoluteQuantity	Array for all relative Quantities of Customers
+	 *  @param	sRelativeQuantity	Array for all relative Quantities of Salesman
+	 *  @param	sPrice				Array for all relative Quantities of Salesman
+	 *  @param	sAbsoluteQuantity	Array for all relative Quantities of Salesman
+	 *  @throws			CreateFolderFailedException
+	 *  @author siegmund42
+	*/
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public String save(	Model model, RedirectAttributes ra,
 							@RequestParam(value = "cRelativeQuantity[]") String[] cRelativeQuantity,
@@ -441,7 +467,11 @@ public class PrepareController extends AbstractServerController {
 		}
 	}
 	
-	// Processes Posted Values from Distribution-Site
+	/**
+	 * Processes Posted Values from Distribution-Site
+	 * @return	Name of template
+	 * @throws	InvalidStateChangeException
+	 */
 	@RequestMapping(value = "generate", method = RequestMethod.GET)
 	public String generate() throws InvalidStateChangeException	{
 		// STATE-CHANGE

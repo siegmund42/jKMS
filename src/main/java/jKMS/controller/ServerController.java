@@ -16,8 +16,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.TreeMap;
 
-import javax.servlet.ServletRequest;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,15 +24,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+/**
+ * 
+ * Class for non categorizable server side requests
+ * @author siegmund42
+ *
+ */
 @Controller
 public class ServerController extends AbstractServerController	{
 	
-	/*
+	/**
 	 * Display main menu
+	 * @param	model	Model injection
+	 * @param	lang	language param if set
+	 * @return	Name of template
+	 * @throws	CreateFolderFailedException
+	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(Model model, ServletRequest request, 
+	public String index(Model model,
 			@RequestParam(value = "lang", required = false) final String lang) throws CreateFolderFailedException	{
 		
 		if(lang != null) Application.gui.changeLanguage();
@@ -43,8 +51,13 @@ public class ServerController extends AbstractServerController	{
 		return "index";
 	}
 	
-	/*
+	/**
 	 * Display options page
+	 * @param	model	Model injection
+	 * @param	lang	language param if set
+	 * @return	Name of template
+	 * @throws	IOException
+	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String settigs(Model model, @RequestParam(value = "lang", required = false) final String lang) throws IOException	{
@@ -56,8 +69,13 @@ public class ServerController extends AbstractServerController	{
 		return "settings";
 	}
 	
-	/*
+	/**
 	 * Process values from options page
+	 * @param	model	Model injection
+	 * @param	ra		RedirectAttributes injection for redirecting if error
+	 * @return	Name of template
+	 * @throws	IOException
+	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public String processSettings(Model model, RedirectAttributes ra, 
@@ -130,16 +148,20 @@ public class ServerController extends AbstractServerController	{
 		return "redirect:/settings";
 	}
 	
-	/*
+	/**
 	 * Display a reset page [e.g. State change Evaluate -> Prepare]
+	 * @return	Name of template
+	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.GET)
 	public String reset()	{
 		return "reset";
 	}
 	
-	/*
+	/**
 	 * Do the reset
+	 * @return	Name of template
+	 * @author	siegmund42
 	 */
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
 	public String processReset()	{
@@ -152,8 +174,10 @@ public class ServerController extends AbstractServerController	{
 		return "redirect:/prepare1";
 	}
 	
-	/*
+	/**
 	 * Auto redirect method when coming from GUI by pressing opne browser button
+	 * @return	the correct template redirect
+	 * @author	freeDom
 	 */
 	@RequestMapping("/autoRedirect")
 	public String autoRedirect(){
