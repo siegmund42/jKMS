@@ -171,7 +171,11 @@ public class FileDownloadController extends AbstractServerController {
 
     }
     
-    //download export-pdf 
+	/**
+	 *  Downloading Exported PDF
+	 *  @return ResponseEntity directly serves the file for download for the browser
+	 *  @author	siegmund42
+	 */
     @RequestMapping(value = "/pdfDownload")
     public ResponseEntity<byte[]> downloadPdf(){
 
@@ -195,18 +199,21 @@ public class FileDownloadController extends AbstractServerController {
     }
 
     /**
-     * Serve the config.txt for download. 
-     * Note that it is processed again [save(bos)] to avoid deletion of the file between saving and loading.
-     */
+     *  Serve the config.txt for download. 
+     *  Note that it is processed again [save(bos)] to avoid 
+     *  deletion of the file between saving and loading.
+	 *  @return ResponseEntity directly serves the file for download for the browser
+	 *  @throws Exception of type
+	 *  @author	siegmund42
+	 */
     @RequestMapping(value = "/config", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> downloadConfig() throws Exception{ 
+    public ResponseEntity<byte[]> downloadConfig()	{ 
     	
     	ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	
 		try {
 			// Create CSV
 			kms.getState().save(bos);
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 			// Throw new Exception because were not able to return an Error page at this moment

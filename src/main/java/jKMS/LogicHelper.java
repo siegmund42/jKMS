@@ -124,6 +124,7 @@ public class LogicHelper {// have static function to help implementation logic
     	if(messageSource != null)
     		return messageSource.getMessage(key, new Object[]{}, LocaleContextHolder.getLocale());
     	else	{
+    		key = "begin." + key;
         	try	{
         		// get the right .properties File depending on current language [may throw MissingResourceException]
         		ResourceBundle messages = ResourceBundle.getBundle("lang/messages", LocaleContextHolder.getLocale());

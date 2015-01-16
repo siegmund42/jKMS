@@ -38,7 +38,7 @@ public class PrepareController extends AbstractServerController {
 	/**
 	 *  Get Requests to first Site of Preparation - Metadata-Input
 	 *  
-	 *  @param model Model of Springs MVC
+	 *  @param 	model Model of Springs MVC
 	 *  @return view name to be handled by Spring
 	 *  @throws InvalidStateChangeException thrown by invalid change of State
 	 */
@@ -62,8 +62,13 @@ public class PrepareController extends AbstractServerController {
 	/**
 	 *  Handling of Metadata - POST Requests on first Site of Preparation
 	 *  
-	 *  @param model Model of Springs MVC
-	 *  @return view name to be handled by Spring
+	 *  @param 	model 	Model of Springs MVC
+	 *  @param 	ra		RedirectAttributes injection for redirecting after errors
+	 *  @param	numberOfPlayers
+	 *  @param	numberOfAssistants
+	 *  @param	configuration	determines if user wanted to use standardconfig/create empty only redirect
+	 *  @return 		view name to be handled by Spring
+	 *  @author siegmund42
 	 */
 	@RequestMapping(value = "/prepare1", method = RequestMethod.POST)
 	public String processPrepare1(Model model, RedirectAttributes ra,
@@ -102,6 +107,8 @@ public class PrepareController extends AbstractServerController {
 
 	/**
 	 *  GET Requests on Site for Distribution
+	 *  @param	model	Model injection
+	 *  @author siegmund42
 	 */
 	@RequestMapping(value = "/prepare2", method = RequestMethod.GET)
 	public String prepare2(Model model,
