@@ -3,21 +3,21 @@ package jKMS;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.SellerCard;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class Contract {
 	private BuyerCard buyer;
 	private SellerCard seller;
 
 	private int price;
-	private Date time;
+	private Calendar time;
 	private String uri;
 
 	public Contract(BuyerCard buyer, SellerCard seller, int price, String uri) {
 		this.buyer = buyer;
 		this.seller = seller;
 		this.price = price;
-		time = new Date();
+		time = Calendar.getInstance();
 		this.uri = uri;
 	}
 
@@ -33,7 +33,7 @@ public class Contract {
 		return price;
 	}
 
-	public Date getTime() {
+	public Calendar getTime() {
 		return time;
 	}
 	

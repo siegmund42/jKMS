@@ -7,6 +7,7 @@ import jKMS.cards.SellerCard;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -55,7 +56,7 @@ public class Csv {
 	 * @param end 			Time when the game end saved in kms.configuration
 	 * 
 	 */	
-	public void generateCSV(CSVWriter writer, Set<Card> cards,Set<Contract> contracts,Date begin,Date end){
+	public void generateCSV(CSVWriter writer, Set<Card> cards,Set<Contract> contracts,Calendar begin,Calendar end){
 		
 		Set<Card> playedCards = new LinkedHashSet<Card>();
 		List<String[]> data = new ArrayList<String[]>();
@@ -70,7 +71,7 @@ public class Csv {
 		char    packb = ' ';
 		char    packs = ' ';
 		String station = "";
-		Date time = new Date();
+		Calendar time = Calendar.getInstance();
 		SimpleDateFormat play = new SimpleDateFormat("HH:mm:ss");
 		SimpleDateFormat beginEnd =new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
 		Integer cid = 0;
@@ -112,9 +113,9 @@ public class Csv {
 		data.add(new String[] {});//Leerzeile 
 		data.add(new String[] {this.starttime,this.endtime,this.playingtime});
 		//calculate playingtime
-		time.setHours(end.getHours()-begin.getHours());
-		time.setMinutes(end.getMinutes()-begin.getMinutes());
-		time.setSeconds(end.getSeconds()-begin.getSeconds());
+		time.set(Calendar.HOUR_OF_DAY, end.get(Calendar.HOUR_OF_DAY)-begin.get(Calendar.HOUR_OF_DAY));
+		time.set(Calendar.MINUTE, end.get(Calendar.MINUTE)-begin.get(Calendar.MINUTE));
+		time.set(Calendar.SECOND, end.get(Calendar.SECOND)-begin.get(Calendar.SECOND));
 		data.add(new String[] { beginEnd.format(begin),beginEnd.format(end),play.format(time)});
 		
 		data.add(new String[] {});//Leerzeile 

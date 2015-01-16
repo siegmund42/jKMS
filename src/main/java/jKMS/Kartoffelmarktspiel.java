@@ -9,6 +9,7 @@ import jKMS.states.Preparation;
 import jKMS.states.State;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -26,8 +27,8 @@ public class Kartoffelmarktspiel {
 	private Configuration configuration;
 	private Set<Card> cards;
 	private Kartoffelmarktspiel instance;
-	private Date begin;
-	private Date end;
+	private Calendar begin;
+	private Calendar end;
     
 	// DEFAULT CONSTRUCTOR
 	private Kartoffelmarktspiel() {
@@ -55,7 +56,7 @@ public class Kartoffelmarktspiel {
 	
 	public void play() {
 		// Start game
-		begin = new Date();
+		begin = Calendar.getInstance();
 		state = new Play(instance);
 		SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss");
 		LogicHelper.print("Playing since: " + ft.format(begin));
@@ -63,7 +64,7 @@ public class Kartoffelmarktspiel {
 
 	public void evaluate() {
 		// Stop game
-		end = new Date();
+		end = Calendar.getInstance();
 		state = new Evaluation(instance);
 		SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss");
 		LogicHelper.print("Game stopped at: " + ft.format(end));
@@ -123,11 +124,11 @@ public class Kartoffelmarktspiel {
 		return configuration.getsDistribution();
 	}
 	
-	public Date getBegin() {
+	public Calendar getBegin() {
 		return begin;
 	}
 
-	public Date getEnd() {
+	public Calendar getEnd() {
 		return end;
 	}
 
