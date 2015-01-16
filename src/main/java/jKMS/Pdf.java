@@ -24,9 +24,15 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
-
+/**
+ * 
+ * Class for pdf functions
+ *
+ */
 public class Pdf {
-	
+	/**
+	 * A class for handling the PDF-Export
+	 */	
 	 //define Fonts
 	private  Font titleFont;
 	private  Font valueFont;	
@@ -62,11 +68,12 @@ public class Pdf {
 	/**
 	 *generate the sellercard PDF with all sellercards in their packages
 	 * 
-	 * @param  need some configuration data like cards, assistantcount first ID 
-	 * @param  cardsbuyer document for export
-	 * @return 	nothing
-	 * 		
-	 */	
+
+	 * @param  cards			Set of cards filled in generateCards() (preparetion)
+	 * @param  assistancount	assistantcount number of assistants saved in jkms.configuration
+	 * @param  firstID			firstID default 1001 possible to chance with jkms.configuration.setFirstID 
+	 * @param  cardsSeller 	document for export	
+	*/
 
 	public void createPdfCardsSeller(Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
@@ -195,14 +202,15 @@ public class Pdf {
     }
 	
 	/**
-	 *generate the sellerbuyer PDF with all buyercards  in their packages
+	 *generate the buyercards PDF with all buyercards  in their packages
 	 * 
-	 * @param  need some configuration data like cards, assistantcount first ID 
-	 * @param  cardsbuyer document for export
-	 * @return 	nothing
-	 * 		
-	 */	
-    
+	 * @param  cards			Set of cards filled in generateCards() (preparetion)
+	 * @param  assistancount	assistantcount number of assistants saved in jkms.configuration
+	 * @param  firstID			firstID default 1001 possible to chance with jkms.configuration.setFirstID 
+	 * @param  cardsBuyer	 	document for export
+	 */
+
+
 	public void createPdfCardsBuyer(Document cardsBuyer,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
@@ -330,12 +338,21 @@ public class Pdf {
   
     }
 
+
 	private Paragraph createPackOnCard(char pack){
 		Paragraph cPa = new Paragraph(String.valueOf(pack),packFont);
     	cPa.setAlignment(Element.ALIGN_RIGHT);
     	cPa.setSpacingAfter(20);
     	return cPa;
 	}
+	
+	/**
+	 *generate right card: seller,buyer,package
+	 * 
+	 * @param  card		card to generate
+	 * @param  istop    different formations of top an bottomcards	
+	 * @return paragraph with the generated cards	
+	 */	 
 	
     private Paragraph createCard(Card card,boolean isTop){
     	
@@ -375,10 +392,13 @@ public class Pdf {
 	/**
 	 *generate the titlepage for seller or buyer pdf it contains a table with the packageinformation
 	 * 
-	 * @param  if isbuyer then it generate the buyer titlepage, need some configuration data like cards, assistantcount first ID 
+	 * @param  packdis		field with all packages and there sizes get form logichelper
+	 * @param  firstID		firstID default 1001 possible to chance with jkms.configuration.setFirstID 
+	 * @param  isBuyer		Buyer or Seller?
+	 * @param  cards		Set of cards filled in generateCards() (preparetion)
 	 * @return 	a paragraph (itext) with the titlepage
-	 * 		
-	 */	
+	 */
+
     private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
     	byte isbuyer = 0;
     	
@@ -538,9 +558,9 @@ public class Pdf {
 	/**
 	 *generate the export pdf with the statistics and the chart as image
 	 * 
-	 * @param doc 	document for export
-	 * @param Image  image of the chart
-	 * @param stats  Map of the statistics 
+	 * @param doc 		document for export
+	 * @param pdfImage 	image of the chart
+	 * @param stats  	Map of the statistics 
 	 * @return 	the document (pdf export)
 	 * 		
 	 */	

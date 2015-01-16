@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Client Controller for all pages on the client side [contract].
+ * @author siegmund42
  */
 @Controller
 public class ClientController extends AbstractController {
@@ -20,7 +21,6 @@ public class ClientController extends AbstractController {
 	/**
 	 * Redirect to /contract Site
 	 * @return Template name
-	 * @author siegmund42
 	 */
 	@RequestMapping("/")
 	public String redirect() {
@@ -31,7 +31,6 @@ public class ClientController extends AbstractController {
 	 * Display the contract Form
 	 * @param	model 	The given Model
 	 * @return 			Template name
-	 * @author siegmund42
 	 */
 	@RequestMapping(value = "/contract", method = RequestMethod.GET)
 	public String contract(Model model)	{
@@ -55,7 +54,6 @@ public class ClientController extends AbstractController {
 	 * @param	p		[correct candidate] of the contract
 	 * @param	request	Request object for setting IP address
 	 * @return 			Template name
-	 * @author siegmund42
 	 */
 	@RequestMapping(value = "/contract", method = RequestMethod.POST)
 	public String contract(Model model, RedirectAttributes ra,

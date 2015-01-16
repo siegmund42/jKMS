@@ -22,12 +22,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+/**
+ * Class for game load/exclude/start
+ * @author siegmund42
+ *
+ */
 @Controller
 public class LoadController extends AbstractServerController {
 	
-	/*
+	/**
 	 * Displaying the IP/loadConfirm site
+	 * @param	model	Model injection for displaying page
+	 * @param	request	Request for determining Client's IP(s)
+	 * @throws	InvalidStateChangeException
 	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.GET)
 	public String load1(Model model, ServletRequest request) throws InvalidStateChangeException	{
@@ -68,9 +75,15 @@ public class LoadController extends AbstractServerController {
 	
 	/**
 	 * For loading an existing Config.txt File
+	 * @param	model	Model injection for displaying page
+	 * @param	ra		RedirectAttributes injection for redirecting page
+	 * @param	file	config file to load
+	 * @throws	IllegalStateException
+	 * @throws	InvalidStateChangeException
 	 */
 	@RequestMapping(value = "/load1", method = RequestMethod.POST)
-	public String processIndex(Model model, RedirectAttributes ra, @RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
+	public String processIndex(Model model, RedirectAttributes ra, 
+			@RequestParam("input-file") MultipartFile file) throws IllegalStateException, InvalidStateChangeException	{
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "load"))	{
@@ -90,7 +103,7 @@ public class LoadController extends AbstractServerController {
 				// Everything loaded - Load Data into GUI
 				return "redirect:/load1";
 			}	else	{
-				ra.addFlashAttribute("error", LogicHelper.getLocalizedMessage("load.falseContentType"));
+				ra.addFlashAttribute("error", LogicHelper.getLocalizedMessage("error.load.falseContentType"));
 				return "redirect:/index";
 			}
 		}	else	{
@@ -101,9 +114,11 @@ public class LoadController extends AbstractServerController {
 	
 	/**
 	 * Page for excluding Cards
+	 * @param	model	Model injection for displaying page
+	 * @throws	InvalidStateChangeException
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.GET)
-	public String load(Model model, ServletRequest request) throws InvalidStateChangeException	{
+	public String load(Model model) throws InvalidStateChangeException	{
 
 		// State Change
 		if(ControllerHelper.stateHelper(kms, "load"))	{
@@ -125,6 +140,10 @@ public class LoadController extends AbstractServerController {
 	
 	/**
 	 * Exclude Cards POST Request
+	 * @param	model	Model injection for displaying page
+	 * @param	ra		RedirectAttributes injection for redirecting page
+	 * @param	exclude	Array of all IDs to exclude
+	 * @param	check	List of all checkboxes
 	 */
 	@RequestMapping(value = "/load2", method = RequestMethod.POST)
 	public String start(Model model, RedirectAttributes ra, 

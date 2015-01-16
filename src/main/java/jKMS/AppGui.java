@@ -25,8 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 public class AppGui extends JFrame{
@@ -64,7 +64,6 @@ public class AppGui extends JFrame{
 				confirmExit();
 			}
 		});
-		
 		
 		btnOpenBrowser = new JButton(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
 		btnOpenBrowser.setBounds(50, 65, 175, 50);
@@ -155,20 +154,25 @@ public class AppGui extends JFrame{
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
-		//textArea.setLineWrap(true);
-		//textArea.setWrapStyleWord(true);
 		
-		//Prevent horizontal autoscroll
-		/*textArea.addCaretListener(new CaretListener() {
+		textArea.getDocument().addDocumentListener(new DocumentListener() {
+			
 			@Override
-			public void caretUpdate(CaretEvent e) {
+			public void removeUpdate(DocumentEvent arg0) {}
+			
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
 				try {
-					textArea.setCaretPosition(textArea.getLineStartOffset(textArea.getLineCount() - 1));
-				} catch (BadLocationException e1) {
-					e1.printStackTrace();
+					textArea.setCaretPosition(textArea.getLineStartOffset(textArea.getLineCount()-1));
+				} catch (BadLocationException e) {
+					e.printStackTrace();
 				}
 			}
-		});*/
+			
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {}
+		});
+		
 		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);

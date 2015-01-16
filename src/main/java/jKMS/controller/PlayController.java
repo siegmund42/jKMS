@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 
+ * @author	Quiryn
+ *
+ */
 @Controller
 public class PlayController extends AbstractServerController {
 	
@@ -36,7 +41,7 @@ public class PlayController extends AbstractServerController {
 		return str;
 	}
 	
-	/*
+	/**
 	 * Just displaying chart -> Everything javascript (;
 	 */
 	@RequestMapping(value = "/play")
