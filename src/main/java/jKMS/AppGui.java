@@ -189,9 +189,6 @@ public class AppGui extends JFrame{
 
 	private void confirmExit() {
 		// CONFIRM AND EXIT
-		LogicHelper.print(LogicHelper.getLocalizedMessage("GUI.exitMsg"));
-		LogicHelper.print(LogicHelper.getLocalizedMessage("GUI.exitMsgTitle"));
-		LogicHelper.print(LogicHelper.getLocalizedMessage("GUI.showLog"));
 		if (JOptionPane.showConfirmDialog(null,
 				exitMsg,
 				exitMsgTitle, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){

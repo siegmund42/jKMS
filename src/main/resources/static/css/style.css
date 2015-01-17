@@ -54,9 +54,13 @@ label	{
 noscript div	{
 	color:				red;
 	font-weight:		bold;
-	width:				100%;
-	background:			rgba(80,80,80,0.9);
+	font-size:			120%;
+	width:				98%;
+	position:			fixed;
+    z-index: 			100;
+	background:			rgba(210,210,210,0.95);
 	margin:				0;
+	padding:			1%;
 }
 
 select	{
@@ -293,7 +297,7 @@ input[type=checkbox]	{
 	background:			/*rgba(159,47,16,0.8);*/ rgba(80,80,80,0.9);
 	color:				white;
 	font-size:			95%;
-    z-index: 			999;
+    z-index: 			99;
 }
 
 #toolBar ul:after {
