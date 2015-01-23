@@ -11,13 +11,19 @@ function absoluteRound(number)	{
 	return Math.ceil(Math.floor(number*1000)/1000);
 }
 
-function check_file(file_name) {
-	  // Die erlaubten Dateiendungen
-	  var allowed_extension = 'txt';
+function checkFile(field) {
+	// allowed extension
+	var allowed_extension = 'txt';
 
-	  // Dateiendung der Datei
-	  var extension = file_name.split('.');
-	  extension = extension[extension.length - 1];
+	// extension of file to load
+	var extension = field.value.split('.');
+	extension = extension[extension.length - 1];
 
-	  return allowed_extension == extension;
+	if(allowed_extension == extension)	{
+		field.form.submit();
+		return true;
+	}	else	{
+		document.getElementById("fileError").innerHTML = falseContentType;
+		return false;
 	}
+}

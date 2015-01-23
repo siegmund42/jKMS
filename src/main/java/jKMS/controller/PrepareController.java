@@ -163,6 +163,7 @@ public class PrepareController extends AbstractServerController {
 			model.addAttribute("numberOfAssistants", kms.getAssistantCount());
 			model.addAttribute("firstID", kms.getConfiguration().getFirstID());
 			model.addAttribute("lastID", kms.getLastId());
+			model.addAttribute("falseContentType", LogicHelper.getLocalizedMessage("error.load.falseContentType"));
 	
 			return "prepare2";
 		}	else	{

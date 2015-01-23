@@ -48,6 +48,7 @@ public class ServerController extends AbstractServerController	{
 		if(lang != null) Application.gui.changeLanguage();
 		ControllerHelper.checkFolders();
 		model.addAttribute("languages", ControllerHelper.getLanguages());
+		model.addAttribute("falseContentType", LogicHelper.getLocalizedMessage("error.load.falseContentType"));
 		return "index";
 	}
 	

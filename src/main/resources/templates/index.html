@@ -9,6 +9,12 @@
 	<script src="/js/jquery-2.1.1.min.js" ></script>
 
     <title th:text="#{titles.welcome}">Willkommen</title>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    	var falseContentType = /*[[${falseContentType}]]*/;
+    /*]]>*/
+    </script>
+    <script th:src="@{/js/script.js}"></script>
     
 </head>
  <body>
@@ -35,12 +41,13 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (welcome)">
 	 	</div>
+		<div class="errorDiv" id="fileError"></div>
 	 	<div class="errorDiv" th:if="${error}" th:text="#{error.__${error}__}"></div>
 	 	<br />
 		<p><a href="prepare1.html" th:text="#{index.prepare}">Vorbereitung</a></p>
 		<br />
 		<form name="loadGame" method="POST" th:action="load1.html" enctype="multipart/form-data" >
-			<input type="file" id="input-file" name="input-file" accept="text/plain" onchange="document.loadGame.submit();"/>
+			<input type="file" id="input-file" name="input-file" accept="text/plain" onchange="javascript:checkFile(this);"/>
 			<input type="button" th:value="#{index.loadGame}" onclick="$('#input-file').click();"/>
 		</form>
 		<br />
