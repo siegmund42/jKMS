@@ -10,3 +10,14 @@ function div(a, b)	{
 function absoluteRound(number)	{
 	return Math.ceil(Math.floor(number*1000)/1000);
 }
+
+function check_file(file_name) {
+	  // Die erlaubten Dateiendungen
+	  var allowed_extension = 'txt';
+
+	  // Dateiendung der Datei
+	  var extension = file_name.split('.');
+	  extension = extension[extension.length - 1];
+
+	  return allowed_extension == extension;
+	}

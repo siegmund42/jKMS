@@ -134,7 +134,7 @@
 			<input type="hidden" id="cGroupQuantity" name="cGroupQuantity" th:value="${cGroupQuantity}" />
 			<input type="hidden" id="sGroupQuantity" name="sGroupQuantity" th:value="${sGroupQuantity}" />
 			
-			<input th:if="!*{isStandard}" type="file" id="input-file" name="input-file" accept="text/plain" onchange="document.arrangement.action = 'prepare2.html?c=load'; document.arrangement.submit();"/>
+			<input th:if="!*{isStandard}" type="file" id="input-file" name="input-file" accept="text/plain" onchange="document.arrangement.action = 'prepare2.html?c=load'; if(check_file(this.value)) document.arrangement.submit();"/>
 			<input th:if="!*{isStandard}" type="button" value="Konfiguration laden" th:value="#{prepare.loadConfig}" onclick="$('#input-file').click();"/>
 			<br />
 			<input type="submit" th:value="#{prepare.save}" />
