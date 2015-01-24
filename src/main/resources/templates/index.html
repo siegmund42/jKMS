@@ -18,21 +18,8 @@
     
 </head>
  <body>
- 	<div id="toolBar">
- 		<ul>
- 			<li>
- 				<a href="javascript:history.go(-1);" th:text="#{messages.back}" ></a>
- 			</li>
- 			<li>
- 				<a href="#" th:text="#{settings.language}"></a>
- 				<ul>
- 					<li th:each="lang : ${languages}" >
- 						<a th:href="'index.html?lang=' + ${lang.key}" th:text="${lang.value}"></a>
- 					</li>
- 				</ul>
- 			</li>
- 		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(0, lang, -1)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>

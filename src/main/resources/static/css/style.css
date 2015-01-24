@@ -9,7 +9,7 @@ html    {
     height:         	100%;
     width:          	100%; 
     /*'background-image: -ms-linear-gradient(right bottom, white 0%, #9FBFD2 100%); IE Präfix*/
-    background-image: 	linear-gradient(180deg, rgba(110,205,0,0.6) 0%, rgba(110,205,0,0.5) 100%);
+    background-image: 	linear-gradient(180deg, rgba(110,205,0,0.7) 0%, rgba(110,205,0,0.6) 100%);
     /*background-color:	rgba(110,205,0,0.5);*/
     background-attachment:	fixed;
     /*background:			rgba(110,205,0,0.5);*/
@@ -367,6 +367,17 @@ input[type=checkbox]	{
 	color:				black;
 }
 
+#logo	{
+	position:			fixed;
+	bottom:				0;
+	left:				0;
+}
+
+#logo img	{
+	width:				40px;
+	margin:				0 5px;
+}
+
 /*
 ############################### General #################################
 */
@@ -440,9 +451,9 @@ form#login	{
 #statsContainer			{
 	position:			relative;
 	float:				right;
-	margin:				4% 2.5%;
+	margin:				4% 3%;
 	padding:			1%;
-	background:			rgba(110,205,0,0.3);
+	background:			rgba(110,205,0,0.7);
 	z-index:			1;
 }
 

@@ -22,16 +22,8 @@
     
 </head>
  <body>
- 	<div id="toolBar">
- 		<ul>
- 			<li>
-				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}"></a>
-			</li>
-			<li>
-				<a th:if="${param.s} AND ${param.s[0]} == 'stop'" th:href="evaluate.html" th:text="#{play.evaluate}"></a>
-			</li>
-		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(0, (${param.s} AND ${param.s[0]})? 'play2' : 'play1', -2)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>

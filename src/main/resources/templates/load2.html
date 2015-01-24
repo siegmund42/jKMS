@@ -25,25 +25,8 @@
  <body th:onload="'createExcludeFields(' + ${numberOfAssistants} + ');'">
  	<div th:replace="resources :: js">
 	</div>
- 	<div id="toolBar">
- 		<div id="path">
- 			<div class="step" th:text="#{path.load.step1}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" id="step_activ'" th:text="#{path.load.step2}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step3}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step4}"></div>
- 		</div>
- 		<ul>
-	 		<li>
-	 			<a href="index.html" th:text="#{messages.welcome}" ></a>
-	 		</li>
-	 		<li>
- 				<a href="load1.html" th:text="#{backSign} + #{messages.back}" ></a>
-	 		</li>
-		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(load, 2, 0)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>

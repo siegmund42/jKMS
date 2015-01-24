@@ -12,23 +12,8 @@
     
 </head>
  <body>
- 	<div id="toolBar">
- 		<ul>
-	 		<li>
-	 			<a href="index.html" th:text="#{backSign} + #{messages.welcome}" ></a>
-	 		</li>
-	 		<li>
-	 			<a href="evaluate.html" th:text="#{messages.back}" ></a>
-	 		</li>
-	 		<li>
-	            <a href="#" th:text="#{messages.export}"></a>
-	            <ul>
-			 		<li><a href="/pdfDownload" th:text="#{messages.export.pdf}" ></a></li>
-			 		<li><a href="/csv" th:text="#{messages.export.csv}" ></a></li>
-				</ul>
-			</li>
-		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(0, 0, 1)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>

@@ -11,16 +11,8 @@
     
 </head>
  <body>
- 	<div id="toolBar">
- 		<ul>
- 			<li>
- 				<a href="index.html" th:text="#{messages.welcome}" ></a>
- 			</li>
- 			<li>
- 				<a href="javascript:history.go(-1);" th:text="#{messages.back}" ></a>
- 			</li>
- 		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(0, 0, 0)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>

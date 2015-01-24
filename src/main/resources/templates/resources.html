@@ -4,10 +4,57 @@
     
 </head>
  <body>
+ 	<div id="toolBar" th:fragment="toolBar (path, active, extra)">
+ 		<img src="/images/logo.png" width="30" style="float: left;"/>
+ 		<div th:if="(${path} != 0)" id="path">
+ 			<div class="step" th:id="(${active} == 1)? 'step_active'" th:text="#{path.__${path}__.step1}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:id="(${active} == 2)? 'step_active'" th:text="#{path.__${path}__.step2}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:id="(${active} == 3)? 'step_active'" th:text="#{path.__${path}__.step3}"></div>
+ 			<div class="step" th:text="'>'"></div>
+ 			<div class="step" th:id="(${active} == 4)? 'step_active'" th:text="#{path.__${path}__.step4}"></div>
+ 		</div>
+ 		<ul>
+ 			<li th:if="${active} == 'lang'">
+ 				<a href="#" th:text="#{settings.language}"></a>
+ 				<ul>
+ 					<li th:each="lang : ${languages}" >
+ 						<a th:href="'index.html?lang=' + ${lang.key}" th:text="${lang.value}"></a>
+ 					</li>
+ 				</ul>
+ 			</li>
+ 			<li th:if="${active} == 'play1'">
+				<a th:if="!${param.s}" href="play.html?s=stop" th:text="#{play.stop}"></a>
+			</li>
+			<li th:if="${active} == 'play2'">
+				<a th:if="${param.s} AND ${param.s[0]} == 'stop'" th:href="evaluate.html" th:text="#{play.evaluate}"></a>
+			</li>
+			<li th:if="${extra} == 2">
+				<a href="lottery.html" th:text="#{messages.lottery}"></a>
+			</li>
+	 		<li th:if="${extra} == 1 OR ${extra} == 2">
+	            <a href="#" th:text="#{messages.export}"></a>
+	            <ul>
+			 		<li><a href="/pdfDownload" th:text="#{messages.export.pdf}" ></a></li>
+			 		<li><a href="/csv" th:text="#{messages.export.csv}" ></a></li>
+				</ul>
+			</li>
+ 			<li th:if="${extra} != -1 and ${extra} != -2">
+ 				<a href="index.html" th:text="#{messages.welcome}" ></a>
+ 			</li>
+ 			<li th:if="${extra} != -2 and ${extra} != -3">
+ 				<a href="javascript:history.go(-1);" th:text="#{backSign} + #{messages.back}" ></a>
+ 			</li>
+ 		</ul>
+ 	</div>
  	<div id="header" th:fragment="heading (site)">
 		<h1 th:text="#{messages.__${site}__}"></h1>
 	</div>
  	<div th:fragment="globalHeading" th:text="#{messages.heading}" id="heading"></div>
+ 	<div th:fragment="logo" id="logo">
+ 		<img src="/images/logo2.png" />
+ 	</div>
  	<div th:fragment="footer" id="footer">
 	 	<h3>Credits</h3>
 		Game design: G. Markwardt, A. Seidel, M. Thum, TU-Dresden, 2015.
