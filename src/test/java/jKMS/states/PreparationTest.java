@@ -231,7 +231,7 @@ public class PreparationTest {
 				}
 				
 				//check CardSet
-				assertEquals("the CardNumber should be 6,system should not load CardSet in state preparation", 6 , kms.getCards().size());
+				assertEquals("the CardNumber should be 6,system should not load CardSet in state preparation", 0 , kms.getCards().size());
 	}
 
 	@Test

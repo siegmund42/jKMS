@@ -52,6 +52,7 @@ public class Configuration {
 		this.bDistribution = new TreeMap<Integer, Amount>();
 		this.sDistribution = new TreeMap<Integer, Amount>();
 		this.packages = new LinkedHashSet<Package>();
+		kms.getCards().clear();
 	}
 	
 	public Package newPackage(char name)	{
