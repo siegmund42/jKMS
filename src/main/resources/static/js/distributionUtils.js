@@ -165,9 +165,8 @@ function addRow(table)	{
 		// Adding 1 + first group - display the first remove-link
 		if(arrangement.cGroupQuantity.value == "1")	{
 			var table = document.getElementById("customerTable");
-			var firstLine = table.firstChild;
-			var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
-			firstGroup.lastChild.style.visibility = "visible";
+			var firstGroup = table.firstElementChild.nextElementSibling;
+			firstGroup.lastElementChild.style.visibility = "visible";
 		}
 		
 		// add Row for Error displaying
@@ -220,9 +219,8 @@ function addRow(table)	{
 		// Adding 1 + first group - display the first remove-link
 		if(arrangement.sGroupQuantity.value == "1")	{
 			var table = document.getElementById("salesmanTable");
-			var firstLine = table.firstChild;
-			var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
-			firstGroup.firstChild.style.visibility = "visible";
+			var firstGroup = table.firstElementChild.nextElementSibling;
+			firstGroup.firstElementChild.style.visibility = "visible";
 		}
 		// Add field for relative Quantity
 		var cell = document.createElement('div');
@@ -319,12 +317,12 @@ function removeRow(number, type)	{
 		if(type == 's')
 			var table = document.getElementById("salesmanTable");
 		
-		var firstGroup = table.firstChild.nextSibling.nextSibling.nextSibling;
+		var firstGroup = table.firstElementChild.nextElementSibling;
 		
 		if(type == 'c')
-			firstGroup.lastChild.style.visibility = "hidden";
+			firstGroup.lastElementChild.style.visibility = "hidden";
 		if(type == 's')
-			firstGroup.firstChild.style.visibility = "hidden";
+			firstGroup.firstElementChild.style.visibility = "hidden";
 	}
 	
 	document.getElementById(type + "GroupQuantity").value--;

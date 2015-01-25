@@ -49,9 +49,9 @@ public class Configuration {
 	public void clear()	{
 		this.playerCount = 0;
 		this.assistantCount = 0;
-		this.bDistribution = new TreeMap<Integer, Amount>();
-		this.sDistribution = new TreeMap<Integer, Amount>();
-		this.packages = new LinkedHashSet<Package>();
+		this.bDistribution.clear();
+		this.sDistribution.clear();
+		this.packages.clear();
 		kms.getCards().clear();
 	}
 	
