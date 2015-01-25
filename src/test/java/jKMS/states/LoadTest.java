@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -45,11 +46,8 @@ public class LoadTest {
 	
 	@Before
 	public void setUp(){
+		
 		kms.prepare();
-		kms.getCards().clear();
-		kms.getPackages().clear();
-		kms.getConfiguration().setbDistribution(new TreeMap<Integer, Amount>());
-		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());
 		
 		//Setup Player/Assistant No 
 		kms.getState().setBasicConfig(10, 1);
@@ -70,6 +68,36 @@ public class LoadTest {
 		}
 		
 		kms.load();
+
+		//Setup Player/Assistant No 
+		kms.getConfiguration().setPlayerCount(10);
+		kms.getConfiguration().setAssistantCount(1);
+		kms.getConfiguration().setFirstID(1001);
+		
+		//Setup Distribution pro distribution 100 % because eingabemaske
+		LinkedHashMap<Integer, Amount> bDistribution = new LinkedHashMap<>();
+		bDistribution.put(2, new Amount(40, 2));
+		bDistribution.put(3, new Amount(40, 2));
+		bDistribution.put(4, new Amount(20, 1));
+		LinkedHashMap<Integer, Amount> sDistribution = new LinkedHashMap<>();
+		sDistribution.put(2, new Amount(20, 1));
+		sDistribution.put(3, new Amount(40, 2));
+		sDistribution.put(4, new Amount(40, 2));
+		kms.getConfiguration().setbDistribution(bDistribution);
+		kms.getConfiguration().setsDistribution(sDistribution);
+		
+		Package a = kms.getConfiguration().newPackage('A');
+		kms.getCards().add(new BuyerCard(1001, 2, a));
+		kms.getCards().add(new BuyerCard(1003, 2, a));
+		kms.getCards().add(new BuyerCard(1005, 3, a));
+		kms.getCards().add(new BuyerCard(1007, 3, a));
+		kms.getCards().add(new BuyerCard(1009, 4, a));
+		
+		kms.getCards().add(new SellerCard(1002, 2, a));
+		kms.getCards().add(new SellerCard(1004, 3, a));
+		kms.getCards().add(new SellerCard(1006, 3, a));
+		kms.getCards().add(new SellerCard(1008, 4, a));
+		kms.getCards().add(new SellerCard(1010, 4, a));
 	}
 	
 	@Test
