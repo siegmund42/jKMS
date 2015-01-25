@@ -105,14 +105,14 @@ public class Pdf {
         
         //----------------------IMPLEMENTATION-------------------------------
         //add titlecard for package A 
-        printcards.add(new SellerCard(-42,0,LogicHelper.IntToPackage(packID))); 
+        printcards.add(new SellerCard(-42,0, new Package('A', null))); 
         
         for(Card iter : cards){
 			if(packsize == packdis[packID] ){ //is there a new package ?
     			//yes
 				packID++;
 				packsize = 0;
-				printcards.add(new SellerCard(-42,0,LogicHelper.IntToPackage(packID))); //add card for package idedifikation
+				printcards.add(new SellerCard(-42,0,iter.getPackage())); //add card for package idedifikation
         	}
 			
 			if(iter instanceof SellerCard){ //seller or buyer?
@@ -144,7 +144,7 @@ public class Pdf {
         		   i++;
         	    }   
            } 
-           bottomcards.add(new SellerCard(-42,0,' '));// add wihtepage
+           bottomcards.add(new SellerCard(-42,0,new Package(' ', null)));// add wihtepage
        }
        
        //PRINT
@@ -157,8 +157,8 @@ public class Pdf {
         
         Iterator<Card> itertop = topcards.iterator();
         Iterator<Card> iterbot = bottomcards.iterator();
-        Card topcard = new SellerCard(0,0,' ');
-        Card bottomcard = new SellerCard(0,0,' ');
+        Card topcard = new SellerCard(0,0,new Package(' ', null));
+        Card bottomcard = new SellerCard(0,0,new Package(' ', null));
         
         //Content      
 
@@ -242,14 +242,14 @@ public class Pdf {
         //----------------------IMPLEMENTATION-------------------------------
        
         //add card for package idedifikation (first package) 
-        printcards.add(new BuyerCard(-42,0,LogicHelper.IntToPackage(packID))); 
+        printcards.add(new BuyerCard(-42,0,new Package('A', null))); 
         
         for(Card iter : cards){
 			if(packsize == packdis[packID]){ //is there a new package ? before printing first card of new pack packagepage
             			//yes
         				packID++;
         				packsize = 0;
-        				printcards.add(new BuyerCard(-42,0,LogicHelper.IntToPackage(packID))); //add card for package idedifikation
+        				printcards.add(new BuyerCard(-42,0,iter.getPackage())); //add card for package idedifikation
         				//printcards.add(new BuyerCard(iter.getId(),iter.getValue(),iter.getPackage()));
         			}
 
@@ -279,7 +279,7 @@ public class Pdf {
         		   i++;
         	   	}   
            } 
-           bottomcards.add(new SellerCard(-42,0,' '));// add wihteside
+           bottomcards.add(new SellerCard(-42,0,new Package(' ', null)));// add wihteside
        }
        
        //PRINT
@@ -292,8 +292,8 @@ public class Pdf {
         
         Iterator<Card> itertop = topcards.iterator();
         Iterator<Card> iterbot = bottomcards.iterator();
-        Card topcard = new BuyerCard(0,0,' ');
-        Card bottomcard = new BuyerCard(0,0,' ');
+        Card topcard = new BuyerCard(0,0,new Package(' ', null));
+        Card bottomcard = new BuyerCard(0,0,new Package(' ', null));
         
         //Content       
 
@@ -339,7 +339,7 @@ public class Pdf {
     }
 
 
-	private Paragraph createPackOnCard(char pack){
+	private Paragraph createPackOnCard(Package pack){
 		Paragraph cPa = new Paragraph(String.valueOf(pack),packFont);
     	cPa.setAlignment(Element.ALIGN_RIGHT);
     	cPa.setSpacingAfter(20);
@@ -384,7 +384,7 @@ public class Pdf {
         	Paragraph pack = new Paragraph(String.valueOf(card.getPackage()),titleFont);
         	pack.setAlignment(Element.ALIGN_CENTER);
         	content.add(pack);
-        	card.setPackage(' ');
+        	card.setPackage(new Package(' ', null));
         }
         	
     	return content;

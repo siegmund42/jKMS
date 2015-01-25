@@ -1,6 +1,7 @@
 package jKMS.states;
 
 import jKMS.Amount;
+import jKMS.Package;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.LogicHelper;
 import jKMS.cards.BuyerCard;
@@ -17,6 +18,7 @@ import jKMS.exceptionHelper.WrongRelativeDistributionException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -77,7 +79,7 @@ public class Load extends State {
 	            	 while ( count >=3){
 	            		 if( (buf=br.readLine()) != null){
 		            		 buf=buf.trim();
-		 		             String[] sa = buf.split(":|\\s");
+		            		 String[] sa = buf.split(":|\\s");
 		 		             if(sa[0].equals("bDistribution")){
 			 		             int bpreis = Integer.valueOf(sa[1].trim());
 			 		             Amount bAmount =  new Amount(Integer.valueOf(sa[2].trim()),Integer.valueOf(sa[3].trim()));
@@ -98,6 +100,7 @@ public class Load extends State {
 	            			 throw new FalseLoadFileException("No Cards found, please do not change the load file!");
 	            		 }
 	            	 }
+	            	 //Package pack = new Package(sa[3].trim().charAt(0));
 	            	 LogicHelper.print("Loaded: bDistribution = " + bDistributionLoad.toString());
 	    			 LogicHelper.print("Loaded: sDistribution = " + sDistributionLoad.toString());
 	            	 //load Cards and set them in cardSet
@@ -105,17 +108,25 @@ public class Load extends State {
 	            		 Card card;
 	            		 buf=buf.trim();
 	            		 String[] sa = buf.split(":|\\s");
+	            		 // Get package with actual char
+	            		 Package pack = kms.getConfiguration().getPackage(sa[3].trim().charAt(0));
+	            		 // Check if existing
+	            		 if(pack == null)	{
+	                    	 pack = kms.getConfiguration().newPackage(sa[3].trim().charAt(0));
+	            		 }            		
 	            		 if((Integer.valueOf(sa[1])%2) == 0){
-	            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+	            			card = new SellerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),pack);
 	            		 }else {
-	            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),sa[3].trim().charAt(0));
+	            			card = new BuyerCard(Integer.valueOf(sa[1].trim()),Integer.valueOf(sa[2].trim()),pack);
 	            		 }
 	            		 cardSet.add(card);
 	               		 buf=br.readLine();
 	            	 }
+	            	 
             	 }catch(ArrayIndexOutOfBoundsException e){
             		 throw new FalseLoadFileException("there is a syntax error in load file,someting is missing,please check the load file!");
             	 }
+            	 
             	 if(cardSet.size() != playerCount){
             		 throw new FalseLoadFileException("playerCount is not equal to the number of card,please do not change the load file!");
             	 }
@@ -125,11 +136,9 @@ public class Load extends State {
             		 Card card = citer.next();
             		 cardNumber.add(card.getId());
             	 }
-            	 //int maxNumber = Collections.max(cardNumber);
-            	 //int minNumber = Collections.min(cardNumber);
-//            	 if(maxNumber != 1000+playerCount || minNumber != 1001){
-//            		 throw new FalseLoadFileException("cardId should beginn at 1001 and can not more than playerCount+1000!");
-//            	 }
+            	 if(Collections.min(cardNumber) != kms.getConfiguration().getFirstID()){
+            		 throw new FalseLoadFileException("cardId should beginn at 1001 and can not more than playerCount+1000!");
+            	 }
             	 if(cardNumber.size() != playerCount){
             		 throw new FalseLoadFileException("card can not more than once in cardSet!");
             	 }
@@ -157,9 +166,6 @@ public class Load extends State {
 	 * */
 	@Override
 	public boolean removeCard(char pack, int lastId) throws WrongPackageException, WrongPlayerCountException, WrongAssistantCountException, WrongFirstIDException, WrongRelativeDistributionException{
-		Set<Card> oldSet = new LinkedHashSet<Card>(kms.getCards());
-		Map<Integer, Amount> distrib;
-		Integer key;
 		
 		//test is there a conform configuration?
 		if(kms.getPlayerCount() != (LogicHelper.getAbsoluteSum(kms.getbDistribution()) +  LogicHelper.getAbsoluteSum(kms.getsDistribution())))throw new WrongPlayerCountException();
@@ -167,32 +173,12 @@ public class Load extends State {
 		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
 		if((LogicHelper.getRelativeSum(kms.getbDistribution()) +  LogicHelper.getRelativeSum(kms.getsDistribution())) != 200) throw new WrongRelativeDistributionException();
 		for(Card iter : kms.getCards()){
-			if(iter.getId() == lastId && iter.getPackage() != pack) throw new WrongPackageException();
+			if(iter.getId() == lastId && iter.getPackage().getName() != pack) throw new WrongPackageException();
 		}
 		
-		for(Card iter : oldSet){
-			//Check if card must be removed (Id is higher than lasdId)
-			if(iter.getPackage() == pack && iter.getId() >= lastId){
-				//Update player count
-				kms.getConfiguration().setPlayerCount(kms.getConfiguration().getPlayerCount()-1);
-				
-				//Update distribution-map
-				if(iter instanceof BuyerCard) distrib = kms.getConfiguration().getbDistribution();
-				else distrib = kms.getConfiguration().getsDistribution();
-				
-				key = iter.getValue();
-				
-				distrib.get(key).setAbsolute(distrib.get(key).getAbsolute()-1);
-				if(distrib.get(key).getAbsolute() == 0) distrib.remove(key);
-				
-				kms.getCards().remove(iter);
-				
-				LogicHelper.print("Excluded Card: " + iter.getId());
-			}
-		}
+		//TODO Check if card with lastID is existing
 		
-		if(kms.getCards() == oldSet) return false;
-		else return true;
+		return kms.getConfiguration().getPackage(pack).removeCards(lastId);
 	}
 	
 }

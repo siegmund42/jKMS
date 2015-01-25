@@ -1,24 +1,31 @@
 package jKMS;
 
 
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Configuration {
 	
+	@Autowired
+	private Kartoffelmarktspiel kms;
 	private int playerCount;
 	private int assistantCount;
 	private int firstID;
 	private Map<Integer, Amount> bDistribution;
 	private Map<Integer, Amount> sDistribution;
+	private Set<Package> packages;
 	
 	public Configuration(){
 		
 		setbDistribution(new TreeMap<Integer, Amount>());
 		setsDistribution(new TreeMap<Integer, Amount>());
+		setPackages(new LinkedHashSet<Package>());
 		setFirstID(1001);
 	}
 	
@@ -36,8 +43,40 @@ public class Configuration {
 		return str;
 	}
 	
-// getter and setter make the world better ;)
+	/**
+	 * Clears the complete data structure
+	 */
+	public void clear()	{
+		this.playerCount = 0;
+		this.assistantCount = 0;
+		this.bDistribution = new TreeMap<Integer, Amount>();
+		this.sDistribution = new TreeMap<Integer, Amount>();
+		this.packages = new LinkedHashSet<Package>();
+	}
 	
+	public Package newPackage(char name)	{
+		Package pack = new Package(name, this.kms);
+		this.packages.add(pack);
+		return pack;
+	}
+	
+// getter and setter make the world better ;)
+	public Set<Package> getPackages() {
+		return packages;
+	}
+
+	public void setPackages(Set<Package> packages) {
+		this.packages = packages;
+	}
+	
+	public Package getPackage(char name)	{
+		for(Package pack : packages)	{
+			if(pack.getName() == name)
+				return pack;
+		}
+		return null;
+	}
+
 	public int getPlayerCount() {
 		return playerCount;
 	}

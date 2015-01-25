@@ -150,6 +150,42 @@ public class LoadController extends AbstractServerController {
 			@RequestParam(value = "exclude[]", required = true) String exclude[], 
 			@RequestParam(value = "check[]", required = false) List<String> check)	{
 		
+		// Check the validity BEFORE start of removing!! "Dry run"
+		for(int i = 0; i < exclude.length; i++)	{
+			// Check if not all cards where given out [Checkbox]
+			if(check == null || check.indexOf(Integer.toString(i)) == -1)	{
+				try	{
+					if(exclude[i] != "")	{
+						int number = Integer.parseInt(exclude[i]);
+						// Check some things..
+						if(number % 1 == 0 && number >= kms.getConfiguration().getFirstID() && 
+								number <= kms.getLastId())	{
+							// Exclude Card from Package
+							if(!kms.getPackage(LogicHelper.IntToPackage(i)).contains(number))	{
+								LogicHelper.print("Card with ID: " + number + " doesn't belongs to Package " + LogicHelper.IntToPackage(i));
+								// Failed - ID not in assigned package 
+								ra.addFlashAttribute("error", "exclude.package");
+								return "redirect:/load2";
+							}
+						}	else	{
+							// Checking Failed - number invalid
+							ra.addFlashAttribute("error", "exclude.oob");
+							return "redirect:/load2";
+						}
+					}	else	{
+						// Field Empty
+						ra.addFlashAttribute("error", "exclude.empty");
+						return "redirect:/load2";
+					}
+				}	catch(NumberFormatException e)	{
+					e.printStackTrace();
+					ra.addFlashAttribute("error", "exclude.fraction");
+					return "redirect:/load2";
+				}
+			}
+		}
+		
+		// ######## REAL Excluding Part ###############
 		for(int i = 0; i < exclude.length; i++)	{
 			// Check if not all cards where given out [Checkbox]
 			if(check == null || check.indexOf(Integer.toString(i)) == -1)	{

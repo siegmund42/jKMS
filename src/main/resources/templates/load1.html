@@ -21,7 +21,7 @@
     <script th:src="@{/js/distributionUtils.js}"></script>
     
 </head>
- <body onload="javascript:updateInputs(); javascript:updateArrangement();">
+ <body onload="javascript:updateInputs(); javascript:updateSum(false);">
  	<div th:replace="resources :: toolBar(load, 1, 0)">
 	</div>
  	<noscript>
@@ -65,7 +65,7 @@
 						<input type="number" name="cPrice[]" th:id="'cPrice[' + ${iter.count} + ']'" th:placeholder="#{prepare.currency}" th:value="${customer.key}" readonly="readonly" />
 					</div>
 					<div class="cell">
-						<input type="number" name="cAbsoluteQuantity[]" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+						<input type="number" name="cAbsoluteQuantity[]" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" th:value="${customer.value.absolute}" readonly="readonly" />
 					</div>
 				</div>
 				<div class="row" style="border-top: 1px solid black;">
@@ -88,7 +88,7 @@
 						<input type="number" name="sPrice[]" th:id="'sPrice[' + ${iter.count} + ']'" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" readonly="readonly" />
 					</div>
 					<div class="cell">
-						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" th:value="${salesman.value.absolute}" readonly="readonly" />
 					</div>
 				</div>
 				<div class="row" style="border-top: 1px solid black;">

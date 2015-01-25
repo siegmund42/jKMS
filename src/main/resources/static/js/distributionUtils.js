@@ -7,7 +7,7 @@ function updateArrangement()	{
 	// Update Absolute Numbers
 	//updateAbsolutes();
 	// Update Sum of Relative/Absolute Numbers
-	updateSum();
+	updateSum(true);
 }
 
 function updateInputs()	{
@@ -30,7 +30,7 @@ function updateInputs()	{
 }
 
 // Updates the sum of relative and absolute Amounts
-function updateSum()	{
+function updateSum(updateAbs)	{
 
 	var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0;
 	
@@ -38,17 +38,21 @@ function updateSum()	{
 	for(var i = 0; i < inputs[0].length; i++)	{
 		// Update Sums of Relative and absolute Amounts for Customer and Salesman
     	customerTotalRelative += inputs[0][i].value*1;
-    	// Update Absolute number
-    	inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
+    	if(updateAbs)	{
+	    	// Update Absolute number
+	    	inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
+    	}
     	customerTotalAbsolute += inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
 	}
 	// For every Field
 	for(var i = 0; i < inputs[1].length; i++)	{
 		// Update Sums of Relative and absolute Amounts for Customer and Salesman
     	salesmanTotalRelative += inputs[1][i].value*1;
-    	// Update Absolute number
-    	inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[1][i].value/200)*numberOfPlayers);
-    	salesmanTotalAbsolute += inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
+    	if(updateAbs)	{
+	    	// Update Absolute number
+	    	inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[1][i].value/200)*numberOfPlayers);
+    	}
+	    salesmanTotalAbsolute += inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
 	}
 	
 	// Set the values

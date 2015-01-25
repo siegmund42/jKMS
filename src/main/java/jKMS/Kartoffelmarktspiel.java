@@ -43,6 +43,8 @@ public class Kartoffelmarktspiel {
 	// STATE SETTERS
 	public void prepare() {
 		state = new Preparation(instance);
+		if(this.configuration != null)
+			this.configuration.clear();
 		LogicHelper.print("Preparing..");
 		//Application.gui.setReady(LogicHelper.getLocalizedMessage("preparation"));
 		//gui.setReady(LogicHelper.getLocalizedMessage("preparation"));
@@ -50,6 +52,7 @@ public class Kartoffelmarktspiel {
 
 	public void load() {
 		state = new Load(instance);
+		this.configuration.clear();
 		LogicHelper.print("Loading..");
 		//Application.gui.setReady(LogicHelper.getLocalizedMessage("loading"));
 	}
@@ -128,5 +131,12 @@ public class Kartoffelmarktspiel {
 		return end;
 	}
 
+	public Set<Package> getPackages() {
+		return configuration.getPackages();
+	}
+	
+	public Package getPackage(char pack) {
+		return configuration.getPackage(pack);
+	}
 	
 }

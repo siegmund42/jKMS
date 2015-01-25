@@ -1,6 +1,7 @@
 package jKMS.states;
 
 import static org.junit.Assert.assertEquals;
+import jKMS.Package;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import jKMS.Amount;
@@ -46,6 +47,7 @@ public class LoadTest {
 	public void setUp(){
 		kms.prepare();
 		kms.getCards().clear();
+		kms.getPackages().clear();
 		kms.getConfiguration().setbDistribution(new TreeMap<Integer, Amount>());
 		kms.getConfiguration().setsDistribution(new TreeMap<Integer, Amount>());
 		
@@ -64,7 +66,7 @@ public class LoadTest {
 		try{
 			kms.getState().generateCards();
 		}catch (Exception e) {
-			e.printStackTrace();	
+			e.printStackTrace();
 		}
 		
 		kms.load();
@@ -86,7 +88,7 @@ public class LoadTest {
 		expectedSet = new LinkedHashSet<Card>();
 		
 		for(Card iter : kms.getCards()){
-			if(iter.getId() < 1004){
+			if(iter.getId() < 1004 && iter.getPackage() == kms.getPackage('A')){
 				expectedSet.add(iter);
 				
 				if(iter instanceof BuyerCard) distrib = expectedBDistrib;
@@ -106,7 +108,6 @@ public class LoadTest {
 		//Test
 		
 		try{
-		
 			test = kms.getState().removeCard('A', 1004);
 		
 		}catch (Exception e) {
@@ -121,11 +122,12 @@ public class LoadTest {
 	
 	@Test
 	public void testLoad(){
-		System.out.println("testload##############");
 		//create initial information for testLoad
 		int expectedPlayerCount = 9;
 		int expectedAssistantCount = 2;
     	int expectedFirstID = 1001;
+    	Package a = kms.getConfiguration().newPackage('A');
+    	Package b = kms.getConfiguration().newPackage('B');
     	Map<Integer, Amount> expectedbDistribution = new TreeMap<>();
 		Map<Integer, Amount> expectedsDistribution = new TreeMap<>();
 		Set<Card> expectedCardSet = new LinkedHashSet<Card>();
@@ -136,15 +138,15 @@ public class LoadTest {
 		expectedsDistribution.put(56,new Amount(25,1));
 		expectedsDistribution.put(65,new Amount(25,1));
 		expectedsDistribution.put(66,new Amount(50,2));
-		expectedCardSet.add(new BuyerCard(1001,56,'A'));
-		expectedCardSet.add(new BuyerCard(1003,65,'A'));
-		expectedCardSet.add(new BuyerCard(1005,66,'B'));
-		expectedCardSet.add(new BuyerCard(1007,66,'B'));
-		expectedCardSet.add(new SellerCard(1002,56,'A'));
-		expectedCardSet.add(new SellerCard(1004,65,'A'));
-		expectedCardSet.add(new SellerCard(1006,66,'B'));
-		expectedCardSet.add(new SellerCard(1008,66,'B'));
-		expectedCardSet.add(new SellerCard(10010,67,'B'));
+		expectedCardSet.add(new BuyerCard(1001,56,a));
+		expectedCardSet.add(new BuyerCard(1003,65,a));
+		expectedCardSet.add(new BuyerCard(1005,66,a));
+		expectedCardSet.add(new BuyerCard(1007,66,a));
+		expectedCardSet.add(new SellerCard(1002,56,a));
+		expectedCardSet.add(new SellerCard(1004,65,a));
+		expectedCardSet.add(new SellerCard(1006,66,b));
+		expectedCardSet.add(new SellerCard(1008,66,b));
+		expectedCardSet.add(new SellerCard(10010,67,b));
 		
 		//setup loadTestFile for load()
 		String pathFile = "src/test/java/jKMS/states/loadTestFile.txt";
@@ -185,7 +187,7 @@ public class LoadTest {
 		   Iterator<Card> cardIter = cardSet.iterator();
 		   while(cardIter.hasNext()){
 			   Card card = (Card) cardIter.next();
-			   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage()).append(line);
+			   str.append("Card:"+card.getId()+":"+card.getValue()+":"+card.getPackage().getName()).append(line);
 		   }
 		try {
 			fw.write(str.toString());

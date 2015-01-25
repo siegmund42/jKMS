@@ -68,6 +68,9 @@ public class AppGui extends JFrame{
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
+		exitMsg = LogicHelper.getLocalizedMessage("GUI.exitMsg");
+		exitMsgTitle = LogicHelper.getLocalizedMessage("GUI.exitMsgTitle");
+		
 		List<Image> icons  = new ArrayList<>();
 		icons.add(new ImageIcon(getClass().getResource("/static/images/logo.png")).getImage());
 		this.setIconImages(icons);

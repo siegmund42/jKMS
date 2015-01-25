@@ -10,6 +10,7 @@ import java.util.MissingResourceException;
 //import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -21,6 +22,7 @@ public class LogicHelper {// have static function to help implementation logic
 	public static void init(ReloadableResourceBundleMessageSource ms)	{
 		messageSource = ms;
 	}
+	
 	/**
 	  * get an Char into int depending on the package it represent
 	  *
@@ -130,15 +132,15 @@ public class LogicHelper {// have static function to help implementation logic
     	}	else	{
     		key = "begin." + key;
         	try	{
-        		// get the right .properties File depending on current language [may throw MissingResourceException]
-        		ResourceBundle messages = ResourceBundle.getBundle("lang/messages", LocaleContextHolder.getLocale());
+        		// get the right .properties File in English [may throw MissingResourceException]
+        		ResourceBundle messages = ResourceBundle.getBundle("lang/messages", Locale.ENGLISH);
         		// get the String from the .properties [may throw MissingResourceException]
         		String message = messages.getString(key);
             	return message;
         	}	catch(MissingResourceException e)	{
         		try {
     				// get the right .properties File depending on current language [may throw MissingResourceException]
-    				ResourceBundle messages = ResourceBundle.getBundle("messages", Locale.ENGLISH);
+    				ResourceBundle messages = ResourceBundle.getBundle("lang/messages", LocaleContextHolder.getLocale());
     				// get the String from the .properties [may throw MissingResourceException]
     				String message = messages.getString(key);
     				return message;
