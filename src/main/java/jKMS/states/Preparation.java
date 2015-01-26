@@ -254,6 +254,7 @@ public class Preparation extends State	{
 		
 		//clear Card Set
 		kms.getCards().clear();
+		kms.getPackages().clear();
 
 		// IMPLEMENTATION
 		
