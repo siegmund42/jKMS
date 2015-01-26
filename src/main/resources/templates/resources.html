@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    
+<head th:fragment="meta">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="description" content=""/>
+	<meta name="author" content=""/>
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="icon" type="image/png" href="/images/favicon.png"/>
 </head>
  <body>
  	<div id="toolBar" th:fragment="toolBar (path, active, extra)">
