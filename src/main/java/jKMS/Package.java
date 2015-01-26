@@ -11,6 +11,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the packages for assistants.
+ * Provides support for adding, removing and some nice getter methods.
+ * @author freeDom, siegmund42
+ *
+ */
 public class Package	{
 	
 	protected Kartoffelmarktspiel kms;
@@ -37,6 +43,10 @@ public class Package	{
 		return this.sCards;
 	}
 	
+	/**
+	 * 
+	 * @return all Cards of this Package by adding sCards and bCards
+	 */
 	public List<Card> getCards()	{
 		List<Card> cards = new LinkedList<>();
 		cards.addAll(sCards);
@@ -44,6 +54,11 @@ public class Package	{
 		return cards;
 	}
 	
+	/**
+	 * Add a card to this Package.
+	 * @param card the card to add
+	 * @return true if card was added properly, false otherwise
+	 */
 	public boolean add(Card card)	{
 		boolean bla = false;
 		if(!bCards.contains(card) && !sCards.contains(card))
@@ -57,6 +72,10 @@ public class Package	{
 		return bla;
 	}
 	
+	/**
+	 * Returns the first Card of this Package.
+	 * @return first Card of this Package, could be Seller or Buyer
+	 */
 	public Card getFirstCard()	{
 		if(bCards.get(0).compareTo(sCards.get(0)) < 0)
 			return bCards.get(0);
@@ -65,6 +84,11 @@ public class Package	{
 		return null;
 	}
 	
+	/**
+	 * Returns the first Card of this package depending on the given type.
+	 * @param type the type of the requested first card, could be 'b' = Buyer or 's' = Seller
+	 * @return first Card of this Package
+	 */
 	public Card getFirstCard(char type)	{
 		if(type == 'b')
 			return bCards.get(0);
@@ -73,6 +97,10 @@ public class Package	{
 		throw new IllegalArgumentException("The Argument " + type + " is not allowed for the function getFirstCard().");
 	}
 	
+	/**
+	 * Returns the last Card of this Package.
+	 * @return last Card of this Package, could be Seller or Buyer
+	 */
 	public Card getLastCard()	{
 		if(bCards.get(bCards.size() - 1).compareTo(sCards.get(sCards.size() - 1)) > 0)
 			return bCards.get(bCards.size() - 1);
@@ -81,6 +109,11 @@ public class Package	{
 		return null;
 	}
 	
+	/**
+	 * Returns the last Card of this package depending on the given type.
+	 * @param type the type of the requested last card, could be 'b' = Buyer or 's' = Seller
+	 * @return last Card of this Package
+	 */
 	public Card getLastCard(char type)	{
 		if(type == 'b')
 			return bCards.get(bCards.size() - 1);
@@ -89,8 +122,10 @@ public class Package	{
 		throw new IllegalArgumentException("The Argument " + type + " is not allowed for the function getLastCard().");
 	}
 	
-	/*
-	 * Returns a card in this Package by its ID
+	/**
+	 * Returns the Card with the given ID
+	 * @param ID the Card id
+	 * @return the Card or null if Card was not found
 	 */
 	public Card getCard(int ID)	{
 		for(Card bCard : bCards)	{
@@ -104,15 +139,19 @@ public class Package	{
 		return null;
 	}
 	
-	/*
-	 * Returns true if card with ID id ist existing in this package
+	/**
+	 * Checks if this Package contains a specified Card
+	 * @param id the Card ID
+	 * @return true if card with ID id is existing in this package
 	 */
 	public boolean contains(int id)	{
 		return this.getCard(id) != null;
 	}
 	
-	/*
-	 * Remove one card from this package given by its ID
+	/**
+	 * Remove one card from this package
+	 * @param card the Card to remove
+	 * @return true if Card was removed, false otherwise
 	 */
 	public boolean remove(Card card)	{
 		//if(card==null) return false to prevent NullPointerException necessary?
@@ -123,8 +162,10 @@ public class Package	{
 		return false;
 	}
 	
-	/*
-	 * Remove all cards after last card from this package and card set
+	/**
+	 * Remove all cards after last card from this package and the kms.cardSet
+	 * @param lastID the last remaining [not distributed] Card of this package -> the first Card to remove
+	 * @return true if all cards where removed, false otherwise
 	 */
 	public boolean removeCards(int lastID)	throws WrongPackageException	{
 		if(this.contains(lastID))	{

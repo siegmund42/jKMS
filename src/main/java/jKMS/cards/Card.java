@@ -10,7 +10,9 @@ public abstract class Card implements Comparable<Card>	{
 		this.idNumber = idNumber;
 		this.pack = pack;
 		this.value = value;
-		pack.add(this);
+		// Workaround for empty Cards in PDF creation
+		if(idNumber != -42)
+			pack.add(this);
 	}
 
 	@Override

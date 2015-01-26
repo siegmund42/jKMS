@@ -75,7 +75,7 @@ public class Pdf {
 	 * @param  cardsSeller 	document for export	
 	*/
 
-	public void createPdfCardsSeller(Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
+	public void createPdfCardsSeller(Kartoffelmarktspiel kms, Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
     	//PRINT
@@ -162,7 +162,7 @@ public class Pdf {
         
         //Content      
 
-    	cardsSeller.add(this.Titlepage(packdis, firstID, false, cards));
+    	cardsSeller.add(this.Titlepage(kms, packdis, firstID, false, cards));
     	cardsSeller.newPage();
         
         while(itertop.hasNext()){
@@ -211,7 +211,7 @@ public class Pdf {
 	 */
 
 
-	public void createPdfCardsBuyer(Document cardsBuyer,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
+	public void createPdfCardsBuyer(Kartoffelmarktspiel kms, Document cardsBuyer,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
     	//PRINT
@@ -297,7 +297,7 @@ public class Pdf {
         
         //Content       
 
-    	cardsBuyer.add(this.Titlepage(packdis, firstID, true, cards));
+    	cardsBuyer.add(this.Titlepage(kms, packdis, firstID, true, cards));
     	cardsBuyer.newPage();
 
     	
@@ -399,7 +399,7 @@ public class Pdf {
 	 * @return 	a paragraph (itext) with the titlepage
 	 */
 
-    private Paragraph Titlepage(int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
+    private Paragraph Titlepage(Kartoffelmarktspiel kms, int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
     	byte isbuyer = 0;
     	
     	
@@ -457,90 +457,114 @@ public class Pdf {
     	allcontent3.add(content);
     	allcontent3.add(Chunk.NEWLINE);
       	
-    	int packid =0;// in welchem paket befinden wir uns 0 = A ...
-    	int packsize = 0;
-    	Integer idstart = 0;
-    	Integer idend = 0;
-    	//befindet man sich am anfang eines Paketes --> true
-    	boolean packstart = true;
-    	int durchlauf = 0;
-    	int durchlauf2 =0;
-    	int i;
-    	boolean found = false;
+//    	int packid =0;// in welchem paket befinden wir uns 0 = A ...
+//    	int packsize = 0;
+//    	Integer idstart = 0;
+//    	Integer idend = 0;
+//    	//befindet man sich am anfang eines Paketes --> true
+//    	boolean packstart = true;
+//    	int durchlauf = 0;
+//    	int durchlauf2 =0;
+//    	int i;
+//    	boolean found = false;
     	//first packagename 
-		//add Package
-		content = new Chunk(String.valueOf(LogicHelper.IntToPackage(packid)),valueFont);
-    	allcontent1.add(content);
-    	allcontent1.add(Chunk.NEWLINE);
+//		//add Package
+//		content = new Chunk(String.valueOf(LogicHelper.IntToPackage(packid)),valueFont);
+//    	allcontent1.add(content);
+//    	allcontent1.add(Chunk.NEWLINE);
     	
-    	//sexistische Kackscheiße !!!
-		for(Card iter : cards){
-			durchlauf++;
-			//istpacketgröße
-			packsize++;
+    	char type = 's';
+    	
+    	if(isBuyer)
+    		type = 'b';
+    	
+    	for(Package pack : kms.getPackages())	{
+    		
+    		content = new Chunk(String.valueOf(pack.getName()),valueFont);
+    		allcontent1.add(content);
+    		allcontent1.add(Chunk.NEWLINE);
 
-			//Anfangsid paket herausfinden
-			if(packstart){
-				//passt die start id? wenn is buyer true --> ungerade 
-				// wenn nicht nimm die id im nächsten durchlauf
-				if((iter.getId() % 2) == isbuyer){
-					idstart = iter.getId();
-					packstart = false;
-			      	//add startid to package
-					content = new Chunk(idstart.toString(),valueFont);
-			    	allcontent2.add(content);
-			    	allcontent2.add(Chunk.NEWLINE);
-				}
-			}
-			//ende des Packetes
-			if(packsize == packdis[packid]){
-				//passt die endid?
-				if((iter.getId() % 2) == isbuyer){
-					//ja
-					idend = iter.getId();
-				}else{
-					//nein --> gehe das kartenset nocheinmal durch bis zur letzten Karte
-					//mit passender ID
-					i =1;
-					found = false;
-					while(!found){
-					 durchlauf2 = 0;
-						for(Card iter2 : cards){
-							durchlauf2++;
-							if(durchlauf2 == (durchlauf-i)){
-								if((iter2.getId() % 2) == isbuyer){
-									idend = iter2.getId();
-									found = true;
-									break;
-								}else{
-									i++;
-									break;
-								}
-							}
-
-						}
-					}
-				}
-		      	//add end id to table
-		      	content = new Chunk(idend.toString(),valueFont);
-		    	allcontent3.add(content);
-		    	allcontent3.add(Chunk.NEWLINE);
-				//betrachte nächstes Paket
-		    	//fang am ende kein neues paket an!
-	    		packid++;
-		    	if(packid < packdis.length){
-		    		//add Package to table
-		    		content = new Chunk(String.valueOf(LogicHelper.IntToPackage(packid)),valueFont);
-		    		allcontent1.add(content);
-		    		allcontent1.add(Chunk.NEWLINE);
-		    		//paketgröße zählt von 0 bis zu tatsächlichen größe
-		    		packsize = 0;
-		    		//als nächste muss die anfangsid "gedruckt" werden
-		    		packstart = true;
-		    	}
-			}	
-
+			content = new Chunk(Integer.toString(pack.getFirstCard(type).getId()),valueFont);
+	    	allcontent2.add(content);
+	    	allcontent2.add(Chunk.NEWLINE);
+	
+	      	//add end id to table
+	      	content = new Chunk(Integer.toString(pack.getLastCard(type).getId()),valueFont);
+	    	allcontent3.add(content);
+	    	allcontent3.add(Chunk.NEWLINE);
+    	
     	}
+    	
+    	
+//    	
+//    	//sexistische Kackscheiße !!!
+//		for(Card iter : cards){
+//			durchlauf++;
+//			//istpacketgröße
+//			packsize++;
+//
+//			//Anfangsid paket herausfinden
+//			if(packstart){
+//				//passt die start id? wenn is buyer true --> ungerade 
+//				// wenn nicht nimm die id im nächsten durchlauf
+//				if((iter.getId() % 2) == isbuyer){
+//					idstart = iter.getId();
+//					packstart = false;
+//			      	//add startid to package
+//					content = new Chunk(idstart.toString(),valueFont);
+//			    	allcontent2.add(content);
+//			    	allcontent2.add(Chunk.NEWLINE);
+//				}
+//			}
+//			//ende des Packetes
+//			if(packsize == packdis[packid]){
+//				//passt die endid?
+//				if((iter.getId() % 2) == isbuyer){
+//					//ja
+//					idend = iter.getId();
+//				}else{
+//					//nein --> gehe das kartenset nocheinmal durch bis zur letzten Karte
+//					//mit passender ID
+//					i =1;
+//					found = false;
+//					while(!found){
+//					 durchlauf2 = 0;
+//						for(Card iter2 : cards){
+//							durchlauf2++;
+//							if(durchlauf2 == (durchlauf-i)){
+//								if((iter2.getId() % 2) == isbuyer){
+//									idend = iter2.getId();
+//									found = true;
+//									break;
+//								}else{
+//									i++;
+//									break;
+//								}
+//							}
+//
+//						}
+//					}
+//				}
+//		      	//add end id to table
+//		      	content = new Chunk(idend.toString(),valueFont);
+//		    	allcontent3.add(content);
+//		    	allcontent3.add(Chunk.NEWLINE);
+//				//betrachte nächstes Paket
+//		    	//fang am ende kein neues paket an!
+//	    		packid++;
+//		    	if(packid < packdis.length){
+//		    		//add Package to table
+//		    		content = new Chunk(String.valueOf(LogicHelper.IntToPackage(packid)),valueFont);
+//		    		allcontent1.add(content);
+//		    		allcontent1.add(Chunk.NEWLINE);
+//		    		//paketgröße zählt von 0 bis zu tatsächlichen größe
+//		    		packsize = 0;
+//		    		//als nächste muss die anfangsid "gedruckt" werden
+//		    		packstart = true;
+//		    	}
+//			}	
+//
+//    	}
     	
     	cell1y.addElement(allcontent1);
     	cell2y.addElement(allcontent2);

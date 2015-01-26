@@ -363,9 +363,9 @@ public class Preparation extends State	{
 	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException	{
 		
 		if(isBuyer)	{
-			pdf.createPdfCardsBuyer(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+			pdf.createPdfCardsBuyer(this.kms, doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
 		}	else	{
-			pdf.createPdfCardsSeller(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+			pdf.createPdfCardsSeller(this.kms, doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
 		}
 		
 		LogicHelper.print("PDF Created!");
