@@ -291,6 +291,11 @@ input[type=checkbox]	{
 ################################# ToolBar ##############################
 */
 
+#toolBar img	{
+	float:				left;
+	height:				30px;
+}
+
 #toolBar	{
 	position:			fixed;
 	width:				100%;
@@ -365,17 +370,6 @@ input[type=checkbox]	{
 	width:				94%;
 	/*background:			rgba(80,80,80,0.9);*/
 	color:				black;
-}
-
-#logo	{
-	position:			fixed;
-	bottom:				0;
-	left:				0;
-}
-
-#logo img	{
-	width:				40px;
-	margin:				0 5px;
 }
 
 /*

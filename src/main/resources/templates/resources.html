@@ -10,7 +10,7 @@
 </head>
  <body>
  	<div id="toolBar" th:fragment="toolBar (path, active, extra)">
- 		<img src="/images/logo.png" width="30" style="float: left;"/>
+ 		<img src="/images/logo.png" />
  		<div th:if="(${path} != 0)" id="path">
  			<div class="step" th:id="(${active} == 1)? 'step_active'" th:text="#{path.__${path}__.step1}"></div>
  			<div class="step" th:text="'>'"></div>
