@@ -1,9 +1,9 @@
 package jKMS.states;
 
 import jKMS.Amount;
-import jKMS.Package;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.LogicHelper;
+import jKMS.Package;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;

@@ -399,25 +399,16 @@ public class Pdf {
 	 */
 
     private Paragraph Titlepage(Kartoffelmarktspiel kms, int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
-    	byte isbuyer = 0;
-    	
-    	
-    	if(isBuyer){
-    		isbuyer = 1; // Buyercards uneven
-    	}
-    	
-    	/*
-    	if(isBuyer && ((firstID % 2 == 0))){
-    		isbuyer = 0;
-    	}*/
-    	
-    	if(!isBuyer){
-    		isbuyer = 0; // Sellercards even
-    	}
-    	/*
-    	if(!isBuyer && ((firstID % 2 == 0))){
-    		isbuyer = 1; // sellercards ungerade
-    	}*/
+//    	byte isbuyer = 0;
+//    	
+//    	
+//    	if(isBuyer){
+//    		isbuyer = 1; // Buyercards uneven
+//    	}
+//    	
+//    	if(!isBuyer){
+//    		isbuyer = 0; // Sellercards even
+//    	}
     	
     	Paragraph titlep = new Paragraph();
     	//Set Headline

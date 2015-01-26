@@ -8,7 +8,6 @@ import jKMS.cards.SellerCard;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 //import java.util.Properties;
