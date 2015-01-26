@@ -6,7 +6,7 @@
 	<meta name="description" content=""/>
 	<meta name="author" content=""/>
 	<link rel="stylesheet" th:href="@{/css/style.css}" />
-	<link rel="icon" type="image/png" href="/images/favicon.png"/>
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 </head>
  <body>
  	<div id="toolBar" th:fragment="toolBar (path, active, extra)">
@@ -41,8 +41,8 @@
 	 		<li th:if="${extra} == 1 OR ${extra} == 2">
 	            <a href="#" th:text="#{messages.export}"></a>
 	            <ul>
-			 		<li><a href="/pdfDownload" th:text="#{messages.export.pdf}" ></a></li>
-			 		<li><a href="/csv" th:text="#{messages.export.csv}" ></a></li>
+			 		<li><a href="/pdfDownload" target="_blank" th:text="#{messages.export.pdf}" ></a></li>
+			 		<li><a href="/csv" target="_blank" th:text="#{messages.export.csv}" ></a></li>
 				</ul>
 			</li>
  			<li th:if="${extra} != -1 and ${extra} != -2">

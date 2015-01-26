@@ -254,6 +254,8 @@ public class Preparation extends State	{
 		
 		//clear Card Set
 		kms.getCards().clear();
+		// clear Package set
+		kms.getPackages().clear();
 
 		// IMPLEMENTATION
 		
@@ -264,7 +266,8 @@ public class Preparation extends State	{
 		if((LogicHelper.getRelativeSum(bTemp) +  LogicHelper.getRelativeSum(sTemp)) != 200) throw new WrongRelativeDistributionException(); // muss in der summe 200 ergeben, da jede distribution in sich 100 ergibt
 		
 		for(int i = 0; i < kms.getAssistantCount(); i++)	{
-			kms.getConfiguration().newPackage(LogicHelper.IntToPackage(i));
+			if(!kms.getPackages().contains(kms.getPackage(LogicHelper.IntToPackage(i))))
+				kms.getConfiguration().newPackage(LogicHelper.IntToPackage(i));
 		}
 		
 

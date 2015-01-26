@@ -95,6 +95,7 @@ function allExcluded(id)	{
 		var element = document.getElementById(id);
 		element.readOnly = true;
 		element.value = "";
+		removeError(element);
 //		element.style.opacity = "0";
 	}	else	{
 		var element = document.getElementById(id);
