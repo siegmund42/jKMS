@@ -105,7 +105,7 @@ public class Pdf {
         
         //----------------------IMPLEMENTATION-------------------------------
         //add titlecard for package A 
-        printcards.add(new SellerCard(-42,0, new Package('A', null))); 
+        printcards.add(new SellerCard(-42,0, kms.getPackage('A'))); 
         
         for(Card iter : cards){
 			if(packsize == packdis[packID] ){ //is there a new package ?
@@ -240,9 +240,8 @@ public class Pdf {
         int i = 0;
         
         //----------------------IMPLEMENTATION-------------------------------
-       
         //add card for package idedifikation (first package) 
-        printcards.add(new BuyerCard(-42,0,new Package('A', null))); 
+        printcards.add(new BuyerCard(-42,0,kms.getPackage('A'))); 
         
         for(Card iter : cards){
 			if(packsize == packdis[packID]){ //is there a new package ? before printing first card of new pack packagepage
@@ -360,14 +359,14 @@ public class Pdf {
         content.setAlignment(Element.ALIGN_CENTER);
         
     	if(isTop){
-    		content.setSpacingBefore(140);
-            content.setSpacingAfter(121);
+    		content.setSpacingBefore(123);
+            content.setSpacingAfter(138);
     		if(card.getId() == -42 && card.getValue() == 0){
-                content.setSpacingAfter(146);
+                content.setSpacingAfter(163);
     		}
     	}else{
-            content.setSpacingBefore(140);
-            content.setSpacingAfter(121);
+            content.setSpacingBefore(150);
+            content.setSpacingAfter(111);
     	}
     	
         if((card.getId() != -42) && (card.getValue() != 0)){
