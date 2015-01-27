@@ -2,7 +2,6 @@ package jKMS;
 
 import static org.junit.Assert.*;
 import jKMS.cards.BuyerCard;
-import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
 
 import org.junit.After;
