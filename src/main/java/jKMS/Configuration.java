@@ -56,8 +56,11 @@ public class Configuration {
 	}
 	
 	public Package newPackage(char name)	{
-		Package pack = new Package(name, this.kms);
-		this.packages.add(pack);
+		Package pack = kms.getPackage(name);
+		if(pack == null)	{
+			pack = new Package(name, this.kms);
+			this.packages.add(pack);
+		}
 		return pack;
 	}
 	
