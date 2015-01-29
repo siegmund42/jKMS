@@ -372,6 +372,11 @@ input[type=checkbox]	{
 	color:				black;
 }
 
+#gif img	{
+	margin:				20px;
+	width:				300px;
+}
+
 /*
 ############################### General #################################
 */
