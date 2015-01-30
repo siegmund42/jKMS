@@ -1,6 +1,7 @@
 package jKMS;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -60,7 +61,7 @@ public class AppGui extends JFrame{
 	 */
 	private void initialize() {
 		//CREATE AND ADD COMPONENTS
-		setResizable(false);
+		//setResizable(false);
 		setTitle("Pit Market 2.0");
 		setBounds(100, 100, 640, 480);
 		setSize(640, 180);
@@ -214,6 +215,8 @@ public class AppGui extends JFrame{
 		lblStatus.setForeground(new Color(0x00009900));
 		btnOpenBrowser.setEnabled(true);
 		btnClose.setEnabled(true);
+		
+		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 	
 	public void setReady(String state){
@@ -223,13 +226,17 @@ public class AppGui extends JFrame{
 		lblStatus.setForeground(new Color(0x00009900));
 		btnOpenBrowser.setEnabled(true);
 		btnClose.setEnabled(true);
+		
+		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 	
 	public void setLoading(){
 		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblLoading"));
 		lblStatus.setForeground(new Color(0x00FF0000));
 		btnOpenBrowser.setEnabled(false);
-		btnClose.setEnabled(false);
+		//btnClose.setEnabled(false);
+		
+		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 	}
 	
 	public void setError(){

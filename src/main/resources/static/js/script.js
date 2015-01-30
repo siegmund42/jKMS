@@ -27,3 +27,10 @@ function checkFile(field) {
 		return false;
 	}
 }
+
+function showNinja()	{
+	if(document.getElementById('gif').innerHTML == "")
+		document.getElementById('gif').innerHTML = "<img src=\"images/ninja.gif\" />";
+	else
+		document.getElementById('gif').innerHTML = "";
+}
