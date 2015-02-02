@@ -208,22 +208,6 @@ public class Preparation extends State	{
 				   }
 				   LogicHelper.print("Create outputstreamformat successful.");
 				   o.write(str.toString().getBytes());
-				   //write information to file
-//				   if(o instanceof FileOutputStream){
-//					   FileOutputStream fo = (FileOutputStream)o;
-//					   fo.write(str.toString().getBytes());
-//					   fo.close();
-//				   }
-//				   else if(o instanceof ByteArrayOutputStream){
-//					   ByteArrayOutputStream bo = (ByteArrayOutputStream)o;
-//					   bo.write(str.toString().getBytes());
-//					   bo.close();
-//				   }
-//				   else{
-//					   return false;
-//				   }
-				 //fw.write(str.toString());
-				 //fw.close();
 				   LogicHelper.print("save() successful!");
 			       return true;
 		 }
@@ -366,9 +350,9 @@ public class Preparation extends State	{
 	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException	{
 		
 		if(isBuyer)	{
-			pdf.createPdfCardsBuyer(this.kms, doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+			pdf.createPdfCards(BuyerCard.class, this.kms, doc);
 		}	else	{
-			pdf.createPdfCardsSeller(this.kms, doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+			pdf.createPdfCards(SellerCard.class, this.kms, doc);
 		}
 		
 		LogicHelper.print("PDF Created!");

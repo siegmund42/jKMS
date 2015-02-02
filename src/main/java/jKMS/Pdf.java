@@ -2,9 +2,10 @@ package jKMS;
 
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
-import jKMS.cards.SellerCard;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -29,7 +30,7 @@ import com.itextpdf.text.pdf.PdfPTable;
  * Class for pdf functions
  *
  */
-public class Pdf {
+public class Pdf{
 	/**
 	 * A class for handling the PDF-Export
 	 */	
@@ -66,274 +67,160 @@ public class Pdf {
 	}
 	
 	/**
-	 *generate the sellercard PDF with all sellercards in their packages
+	 * Writes a generated cardPDF to the Document cardsBuyer.
+	 * The cards are putted in the PDF depending on their type and the number of Packages.
 	 * 
-
-	 * @param  cards			Set of cards filled in generateCards() (preparetion)
-	 * @param  assistancount	assistantcount number of assistants saved in jkms.configuration
-	 * @param  firstID			firstID default 1001 possible to chance with jkms.configuration.setFirstID 
-	 * @param  cardsSeller 	document for export	
-	*/
-
-	public void createPdfCardsSeller(Kartoffelmarktspiel kms, Document cardsSeller,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
-    	//Author: Justus (Timon with the good idea)
-    	//----------------------DEFINATIONS-----------------------------------
-    	//PRINT
-
-		
-		//get language
-		//Properties propertie;
-        //propertie = LogicHelper.getProperetie();
-        
-		cardtitle = LogicHelper.getLocalizedMessage("PDFSeller.cardtitle");
-        value = LogicHelper.getLocalizedMessage("PDFSeller.value") + ": ";
-		id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
-		titlepage = LogicHelper.getLocalizedMessage("PDFSeller.titlepage");
-		packet = LogicHelper.getLocalizedMessage("PDF.package");
-		from = LogicHelper.getLocalizedMessage("PDF.from");
-		to = LogicHelper.getLocalizedMessage("PDF.to");
-		
-    	//LOGIC
-    	//at every paper are 2 cards --> 2 sets one for top one for bottom
-        Set<Card> printcards = new LinkedHashSet<Card>(); // add first all cards + package idendifikationsites in one Set
-        Set<Card> topcards = new LinkedHashSet<Card>();
-        Set<Card> bottomcards = new LinkedHashSet<Card>();
-        int[] packdis = LogicHelper.getPackageDistribution(cards.size(), assistancount);
-        int packID = 0;
-        int packsize = 0;
-        int i = 0;
-        
-        //----------------------IMPLEMENTATION-------------------------------
-        //add titlecard for package A 
-        printcards.add(new SellerCard(-42,0, kms.getPackage('A'))); 
-        
-        for(Card iter : cards){
-			if(packsize == packdis[packID] ){ //is there a new package ?
-    			//yes
-				packID++;
-				packsize = 0;
-				printcards.add(new SellerCard(-42,0,iter.getPackage())); //add card for package idedifikation
-        	}
-			
-			if(iter instanceof SellerCard){ //seller or buyer?
-        		//seller
-        		printcards.add(new SellerCard(iter.getId(),iter.getValue(),iter.getPackage()));
-        	}
-			
-           packsize++;
-        }
-        	
-       if((printcards.size() % 2) == 0){ // split printcards in top and bottom
-           for(Card iter : printcards){
-        	   if(i < printcards.size()/2){
-        		   topcards.add(iter);
-        		   i++;
-        	   }else{
-        		   bottomcards.add(iter);
-        		   i++;
-        	   	}   
-           }
-       }else{
-    	   //size of printcards is uneven --> topcards.size = bottomcards.size + 1 --> add withepage to bottomcards
-           for(Card iter : printcards){
-        	   if(i < (printcards.size()/2) + 1){
-        		   topcards.add(iter);
-        		   i++;
-        	   }else{
-        		   bottomcards.add(iter);
-        		   i++;
-        	    }   
-           } 
-           bottomcards.add(new SellerCard(-42,0,null));// add wihtepage
-       }
-       
-       //PRINT
-        
-        //MetaData
-       
-        cardsSeller.addTitle("Seller-Cards");
-        cardsSeller.addAuthor("Kartoffelmarkspiel");
-        cardsSeller.addCreator("KMS");
-        
-        Iterator<Card> itertop = topcards.iterator();
-        Iterator<Card> iterbot = bottomcards.iterator();
-        Card topcard = null;
-        Card bottomcard = null;
-        
-        //Content      
-
-    	cardsSeller.add(this.Titlepage(kms, packdis, firstID, false, cards));
-    	cardsSeller.newPage();
-        
-        while(itertop.hasNext()){
-	        	
-	       //Top
-        	topcard = itertop.next();
-        	Paragraph top = createCard(topcard, true);
-          
-        	//bottom
-        	bottomcard = (Card) iterbot.next();
-        	Paragraph bottom = createCard(bottomcard, false);
-               
-        	//set Content togeser ;-)
-        
-        	PdfPCell topcell = new PdfPCell();
-        	topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
-        	topcell.addElement(top);
-        	topcell.addElement(this.createPackOnCard(topcard.getPackage()));//set Package bottom right on card
-        	topcell.setBorder(Rectangle.BOTTOM);
-  
-        	PdfPCell bottomcell = new PdfPCell();
-        	bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
-        	bottomcell.addElement(bottom);
-        	bottomcell.addElement(this.createPackOnCard(bottomcard.getPackage()));//set Package bottom right on card
-        	bottomcell.setBorder(Rectangle.NO_BORDER);
-        
-        	PdfPTable myTable = new PdfPTable(1);
-        	myTable.setWidthPercentage(100.0f);
-        	myTable.addCell(topcell);
-        	myTable.addCell(bottomcell);
-        
-        
-        	cardsSeller.add(myTable);
-        	cardsSeller.newPage();
-        } 
-  
-    }
-	
-	/**
-	 *generate the buyercards PDF with all buyercards  in their packages
-	 * 
-	 * @param  cards			Set of cards filled in generateCards() (preparetion)
-	 * @param  assistancount	assistantcount number of assistants saved in jkms.configuration
-	 * @param  firstID			firstID default 1001 possible to chance with jkms.configuration.setFirstID 
-	 * @param  cardsBuyer	 	document for export
+	 * @param  CardType		The class of cards for building the PDF. Should be either the class of SellerCard or BuyerCard
+	 * @param  kms			the actual instance of Kartoffelmarktspiel for determining some important information
+	 * @param  cardsBuyer	document for export
 	 */
 
 
-	public void createPdfCardsBuyer(Kartoffelmarktspiel kms, Document cardsBuyer,Set<Card> cards,int assistancount,int firstID) throws DocumentException,IOException{ 
+	public void createPdfCards(Class<? extends Card> CardType, Kartoffelmarktspiel kms, Document cardsBuyer) throws DocumentException,IOException{ 
     	//Author: Justus (Timon with the good idea)
     	//----------------------DEFINATIONS-----------------------------------
     	//PRINT
 		
-		//get language
-		//Properties propertie;
-        //propertie = LogicHelper.getProperetie();
-        
         //get Strings
-		cardtitle = LogicHelper.getLocalizedMessage("PDFBuyer.cardtitle");
-        value = LogicHelper.getLocalizedMessage("PDFBuyer.value") + ": ";
-		id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
-		titlepage = LogicHelper.getLocalizedMessage("PDFBuyer.titlepage");
-		packet = LogicHelper.getLocalizedMessage("PDF.package");
-		from = LogicHelper.getLocalizedMessage("PDF.from");
-		to = LogicHelper.getLocalizedMessage("PDF.to");
+		
+        if(CardType.isAssignableFrom(BuyerCard.class))	{
+			cardtitle = LogicHelper.getLocalizedMessage("PDFBuyer.cardtitle");
+	        value = LogicHelper.getLocalizedMessage("PDFBuyer.value") + ": ";
+			id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
+			titlepage = LogicHelper.getLocalizedMessage("PDFBuyer.titlepage");
+			packet = LogicHelper.getLocalizedMessage("PDF.package");
+			from = LogicHelper.getLocalizedMessage("PDF.from");
+			to = LogicHelper.getLocalizedMessage("PDF.to");
+        }	else	{
+    		cardtitle = LogicHelper.getLocalizedMessage("PDFSeller.cardtitle");
+	        value = LogicHelper.getLocalizedMessage("PDFSeller.value") + ": ";
+	  		id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
+	  		titlepage = LogicHelper.getLocalizedMessage("PDFSeller.titlepage");
+	  		packet = LogicHelper.getLocalizedMessage("PDF.package");
+	  		from = LogicHelper.getLocalizedMessage("PDF.from");
+	  		to = LogicHelper.getLocalizedMessage("PDF.to");
+        }
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
         Set<Card> printcards = new LinkedHashSet<Card>(); // add first all cards + package idendifikationsites in one Set
         Set<Card> topcards = new LinkedHashSet<Card>();
         Set<Card> bottomcards = new LinkedHashSet<Card>();
-        int[] packdis = LogicHelper.getPackageDistribution(cards.size(), assistancount);
+        Set<Card> cards = kms.getCards();
+        int[] packdis = LogicHelper.getPackageDistribution(cards.size(), kms.getAssistantCount());
         int packID = 0;
         int packsize = 0;
         int i = 0;
+        Constructor<? extends Card> cardConstructor = null;
+		try {
+			cardConstructor = CardType.getConstructor(int.class, int.class, Package.class);
+		} catch (NoSuchMethodException | SecurityException e1) {
+			e1.printStackTrace();
+		}
         
         //----------------------IMPLEMENTATION-------------------------------
         //add card for package idedifikation (first package) 
-        printcards.add(new BuyerCard(-42,0,kms.getPackage('A'))); 
+        try {
+			printcards.add(cardConstructor.newInstance(-42,0,kms.getPackage('A')));
         
-        for(Card iter : cards){
-			if(packsize == packdis[packID]){ //is there a new package ? before printing first card of new pack packagepage
-            			//yes
-        				packID++;
-        				packsize = 0;
-        				printcards.add(new BuyerCard(-42,0,iter.getPackage())); //add card for package idedifikation
-        				//printcards.add(new BuyerCard(iter.getId(),iter.getValue(),iter.getPackage()));
-        			}
+	        for(Card iter : cards){
+				if(packsize == packdis[packID]){ //is there a new package ? before printing first card of new pack packagepage
+	            	//yes
+	        		packID++;
+	        		packsize = 0;
+	        		//add card for package idedifikation
+	        		printcards.add(cardConstructor.newInstance(-42,0,iter.getPackage()));
+	        	}
+				
+				if(iter.getClass().isAssignableFrom(CardType))	{ //seller or buyer?
+					printcards.add(iter);
+	        	}
+				
+				packsize++;
+	        }
+	        	
+	       if((printcards.size() % 2) == 0){ // split printcards in top and bottom
+	           for(Card iter : printcards){
+	        	   if(i < printcards.size()/2){
+	        		   topcards.add(iter);
+	        		   i++;
+	        	   }else{
+	        		   bottomcards.add(iter);
+	        		   i++;
+	        	   	}   
+	           }
+	       }else{
+	           for(Card iter : printcards){
+	        	   if(i < (printcards.size()/2) + 1){
+	        		   topcards.add(iter);
+	        		   i++;
+	        	   }else{
+	        		   bottomcards.add(iter);
+	        		   i++;
+	        	   	}   
+	           } 
+	           bottomcards.add(cardConstructor.newInstance(-42,0,null));// add wihteside
+	       }
+	       
+	       //PRINT
+	        
+	        //MetaData
+	       
+	        cardsBuyer.addTitle("Buyer-Cards");
+	        cardsBuyer.addAuthor("Kartoffelmarkspiel");
+	        cardsBuyer.addCreator("KMS");
+	        
+	        Iterator<Card> itertop = topcards.iterator();
+	        Iterator<Card> iterbot = bottomcards.iterator();
+	        Card topcard = null;
+	        Card bottomcard = null;
+	        
+	        //Content       
+	
+	    	cardsBuyer.add(this.Titlepage(kms, packdis, kms.getConfiguration().getFirstID(), true, cards));
+	    	cardsBuyer.newPage();
+	
+	    	
+	        
+	        while(itertop.hasNext()){
+	        	
+	        	//Top
+	        	topcard = itertop.next();
+	        	Paragraph top = createCard(topcard, true);
+	          
+	        	//bottom
+	        	bottomcard = (Card) iterbot.next();
+	        	Paragraph bottom = createCard(bottomcard, false);
+	               
+	        	//set Content togeser ;-)
+	        
+	        	PdfPCell topcell = new PdfPCell();
+	        	topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
+	        	topcell.addElement(top);
+	        	topcell.addElement(this.createPackOnCard(topcard.getPackage()));//set Package bottom right on card
+	        	topcell.setBorder(Rectangle.BOTTOM);
+	        
+	        	PdfPCell bottomcell = new PdfPCell();
+	        	bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
+	        	bottomcell.addElement(bottom);
+	        	bottomcell.addElement(this.createPackOnCard(bottomcard.getPackage()));//set Package bottom right on card        	bottomcell.setBorder(Rectangle.NO_BORDER);
+	        	bottomcell.setBorder(Rectangle.NO_BORDER);
+	        	
+	        	PdfPTable myTable = new PdfPTable(1);
+	        	myTable.setWidthPercentage(100.0f);
+	        	myTable.addCell(topcell);
+	        	myTable.addCell(bottomcell);
+	        
+	        
+	        	cardsBuyer.add(myTable);
+	        	cardsBuyer.newPage();
+	        }
 
-    		if(iter instanceof BuyerCard){ //seller or buyer?
-				printcards.add(new BuyerCard(iter.getId(),iter.getValue(),iter.getPackage()));
-			}
-            packsize++; 
-        }
-        	
-       if((printcards.size() % 2) == 0){ // split printcards in top and bottom
-           for(Card iter : printcards){
-        	   if(i < printcards.size()/2){
-        		   topcards.add(iter);
-        		   i++;
-        	   }else{
-        		   bottomcards.add(iter);
-        		   i++;
-        	   	}   
-           }
-       }else{
-           for(Card iter : printcards){
-        	   if(i < (printcards.size()/2) + 1){
-        		   topcards.add(iter);
-        		   i++;
-        	   }else{
-        		   bottomcards.add(iter);
-        		   i++;
-        	   	}   
-           } 
-           bottomcards.add(new SellerCard(-42,0,null));// add wihteside
-       }
-       
-       //PRINT
-        
-        //MetaData
-       
-        cardsBuyer.addTitle("Buyer-Cards");
-        cardsBuyer.addAuthor("Kartoffelmarkspiel");
-        cardsBuyer.addCreator("KMS");
-        
-        Iterator<Card> itertop = topcards.iterator();
-        Iterator<Card> iterbot = bottomcards.iterator();
-        Card topcard = null;
-        Card bottomcard = null;
-        
-        //Content       
-
-    	cardsBuyer.add(this.Titlepage(kms, packdis, firstID, true, cards));
-    	cardsBuyer.newPage();
-
-    	
-        
-        while(itertop.hasNext()){
-        	
-        	//Top
-        	topcard = itertop.next();
-        	Paragraph top = createCard(topcard, true);
-          
-        	//bottom
-        	bottomcard = (Card) iterbot.next();
-        	Paragraph bottom = createCard(bottomcard, false);
-               
-        	//set Content togeser ;-)
-        
-        	PdfPCell topcell = new PdfPCell();
-        	topcell.addElement(new Paragraph(" "));//Leerzeile, damit top paragraph funzt
-        	topcell.addElement(top);
-        	topcell.addElement(this.createPackOnCard(topcard.getPackage()));//set Package bottom right on card
-        	topcell.setBorder(Rectangle.BOTTOM);
-        
-        	PdfPCell bottomcell = new PdfPCell();
-        	bottomcell.addElement(new Paragraph(" "));//Leerzeile, damit bottom paragraph funzt
-        	bottomcell.addElement(bottom);
-        	bottomcell.addElement(this.createPackOnCard(bottomcard.getPackage()));//set Package bottom right on card        	bottomcell.setBorder(Rectangle.NO_BORDER);
-        	bottomcell.setBorder(Rectangle.NO_BORDER);
-        	
-        	PdfPTable myTable = new PdfPTable(1);
-        	myTable.setWidthPercentage(100.0f);
-        	myTable.addCell(topcell);
-        	myTable.addCell(bottomcell);
-        
-        
-        	cardsBuyer.add(myTable);
-        	cardsBuyer.newPage();
-        }
+		} catch (InstantiationException | IllegalAccessException | 
+				IllegalArgumentException | InvocationTargetException |
+				SecurityException e) {
+			e.printStackTrace();
+		}
   
     }
 
@@ -405,16 +292,6 @@ public class Pdf {
 	 */
 
     private Paragraph Titlepage(Kartoffelmarktspiel kms, int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
-//    	byte isbuyer = 0;
-//    	
-//    	
-//    	if(isBuyer){
-//    		isbuyer = 1; // Buyercards uneven
-//    	}
-//    	
-//    	if(!isBuyer){
-//    		isbuyer = 0; // Sellercards even
-//    	}
     	
     	Paragraph titlep = new Paragraph();
     	//Set Headline
@@ -452,22 +329,6 @@ public class Pdf {
       	content = new Chunk(this.to,valueFont);
     	allcontent3.add(content);
     	allcontent3.add(Chunk.NEWLINE);
-      	
-//    	int packid =0;// in welchem paket befinden wir uns 0 = A ...
-//    	int packsize = 0;
-//    	Integer idstart = 0;
-//    	Integer idend = 0;
-//    	//befindet man sich am anfang eines Paketes --> true
-//    	boolean packstart = true;
-//    	int durchlauf = 0;
-//    	int durchlauf2 =0;
-//    	int i;
-//    	boolean found = false;
-    	//first packagename 
-//		//add Package
-//		content = new Chunk(String.valueOf(LogicHelper.IntToPackage(packid)),valueFont);
-//    	allcontent1.add(content);
-//    	allcontent1.add(Chunk.NEWLINE);
     	
     	char type = 's';
     	
@@ -493,74 +354,7 @@ public class Pdf {
     	
     	
 //    	
-//    	//sexistische Kackscheiße !!!
-//		for(Card iter : cards){
-//			durchlauf++;
-//			//istpacketgröße
-//			packsize++;
-//
-//			//Anfangsid paket herausfinden
-//			if(packstart){
-//				//passt die start id? wenn is buyer true --> ungerade 
-//				// wenn nicht nimm die id im nächsten durchlauf
-//				if((iter.getId() % 2) == isbuyer){
-//					idstart = iter.getId();
-//					packstart = false;
-//			      	//add startid to package
-//					content = new Chunk(idstart.toString(),valueFont);
-//			    	allcontent2.add(content);
-//			    	allcontent2.add(Chunk.NEWLINE);
-//				}
-//			}
-//			//ende des Packetes
-//			if(packsize == packdis[packid]){
-//				//passt die endid?
-//				if((iter.getId() % 2) == isbuyer){
-//					//ja
-//					idend = iter.getId();
-//				}else{
-//					//nein --> gehe das kartenset nocheinmal durch bis zur letzten Karte
-//					//mit passender ID
-//					i =1;
-//					found = false;
-//					while(!found){
-//					 durchlauf2 = 0;
-//						for(Card iter2 : cards){
-//							durchlauf2++;
-//							if(durchlauf2 == (durchlauf-i)){
-//								if((iter2.getId() % 2) == isbuyer){
-//									idend = iter2.getId();
-//									found = true;
-//									break;
-//								}else{
-//									i++;
-//									break;
-//								}
-//							}
-//
-//						}
-//					}
-//				}
-//		      	//add end id to table
-//		      	content = new Chunk(idend.toString(),valueFont);
-//		    	allcontent3.add(content);
-//		    	allcontent3.add(Chunk.NEWLINE);
-//				//betrachte nächstes Paket
-//		    	//fang am ende kein neues paket an!
-//	    		packid++;
-//		    	if(packid < packdis.length){
-//		    		//add Package to table
-//		    		content = new Chunk(String.valueOf(LogicHelper.IntToPackage(packid)),valueFont);
-//		    		allcontent1.add(content);
-//		    		allcontent1.add(Chunk.NEWLINE);
-//		    		//paketgröße zählt von 0 bis zu tatsächlichen größe
-//		    		packsize = 0;
-//		    		//als nächste muss die anfangsid "gedruckt" werden
-//		    		packstart = true;
-//		    	}
-//			}	
-//
-//    	}
+//    	Ehemals sexistische Kackscheiße !!!
     	
     	cell1y.addElement(allcontent1);
     	cell2y.addElement(allcontent2);
@@ -586,9 +380,6 @@ public class Pdf {
 	 */	
     
     public Document createExportPdf(Document doc, Image pdfImage, Map<String, Float> stats) throws DocumentException{
-    	//get language
-		//Properties property;
-        //property = LogicHelper.getProperetie();
         
         //get Strings
         String headline = LogicHelper.getLocalizedMessage("evaluate.headline");

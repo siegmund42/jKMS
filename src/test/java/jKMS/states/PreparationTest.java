@@ -266,11 +266,11 @@ public class PreparationTest {
 			
 			PdfWriter.getInstance(documentSeller, new FileOutputStream("src/test/java/jKMS/states/documentseller.pdf")); 
 			documentSeller.open();
-			pdf.createPdfCardsSeller(kms, documentSeller,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+			pdf.createPdfCards(SellerCard.class, kms, documentSeller);
 			documentSeller.close();
 			PdfWriter.getInstance(documentBuyer, new FileOutputStream("src/test/java/jKMS/states/documentbuyer.pdf")); 
 			documentBuyer.open();
-			pdf.createPdfCardsBuyer(kms, documentBuyer,kms.getCards(),kms.getAssistantCount(),kms.getConfiguration().getFirstID());
+			pdf.createPdfCards(BuyerCard.class, kms, documentBuyer);
 			documentBuyer.close();
 			
 		}catch (Exception e) {
