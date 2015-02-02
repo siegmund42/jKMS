@@ -144,7 +144,7 @@ public class Pdf {
         		   i++;
         	    }   
            } 
-           bottomcards.add(new SellerCard(-42,0,new Package(' ', null)));// add wihtepage
+           bottomcards.add(new SellerCard(-42,0,null));// add wihtepage
        }
        
        //PRINT
@@ -157,8 +157,8 @@ public class Pdf {
         
         Iterator<Card> itertop = topcards.iterator();
         Iterator<Card> iterbot = bottomcards.iterator();
-        Card topcard = new SellerCard(0,0,new Package(' ', null));
-        Card bottomcard = new SellerCard(0,0,new Package(' ', null));
+        Card topcard = null;
+        Card bottomcard = null;
         
         //Content      
 
@@ -278,7 +278,7 @@ public class Pdf {
         		   i++;
         	   	}   
            } 
-           bottomcards.add(new SellerCard(-42,0,new Package(' ', null)));// add wihteside
+           bottomcards.add(new SellerCard(-42,0,null));// add wihteside
        }
        
        //PRINT
@@ -291,8 +291,8 @@ public class Pdf {
         
         Iterator<Card> itertop = topcards.iterator();
         Iterator<Card> iterbot = bottomcards.iterator();
-        Card topcard = new BuyerCard(0,0,new Package(' ', null));
-        Card bottomcard = new BuyerCard(0,0,new Package(' ', null));
+        Card topcard = null;
+        Card bottomcard = null;
         
         //Content       
 
@@ -339,7 +339,9 @@ public class Pdf {
 
 
 	private Paragraph createPackOnCard(Package pack){
-		Paragraph cPa = new Paragraph(String.valueOf(pack),packFont);
+		Paragraph cPa =null; 
+		if(pack == null) cPa = new Paragraph(" ",packFont);
+		else	cPa = new Paragraph(String.valueOf(pack.getName()),packFont);
     	cPa.setAlignment(Element.ALIGN_RIGHT);
     	cPa.setSpacingAfter(20);
     	return cPa;
@@ -380,10 +382,14 @@ public class Pdf {
         	Chunk cID = new Chunk(this.id + card.getId(),valueFont);
         	content.add(cID);
         }else{
-        	Paragraph pack = new Paragraph(String.valueOf(card.getPackage()),titleFont);
+        	Paragraph pack;
+        	if(card.getPackage() == null){
+        		pack = new Paragraph(" ",titleFont);	
+        	}else{
+        		pack = new Paragraph(String.valueOf(card.getPackage().getName()),titleFont);
+        	}
         	pack.setAlignment(Element.ALIGN_CENTER);
         	content.add(pack);
-        	card.setPackage(new Package(' ', null));
         }
         	
     	return content;
