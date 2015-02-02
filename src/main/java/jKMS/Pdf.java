@@ -86,20 +86,16 @@ public class Pdf{
         if(CardType.isAssignableFrom(BuyerCard.class))	{
 			cardtitle = LogicHelper.getLocalizedMessage("PDFBuyer.cardtitle");
 	        value = LogicHelper.getLocalizedMessage("PDFBuyer.value") + ": ";
-			id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
 			titlepage = LogicHelper.getLocalizedMessage("PDFBuyer.titlepage");
-			packet = LogicHelper.getLocalizedMessage("PDF.package");
-			from = LogicHelper.getLocalizedMessage("PDF.from");
-			to = LogicHelper.getLocalizedMessage("PDF.to");
         }	else	{
     		cardtitle = LogicHelper.getLocalizedMessage("PDFSeller.cardtitle");
 	        value = LogicHelper.getLocalizedMessage("PDFSeller.value") + ": ";
-	  		id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
 	  		titlepage = LogicHelper.getLocalizedMessage("PDFSeller.titlepage");
-	  		packet = LogicHelper.getLocalizedMessage("PDF.package");
-	  		from = LogicHelper.getLocalizedMessage("PDF.from");
-	  		to = LogicHelper.getLocalizedMessage("PDF.to");
         }
+  		id = LogicHelper.getLocalizedMessage("PDF.id") + ": ";
+  		packet = LogicHelper.getLocalizedMessage("PDF.package");
+  		from = LogicHelper.getLocalizedMessage("PDF.from");
+  		to = LogicHelper.getLocalizedMessage("PDF.to");
 		
     	//LOGIC
     	//at every paper are 2 cards --> 2 sets one for top one for bottom
@@ -177,7 +173,7 @@ public class Pdf{
 	        
 	        //Content       
 	
-	    	cardsBuyer.add(this.Titlepage(kms, packdis, kms.getConfiguration().getFirstID(), true, cards));
+	    	cardsBuyer.add(this.Titlepage(kms.getPackages(), CardType.isAssignableFrom(BuyerCard.class)));
 	    	cardsBuyer.newPage();
 	
 	    	
@@ -291,7 +287,7 @@ public class Pdf{
 	 * @return 	a paragraph (itext) with the titlepage
 	 */
 
-    private Paragraph Titlepage(Kartoffelmarktspiel kms, int[] packdis, int firstID, boolean isBuyer, Set<Card> cards){ 
+    private Paragraph Titlepage(Set<Package> packages, boolean isBuyer){
     	
     	Paragraph titlep = new Paragraph();
     	//Set Headline
@@ -335,7 +331,7 @@ public class Pdf{
     	if(isBuyer)
     		type = 'b';
     	
-    	for(Package pack : kms.getPackages())	{
+    	for(Package pack : packages)	{
     		
     		content = new Chunk(String.valueOf(pack.getName()),valueFont);
     		allcontent1.add(content);
@@ -352,8 +348,6 @@ public class Pdf{
     	
     	}
     	
-    	
-//    	
 //    	Ehemals sexistische Kackscheiße !!!
     	
     	cell1y.addElement(allcontent1);
