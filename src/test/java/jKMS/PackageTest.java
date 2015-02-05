@@ -1,6 +1,6 @@
 package jKMS;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.SellerCard;
 

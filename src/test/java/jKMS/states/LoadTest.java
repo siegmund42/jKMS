@@ -1,13 +1,13 @@
 package jKMS.states;
 
 import static org.junit.Assert.assertEquals;
-import jKMS.Package;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
 import jKMS.LogicHelper;
+import jKMS.Package;
 import jKMS.cards.BuyerCard;
 import jKMS.cards.Card;
 import jKMS.cards.SellerCard;
