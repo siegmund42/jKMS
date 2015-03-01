@@ -36,15 +36,17 @@ public class Preparation extends State	{
 
 	private Pdf pdf;
 
-	
 	public Preparation(Kartoffelmarktspiel kms){
 		this.kms = kms;
 		this.pdf = new Pdf();
 	}
 	
-	//	Loads StandardConfiguration into kms.
-	//	This method only loads the relative values for displaying in Web Interface.
-	//	Absolute Values are calculated by Javascript and stored using the newGroup-Method.
+	/**
+	 * Loads StandardConfiguration into kms.
+	 * This method only loads the relative values for displaying in Web Interface.
+	 * Absolute Values are calculated by Javascript and stored using the newGroup-Method.
+	 * @see jKMS.states.State#loadStandardDistribution()
+	 */
 	@Override
 	public void loadStandardDistribution(){
 
@@ -72,9 +74,9 @@ public class Preparation extends State	{
 		
 	}
 	
-	
-	//setBasicConfig
-	//setter method for the number of players and assistants
+	/**
+	 * setter method for the number of players and assistants
+	 */
 	@Override
 	public void setBasicConfig(int playerCount, int assistantCount){
 		kms.getConfiguration().setPlayerCount(playerCount);
@@ -82,8 +84,6 @@ public class Preparation extends State	{
 		LogicHelper.print("SettingBasicConfiguration: PlayerCount = " + kms.getConfiguration().getPlayerCount() + "; AssistantCount = " + kms.getConfiguration().getAssistantCount());
 	}
 	
-	
-	//load Implementieren
 	@Override
 	public void load(MultipartFile file) throws NumberFormatException, IOException, EmptyFileException, FalseLoadFileException{
 	//set initial value for load
@@ -161,9 +161,6 @@ public class Preparation extends State	{
     	 
     }
 
-	
-		
-		//defalt path:Users/yangxinyu/git/jKMS
 	@Override
 	public boolean save(OutputStream o) throws IOException{
 		//take out information aus Configuration and kms
@@ -211,33 +208,16 @@ public class Preparation extends State	{
 				   }
 				   LogicHelper.print("Create outputstreamformat successful.");
 				   o.write(str.toString().getBytes());
-				   //write information to file
-//				   if(o instanceof FileOutputStream){
-//					   FileOutputStream fo = (FileOutputStream)o;
-//					   fo.write(str.toString().getBytes());
-//					   fo.close();
-//				   }
-//				   else if(o instanceof ByteArrayOutputStream){
-//					   ByteArrayOutputStream bo = (ByteArrayOutputStream)o;
-//					   bo.write(str.toString().getBytes());
-//					   bo.close();
-//				   }
-//				   else{
-//					   return false;
-//				   }
-				 //fw.write(str.toString());
-				 //fw.close();
 				   LogicHelper.print("save() successful!");
 			       return true;
 		 }
 	}
 
-
-
-	
-	// generateCardSet
-	// Generate an ordered, random Set of Cards using
-	// bDistribution and sDistribution
+	/**
+	 *  Generate an ordered, random Set of Cards
+	 *  using bDistribution and sDistribution
+	 * @see jKMS.states.State#generateCards()
+	 */
 	@Override
 	public void generateCards() throws WrongRelativeDistributionException, WrongAssistantCountException, WrongFirstIDException, WrongPlayerCountException {
 		// DECLARATION
@@ -258,6 +238,8 @@ public class Preparation extends State	{
 		
 		//clear Card Set
 		kms.getCards().clear();
+		// clear Package set
+		kms.getPackages().clear();
 
 		// IMPLEMENTATION
 		
@@ -267,8 +249,10 @@ public class Preparation extends State	{
 		if(kms.getConfiguration().getFirstID() < 0)throw new WrongFirstIDException();
 		if((LogicHelper.getRelativeSum(bTemp) +  LogicHelper.getRelativeSum(sTemp)) != 200) throw new WrongRelativeDistributionException(); // muss in der summe 200 ergeben, da jede distribution in sich 100 ergibt
 		
-		
-		
+		for(int i = 0; i < kms.getAssistantCount(); i++)	{
+			if(!kms.getPackages().contains(kms.getPackage(LogicHelper.IntToPackage(i))))
+				kms.getConfiguration().newPackage(LogicHelper.IntToPackage(i));
+		}
 		
 
 		packid =0;//package index 0 for Pack A, 1 for Pack B ...	
@@ -288,16 +272,13 @@ public class Preparation extends State	{
 			
 			   //card is in the pack
 				if(packsize < packdistribution[packid]){
-					kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+					kms.getCards().add(new BuyerCard(id, randomKey, kms.getPackage(LogicHelper.IntToPackage(packid))));
 					packsize++;
 				}else {
-						packid++; //get amount of cards from the next packaga
-						kms.getCards().add(new BuyerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
-						packsize = 1; // reset packsize first card is in! --> 1
+					packid++; //get amount of cards from the next packaga
+					kms.getCards().add(new BuyerCard(id, randomKey, kms.getPackage(LogicHelper.IntToPackage(packid))));
+					packsize = 1; // reset packsize first card is in! --> 1
 				}
-				
-
-
 		
 				bTemp.put(randomKey, new Amount(bTemp.get(randomKey).getRelative(), bTemp.get(randomKey).getAbsolute() - 1)); 
 				if (bTemp.get(randomKey).getAbsolute() == 0) {
@@ -314,12 +295,12 @@ public class Preparation extends State	{
 				randomKey = sKeys.get(randomListEntry);
 
 				if(packsize < packdistribution[packid]){
-					kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+					kms.getCards().add(new SellerCard(id, randomKey, kms.getPackage(LogicHelper.IntToPackage(packid))));
 					packsize++;
 				}else {
 				//a new package start
 						packid++;
-						kms.getCards().add(new SellerCard(id, randomKey, LogicHelper.IntToPackage(packid)));
+						kms.getCards().add(new SellerCard(id, randomKey, kms.getPackage(LogicHelper.IntToPackage(packid))));
 						packsize = 1;
 				}
 
@@ -336,9 +317,12 @@ public class Preparation extends State	{
 		}
 	}			
 
-	// newGroup
-	// Creates a new entry for the bDistribution or sDistribution Map,
-	// depending if isBuyer is true or false.
+	/**
+	 * Creates a new entry for the bDistribution or sDistribution Map
+	 * depending if isBuyer is true or false.
+	 * 
+	 * @param isBuyer indicates if a new entry must be created for bDistribution or sDistribution
+	 */
 	@Override
 	public void newGroup(boolean isBuyer, int price, int relativeNumber, int absoluteNumber) {
 		Map<Integer, Amount> distrib;
@@ -362,14 +346,13 @@ public class Preparation extends State	{
 		
 	}
 	
-	// createPDF - Delegates to PDF-Class
 	@Override
 	public void createPdf(boolean isBuyer, Document doc) throws DocumentException,IOException	{
 		
 		if(isBuyer)	{
-			pdf.createPdfCardsBuyer(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+			pdf.createPdfCards(BuyerCard.class, this.kms, doc);
 		}	else	{
-			pdf.createPdfCardsSeller(doc, kms.getCards(), kms.getAssistantCount(), kms.getConfiguration().getFirstID());
+			pdf.createPdfCards(SellerCard.class, this.kms, doc);
 		}
 		
 		LogicHelper.print("PDF Created!");

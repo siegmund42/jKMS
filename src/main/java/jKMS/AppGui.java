@@ -1,10 +1,12 @@
 package jKMS;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +17,10 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -25,8 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 public class AppGui extends JFrame{
@@ -41,6 +46,9 @@ public class AppGui extends JFrame{
 	private JTextArea textArea;
 	private MessageConsole console;
 	
+	private String exitMsg;
+	private String exitMsgTitle;
+	
 	/**
 	 * Create the application.
 	 */
@@ -53,18 +61,26 @@ public class AppGui extends JFrame{
 	 */
 	private void initialize() {
 		//CREATE AND ADD COMPONENTS
-		setResizable(false);
+		//setResizable(false);
 		setTitle("Pit Market 2.0");
 		setBounds(100, 100, 640, 480);
 		setSize(640, 180);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		exitMsg = LogicHelper.getLocalizedMessage("GUI.exitMsg");
+		exitMsgTitle = LogicHelper.getLocalizedMessage("GUI.exitMsgTitle");
+		
+		List<Image> icons  = new ArrayList<>();
+		icons.add(new ImageIcon(getClass().getResource("/static/images/logo.png")).getImage());
+		this.setIconImages(icons);
+		
+		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				confirmExit();
 			}
 		});
-		
 		
 		btnOpenBrowser = new JButton(LogicHelper.getLocalizedMessage("GUI.btnOpen"));
 		btnOpenBrowser.setBounds(50, 65, 175, 50);
@@ -155,20 +171,25 @@ public class AppGui extends JFrame{
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
-		//textArea.setLineWrap(true);
-		//textArea.setWrapStyleWord(true);
 		
-		//Prevent horizontal autoscroll
-		/*textArea.addCaretListener(new CaretListener() {
+		textArea.getDocument().addDocumentListener(new DocumentListener() {
+			
 			@Override
-			public void caretUpdate(CaretEvent e) {
+			public void removeUpdate(DocumentEvent arg0) {}
+			
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
 				try {
-					textArea.setCaretPosition(textArea.getLineStartOffset(textArea.getLineCount() - 1));
-				} catch (BadLocationException e1) {
-					e1.printStackTrace();
+					textArea.setCaretPosition(textArea.getLineStartOffset(textArea.getLineCount()-1));
+				} catch (BadLocationException e) {
+					e.printStackTrace();
 				}
 			}
-		});*/
+			
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {}
+		});
+		
 		scrollPane.setViewportView(textArea);
 		
 		console = new MessageConsole(textArea, true);
@@ -183,8 +204,8 @@ public class AppGui extends JFrame{
 	private void confirmExit() {
 		// CONFIRM AND EXIT
 		if (JOptionPane.showConfirmDialog(null,
-				LogicHelper.getLocalizedMessage("GUI.exitMsg"),
-				LogicHelper.getLocalizedMessage("GUI.exitMsgTitle"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){
+				exitMsg,
+				exitMsgTitle, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION){
 			System.exit(0);
 		}
 	}
@@ -194,6 +215,8 @@ public class AppGui extends JFrame{
 		lblStatus.setForeground(new Color(0x00009900));
 		btnOpenBrowser.setEnabled(true);
 		btnClose.setEnabled(true);
+		
+		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 	
 	public void setReady(String state){
@@ -203,13 +226,17 @@ public class AppGui extends JFrame{
 		lblStatus.setForeground(new Color(0x00009900));
 		btnOpenBrowser.setEnabled(true);
 		btnClose.setEnabled(true);
+		
+		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 	
 	public void setLoading(){
 		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblLoading"));
 		lblStatus.setForeground(new Color(0x00FF0000));
 		btnOpenBrowser.setEnabled(false);
-		btnClose.setEnabled(false);
+		//btnClose.setEnabled(false);
+		
+		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 	}
 	
 	public void setError(){
@@ -235,5 +262,7 @@ public class AppGui extends JFrame{
 		btnClose.setText(LogicHelper.getLocalizedMessage("GUI.btnClose"));
 		lblStatus.setText(LogicHelper.getLocalizedMessage("GUI.lblReady"));
 		chckbxShowLog.setText(LogicHelper.getLocalizedMessage("GUI.showLog"));
+		exitMsg = LogicHelper.getLocalizedMessage("GUI.exitMsg");
+		exitMsgTitle = LogicHelper.getLocalizedMessage("GUI.exitMsgTitle");
 	}
 }

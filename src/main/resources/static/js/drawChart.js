@@ -95,6 +95,7 @@ function drawEvaluationChart(data){
 		var header = $("meta[name='_csrf_header']").attr("content");
 		var token = $("meta[name='_csrf']").attr("content");
 		var myCanvas = plot.getCanvas();
+		console.log(myCanvas);
 		var formData = new FormData();
 		
 		myCanvas.toBlob(
@@ -118,7 +119,6 @@ function drawEvaluationChart(data){
 				});
 			},
 			"image/png");
-
 		
 }
 

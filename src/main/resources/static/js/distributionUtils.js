@@ -7,7 +7,7 @@ function updateArrangement()	{
 	// Update Absolute Numbers
 	//updateAbsolutes();
 	// Update Sum of Relative/Absolute Numbers
-	updateSum();
+	updateSum(true);
 }
 
 function updateInputs()	{
@@ -30,7 +30,7 @@ function updateInputs()	{
 }
 
 // Updates the sum of relative and absolute Amounts
-function updateSum()	{
+function updateSum(updateAbs)	{
 
 	var customerTotalRelative = 0, salesmanTotalRelative = 0, customerTotalAbsolute = 0, salesmanTotalAbsolute = 0;
 	
@@ -38,17 +38,21 @@ function updateSum()	{
 	for(var i = 0; i < inputs[0].length; i++)	{
 		// Update Sums of Relative and absolute Amounts for Customer and Salesman
     	customerTotalRelative += inputs[0][i].value*1;
-    	// Update Absolute number
-    	inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
+    	if(updateAbs)	{
+	    	// Update Absolute number
+	    	inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[0][i].value/200)*numberOfPlayers);
+    	}
     	customerTotalAbsolute += inputs[0][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
 	}
 	// For every Field
 	for(var i = 0; i < inputs[1].length; i++)	{
 		// Update Sums of Relative and absolute Amounts for Customer and Salesman
     	salesmanTotalRelative += inputs[1][i].value*1;
-    	// Update Absolute number
-    	inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[1][i].value/200)*numberOfPlayers);
-    	salesmanTotalAbsolute += inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
+    	if(updateAbs)	{
+	    	// Update Absolute number
+	    	inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value = absoluteRound((inputs[1][i].value/200)*numberOfPlayers);
+    	}
+	    salesmanTotalAbsolute += inputs[1][i].parentNode.nextElementSibling.nextElementSibling.firstElementChild.value*1;
 	}
 	
 	// Set the values
@@ -161,9 +165,8 @@ function addRow(table)	{
 		// Adding 1 + first group - display the first remove-link
 		if(arrangement.cGroupQuantity.value == "1")	{
 			var table = document.getElementById("customerTable");
-			var firstLine = table.firstChild;
-			var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
-			firstGroup.lastChild.style.visibility = "visible";
+			var firstGroup = table.firstElementChild.nextElementSibling;
+			firstGroup.lastElementChild.style.visibility = "visible";
 		}
 		
 		// add Row for Error displaying
@@ -183,8 +186,8 @@ function addRow(table)	{
 		
 		errorRow.appendChild(error);
 		
-		document.getElementById('customerTable').insertBefore(row, document.getElementById('customerTable').lastChild.previousSibling.previousSibling.previousSibling);
-		document.getElementById('customerTable').insertBefore(errorRow, document.getElementById('customerTable').lastChild.previousSibling.previousSibling.previousSibling);
+		document.getElementById('customerTable').insertBefore(row, document.getElementById('customerTable').lastElementChild.previousElementSibling.previousElementSibling);
+		document.getElementById('customerTable').insertBefore(errorRow, document.getElementById('customerTable').lastElementChild.previousElementSibling.previousElementSibling);
 
 		// Increase number of groups
 		arrangement.cGroupQuantity.value++;
@@ -216,9 +219,8 @@ function addRow(table)	{
 		// Adding 1 + first group - display the first remove-link
 		if(arrangement.sGroupQuantity.value == "1")	{
 			var table = document.getElementById("salesmanTable");
-			var firstLine = table.firstChild;
-			var firstGroup = firstLine.nextSibling.nextSibling.nextSibling;
-			firstGroup.firstChild.style.visibility = "visible";
+			var firstGroup = table.firstElementChild.nextElementSibling;
+			firstGroup.firstElementChild.style.visibility = "visible";
 		}
 		// Add field for relative Quantity
 		var cell = document.createElement('div');
@@ -282,8 +284,8 @@ function addRow(table)	{
 		
 		errorRow.appendChild(error);
 		
-		document.getElementById('salesmanTable').insertBefore(row, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
-		document.getElementById('salesmanTable').insertBefore(errorRow, document.getElementById('salesmanTable').lastChild.previousSibling.previousSibling.previousSibling);
+		document.getElementById('salesmanTable').insertBefore(row, document.getElementById('salesmanTable').lastElementChild.previousElementSibling.previousElementSibling);
+		document.getElementById('salesmanTable').insertBefore(errorRow, document.getElementById('salesmanTable').lastElementChild.previousElementSibling.previousElementSibling);
 		
 		// Increase number of groups
 		arrangement.sGroupQuantity.value++;
@@ -315,12 +317,12 @@ function removeRow(number, type)	{
 		if(type == 's')
 			var table = document.getElementById("salesmanTable");
 		
-		var firstGroup = table.firstChild.nextSibling.nextSibling.nextSibling;
+		var firstGroup = table.firstElementChild.nextElementSibling;
 		
 		if(type == 'c')
-			firstGroup.lastChild.style.visibility = "hidden";
+			firstGroup.lastElementChild.style.visibility = "hidden";
 		if(type == 's')
-			firstGroup.firstChild.style.visibility = "hidden";
+			firstGroup.firstElementChild.style.visibility = "hidden";
 	}
 	
 	document.getElementById(type + "GroupQuantity").value--;

@@ -1,7 +1,10 @@
 package jKMS.cards;
 
-public class BuyerCard extends Card {
-	public BuyerCard(int idNumber, int value, char pack) {
+import jKMS.Package;
+
+public class BuyerCard extends Card{
+	
+	public BuyerCard(int idNumber, int value, Package pack) {
 		super(idNumber, value, pack);
 	}
 
@@ -9,5 +12,4 @@ public class BuyerCard extends Card {
 	public String toString() {
 		return "BuyerCard " + this.pack + " [ID = " + idNumber + ", wtp = " + value + "]";
 	}
-	
 }

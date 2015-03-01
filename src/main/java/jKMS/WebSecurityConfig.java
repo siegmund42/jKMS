@@ -1,6 +1,7 @@
 package jKMS;
 
 import jKMS.controller.ControllerHelper;
+import jKMS.exceptionHelper.CreateFolderFailedException;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -35,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/", "/css/**", "/js/**").permitAll()
+                .antMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
                 .antMatchers("/contract**").hasRole("USER")
                 .anyRequest().hasRole("PROF");
         http
@@ -61,6 +62,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			defaults[1][0] = "Assistant";
 			defaults[1][1] = "Assi";
 			defaults[1][2] = "ROLE_USER";
+			
+			try {
+				ControllerHelper.createFolders();
+			} catch (CreateFolderFailedException e1) {
+				e1.printStackTrace();
+			}
 			
         	boolean found = true, noFile = false;
         	
@@ -114,7 +121,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         						line.substring(line.indexOf(":") + 1, line.lastIndexOf(":")), 
         						set);
             			LogicHelper.print("MATCH! Username: " + line.substring(0, line.indexOf(":")) + 
-            					" Password: " + line.substring(line.indexOf(":") + 1, line.lastIndexOf(":")) + 
             					" Role: " + line.substring(line.lastIndexOf(":") + 1));
         				break;
         			}

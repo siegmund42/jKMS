@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+	<object  th:include="resources :: meta">
+	</object>
 	<script src="/js/jquery-2.1.1.min.js" ></script>
 
     <title th:text="#{titles.prepare}">Vorbereitung</title>
@@ -23,6 +20,7 @@
     	var sGroupCount = /*[[${sGroupQuantity}]]*/;
     	var isStandard = /*[[${isStandard}]]*/;
     	var numberOfAssistants = /*[[${numberOfAssistants}]]*/;
+    	var falseContentType = /*[[${falseContentType}]]*/;
     /*]]>*/
     </script>
     <script th:src="@{/js/script.js}"></script>
@@ -33,25 +31,8 @@
  <body th:onload="'updateInputs(); ' + (${sGroupQuantity == 0}? 'addRow(\'c\'); addRow(\'c\'); addRow(\'s\'); addRow(\'s\');' : 'createErrorFields(\'arrangement\', 2); updateArrangement();')">
  	<div th:replace="resources :: js">
 	</div>
- 	<div id="toolBar">
- 		<div id="path">
- 			<div class="step" th:text="#{path.step1}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" id="step_active" th:text="#{path.step2}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.step3}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.step4}"></div>
- 		</div>
- 		<ul>
- 			<li>
- 				<a href="index.html" th:text="#{messages.welcome}" ></a>
- 			</li>
- 			<li>
- 				<a href="prepare1.html" th:text="#{messages.back}" ></a>
- 			</li>
- 		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(prepare, 2, 0)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>
@@ -89,6 +70,7 @@
 						<div class="round" th:text="#{prepare.removeRow.button}" th:onclick="'javascript:removeRow(' + ${iter.index} + ', \'c\');'"></div>
 					</div>
 				</div>
+				<div class="row" style="height: 1px;"></div>
 				<div class="row" style="border-top: 1px solid black;">
 					<div class="cell" id="customerTotalRelative"></div>
 					<div class="cell" th:text="#{prepare.total}"></div>
@@ -119,6 +101,7 @@
 						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
 					</div>
 				</div>
+				<div class="row" style="height: 1px;"></div>
 				<div class="row" style="border-top: 1px solid black;">
 					<div th:if="!*{isStandard}" class="cell"></div>
 					<div class="cell" id="salesmanTotalRelative"></div>
@@ -132,8 +115,9 @@
 			<input type="hidden" id="cGroupQuantity" name="cGroupQuantity" th:value="${cGroupQuantity}" />
 			<input type="hidden" id="sGroupQuantity" name="sGroupQuantity" th:value="${sGroupQuantity}" />
 			
-			<input th:if="!*{isStandard}" type="file" id="input-file" name="input-file" accept="text/plain" onchange="document.arrangement.action = 'prepare2.html?c=load'; document.arrangement.submit();"/>
+			<input th:if="!*{isStandard}" type="file" id="input-file" name="input-file" accept="text/plain" onchange="document.arrangement.action = 'prepare2.html?c=load'; checkFile(this);"/>
 			<input th:if="!*{isStandard}" type="button" value="Konfiguration laden" th:value="#{prepare.loadConfig}" onclick="$('#input-file').click();"/>
+			<div class="errorDiv" id="fileError"></div>
 			<br />
 			<input type="submit" th:value="#{prepare.save}" />
 		</form>

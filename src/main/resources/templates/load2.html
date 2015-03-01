@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+	<object  th:include="resources :: meta">
+	</object>
 
     <title th:text="#{titles.load}">Spiel laden</title>
     <script th:inline="javascript">
@@ -25,25 +22,8 @@
  <body th:onload="'createExcludeFields(' + ${numberOfAssistants} + ');'">
  	<div th:replace="resources :: js">
 	</div>
- 	<div id="toolBar">
- 		<div id="path">
- 			<div class="step" th:text="#{path.load.step1}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" id="step_activ'" th:text="#{path.load.step2}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step3}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step4}"></div>
- 		</div>
- 		<ul>
-	 		<li>
-	 			<a href="index.html" th:text="#{messages.welcome}" ></a>
-	 		</li>
-	 		<li>
- 				<a href="load1.html" th:text="#{backSign} + #{messages.back}" ></a>
-	 		</li>
-		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(load, 2, 0)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>

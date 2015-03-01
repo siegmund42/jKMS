@@ -1,13 +1,29 @@
 package jKMS.cards;
 
-public abstract class Card {
-	protected int idNumber, value;
-	protected char pack;
+import jKMS.Package;
 
-	Card(int idNumber, int value, char pack) {
+public abstract class Card implements Comparable<Card>	{
+	protected int idNumber, value;
+	protected Package pack;
+
+	Card(int idNumber, int value, Package pack) {
 		this.idNumber = idNumber;
 		this.pack = pack;
 		this.value = value;
+		// Workaround for empty Cards in PDF creation
+		if(idNumber != -42)
+			pack.add(this);
+	}
+
+	@Override
+	public int compareTo(Card card) {
+		if(this.idNumber < card.getId())
+			return -1;
+		if(this == card)
+			return 0;
+		if(this.idNumber > card.getId())
+			return 1;
+		return 42;
 	}
 
 	@Override
@@ -15,12 +31,12 @@ public abstract class Card {
 		return "Card [idNumber=" + idNumber + "Package="+ pack +"]";
 	}
 	
-	public char getPackage(){
+	public Package getPackage(){
 		return this.pack;
 	}
 	
-	public void setPackage(char pack){
-		this.pack =pack;
+	public void setPackage(Package pack){
+		this.pack = pack;
 	}
 	
 	public int getValue(){

@@ -8,6 +8,7 @@ import jKMS.states.Play;
 import jKMS.states.Preparation;
 import jKMS.states.State;
 
+import java.util.Calendar;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +25,8 @@ public class Kartoffelmarktspiel {
 	private Configuration configuration;
 	private Set<Card> cards;
 	private Kartoffelmarktspiel instance;
+	private Calendar begin;
+	private Calendar end;
     
 	// DEFAULT CONSTRUCTOR
 	private Kartoffelmarktspiel() {
@@ -38,6 +41,8 @@ public class Kartoffelmarktspiel {
 	// STATE SETTERS
 	public void prepare() {
 		state = new Preparation(instance);
+		if(this.configuration != null)
+			this.configuration.clear();
 		LogicHelper.print("Preparing..");
 		//Application.gui.setReady(LogicHelper.getLocalizedMessage("preparation"));
 		//gui.setReady(LogicHelper.getLocalizedMessage("preparation"));
@@ -45,39 +50,33 @@ public class Kartoffelmarktspiel {
 
 	public void load() {
 		state = new Load(instance);
+		this.configuration.clear();
 		LogicHelper.print("Loading..");
 		//Application.gui.setReady(LogicHelper.getLocalizedMessage("loading"));
 	}
 	
 	public void play() {
+		// Start game
+		begin = Calendar.getInstance();
 		state = new Play(instance);
-		LogicHelper.print("Playing..");
 	}
 
 	public void evaluate() {
+		// Stop game
+		end = Calendar.getInstance();
 		state = new Evaluation(instance);
 		LogicHelper.print("Evaluating..");
 	}
 
 	// GETTERS AND SETTERS
 
-//	public Kartoffelmarktspiel getInstance() {
-//		return instance;
-//	}
-
 	public Configuration getConfiguration() {
 		return configuration;
 	}
 
-//	USELESS ??
-//	public void setConfiguration(Configuration configuration) {
-//		this.configuration = configuration;
-//	}
-
 	public Set<Card> getCards() {
 		return cards;
 	}
-	
 	
 	public Set<Contract> getContracts(){
 		return contracts;
@@ -96,6 +95,15 @@ public class Kartoffelmarktspiel {
 	public int getPlayerCount() {
 		return configuration.getPlayerCount();
 	}
+	
+	public int getLastId()	{
+		int last = 0;
+		for(Card card : cards)	{
+			if(card.getId() > last)
+				last = card.getId();
+		}
+		return last;
+	}
 
 	public int getAssistantCount() {
 		return configuration.getAssistantCount();
@@ -111,6 +119,22 @@ public class Kartoffelmarktspiel {
 
 	public Map<Integer, Amount> getsDistribution() {
 		return configuration.getsDistribution();
+	}
+	
+	public Calendar getBegin() {
+		return begin;
+	}
+
+	public Calendar getEnd() {
+		return end;
+	}
+
+	public Set<Package> getPackages() {
+		return configuration.getPackages();
+	}
+	
+	public Package getPackage(char pack) {
+		return configuration.getPackage(pack);
 	}
 	
 }

@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import jKMS.Amount;
 import jKMS.Application;
 import jKMS.Kartoffelmarktspiel;
+import jKMS.Package;
+import jKMS.cards.BuyerCard;
+import jKMS.cards.SellerCard;
 
 import java.util.TreeMap;
 
@@ -49,6 +52,20 @@ public class PlayTest {
 		
 		
 		kms.load();
+		
+		Package a = kms.getConfiguration().newPackage('A');
+		kms.getCards().add(new BuyerCard(1001, 2, a));
+		kms.getCards().add(new BuyerCard(1003, 2, a));
+		kms.getCards().add(new BuyerCard(1005, 3, a));
+		kms.getCards().add(new BuyerCard(1007, 3, a));
+		kms.getCards().add(new BuyerCard(1009, 4, a));
+		
+		kms.getCards().add(new SellerCard(1002, 2, a));
+		kms.getCards().add(new SellerCard(1004, 3, a));
+		kms.getCards().add(new SellerCard(1006, 3, a));
+		kms.getCards().add(new SellerCard(1008, 4, a));
+		kms.getCards().add(new SellerCard(1010, 4, a));
+		
 		kms.play();
 	}
 	

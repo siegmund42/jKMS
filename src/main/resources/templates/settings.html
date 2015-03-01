@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+	<object  th:include="resources :: meta">
+	</object>
     <script th:src="@{/js/formValidation.js}"></script>
 
     <title th:text="#{titles.settings}">Einstellungen</title>
@@ -14,27 +11,11 @@
  <body>
  	<div th:replace="resources :: js">
 	</div>
- 	<div id="toolBar">
- 		<ul>
- 			<li>
- 				<a href="index.html" th:text="#{messages.welcome}" ></a>
- 			</li>
- 			<li>
- 				<a href="index.html" th:text="#{messages.back}" ></a>
- 			</li>
- 			<li>
- 				<a href="#" th:text="#{settings.language}"></a>
- 				<ul>
- 					<li>
- 						<a href="settings.html?lang=de" th:text="#{settings.german}"></a>
- 					</li>
- 					<li>
- 						<a href="settings.html?lang=en" th:text="#{settings.english}"></a>
- 					</li>
- 				</ul>
- 			</li>
- 		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(0, lang, 0)">
+	</div>
+ 	<noscript>
+ 		<div th:text="#{noscript}"></div>
+ 	</noscript>
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (settings)">
 	 	</div>	
@@ -43,8 +24,7 @@
         <div class="successDiv" th:if="${success}" th:text="#{settings.success}">
         </div>
 	 	<h2 th:text="#{settings.language}"></h2>
-	 	<a href="settings.html?lang=de" th:text="#{settings.german}"></a>
-	 	<a href="settings.html?lang=en" th:text="#{settings.english}"></a>
+	 	<a th:each="lang : ${languages}" th:href="'index.html?lang=' + ${lang.key}" th:text="${lang.value}"></a>
 	 	<br /><br />
 	 	<h2 th:text="#{settings.users}"></h2>
 	 	<form method="POST" th:action="'settings.html'" id="userForm" name="userForm" onsubmit="return validateForm(this.id);">

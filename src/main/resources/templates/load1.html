@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+	<object  th:include="resources :: meta">
+	</object>
 
     <title th:text="#{titles.load}">Spiel laden</title>
     <script th:inline="javascript">
@@ -21,26 +18,9 @@
     <script th:src="@{/js/distributionUtils.js}"></script>
     
 </head>
- <body onload="javascript:updateInputs(); javascript:updateArrangement();">
- 	<div id="toolBar">
- 		<div id="path">
- 			<div th:class="step" id="step_active" th:text="#{path.load.step1}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step2}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step3}"></div>
- 			<div class="step" th:text="'>'"></div>
- 			<div class="step" th:text="#{path.load.step4}"></div>
- 		</div>
- 		<ul>
-	 		<li>
-	 			<a href="index.html" th:text="#{messages.welcome}" ></a>
-	 		</li>
-	 		<li>
- 				<a href="index.html" th:text="#{backSign} + #{messages.back}" ></a>
-	 		</li>
-		</ul>
- 	</div>
+ <body onload="javascript:updateInputs(); javascript:updateSum(false);">
+ 	<div th:replace="resources :: toolBar(load, 1, 0)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>
@@ -50,7 +30,7 @@
  	<div th:if="${error}" class="errorDiv" th:text="#{error.__${error}__}"></div>
  	<!-- For Showing the IP Address -->
 	 	<h2 th:text="#{load.address}">Adresse dieses Rechners</h2>
-	 	<div class="errorDiv textBlock" th:if="${ipError}" th:text="#{load.__${ipError}__}"></div>
+	 	<div class="errorDiv" th:if="${ipError}" th:text="#{load.__${ipError}__}"></div>
 	 	<div th:each="ip : ${IPs}">
 	 		<div th:text="${ip} + ':' + ${port}"></div>
 	 	</div>
@@ -82,7 +62,7 @@
 						<input type="number" name="cPrice[]" th:id="'cPrice[' + ${iter.count} + ']'" th:placeholder="#{prepare.currency}" th:value="${customer.key}" readonly="readonly" />
 					</div>
 					<div class="cell">
-						<input type="number" name="cAbsoluteQuantity[]" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+						<input type="number" name="cAbsoluteQuantity[]" th:id="'cAbsoluteQuantity[' + ${iter.count} + ']'" th:value="${customer.value.absolute}" readonly="readonly" />
 					</div>
 				</div>
 				<div class="row" style="border-top: 1px solid black;">
@@ -105,7 +85,7 @@
 						<input type="number" name="sPrice[]" th:id="'sPrice[' + ${iter.count} + ']'" th:placeholder="#{prepare.currency}" th:value="${salesman.key}" readonly="readonly" />
 					</div>
 					<div class="cell">
-						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" readonly="readonly" />
+						<input type="number" name="sAbsoluteQuantity[]" th:id="'sAbsoluteQuantity[' + ${iter.count} + ']'" th:value="${salesman.value.absolute}" readonly="readonly" />
 					</div>
 				</div>
 				<div class="row" style="border-top: 1px solid black;">

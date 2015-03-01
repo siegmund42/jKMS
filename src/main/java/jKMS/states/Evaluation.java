@@ -18,12 +18,16 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 public class Evaluation extends State{
 	
+	private Contract winner = null;
+	
 	public Evaluation(Kartoffelmarktspiel kms){
 		this.kms = kms;
 	}
-	private Contract winner = null;
 	
-	//returns statistic data of all contracts - min, max, average, standard deviation, quantity of contracts
+	/**
+	 * Returns statistic data of all contracts
+	 * min, max, average, standard deviation, quantity of contracts
+	 */
 	@Override
 	public Map<String,Float> getStatistics() throws NoContractsException, NoIntersectionException{ 
 		Set<Contract> contracts = kms.getContracts();
@@ -83,9 +87,8 @@ public class Evaluation extends State{
 		return statistics; 
 	}
 	
-	
-	/*
- 	 * calculate equilibrium price and equilibrium quantity
+	/**
+ 	 * Calculate equilibrium price and equilibrium quantity
 	 * return null or throws NoIntersectionException, if there is no intersection between supply and demand function
  	 */
 	public float[] getEquilibrium() throws NoIntersectionException{
@@ -184,7 +187,11 @@ public class Evaluation extends State{
 		return null;
 	}
 	
-	//choose random "winner"-contract
+	/**
+	 * Chooses a random winner-contract
+	 * 
+	 * @return 	object of contract
+	 */
 	@Override
 	public Contract pickWinner(boolean repeat) throws NoContractsException{ 
 		if(winner == null || repeat == true){
@@ -221,12 +228,11 @@ public class Evaluation extends State{
 		return (con.getPrice() - cost); 
 	}
 	
-
 	@Override
 	public void generateCSV(CSVWriter writer){
 		Csv csv = new Csv();
 		
-		csv.generateCSV(writer, kms.getCards(), kms.getContracts());
+		csv.generateCSV(writer, kms.getCards(), kms.getContracts(), kms.getBegin(),kms.getEnd());
 		
 	}
 	

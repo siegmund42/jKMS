@@ -100,7 +100,7 @@ function validateForm(form)	{
 				// Exclude Cards Formular
 				var error;
 				// Number must be between first ID and lastID
-				if(inputs[i].value < firstID || inputs[i].value > (firstID + numberOfPlayers))	{
+				if(inputs[i].value < firstID || inputs[i].value > lastID)	{
 					writeError(7, inputs[i]);
 					error = true;
 				}
@@ -108,7 +108,7 @@ function validateForm(form)	{
 			case 'contract':
 				// Contract Form
 				// Number must be between first ID and lastID - ONLY IF id FIELD!
-				if(inputs[i].name != "price" && (inputs[i].value < firstID || inputs[i].value > (firstID + numberOfPlayers - 1)))	{
+				if(inputs[i].name != "price" && (inputs[i].value < firstID || inputs[i].value > lastID))	{
 					writeError(7, inputs[i]);
 					error = true;
 				}

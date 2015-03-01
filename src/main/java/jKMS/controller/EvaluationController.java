@@ -3,6 +3,7 @@ package jKMS.controller;
 import jKMS.Amount;
 import jKMS.Contract;
 import jKMS.LogicHelper;
+import jKMS.exceptionHelper.CreateFolderFailedException;
 import jKMS.exceptionHelper.InvalidStateChangeException;
 import jKMS.exceptionHelper.NoContractsException;
 import jKMS.exceptionHelper.NoIntersectionException;
@@ -21,13 +22,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
+/**
+ * Everything round about Evaluation
+ * @author Quiryn
+ * @author siegmund42
+ */
 @Controller
 public class EvaluationController extends AbstractServerController {
 	
 	@RequestMapping("/getEvaluation")
 	@ResponseBody
-	/*
-	 * catches AjaxRequest, concatenates data list with standardDistribution
+	/**
+	 * catches AjaxRequest, concatenates data of contracts, data of supply and demand function and min/max values for y-axis
+	 * 
+	 * @return		string in json-like format, this string is needed for flot-library to plot the chart
 	 */
 	public String evaluationChart(){
 		//String of current play data
@@ -52,9 +60,11 @@ public class EvaluationController extends AbstractServerController {
 		
 	}
 	
-	
-	/*
+	/**
 	 * gets all attributes of "winner contract" and adds them to the model
+	 * @param 	repeat 	define if the lottery should be repeated
+	 * @param 	model	Model injection for building the page
+	 * @return			Template name
 	 */
 	@RequestMapping(value = "/lottery")
 	public String lottery(@RequestParam(value="repeat", defaultValue = "false") boolean repeat,
@@ -76,16 +86,18 @@ public class EvaluationController extends AbstractServerController {
 			
 			return "lottery";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 		
 	}
 	
-	/*
-	 * Evaluation Site
+	/**
+	 * Evaluation Site - also stores the .csv automatically
+	 * @param 	model	Model injection for building the page
+	 * @return			Template name
 	 */
 	@RequestMapping(value = "/evaluate")
-	public String evaluate(Model model) throws NoContractsException, InvalidStateChangeException, IllegalStateException, NoIntersectionException, IOException	{
+	public String evaluate(Model model) throws InvalidStateChangeException, IllegalStateException, NoIntersectionException, CreateFolderFailedException	{
 		// State Change
 		
 		if(ControllerHelper.stateHelper(kms, "evaluate"))	{
@@ -105,25 +117,33 @@ public class EvaluationController extends AbstractServerController {
 					e.printStackTrace();
 					model.addAttribute("message", LogicHelper.getLocalizedMessage("error.csv.message"));
 					model.addAttribute("error", LogicHelper.getLocalizedMessage("error.csv.error"));
-					return "error";
+					return "standardException";
 				}
 				
 			}
 			// Get statistics
-			Map<String,Float> stats = kms.getState().getStatistics();
+			Map<String, Float> stats = null;
+			try {
+				stats = kms.getState().getStatistics();
+			} catch (NoContractsException e) {
+				e.printStackTrace();
+				model.addAttribute("message", LogicHelper.getLocalizedMessage("error.noContracts.message"));
+				model.addAttribute("error", LogicHelper.getLocalizedMessage("error.noContracts.error"));
+				return "standardException";
+			}
 			
-			model.addAttribute("average", Math.round(stats.get("averagePrice")*100)/100.0);
+			model.addAttribute("average", String.format("%.2f", Math.round(stats.get("averagePrice")*100)/100.0));
 			model.addAttribute("size", Math.round(stats.get("contractsSize")));
 			model.addAttribute("min", Math.round(stats.get("minimum")));
 			model.addAttribute("max", Math.round(stats.get("maximum")));
-			model.addAttribute("standardDeviation", Math.round(stats.get("standardDeviation")*100)/100.0);
+			model.addAttribute("standardDeviation", String.format("%.2f",Math.round(stats.get("standardDeviation")*100)/100.0));
 			model.addAttribute("eqPrice",Math.round(stats.get("eqPrice")));
 			model.addAttribute("eqQuantity", Math.round(stats.get("eqQuantity")));
 			
 			
 			return "evaluate";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 	}
 }

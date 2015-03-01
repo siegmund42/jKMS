@@ -7,7 +7,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 
-/*
+/**
  *  A class to control the maximum number of lines to be stored in a Document
  *
  *  Excess lines can be removed from the start or end of the Document
@@ -23,19 +23,24 @@ public class LimitLinesDocumentListener implements DocumentListener
         private int maximumLines;
         private boolean isRemoveFromStart;
 
-        /*
+        /**
          *  Specify the number of lines to be stored in the Document.
          *  Extra lines will be removed from the start of the Document.
+         *  
+         *  @param maximumLines set the maximum number of lines to be stored
          */
         public LimitLinesDocumentListener(int maximumLines)
         {
                 this(maximumLines, true);
         }
 
-        /*
+        /**
          *  Specify the number of lines to be stored in the Document.
          *  Extra lines will be removed from the start or end of the Document,
          *  depending on the boolean value specified.
+         *  
+         *  @param maximumLines set the maximum number of lines to be stored
+         *  @param isRemoveFromStart indicates if lines must be removed from start (true) or end (bottom) of document
          */
         public LimitLinesDocumentListener(int maximumLines, boolean isRemoveFromStart)
         {
@@ -43,16 +48,18 @@ public class LimitLinesDocumentListener implements DocumentListener
                 this.isRemoveFromStart = isRemoveFromStart;
         }
 
-        /*
+        /**
          *  Return the maximum number of lines to be stored in the Document
+         *  @return maximum number of lines
          */
         public int getLimitLines()
         {
                 return maximumLines;
         }
 
-        /*
+        /**
          *  Set the maximum number of lines to be stored in the Document
+         *  @param maximumLines set the maximum number of lines to be stored
          */
         public void setLimitLines(int maximumLines)
         {
@@ -82,9 +89,10 @@ public class LimitLinesDocumentListener implements DocumentListener
         }
 
         public void removeUpdate(DocumentEvent e) {}
+        
         public void changedUpdate(DocumentEvent e) {}
 
-        /*
+        /**
          *  Remove lines from the Document when necessary
          */
         private void removeLines(DocumentEvent e)
@@ -108,7 +116,7 @@ public class LimitLinesDocumentListener implements DocumentListener
                 }
         }
 
-        /*
+        /**
          *  Remove lines from the start of the Document
          */
         private void removeFromStart(Document document, Element root)
@@ -126,7 +134,7 @@ public class LimitLinesDocumentListener implements DocumentListener
                 }
         }
 
-        /*
+        /**
          *  Remove lines from the end of the Document
          */
         private void removeFromEnd(Document document, Element root)

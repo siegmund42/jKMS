@@ -1,26 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+	<object  th:include="resources :: meta">
+	</object>
 
     <title th:text="#{titles.reset}"></title>
     
 </head>
  <body>
- 	<div id="toolBar">
- 		<ul>
- 			<li>
- 				<a href="index.html" th:text="#{messages.welcome}" ></a>
- 			</li>
- 			<li>
- 				<a href="javascript:history.go(-1);" th:text="#{messages.back}" ></a>
- 			</li>
- 		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(0, 0, 0)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>

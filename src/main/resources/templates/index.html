@@ -1,35 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-	<script src="/js/jquery-2.1.1.min.js" ></script>
-
+	<object  th:include="resources :: meta">
+	</object>
     <title th:text="#{titles.welcome}">Willkommen</title>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    	var falseContentType = /*[[${falseContentType}]]*/;
+    /*]]>*/
+    </script>
+    <script th:src="@{/js/script.js}"></script>
+	<script src="/js/jquery-2.1.1.min.js" ></script>
     
 </head>
  <body>
- 	<div id="toolBar">
- 		<ul>
- 			<li>
- 				<a href="javascript:history.go(-1);" th:text="#{messages.back}" ></a>
- 			</li>
- 			<li>
- 				<a href="#" th:text="#{settings.language}"></a>
- 				<ul>
- 					<li>
- 						<a href="index.html?lang=de" th:text="#{settings.german}"></a>
- 					</li>
- 					<li>
- 						<a href="index.html?lang=en" th:text="#{settings.english}"></a>
- 					</li>
- 				</ul>
- 			</li>
- 		</ul>
- 	</div>
+ 	<div th:replace="resources :: toolBar(0, lang, -1)">
+	</div>
  	<noscript>
  		<div th:text="#{noscript}"></div>
  	</noscript>
@@ -38,12 +24,13 @@
 	<div id="inhalt">
 	 	<div th:replace="resources :: heading (welcome)">
 	 	</div>
+		<div class="errorDiv" id="fileError"></div>
 	 	<div class="errorDiv" th:if="${error}" th:text="#{error.__${error}__}"></div>
 	 	<br />
 		<p><a href="prepare1.html" th:text="#{index.prepare}">Vorbereitung</a></p>
 		<br />
 		<form name="loadGame" method="POST" th:action="load1.html" enctype="multipart/form-data" >
-			<input type="file" id="input-file" name="input-file" accept="text/plain" onchange="document.loadGame.submit();"/>
+			<input type="file" id="input-file" name="input-file" accept="text/plain" onchange="javascript:checkFile(this);"/>
 			<input type="button" th:value="#{index.loadGame}" onclick="$('#input-file').click();"/>
 		</form>
 		<br />

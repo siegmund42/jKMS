@@ -13,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 
+ * @author	Quiryn
+ *
+ */
 @Controller
 public class PlayController extends AbstractServerController {
 	
 	@RequestMapping("/getData")
 	@ResponseBody
-	/*
+	/**
 	 * Catches Ajax-Request, converts the set of contracts into a String with the help of the ControllerHelper
 	 */
 	public String insertData(){
@@ -36,6 +41,10 @@ public class PlayController extends AbstractServerController {
 		return str;
 	}
 	
+	/**
+	 * Just displaying chart -> Everything javascript (;
+	 * @param 	s	 if game is stopped this parameter is 'stop', else false
+	 */
 	@RequestMapping(value = "/play")
 	public String play(Model model, @RequestParam(value= "s", required = false) String s) throws InvalidStateChangeException	{
 
@@ -49,7 +58,7 @@ public class PlayController extends AbstractServerController {
 		if(stateChangeSuccessful)	{
 			return "play";
 		}	else	{
-			return "reset";
+			return "redirect:/reset";
 		}
 	}
 }
